@@ -19,6 +19,9 @@ the project legible:
   near-term research obligations.
 - `docs/subordinate-review.md` records the first review of the referenced
   subordinate repositories.
+- `docs/glossary.md` defines working project vocabulary.
+- `docs/afs-requirements.md` defines the first requirement matrix for
+  Autarkic Formal Systems.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

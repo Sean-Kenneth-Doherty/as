@@ -7,3 +7,6 @@
   scaffold, not premature implementation.
 - In this project, "autarkic" has two coupled meanings that must remain joined:
   formal self-confidence and embodied control of the computational substrate.
+- When one repo log points to adjacent implementation work, verify the public
+  branch before treating it as current. In this case, SJAS describes newer
+  Proflog work than public `jpt4/proflog` exposes on `main`.

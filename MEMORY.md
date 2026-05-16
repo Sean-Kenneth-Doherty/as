@@ -19,3 +19,10 @@
 - The upstream default branch for `as` is `main`; the generic instructions say
   `master`, but local integration should target the actual default branch until
   the owner changes it.
+- `jpt4/proflog` is a relevant adjacent public repository, but public `main` at
+  `77af848` does not contain the newer Proflog ADR-006x frontier described in
+  SJAS `nachlass/LOG.md`.
+- On this machine, `guile proflog.scm` in public `jpt4/proflog` fails with
+  `Unbound variable: even` at the embedded example program, so it should not be
+  treated as passing executable evidence without further repair or a different
+  intended Scheme environment.

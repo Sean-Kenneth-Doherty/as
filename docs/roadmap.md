@@ -39,6 +39,11 @@ Key questions:
 - Which claims belong in AS vs. PRC vs. SJAS?
 - What is the smallest formal object that can be implemented and tested?
 
+Status: accepted in `docs/adr/0002-afs-requirements.md`. The first answer is
+recorded in `docs/afs-requirements.md`; the recommended first executable probe
+is a tiny substrate/formal bridge around one Universal Cell transition
+invariant.
+
 ## ADR-0003: Subordinate Artifact Manifest
 
 Goal: create a reproducible manifest of subordinate material and open gaps.

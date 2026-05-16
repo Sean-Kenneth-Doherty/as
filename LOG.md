@@ -22,3 +22,22 @@
 - Added the first ADR-backed documentation scaffold so future work has a
   current public entrypoint, chronological log, durable context, subordinate
   review, and initial roadmap.
+
+## 2026-05-16 - AFS Requirement Definition
+
+- Re-read the live project `AGENTS.md` before continuing work. The active rules
+  require ADRs before feature implementation, careful documentation layering,
+  active forward motion, and structured tools where useful.
+- Listed public repositories under `jpt4` and identified `jpt4/proflog` as a
+  relevant adjacent executable frontier because SJAS `nachlass/LOG.md` records
+  recent Proflog-side SJAS work.
+- Cloned `jpt4/proflog` at `77af848`. The public main branch contains
+  `proflog.scm` and `LPTableaus.pdf`, but not the ADR-0063 through ADR-0068
+  material described in the SJAS log.
+- Ran `guile proflog.scm`; it failed at the embedded `P1` program definition
+  with `Unbound variable: even`. Treat public Proflog main as relevant
+  background, not as a passing executable dependency.
+- Added `docs/glossary.md`, `docs/afs-requirements.md`, and
+  `docs/adr/0002-afs-requirements.md` to turn AFS from a placeholder name into
+  a concrete requirement matrix with a gap register and a recommended first
+  executable probe.
