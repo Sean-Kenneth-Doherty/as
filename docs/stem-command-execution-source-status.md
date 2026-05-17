@@ -40,7 +40,8 @@ ADR-0057 records write-buffer command semantics as still source-blocked.
 ADR-0058 records `standard-signal` command-token semantics as still
 source-blocked while preserving ordinary binary-input standard-signal
 behavior. ADR-0059 selects reject-and-clear for multiple simultaneous
-recipient command-message inputs.
+recipient command-message inputs, and ADR-0060 adds the matching
+schematic-linked trace.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.
@@ -85,8 +86,8 @@ command behavior honestly, AS still needs to choose:
   selected as self-mailbox or self-target command-buffer commands;
 - how write-buffer and standard-signal command-message inputs behave on
   recipient cells after the implemented init-family recipient slice.
-- a schematic-linked trace for multiple simultaneous recipient command-message
-  rejection before later work depends on that selected policy.
+- a rendered SVG for multiple simultaneous recipient command-message rejection
+  before later work depends on that selected policy visually.
 
 ## Verification
 

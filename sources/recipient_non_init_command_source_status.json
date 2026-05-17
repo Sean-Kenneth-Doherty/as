@@ -4,7 +4,7 @@
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "add-multi-command-rejection-trace",
+  "safe_next_slice": "add-multi-command-rejection-svg",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -19,6 +19,12 @@
       "artifact_id": "recipient-non-init-command-rejection-schematic-and-uc-transition-trace",
       "path": "schematics/recipient_non_init_command_rejection_trace.json",
       "summary": "AS now has a schematic-linked trace that replays fixed-cell upstream standard-signal command-message rejection."
+    },
+    {
+      "adr": "ADR-0060",
+      "artifact_id": "multi-command-recipient-rejection-schematic-and-uc-transition-trace",
+      "path": "schematics/multi_command_recipient_rejection_trace.json",
+      "summary": "AS now has a schematic-linked trace that replays fixed-cell direct multi-command recipient rejection."
     }
   ],
   "implemented_svgs": [
@@ -115,7 +121,7 @@
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token. ADR-0059 selects rejection for two or more simultaneous command-message tokens."
   },
   "allowed_next_slices": [
-    "Add a schematic-linked trace for multiple command-message input rejection.",
+    "Add a rendered SVG view for the multiple command-message input rejection trace.",
     "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
     "Revisit write-buffer command execution only if new source evidence resolves append, clearing, and buffer-full boundaries."
   ]

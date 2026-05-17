@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-multi-command-rejection-trace",
+            "add-multi-command-rejection-svg",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -36,7 +36,8 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             claim["predicate"],
             "recipient_non_init_command_message_rejected",
         )
-        trace = self.status["implemented_traces"][0]
+        traces = {item["adr"]: item for item in self.status["implemented_traces"]}
+        trace = traces["ADR-0055"]
         self.assertEqual(trace["adr"], "ADR-0055")
         self.assertEqual(
             trace["artifact_id"],
@@ -45,6 +46,10 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(
             trace["path"],
             "schematics/recipient_non_init_command_rejection_trace.json",
+        )
+        self.assertEqual(
+            traces["ADR-0060"]["path"],
+            "schematics/multi_command_recipient_rejection_trace.json",
         )
         svg = self.status["implemented_svgs"][0]
         self.assertEqual(svg["adr"], "ADR-0056")
@@ -184,7 +189,13 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         )
         self.assertFalse(
             any(
-                "rejection trace" in item
+                "schematic-linked trace" in item
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertTrue(
+            any(
+                "rendered SVG" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )

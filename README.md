@@ -79,6 +79,8 @@ the project legible:
 - `docs/multi-command-recipient-input-policy-status.md` records the
   reject-and-clear policy for multiple simultaneous recipient command-message
   inputs.
+- `docs/multi-command-recipient-rejection-trace.md` records the
+  schematic-linked trace for one direct multi-command recipient rejection.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
@@ -203,6 +205,8 @@ the project legible:
   recipient non-init command-message rejection trace machine-checkable.
 - `schematics/recipient_non_init_command_rejection_trace.svg` is the generated
   rendered view checked against the recipient rejection JSON trace.
+- `schematics/multi_command_recipient_rejection_trace.json` makes the
+  multi-command recipient rejection trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

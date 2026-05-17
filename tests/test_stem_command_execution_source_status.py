@@ -108,7 +108,8 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
                 for item in allowed
             )
         )
-        self.assertFalse(any("rejection trace" in item for item in allowed))
+        self.assertFalse(any("schematic-linked trace" in item for item in allowed))
+        self.assertTrue(any("rendered SVG" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)
         )

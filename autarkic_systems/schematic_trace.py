@@ -57,6 +57,9 @@ RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID = (
 RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID = (
     "recipient-non-init-command-rejection-schematic-and-uc-transition-trace"
 )
+MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID = (
+    "multi-command-recipient-rejection-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
@@ -69,6 +72,7 @@ VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
     RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID,
+    MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -436,6 +440,8 @@ def _validate_schematic_trace_alignment(
     if (
         schematic_trace.artifact_id
         == RECIPIENT_NON_INIT_COMMAND_REJECTION_TRACE_ARTIFACT_ID
+        or schematic_trace.artifact_id
+        == MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID
     ):
         results.extend(
             _validate_recipient_non_init_command_rejection_trace_alignment(

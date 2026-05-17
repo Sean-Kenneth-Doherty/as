@@ -1324,3 +1324,30 @@
   touched source-status and claim tests, JSON parsing passed for the
   multi-command, standard-signal, write-buffer, recipient, stem, claim, and
   certificate manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Multi-Command Recipient Rejection Trace
+
+- Added ADR-0060 to make the ADR-0059 reject-and-clear policy visible as a
+  schematic-linked trace.
+- Wrote `tests/test_multi_command_recipient_rejection_trace.py` before
+  implementation. The red run failed because
+  `MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID` was absent from
+  `autarkic_systems.schematic_trace`.
+- Added `MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID` and routed the
+  new artifact through the existing recipient non-init rejection alignment
+  validator.
+- Added `schematics/multi_command_recipient_rejection_trace.json`, replaying a
+  fixed `wire/right` recipient rejecting simultaneous `wire-r-init` and
+  `proc-l-init` command-message inputs.
+- Verified the trace replays through `step_fixed_cell`, satisfies
+  `recipient_non_init_command_message_rejected`, validates against the PRC
+  hardware witness map, and rejects drifted flow or uncleared input.
+- Updated source-status frontiers so the next safe slice is a rendered SVG for
+  the multi-command rejection trace.
+- Added `docs/multi-command-recipient-rejection-trace.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused multi-command trace/source-status suite passed 37 tests.
+  `python -m unittest discover` passed 362 tests, py_compile passed for the
+  touched schematic trace module and tests, JSON parsing passed for the
+  multi-command trace and source-status manifests, and `git diff --check`
+  passed.

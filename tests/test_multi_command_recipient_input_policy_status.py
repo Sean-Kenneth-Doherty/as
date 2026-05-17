@@ -39,7 +39,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-multi-command-rejection-trace",
+            "add-multi-command-rejection-svg",
         )
         self.assertEqual(
             self.status["covered_runtime_surfaces"],
@@ -97,7 +97,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         self.assertIn("fixed all-init command conflict rejected", example_names)
         self.assertIn("stem multi command conflict rejected", example_names)
 
-    def test_source_status_frontiers_move_to_multi_command_trace(self):
+    def test_source_status_frontiers_move_to_multi_command_svg(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))
         recipient_status = json.loads(RECIPIENT_STATUS.read_text(encoding="utf-8"))
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
@@ -118,15 +118,21 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "add-multi-command-rejection-trace",
+            "add-multi-command-rejection-svg",
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
-            "add-multi-command-rejection-trace",
+            "add-multi-command-rejection-svg",
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],
-            "add-multi-command-rejection-trace",
+            "add-multi-command-rejection-svg",
+        )
+        trace = self.status["implemented_traces"][0]
+        self.assertEqual(trace["adr"], "ADR-0060")
+        self.assertEqual(
+            trace["path"],
+            "schematics/multi_command_recipient_rejection_trace.json",
         )
         self.assertFalse(
             any(

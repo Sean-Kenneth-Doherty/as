@@ -3,7 +3,7 @@
   "reviewed_at": "2026-05-17",
   "decision": "do-not-implement-write-buffer-command-execution-yet",
   "runtime_change": "none-source-status-only",
-  "safe_next_slice": "add-multi-command-rejection-trace",
+  "safe_next_slice": "add-multi-command-rejection-svg",
   "commands": [
     "write-buf-zero",
     "write-buf-one"

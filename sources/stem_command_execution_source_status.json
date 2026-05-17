@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Add a schematic-linked trace for multiple command-message input rejection.",
+    "Add a rendered SVG view for the multiple command-message input rejection trace.",
     "Add more source-status tests if another PRC source resolves the target, command-order, or standard-signal command-token divergence."
   ]
 }

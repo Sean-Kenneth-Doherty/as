@@ -279,3 +279,9 @@
   inputs, adds an all-init conflict example to
   `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`, and moves the next safe
   slice to a multi-command rejection trace.
+- ADR-0060 adds `docs/multi-command-recipient-rejection-trace.md`,
+  `schematics/multi_command_recipient_rejection_trace.json`, and
+  `tests/test_multi_command_recipient_rejection_trace.py`. It reuses the
+  recipient non-init rejection trace validator for a fixed direct
+  `wire-r-init` plus `proc-l-init` conflict and moves the next safe slice to a
+  multi-command rejection SVG.

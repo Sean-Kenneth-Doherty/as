@@ -83,6 +83,7 @@ ADR-0058 records `standard-signal` command-token execution as still
 source-blocked while preserving ordinary binary-input standard-signal behavior.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
 command-message inputs.
+ADR-0060 adds a schematic-linked trace for that multi-command rejection policy.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -210,3 +211,4 @@ ADR-0058 records the corresponding `standard-signal` command-token semantics
 source-status decision.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
+ADR-0060 records the corresponding multi-command recipient rejection trace.

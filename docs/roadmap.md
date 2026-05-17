@@ -1159,3 +1159,25 @@ Status: accepted in
 `sources/multi_command_recipient_input_policy_status.json` and
 `docs/multi-command-recipient-input-policy-status.md`, with tests in
 `tests/test_multi_command_recipient_input_policy_status.py`.
+
+## ADR-0060: Multi-Command Recipient Rejection Trace
+
+Goal: make the ADR-0059 reject-and-clear policy visible as a schematic-linked
+trace.
+
+Deliverables:
+
+- `schematics/multi_command_recipient_rejection_trace.json`;
+- exported `MULTI_COMMAND_RECIPIENT_REJECTION_TRACE_ARTIFACT_ID`;
+- validator routing for the new artifact through the recipient non-init
+  rejection alignment check;
+- tests proving replay, claim satisfaction, flow wording, witness-map
+  validation, and drift rejection;
+- human-facing trace note and source-status frontier updates.
+
+Status: accepted in
+`docs/adr/0060-multi-command-recipient-rejection-trace.md`. Implemented in
+`schematics/multi_command_recipient_rejection_trace.json`,
+`autarkic_systems/schematic_trace.py`, and
+`docs/multi-command-recipient-rejection-trace.md`, with tests in
+`tests/test_multi_command_recipient_rejection_trace.py`.

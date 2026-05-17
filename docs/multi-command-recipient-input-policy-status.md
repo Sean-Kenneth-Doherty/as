@@ -39,7 +39,8 @@ The boundary is:
 - non-init command-token execution remains blocked under ADR-0057 and
   ADR-0058.
 
-The next visible slice is a schematic-linked trace for multi-command rejection.
+ADR-0060 adds that schematic-linked trace. The next visible slice is a
+rendered SVG for multi-command rejection.
 
 ## Verification
 

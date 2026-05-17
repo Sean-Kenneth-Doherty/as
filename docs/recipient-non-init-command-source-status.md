@@ -54,9 +54,12 @@ ADR-0059 records the multi-command recipient input policy in
 active command input. It also adds an all-init conflict example to the
 recipient non-init rejection claim.
 
-The next safe slice is a schematic-linked trace for multi-command rejection.
-`standard-signal` and write-buffer command execution should be revisited only
-if later source evidence resolves their runtime surfaces.
+ADR-0060 adds the corresponding schematic-linked trace in
+`schematics/multi_command_recipient_rejection_trace.json`.
+
+The next safe slice is a rendered SVG view for that multi-command rejection
+trace. `standard-signal` and write-buffer command execution should be revisited
+only if later source evidence resolves their runtime surfaces.
 
 ## Verification
 

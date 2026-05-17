@@ -6,7 +6,7 @@
   "accepted_command_message_count": 1,
   "conflict_command_message_count_minimum": 2,
   "policy": "reject-and-clear-active-command-input",
-  "safe_next_slice": "add-multi-command-rejection-trace",
+  "safe_next_slice": "add-multi-command-rejection-svg",
   "covered_runtime_surfaces": [
     "fixed-direct-input",
     "fixed-upstream-input",
@@ -59,5 +59,13 @@
     "new_example": "fixed all-init command conflict rejected",
     "summary": "The existing rejection predicate already covers conflicting command-message input; ADR-0059 adds an all-init conflict example so the selected policy is visible in the claim manifest."
   },
+  "implemented_traces": [
+    {
+      "adr": "ADR-0060",
+      "artifact_id": "multi-command-recipient-rejection-schematic-and-uc-transition-trace",
+      "path": "schematics/multi_command_recipient_rejection_trace.json",
+      "summary": "AS now has a schematic-linked trace for a fixed recipient rejecting two simultaneous init-family command-message tokens."
+    }
+  ],
   "as_boundary": "AS accepts exactly one init-family recipient command-message input. Two or more command-message tokens in the same recipient activation are rejected and cleared; no priority or sequencing rule is inferred."
 }

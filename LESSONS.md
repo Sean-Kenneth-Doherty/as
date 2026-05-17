@@ -153,3 +153,7 @@
   priority rule. When no source orders them, the honest policy is to reject and
   clear the active command input, then make that boundary visible in claims and
   traces.
+- A trace validator can be reused when the behavioral contract is the same.
+  Multi-command rejection is a recipient non-init rejection boundary with a
+  different input shape, so routing the new artifact through the existing
+  alignment check avoids inventing duplicate validation logic.

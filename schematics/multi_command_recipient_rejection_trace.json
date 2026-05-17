@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "artifact_id": "multi-command-recipient-rejection-schematic-and-uc-transition-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Twelfth AS-owned schematic-linked Universal Cell trace, covering recipient-side rejection of two simultaneous command-message tokens.",
+  "required_witness_ids": [
+    "PRC-README-UC-CRITERIA",
+    "PRC-GELC-GEOMETRY",
+    "PRC-RLEM-LITERATURE",
+    "PRC-CIRCULATOR-PHYSICAL",
+    "PRC-RALA-RECONFIGURATION",
+    "PRC-UC-FORMAL-MODEL",
+    "PRC-ASM-SIMULATOR",
+    "PRC-SCHEMATIC-FIGURES"
+  ],
+  "schematic": {
+    "node_id": "AS-PRC-MULTI-COMMAND-RECIPIENT-REJECTION-TRIANGULAR-RLEM-001",
+    "geometry": "triangular-rlem-node",
+    "memory_direction": "right",
+    "ports": [
+      {
+        "port_id": "p0",
+        "label": "north",
+        "orientation": "north",
+        "signal_index": 0,
+        "summary": "First signal channel carrying the wire-r-init command-message token."
+      },
+      {
+        "port_id": "p1",
+        "label": "east",
+        "orientation": "east",
+        "signal_index": 1,
+        "summary": "Second signal channel carrying the proc-l-init command-message token."
+      },
+      {
+        "port_id": "p2",
+        "label": "west",
+        "orientation": "west",
+        "signal_index": 2,
+        "summary": "Third signal channel, empty during this multi-command rejection trace."
+      }
+    ],
+    "layers": [
+      {
+        "layer_id": "symbolic-rlem-behavior",
+        "summary": "Two simultaneous command-message tokens on a recipient fixed cell are rejected rather than prioritized or sequenced.",
+        "boundary": "This layer states the ADR-0059 multi-command rejection policy only; it does not widen command execution.",
+        "witness_ids": [
+          "PRC-RLEM-LITERATURE",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "gelc-geometry",
+        "summary": "The multi-command rejection node uses the same triangular GELC/RLEM port vocabulary as the other traces.",
+        "boundary": "This layer fixes schematic geometry and port orientation, not a complete multi-cell command-routing circuit.",
+        "witness_ids": [
+          "PRC-GELC-GEOMETRY",
+          "PRC-SCHEMATIC-FIGURES"
+        ]
+      },
+      {
+        "layer_id": "uc-state",
+        "summary": "The trace records every current AS Cell field before and after one direct multi-command recipient rejection.",
+        "boundary": "This layer is limited to the ADR-0059 reject-and-clear policy and adds no priority or sequencing semantics.",
+        "witness_ids": [
+          "PRC-README-UC-CRITERIA",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "candidate-physical-implementation",
+        "summary": "Switchable circulator hardware and auxiliary command-routing support remain candidate interpretations.",
+        "boundary": "This layer keeps physical implementation and RALA-like auxiliary circuitry separate from the tested rejection transition.",
+        "witness_ids": [
+          "PRC-CIRCULATOR-PHYSICAL",
+          "PRC-RALA-RECONFIGURATION"
+        ]
+      }
+    ]
+  },
+  "trace": {
+    "trace_id": "AS-PRC-MULTI-COMMAND-RECIPIENT-REJECTION-TRACE-001",
+    "transition_function": "step_fixed_cell",
+    "cell_fields": [
+      "role",
+      "memory",
+      "upstream",
+      "input",
+      "output",
+      "automail",
+      "self_mailbox",
+      "control",
+      "buffer"
+    ],
+    "before_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "wire-r-init",
+        "proc-l-init",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "expected_status": "rejected-input",
+    "expected_after_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "input[0] carries command[wire-r-init+proc-l-init]",
+      "command[wire-r-init+proc-l-init] rejected as recipient non-init command-message",
+      "role/memory preserved",
+      "input/output cleared",
+      "command side state preserved"
+    ]
+  }
+}
