@@ -26,6 +26,8 @@ the project legible:
   `sources/manifest.json`.
 - `docs/literature-map.md` and `docs/open-problems.md` connect reviewed
   sources to AS claims and next ADRs.
+- `claims/transition_claims.json` names the current executable transition
+  claims and examples.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.
@@ -41,7 +43,8 @@ python -m unittest discover
 ```
 
 The current executable probes live in `autarkic_systems/universal_cell.py` and
-`autarkic_systems/transition_predicates.py`, covered by `tests/`.
+`autarkic_systems/transition_predicates.py`, with claim-manifest support in
+`autarkic_systems/claim_manifest.py`. They are covered by `tests/`.
 
 ## Subordinate Programs
 

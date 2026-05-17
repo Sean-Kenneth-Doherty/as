@@ -13,9 +13,9 @@ four predicates already implemented over Universal Cell transition results?
 Why it matters: This is the shortest bridge from executable substrate behavior
 to formal claims.
 
-Likely next artifact: a claim manifest that names each predicate, its
-preconditions, its executable checker, and representative passing/failing
-examples.
+Status: started by ADR-0007. `claims/transition_claims.json` names the current
+predicate claims and executable examples. Remaining work is to add proof objects
+or proof-apparatus clauses behind those claim IDs.
 
 ## P2: Expand From Fixed Roles To Stem/Reconfiguration
 

@@ -36,3 +36,5 @@
 - `docs/literature-map.md` is the first source-to-claim map; `docs/open-problems.md`
   ranks likely next ADRs, with transition-claim formalization as the top near-term
   problem.
+- `claims/transition_claims.json` plus `autarkic_systems/claim_manifest.py`
+  make the current transition predicates executable as named AS claims.

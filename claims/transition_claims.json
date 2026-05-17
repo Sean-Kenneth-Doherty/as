@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "claims": [
+    {
+      "id": "UC-FIXED-OUTPUT-PRESERVED",
+      "predicate": "output_not_overwritten",
+      "description": "A fixed-role cell with occupied output must not overwrite that output during a blocked transition.",
+      "examples": [
+        {
+          "name": "blocked output preserved",
+          "expected": true,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "output": [0, "_", "_"]
+          },
+          "result": {
+            "status": "blocked-output",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "input": [1, 0, 0],
+              "output": [0, "_", "_"]
+            }
+          }
+        },
+        {
+          "name": "blocked output changed",
+          "expected": false,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "output": [0, "_", "_"]
+          },
+          "result": {
+            "status": "blocked-output",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "input": [1, 0, 0],
+              "output": [1, 1, 1]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC-FIXED-CONSUMED-INPUT-CLEARED",
+      "predicate": "consumed_input_cleared",
+      "description": "Terminal fixed-role processing must clear consumed input.",
+      "examples": [
+        {
+          "name": "routed input cleared",
+          "expected": true,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": [1, 0, 1]
+          },
+          "result": {
+            "status": "routed",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": [1, 1, 0]
+            }
+          }
+        },
+        {
+          "name": "routed input uncleared",
+          "expected": false,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": [1, 0, 1]
+          },
+          "result": {
+            "status": "routed",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "input": [1, 0, 1],
+              "output": [1, 1, 0]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC-FIXED-MEMORY-RULE",
+      "predicate": "fixed_role_memory_rule",
+      "description": "Wire routing preserves memory, while processor routing toggles memory.",
+      "examples": [
+        {
+          "name": "processor toggled",
+          "expected": true,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "input": [1, 0, 1]
+          },
+          "result": {
+            "status": "routed",
+            "cell": {
+              "role": "proc",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": [0, 1, 1]
+            }
+          }
+        },
+        {
+          "name": "processor did not toggle",
+          "expected": false,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "input": [1, 0, 1]
+          },
+          "result": {
+            "status": "routed",
+            "cell": {
+              "role": "proc",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": [0, 1, 1]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC-FIXED-STEM-INIT-RESET",
+      "predicate": "stem_init_resets_to_stem",
+      "description": "A stem-init special signal resets a fixed cell into the canonical stem state.",
+      "examples": [
+        {
+          "name": "stem init reset",
+          "expected": true,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "input": ["_", "si", "_"]
+          },
+          "result": {
+            "status": "stem-init",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"]
+            }
+          }
+        },
+        {
+          "name": "stem init stayed fixed",
+          "expected": false,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "input": ["_", "si", "_"]
+          },
+          "result": {
+            "status": "stem-init",
+            "cell": {
+              "role": "proc",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

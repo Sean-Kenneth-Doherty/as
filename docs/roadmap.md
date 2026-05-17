@@ -117,3 +117,18 @@ Candidate outputs:
 Status: accepted in `docs/adr/0006-literature-map.md`. The first map is
 `docs/literature-map.md`; ranked project questions are in
 `docs/open-problems.md`.
+
+## ADR-0007: Transition Claim Manifest
+
+Goal: make the current transition predicates machine-readable AS claims.
+
+Deliverables:
+
+- JSON claim manifest;
+- loader/evaluator for manifest examples;
+- positive and negative executable examples for every claim;
+- tests proving manifest examples match predicate outcomes.
+
+Status: accepted in `docs/adr/0007-transition-claim-manifest.md`. Implemented
+in `claims/transition_claims.json` and `autarkic_systems/claim_manifest.py`,
+with tests in `tests/test_claim_manifest.py`.

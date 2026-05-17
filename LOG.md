@@ -92,3 +92,18 @@
   transition-claim formalization through hardware/schematic evidence.
 - Corrected the roadmap's duplicate ADR-0005 heading by making the literature
   map ADR-0006.
+
+## 2026-05-17 - Transition Claim Manifest
+
+- Added ADR-0007 for a machine-readable bridge from transition predicate code
+  to explicit AS claims.
+- Wrote `tests/test_claim_manifest.py` before implementation. The first run
+  failed with `ModuleNotFoundError: No module named
+  'autarkic_systems.claim_manifest'`, confirming the red step.
+- Added `claims/transition_claims.json` with four transition claims, each with
+  positive and negative executable examples.
+- Added `autarkic_systems/claim_manifest.py` to load and evaluate the manifest
+  against implemented predicate functions.
+- Verified `python -m unittest tests.test_claim_manifest` passed 4 tests,
+  `python -m unittest discover` passed 20 tests, `jq -e
+  claims/transition_claims.json` passed, and `git diff --check` passed.
