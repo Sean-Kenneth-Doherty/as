@@ -671,3 +671,23 @@
   `python -m unittest discover` passed 170 tests, py_compile passed for the
   touched module and test, JSON parsing passed for
   `schematics/self_mailbox_init_trace.json`, and `git diff --check` passed.
+
+## 2026-05-17 - Self Mailbox Init SVG
+
+- Added ADR-0033 for a generated SVG render of the self-mailbox init trace.
+- Wrote `tests/test_self_mailbox_init_svg.py` before implementation. The red
+  run failed because `SELF_MAILBOX_INIT_SVG_ARTIFACT` did not exist in
+  `autarkic_systems.schematic_svg`.
+- Added `SELF_MAILBOX_INIT_SVG_ARTIFACT` and renderer summary fields that
+  expose self-mailbox before/after plus control/buffer clearing before generic
+  role-change reconfiguration.
+- Generated `schematics/self_mailbox_init_trace.svg` from
+  `render_schematic_svg()`.
+- Added `docs/self-mailbox-init-svg.md` as the human-facing render boundary
+  note.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_init_svg` passed 7
+  tests, the adjacent schematic SVG suite passed 35 tests,
+  `python -m unittest discover` passed 177 tests, py_compile passed for the
+  touched module and test, and `git diff --check` passed.

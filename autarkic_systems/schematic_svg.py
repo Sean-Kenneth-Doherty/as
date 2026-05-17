@@ -20,6 +20,7 @@ STEM_AUTOMAIL_SVG_ARTIFACT = Path(
     "schematics/stem_automail_reconfiguration_trace.svg"
 )
 STEM_BUFFER_SVG_ARTIFACT = Path("schematics/stem_buffer_accumulation_trace.svg")
+SELF_MAILBOX_INIT_SVG_ARTIFACT = Path("schematics/self_mailbox_init_trace.svg")
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 PORT_LAYOUT = {
@@ -128,7 +129,20 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
         ]
     )
     next_y = 232
-    if _shows_reconfiguration(before, after):
+    if _shows_self_mailbox_init(before, after):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">self_mailbox before: {_text(before['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">self_mailbox after: {_text(after['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"292\">control before: {_text(_cell_field(before, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"316\">buffer before: {_text(_cell_field(before, 'buffer'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"340\">control after: {_text(_cell_field(after, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"364\">buffer after: {_text(_cell_field(after, 'buffer'))}</text>",
+            ]
+        )
+        next_y = 400
+    elif _shows_reconfiguration(before, after):
         lines.extend(
             [
                 f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
@@ -271,6 +285,15 @@ def _shows_reconfiguration(
     """Return true when a trace changes role or consumes an automail marker."""
 
     return before["role"] != after["role"] or before["automail"] != after["automail"]
+
+
+def _shows_self_mailbox_init(
+    before: dict[str, object],
+    after: dict[str, object],
+) -> bool:
+    """Return true for traces that consume a self-mailbox command."""
+
+    return before["self_mailbox"] != "_" and after["self_mailbox"] == "_"
 
 
 def _shows_buffer_accumulation(

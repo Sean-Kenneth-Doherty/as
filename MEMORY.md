@@ -142,3 +142,7 @@
   replay for one `proc-l-init` self-mailbox command. The validator now routes
   stem traces with non-empty `self_mailbox` through a self-mailbox init
   alignment check instead of the stem buffer check.
+- ADR-0033 adds `schematics/self_mailbox_init_trace.svg`; the SVG renderer now
+  treats self-mailbox consumption as its own summary case before generic
+  role-change reconfiguration so mailbox before/after and control/buffer
+  clearing stay visible.

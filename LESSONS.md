@@ -73,3 +73,6 @@
 - Stem schematic traces need dispatch by the active stem mechanism. Empty
   automail plus non-empty `self_mailbox` is mailbox execution, not buffer
   accumulation, even though both use `step_stem_cell`.
+- Render summaries should follow the semantic cause of a state change. A
+  self-mailbox init can change role like automail does, but its visible proof
+  surface is mailbox consumption and cleared command state.

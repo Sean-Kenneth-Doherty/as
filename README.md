@@ -65,6 +65,8 @@ the project legible:
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-init-trace.md` records the schematic-linked trace for one
   self-mailbox init command.
+- `docs/self-mailbox-init-svg.md` records the rendered view of that
+  self-mailbox init trace.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
@@ -104,6 +106,8 @@ the project legible:
   view checked against the stem buffer JSON trace.
 - `schematics/self_mailbox_init_trace.json` makes the self-mailbox init-command
   schematic trace machine-checkable.
+- `schematics/self_mailbox_init_trace.svg` is the generated rendered view
+  checked against the self-mailbox JSON trace.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

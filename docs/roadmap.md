@@ -585,3 +585,21 @@ Status: accepted in `docs/adr/0032-self-mailbox-init-trace.md`. Implemented in
 `autarkic_systems/schematic_trace.py` and
 `schematics/self_mailbox_init_trace.json`, with tests in
 `tests/test_self_mailbox_init_trace.py`.
+
+## ADR-0033: Self Mailbox Init SVG
+
+Goal: add a rendered SVG view of the ADR-0032 self-mailbox init trace.
+
+Deliverables:
+
+- `schematics/self_mailbox_init_trace.svg`;
+- exported self-mailbox SVG artifact path;
+- renderer summary fields for self-mailbox before/after and control/buffer
+  clearing;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  mailbox details, exact renderer-output matching, and drift rejection.
+
+Status: accepted in `docs/adr/0033-self-mailbox-init-svg.md`. Implemented in
+`autarkic_systems/schematic_svg.py` and
+`schematics/self_mailbox_init_trace.svg`, with tests in
+`tests/test_self_mailbox_init_svg.py`.
