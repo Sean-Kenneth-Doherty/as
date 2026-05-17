@@ -35,7 +35,8 @@ rejection. Full command decoding, target delivery, and dynamic reconfiguration
 remain open. ADR-0009 added the corresponding `automail_reconfigures_stem`
 predicate and manifest claim. ADR-0023 added the corresponding
 `stem_buffer_accumulates` predicate and manifest claim for the buffer
-accumulation subset.
+accumulation subset. ADR-0024 added a schematic-linked trace for one matching
+buffer append.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -116,5 +117,5 @@ drift from the JSON trace. ADR-0018 added a processor memory-toggle trace using
 the same schema and executable replay path. ADR-0019 added the first stem
 automail reconfiguration trace. ADR-0020 added a generated SVG render for the
 processor trace. ADR-0021 added a generated SVG render for the stem trace. Full
-stem buffering, dynamic reconfiguration, larger GELC examples, and
+stem command decoding, dynamic reconfiguration, larger GELC examples, and
 physical-simulation renders remain open.

@@ -476,3 +476,25 @@
   tests.test_object_language` passed 31 tests, JSON checks passed for the
   claim/proof/language manifests, py_compile passed for the touched predicate
   module and test, and `git diff --check` passed.
+
+## 2026-05-17 - Stem Buffer Accumulation Trace
+
+- Added ADR-0024 for a schematic-linked trace of one matching-input stem buffer
+  append.
+- Wrote `tests/test_stem_buffer_accumulation_trace.py` before implementation.
+  The red run failed because `STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID` was
+  not yet exported from `autarkic_systems.schematic_trace`.
+- Added `schematics/stem_buffer_accumulation_trace.json`, recording a stem cell
+  with active control `[0, 1, 0]`, matching input `[0, 1, 0]`, and expected
+  buffer append from `[0]` to `[0, 1]`.
+- Extended `autarkic_systems/schematic_trace.py` so stem automail and stem
+  buffer traces use separate alignment validation branches.
+- Added `docs/stem-buffer-accumulation-trace.md` as the human-facing trace
+  boundary note.
+- Updated README, roadmap, literature map, open problems, stem buffer note,
+  project memory, and lessons.
+- Verified `python -m unittest tests.test_stem_buffer_accumulation_trace
+  tests.test_stem_automail_reconfiguration_trace` passed 16 tests, `python -m
+  unittest discover` passed 117 tests, py_compile passed for the touched module
+  and new test, `jq -e . schematics/stem_buffer_accumulation_trace.json`
+  passed, and `git diff --check` passed.

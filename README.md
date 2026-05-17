@@ -53,6 +53,8 @@ the project legible:
   buffer accumulation behavior.
 - `docs/stem-buffer-claim.md` records the named claim and proof-certificate
   surface for that buffer behavior.
+- `docs/stem-buffer-accumulation-trace.md` records the schematic-linked trace
+  for one matching stem buffer append.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -75,6 +77,8 @@ the project legible:
   automail reconfiguration schematic trace machine-checkable.
 - `schematics/stem_automail_reconfiguration_trace.svg` is the generated
   rendered view checked against the stem JSON trace.
+- `schematics/stem_buffer_accumulation_trace.json` makes the stem buffer
+  accumulation schematic trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

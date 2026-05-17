@@ -28,10 +28,14 @@ PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID = (
 STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID = (
     "stem-automail-reconfiguration-schematic-and-uc-transition-trace"
 )
+STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID = (
+    "stem-buffer-accumulation-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
     STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID,
+    STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -388,7 +392,10 @@ def _validate_schematic_trace_alignment(
     before_role = schematic_trace.trace.before_cell.get("role")
 
     if before_role == "stem":
-        results.extend(_validate_stem_automail_trace_alignment(schematic_trace))
+        if schematic_trace.trace.before_cell.get("automail") != "_":
+            results.extend(_validate_stem_automail_trace_alignment(schematic_trace))
+        else:
+            results.extend(_validate_stem_buffer_trace_alignment(schematic_trace))
         return results
 
     if schematic_trace.schematic.geometry != "triangular-rlem-node":
@@ -511,6 +518,76 @@ def _validate_stem_automail_trace_alignment(
             _accepted(
                 "stem-automail-reconfiguration",
                 "stem automail target and consumption match",
+            )
+        )
+
+    return results
+
+
+def _validate_stem_buffer_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected("memory_direction", "schematic memory does not match stem memory")
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches stem"))
+
+    if schematic_trace.trace.expected_status != "stem-buffer-appended":
+        results.append(
+            _rejected(
+                "stem-buffer-accumulation",
+                "trace is not the buffer append subset",
+            )
+        )
+        return results
+
+    expected_bit = 1 if before.get("input") == before.get("control") else 0
+    expected_buffer = list(before.get("buffer", [])) + [expected_bit]
+    expected_flow = (
+        f"control{_compact_list(before.get('control'))} active",
+        (
+            f"input{_compact_list(before.get('input'))} "
+            f"{'matches' if expected_bit == 1 else 'differs from'} control "
+            f"-> append {expected_bit}"
+        ),
+        f"buffer{_compact_list(before.get('buffer'))} -> buffer{_compact_list(expected_buffer)}",
+    )
+
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(_rejected("routed_signal_flow", "stem buffer flow mismatch"))
+    else:
+        results.append(_accepted("routed_signal_flow", "stem buffer flow explicit"))
+
+    if (
+        after.get("role") != "stem"
+        or after.get("automail") != "_"
+        or after.get("input") != ["_", "_", "_"]
+        or after.get("control") != before.get("control")
+        or after.get("buffer") != expected_buffer
+    ):
+        results.append(
+            _rejected(
+                "stem-buffer-accumulation",
+                "stem buffer append state mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "stem-buffer-accumulation",
+                "stem buffer append state matches",
             )
         )
 
@@ -667,3 +744,9 @@ def _accepted(subject: str, detail: str) -> SchematicTraceValidation:
 
 def _rejected(subject: str, detail: str) -> SchematicTraceValidation:
     return SchematicTraceValidation(subject=subject, accepted=False, detail=detail)
+
+
+def _compact_list(value: object) -> str:
+    if isinstance(value, list):
+        return "[" + ",".join(str(item) for item in value) + "]"
+    return str(value)

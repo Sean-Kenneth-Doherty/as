@@ -413,3 +413,21 @@ Status: accepted in `docs/adr/0023-stem-buffer-claim.md`. Implemented in
 `autarkic_systems/transition_predicates.py`,
 `claims/transition_claims.json`, and `claims/proof_certificates.json`, with
 tests in `tests/test_transition_predicates.py`.
+
+## ADR-0024: Stem Buffer Accumulation Trace
+
+Goal: add a schematic-linked trace for one ADR-0022 matching-input stem buffer
+append while preserving existing automail trace validation.
+
+Deliverables:
+
+- structured stem buffer accumulation trace artifact;
+- validator branch that distinguishes stem automail from stem buffer traces;
+- human-facing trace boundary note;
+- tests proving schema reuse, executable replay, buffer flow, and rejection of
+  drifted expected buffer or flow.
+
+Status: accepted in `docs/adr/0024-stem-buffer-accumulation-trace.md`.
+Implemented in `schematics/stem_buffer_accumulation_trace.json` and
+`autarkic_systems/schematic_trace.py`, with tests in
+`tests/test_stem_buffer_accumulation_trace.py`.

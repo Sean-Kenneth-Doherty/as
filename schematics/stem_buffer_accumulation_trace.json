@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "artifact_id": "stem-buffer-accumulation-schematic-and-uc-transition-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Fourth AS-owned schematic-linked Universal Cell trace, covering the stem command-buffer accumulation subset that appends a matching one-hot input as bit 1.",
+  "required_witness_ids": [
+    "PRC-README-UC-CRITERIA",
+    "PRC-GELC-GEOMETRY",
+    "PRC-RLEM-LITERATURE",
+    "PRC-CIRCULATOR-PHYSICAL",
+    "PRC-RALA-RECONFIGURATION",
+    "PRC-UC-FORMAL-MODEL",
+    "PRC-ASM-SIMULATOR",
+    "PRC-SCHEMATIC-FIGURES"
+  ],
+  "schematic": {
+    "node_id": "AS-PRC-STEM-BUFFER-TRIANGULAR-RLEM-001",
+    "geometry": "triangular-rlem-node",
+    "memory_direction": "right",
+    "ports": [
+      {
+        "port_id": "p0",
+        "label": "north",
+        "orientation": "north",
+        "signal_index": 0,
+        "summary": "First signal channel on the triangular stem buffer node."
+      },
+      {
+        "port_id": "p1",
+        "label": "east",
+        "orientation": "east",
+        "signal_index": 1,
+        "summary": "Second signal channel on the triangular stem buffer node."
+      },
+      {
+        "port_id": "p2",
+        "label": "west",
+        "orientation": "west",
+        "signal_index": 2,
+        "summary": "Third signal channel on the triangular stem buffer node."
+      }
+    ],
+    "layers": [
+      {
+        "layer_id": "symbolic-rlem-behavior",
+        "summary": "A matching one-hot standard input appends bit 1 to the stem command buffer.",
+        "boundary": "This layer states symbolic stem buffer accumulation only; it does not execute the full command buffer.",
+        "witness_ids": [
+          "PRC-RLEM-LITERATURE",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "gelc-geometry",
+        "summary": "The stem buffer node uses the same triangular GELC/RLEM port vocabulary as the other traces.",
+        "boundary": "This layer fixes schematic geometry and port orientation, not a complete command-routing circuit.",
+        "witness_ids": [
+          "PRC-GELC-GEOMETRY",
+          "PRC-SCHEMATIC-FIGURES"
+        ]
+      },
+      {
+        "layer_id": "uc-state",
+        "summary": "The trace records every current AS Cell field before and after one buffer append.",
+        "boundary": "This layer is limited to the ADR-0022 accumulation subset and adds no command decoding.",
+        "witness_ids": [
+          "PRC-README-UC-CRITERIA",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "candidate-physical-implementation",
+        "summary": "Switchable circulator hardware and auxiliary command-routing support remain candidate interpretations.",
+        "boundary": "This layer keeps physical implementation and RALA-like auxiliary circuitry separate from the tested buffer append.",
+        "witness_ids": [
+          "PRC-CIRCULATOR-PHYSICAL",
+          "PRC-RALA-RECONFIGURATION"
+        ]
+      }
+    ]
+  },
+  "trace": {
+    "trace_id": "AS-PRC-STEM-BUFFER-APPEND-TRACE-001",
+    "transition_function": "step_stem_cell",
+    "cell_fields": [
+      "role",
+      "memory",
+      "upstream",
+      "input",
+      "output",
+      "automail",
+      "control",
+      "buffer"
+    ],
+    "before_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        0,
+        1,
+        0
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "control": [
+        0,
+        1,
+        0
+      ],
+      "buffer": [
+        0
+      ]
+    },
+    "expected_status": "stem-buffer-appended",
+    "expected_after_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "control": [
+        0,
+        1,
+        0
+      ],
+      "buffer": [
+        0,
+        1
+      ]
+    },
+    "routed_signal_flow": [
+      "control[0,1,0] active",
+      "input[0,1,0] matches control -> append 1",
+      "buffer[0] -> buffer[0,1]"
+    ]
+  }
+}

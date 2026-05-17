@@ -46,3 +46,6 @@
 - After adding a new transition status or behavior, promote only the stable
   subset into the claim surface. The claim should repeat the boundary rather
   than smuggling in future command-decoding obligations.
+- When a new stem trace is added, route validation by the actual stem subset.
+  Automail and standard-signal buffering share role `stem` but have different
+  evidence obligations.

@@ -104,3 +104,7 @@
   `docs/stem-buffer-claim.md` promote that buffer subset into the claim and
   proof-certificate surface. It still excludes command decoding and target
   routing.
+- `schematics/stem_buffer_accumulation_trace.json`,
+  `docs/stem-buffer-accumulation-trace.md`, and
+  `tests/test_stem_buffer_accumulation_trace.py` add a schematic-linked trace
+  for one matching-input stem buffer append.
