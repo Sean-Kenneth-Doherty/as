@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "language_id": "as-transition-chain-claim-v1",
+  "description": "Minimal AS object language for current Universal Cell transition-chain claims.",
+  "syntax_classes": {
+    "terms": {
+      "roles": ["wire", "proc", "stem"],
+      "memory": ["right", "left"],
+      "signals": [
+        0,
+        1,
+        "_",
+        "si",
+        "standard-signal",
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
+      "automail": ["_", "wr", "wl", "pr", "pl"],
+      "command_messages": [
+        "_",
+        "standard-signal",
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
+      "transition_statuses": [
+        "idle",
+        "automail-reconfigured",
+        "blocked-output",
+        "rejected-input",
+        "routed",
+        "stem-buffer-appended",
+        "stem-buffer-full",
+        "stem-control-selected",
+        "stem-command-buffer-neighbor-delivered",
+        "stem-command-buffer-self-processed",
+        "recipient-init-command-message-processed",
+        "stem-init",
+        "self-mailbox-processed",
+        "self-mailbox-unsupported"
+      ],
+      "chain_statuses": [
+        "neighbor-delivery-consumed",
+        "sender-not-delivered",
+        "recipient-not-ready",
+        "recipient-not-consumed"
+      ],
+      "cell_fields": [
+        "role",
+        "memory",
+        "upstream",
+        "input",
+        "output",
+        "automail",
+        "self_mailbox",
+        "control",
+        "buffer"
+      ]
+    },
+    "chain_formulae": {
+      "predicate_symbols": [
+        "neighbor_delivery_consumed_by_recipient"
+      ],
+      "form": "predicate(chain_result)"
+    },
+    "chain_sentences": {
+      "kinds": ["transition-chain-claim"],
+      "claim_id_prefixes": ["UC-CHAIN-"]
+    },
+    "proof_objects": {
+      "rules": ["manifest-example"]
+    },
+    "substrate_chain_claims": {
+      "claim_manifest": "claims/transition_chain_claims.json",
+      "certificate_manifest": "claims/transition_chain_proof_certificates.json"
+    }
+  }
+}

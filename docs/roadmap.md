@@ -1524,3 +1524,23 @@ Status: accepted in `docs/adr/0078-neighbor-delivery-chain-claim.md`.
 Implemented in `claims/transition_chain_claims.json` and
 `autarkic_systems/chain_claims.py`, with tests in
 `tests/test_neighbor_delivery_chain_claim.py`.
+
+## ADR-0079: Transition Chain Claim Language
+
+Goal: make the transition-chain claim language explicit instead of relying on
+implicit Python and JSON shape.
+
+Deliverables:
+
+- `language/transition_chain_claim_language.json`;
+- `autarkic_systems/chain_object_language.py`;
+- `tests/test_chain_object_language.py`;
+- tests proving required syntax classes, current chain claim surface
+  validation, unknown chain-predicate rejection, unknown proof-rule rejection,
+  and incomplete chain-status vocabulary rejection;
+- human-facing language note and project navigation updates.
+
+Status: accepted in `docs/adr/0079-transition-chain-claim-language.md`.
+Implemented in `language/transition_chain_claim_language.json` and
+`autarkic_systems/chain_object_language.py`, with tests in
+`tests/test_chain_object_language.py`.

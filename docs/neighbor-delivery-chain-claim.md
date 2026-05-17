@@ -2,6 +2,8 @@
 
 ADR-0078 adds the first claim and proof-certificate surface for a composed
 transition chain.
+ADR-0079 adds the explicit transition-chain claim language that validates this
+surface.
 
 The claim lives in `claims/transition_chain_claims.json` as
 `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED`, checked by

@@ -1754,3 +1754,25 @@
   new claim/certificate manifests, `py_compile` passed for the new modules and
   test, `git diff --check` passed, and the evidence registry JSON CLI still
   reported 8 accepted bundles.
+
+## 2026-05-17 - Transition Chain Claim Language
+
+- Added ADR-0079 to make the transition-chain claim language explicit instead
+  of relying on implicit Python and JSON shape.
+- Wrote `tests/test_chain_object_language.py` before implementation. The red
+  run failed because `autarkic_systems.chain_object_language` was absent.
+- Added `language/transition_chain_claim_language.json` with syntax classes
+  for reused Universal Cell terms, transition statuses, chain statuses, chain
+  predicates, `UC-CHAIN-` sentence prefixes, proof-object rules, and active
+  chain claim/certificate manifest paths.
+- Added `autarkic_systems/chain_object_language.py` to validate the chain
+  language manifest and the current chain claim/certificate surface.
+- Added `docs/transition-chain-claim-language.md` and updated README, roadmap,
+  literature map, open problems, the chain-claim note, and the
+  single-transition claim-language note.
+- Verified the focused chain object-language test passed 5 tests, the adjacent
+  chain-language/chain-claim/object-language stack passed 20 tests, and
+  `python -m unittest discover` passed 464 tests. JSON parsing passed for the
+  chain language manifest, `py_compile` passed for the new module and test,
+  `git diff --check` passed, and the evidence registry JSON CLI still reported
+  8 accepted bundles.

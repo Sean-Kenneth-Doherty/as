@@ -30,6 +30,8 @@ the project legible:
   direction decision.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
+- `docs/transition-chain-claim-language.md` explains the first explicit object
+  language for transition-chain claims.
 - `docs/willard-definition-map.md` records the first definition-granularity map
   of Willard anchors needed for formal-confidence claims.
 - `docs/proflog-frontier-status.md` records why public Proflog main is not a
@@ -128,6 +130,8 @@ the project legible:
   init-family command consumption.
 - `docs/neighbor-delivery-chain-claim.md` records the named claim and
   proof-certificate surface for that two-step handoff.
+- `docs/transition-chain-claim-language.md` records the syntax classes and
+  validator boundary for transition-chain claims.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -183,6 +187,8 @@ the project legible:
   consumed without adding a general multi-cell simulator.
 - `autarkic_systems/chain_claims.py` validates the first transition-chain
   claim manifest and manifest-example proof certificates.
+- `autarkic_systems/chain_object_language.py` validates the first
+  transition-chain claim language and checked chain claim surface.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -195,6 +201,8 @@ the project legible:
   transition-chain claim.
 - `claims/transition_chain_proof_certificates.json` adds the matching
   manifest-example proof certificate for that chain claim.
+- `language/transition_chain_claim_language.json` names the first explicit
+  syntax classes for transition-chain claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

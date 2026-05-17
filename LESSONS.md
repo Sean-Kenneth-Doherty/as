@@ -215,3 +215,6 @@
   a claim depends on sender state, recipient preconditions, handoff state, and
   a second transition, give it a separate manifest shape until the project has
   a real chain object language.
+- Chain language validation should execute the examples, not only inspect
+  static JSON. Otherwise a status vocabulary can look complete while missing a
+  real precondition or boundary status produced by the chain helper.

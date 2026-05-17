@@ -382,3 +382,10 @@
   `tests/test_neighbor_delivery_chain_claim.py`. It creates a separate
   manifest-example claim/proof surface for the ADR-0077 two-step handoff
   rather than forcing chain claims into the single-transition claim language.
+- ADR-0079 adds `docs/transition-chain-claim-language.md`,
+  `language/transition_chain_claim_language.json`,
+  `autarkic_systems/chain_object_language.py`, and
+  `tests/test_chain_object_language.py`. It validates the explicit
+  transition-chain claim language, including chain statuses, implemented chain
+  predicates, `UC-CHAIN-` sentence prefixes, proof rules, and the current chain
+  claim/certificate surface.
