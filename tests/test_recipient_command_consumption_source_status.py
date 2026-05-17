@@ -73,6 +73,21 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             "schematics/recipient_init_command_message_trace.svg",
         )
 
+        bundle = self.status["implemented_evidence_bundles"][0]
+        self.assertEqual(bundle["adr"], "ADR-0065")
+        self.assertEqual(
+            bundle["path"],
+            "evidence/recipient_init_command_message_bundle.json",
+        )
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "fixed upstream wire right init processed",
+        )
+
     def test_formal_model_records_input_special_message_processing(self):
         formal = self.status["formal_model_input_special_message_anchor"]
 

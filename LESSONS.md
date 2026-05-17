@@ -172,3 +172,6 @@
 - Formal-looking files still need source-status verification. A TLA file that
   is empty, a one-line stub, or an unfinished skeleton is context, not
   executable authority for command semantics.
+- Evidence bundles should validate links, not merely list them. A useful
+  bundle proves that its claim example, proof certificate, trace replay, SVG
+  render, and source-status boundary still agree.

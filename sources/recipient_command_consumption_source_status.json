@@ -40,6 +40,15 @@
       "summary": "AS now has a rendered SVG view checked exactly against the recipient init command-message trace."
     }
   ],
+  "implemented_evidence_bundles": [
+    {
+      "adr": "ADR-0065",
+      "path": "evidence/recipient_init_command_message_bundle.json",
+      "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+      "positive_example": "fixed upstream wire right init processed",
+      "summary": "AS now has an integrated evidence bundle validating one recipient init command-message transition across runtime, claim, proof, trace, render, and source-status boundaries."
+    }
+  ],
   "implemented_source_statuses": [
     {
       "adr": "ADR-0053",

@@ -310,3 +310,9 @@
   `tests/test_official_tla_universal_cell_status.py`. It records PRC's
   official TLA files as partial, stub, or empty and not executable Universal
   Cell or command-semantics authority.
+- ADR-0065 adds `docs/recipient-init-transition-evidence-bundle.md`,
+  `evidence/recipient_init_command_message_bundle.json`,
+  `autarkic_systems/evidence_bundle.py`, and
+  `tests/test_recipient_init_transition_evidence_bundle.py`. It validates one
+  recipient init transition across claim, proof, schematic trace, SVG render,
+  hardware witness map, and source-status boundaries.

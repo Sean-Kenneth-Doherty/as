@@ -1270,3 +1270,24 @@ Status: accepted in
 `sources/official_tla_universal_cell_status.json` and
 `docs/official-tla-universal-cell-status.md`, with tests in
 `tests/test_official_tla_universal_cell_status.py`.
+
+## ADR-0065: Recipient Init Transition Evidence Bundle
+
+Goal: make one already implemented recipient init command-message transition
+inspectable across runtime, claim, proof, schematic, render, and source-status
+layers.
+
+Deliverables:
+
+- `evidence/recipient_init_command_message_bundle.json`;
+- `autarkic_systems/evidence_bundle.py`;
+- tests proving the bundle validates the claim example, proof certificate,
+  schematic trace, SVG render, and source-status files together;
+- drift tests for unknown claim IDs and missing SVG paths;
+- human-facing evidence-bundle note.
+
+Status: accepted in
+`docs/adr/0065-recipient-init-transition-evidence-bundle.md`. Implemented in
+`evidence/recipient_init_command_message_bundle.json` and
+`autarkic_systems/evidence_bundle.py`, with tests in
+`tests/test_recipient_init_transition_evidence_bundle.py`.

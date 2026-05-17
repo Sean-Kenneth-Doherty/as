@@ -99,6 +99,9 @@ the project legible:
   trace for one recipient init command-message transition.
 - `docs/recipient-init-command-message-svg.md` records the rendered view of
   that recipient init command-message trace.
+- `docs/recipient-init-transition-evidence-bundle.md` records the first
+  integrated evidence bundle tying one recipient init transition to its claim,
+  proof certificate, schematic trace, SVG render, and source-status boundaries.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
@@ -178,6 +181,9 @@ the project legible:
   Universal Cell source-status decision machine-checkable.
 - `sources/multi_command_recipient_input_policy_status.json` makes the
   multi-command recipient input policy decision machine-checkable.
+- `evidence/recipient_init_command_message_bundle.json` makes one
+  recipient-init transition evidence path inspectable across runtime, claim,
+  proof, schematic, render, and source-status layers.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

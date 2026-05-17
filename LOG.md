@@ -1440,3 +1440,26 @@
   `python -m unittest discover` passed 384 tests. `py_compile` passed for the
   new test, JSON parsing passed for the touched source-status manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Recipient Init Transition Evidence Bundle
+
+- Added ADR-0065 to make one already implemented recipient init command-message
+  transition inspectable as a single evidence path.
+- Wrote `tests/test_recipient_init_transition_evidence_bundle.py` before
+  implementation. The red run failed because
+  `autarkic_systems.evidence_bundle` was absent.
+- Added `evidence/recipient_init_command_message_bundle.json` and
+  `autarkic_systems/evidence_bundle.py`.
+- The bundle ties `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` and its
+  positive fixed-upstream `wire-r-init` example to the proof certificate,
+  recipient init schematic trace, committed SVG render, PRC hardware witness
+  map, and recipient/non-init/standard-signal/write-buffer source-status
+  boundaries.
+- Added `docs/recipient-init-transition-evidence-bundle.md` and updated
+  README, roadmap, literature map, open problems, recipient command source
+  status, project memory, and lessons.
+- Verified the focused bundle and recipient source-status tests passed 10
+  tests, the adjacent evidence stack passed 47 tests, and
+  `python -m unittest discover` passed 389 tests. `py_compile` passed for the
+  new validator and touched tests, JSON parsing passed for the bundle and
+  recipient source-status manifest, and `git diff --check` passed.
