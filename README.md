@@ -57,6 +57,8 @@ the project legible:
   for one matching stem buffer append.
 - `docs/stem-buffer-accumulation-svg.md` records the rendered view of that stem
   buffer append trace.
+- `docs/stem-command-buffer-map.md` records the source-backed five-bit stem
+  command-buffer decoding map.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -67,6 +69,8 @@ the project legible:
   decision machine-checkable.
 - `sources/prc_hardware_witness_map.json` makes the PRC hardware/schematic
   witness map machine-checkable.
+- `sources/stem_command_buffer_map.json` makes the PRC stem command-buffer
+  target/command map machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered
@@ -103,7 +107,8 @@ proof-certificate, and object-language support in
 `autarkic_systems/claim_manifest.py`, `autarkic_systems/proof_certificates.py`,
 `autarkic_systems/object_language.py`, and
 `autarkic_systems/willard_map.py`. Source-backed structured maps also live in
-`autarkic_systems/prc_hardware_map.py`, with schematic-linked trace support in
+`autarkic_systems/prc_hardware_map.py` and
+`autarkic_systems/stem_command_map.py`, with schematic-linked trace support in
 `autarkic_systems/schematic_trace.py` and generated SVG support in
 `autarkic_systems/schematic_svg.py`. They are covered by `tests/`.
 

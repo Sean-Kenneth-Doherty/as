@@ -52,3 +52,6 @@
 - A buffer SVG has to show buffer state explicitly. The renderer should add
   trace-specific summary fields when generic role/memory/status text would
   hide the actual claim.
+- Decode maps should become structured artifacts before execution code depends
+  on them. This keeps command semantics reviewable and avoids magic numbers in
+  transition logic.

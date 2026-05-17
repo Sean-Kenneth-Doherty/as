@@ -112,3 +112,8 @@
   `docs/stem-buffer-accumulation-svg.md`, and
   `tests/test_stem_buffer_svg.py` render that buffer trace and must expose
   control and buffer before/after details.
+- `sources/stem_command_buffer_map.json`,
+  `autarkic_systems/stem_command_map.py`, and
+  `docs/stem-command-buffer-map.md` map five-bit stem command buffers to
+  target/command pairs. This is decoder preparation only, not command
+  execution.

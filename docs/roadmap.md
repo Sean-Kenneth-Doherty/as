@@ -449,3 +449,21 @@ Status: accepted in `docs/adr/0025-stem-buffer-accumulation-svg.md`.
 Implemented in `schematics/stem_buffer_accumulation_trace.svg` and
 `autarkic_systems/schematic_svg.py`, with tests in
 `tests/test_stem_buffer_svg.py`.
+
+## ADR-0026: Stem Command Buffer Map
+
+Goal: make PRC's five-bit stem command-buffer target/command encoding explicit
+before implementing command execution.
+
+Deliverables:
+
+- structured command-buffer map artifact;
+- loader, validator, and five-bit decoder;
+- human-facing note for bit-order and execution boundary;
+- tests proving source anchoring, 32-value coverage, representative decodes,
+  and rejection of malformed buffers or incomplete maps.
+
+Status: accepted in `docs/adr/0026-stem-command-buffer-map.md`. Implemented in
+`sources/stem_command_buffer_map.json` and
+`autarkic_systems/stem_command_map.py`, with tests in
+`tests/test_stem_command_buffer_map.py`.

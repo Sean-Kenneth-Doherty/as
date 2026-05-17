@@ -10,7 +10,8 @@ command processing. ADR-0022 implements only that accumulation boundary.
 The implementation lives in `autarkic_systems/universal_cell.py`. ADR-0023
 promotes the implemented subset into the named claim
 `UC-STEM-BUFFER-ACCUMULATES`. ADR-0024 records one matching-input append as
-`schematics/stem_buffer_accumulation_trace.json`.
+`schematics/stem_buffer_accumulation_trace.json`. ADR-0026 maps the full
+five-bit command buffer values without executing them.
 
 ## Implemented Behavior
 

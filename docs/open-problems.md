@@ -36,7 +36,8 @@ remain open. ADR-0009 added the corresponding `automail_reconfigures_stem`
 predicate and manifest claim. ADR-0023 added the corresponding
 `stem_buffer_accumulates` predicate and manifest claim for the buffer
 accumulation subset. ADR-0024 added a schematic-linked trace for one matching
-buffer append.
+buffer append. ADR-0026 added the explicit five-bit target/command map needed
+before command execution.
 
 ## P3: Choose The First Proof Apparatus
 

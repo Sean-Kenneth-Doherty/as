@@ -522,3 +522,26 @@
   discover` passed 124 tests, py_compile passed for the touched module and new
   test, XML parsing passed for all four checked-in SVGs, and `git diff --check`
   passed.
+
+## 2026-05-17 - Stem Command Buffer Map
+
+- Added ADR-0026 for a source-backed, structured map of PRC's five-bit stem
+  command-buffer target/command encoding.
+- Wrote `tests/test_stem_command_buffer_map.py` before implementation. The red
+  run failed because `autarkic_systems.stem_command_map` did not exist.
+- Added `sources/stem_command_buffer_map.json` with four target ranges, eight
+  command offsets, PRC source witness metadata, and the AS bit-order convention
+  `accumulated-msb-first`.
+- Added `autarkic_systems/stem_command_map.py` to load, validate, enumerate,
+  and decode five-bit buffers without executing commands.
+- Added `docs/stem-command-buffer-map.md` as the human-facing decoder boundary
+  note.
+- Added a refinement red step for noncanonical target-range and command-name
+  maps; validation now rejects maps that merely cover values but change the
+  PRC grouping or command identity.
+- Updated README, roadmap, literature map, open problems, stem buffer note,
+  project memory, and lessons.
+- Verified `python -m unittest tests.test_stem_command_buffer_map` passed 8
+  tests, `python -m unittest discover` passed 132 tests, py_compile passed for
+  the new module and test, `jq -e . sources/stem_command_buffer_map.json`
+  passed, and `git diff --check` passed.

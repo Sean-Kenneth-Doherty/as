@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "map_id": "prc-stem-command-buffer-map-v1",
+  "reviewed_at": "2026-05-17",
+  "source_witness_id": "PRC-UC-FORMAL-MODEL",
+  "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+  "source_locus": "Constant time/number of signals, 5 bit command buffer; Counter value ranges 0-31.",
+  "bit_order": "accumulated-msb-first",
+  "buffer_width": 5,
+  "target_ranges": [
+    {
+      "target_id": "self",
+      "value_start": 0,
+      "value_end": 7,
+      "summary": "Command applies to the stem cell itself."
+    },
+    {
+      "target_id": "neighbor-a",
+      "value_start": 8,
+      "value_end": 15,
+      "summary": "Command targets the A neighbor channel."
+    },
+    {
+      "target_id": "neighbor-b",
+      "value_start": 16,
+      "value_end": 23,
+      "summary": "Command targets the B neighbor channel."
+    },
+    {
+      "target_id": "neighbor-c",
+      "value_start": 24,
+      "value_end": 31,
+      "summary": "Command targets the C neighbor channel."
+    }
+  ],
+  "commands": [
+    {
+      "offset": 0,
+      "command_id": "standard-signal",
+      "summary": "Transmit an ordinary standard signal command."
+    },
+    {
+      "offset": 1,
+      "command_id": "stem-init",
+      "summary": "Request stem initialization."
+    },
+    {
+      "offset": 2,
+      "command_id": "wire-r-init",
+      "summary": "Request right-memory wire initialization."
+    },
+    {
+      "offset": 3,
+      "command_id": "wire-l-init",
+      "summary": "Request left-memory wire initialization."
+    },
+    {
+      "offset": 4,
+      "command_id": "proc-r-init",
+      "summary": "Request right-memory processor initialization."
+    },
+    {
+      "offset": 5,
+      "command_id": "proc-l-init",
+      "summary": "Request left-memory processor initialization."
+    },
+    {
+      "offset": 6,
+      "command_id": "write-buf-zero",
+      "summary": "Request buffer-write zero."
+    },
+    {
+      "offset": 7,
+      "command_id": "write-buf-one",
+      "summary": "Request buffer-write one."
+    }
+  ]
+}
