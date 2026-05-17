@@ -67,6 +67,8 @@ the project legible:
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
   proof-certificate surface for that recipient init command-message slice.
+- `docs/recipient-init-command-message-trace.md` records the schematic-linked
+  trace for one recipient init command-message transition.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
@@ -166,6 +168,8 @@ the project legible:
   command-buffer delivery trace machine-checkable.
 - `schematics/neighbor_command_buffer_delivery_trace.svg` is the generated
   rendered view checked against the neighbor-delivery JSON trace.
+- `schematics/recipient_init_command_message_trace.json` makes the recipient
+  init command-message trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

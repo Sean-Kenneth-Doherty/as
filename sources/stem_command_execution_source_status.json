@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Add a schematic-linked trace for recipient-side init-family command-message consumption.",
+    "Add a rendered SVG for recipient-side init-family command-message consumption.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]

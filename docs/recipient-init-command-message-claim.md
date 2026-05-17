@@ -8,6 +8,8 @@ the transition-claim surface. The claim is
 `claims/transition_claims.json`, checked by
 `recipient_init_command_message_processed` in
 `autarkic_systems/transition_predicates.py`.
+ADR-0051 adds a schematic-linked trace that replays one positive fixed
+upstream `wire-r-init` example through the same transition.
 
 ## Claim Boundary
 

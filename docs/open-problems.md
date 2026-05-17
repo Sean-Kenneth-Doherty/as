@@ -70,7 +70,7 @@ trace/render for the remaining unsupported append boundary. ADR-0049 consumes
 recipient-side init-family command-message inputs. ADR-0050 promotes that
 recipient init slice into the named claim/proof surface. Recipient-side
 non-init command-message consumption and self-target non-init execution remain
-open.
+open. ADR-0051 adds a schematic-linked trace for the recipient init slice.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -186,3 +186,4 @@ ADR-0049 implements that recipient init-family command-message consumption
 slice while leaving non-init command messages blocked.
 ADR-0050 promotes the recipient init-family slice into the named claim/proof
 surface.
+ADR-0051 adds the corresponding schematic-linked trace.

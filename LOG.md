@@ -1100,3 +1100,26 @@
   touched predicate module and tests, JSON parsing passed for claim,
   certificate, language, and source-status manifests, and `git diff --check`
   passed.
+
+## 2026-05-17 - Recipient Init Command-Message Trace
+
+- Added ADR-0051 for a schematic-linked trace over the ADR-0050 recipient init
+  command-message claim.
+- Wrote `tests/test_recipient_init_command_message_trace.py` before
+  implementation. The red run failed because
+  `RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID` was absent from
+  `autarkic_systems.schematic_trace`.
+- Added `RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID` and a dedicated
+  recipient init command-message alignment validator to
+  `autarkic_systems/schematic_trace.py`.
+- Added `schematics/recipient_init_command_message_trace.json`, replaying one
+  fixed processor-left recipient that pulls upstream `wire-r-init`, processes
+  it as a recipient init command message, and becomes wire-right with upstream
+  and command state cleared.
+- Added `docs/recipient-init-command-message-trace.md` and updated README,
+  roadmap, literature map, open problems, recipient/stem source-status
+  artifacts, project memory, and lessons.
+- Verified the focused trace/source-status/schematic suite passed 44 tests.
+  `python -m unittest discover` passed 302 tests, py_compile passed for the
+  touched schematic module and tests, JSON parsing passed for the recipient
+  trace and source-status manifests, and `git diff --check` passed.

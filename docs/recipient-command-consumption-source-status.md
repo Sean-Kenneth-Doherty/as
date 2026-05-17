@@ -61,6 +61,9 @@ ADR-0050 promotes this slice into the named transition claim
 `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED`, checked by
 `recipient_init_command_message_processed`.
 
+ADR-0051 records the same slice as a schematic-linked trace in
+`schematics/recipient_init_command_message_trace.json`.
+
 ## Verification
 
 Run:
@@ -71,5 +74,5 @@ python -m unittest tests.test_recipient_command_consumption_source_status
 
 The tests check the source-status decision, the formal input-special-message
 anchor, the legacy special-message sets, the implemented ADR-0049 slice,
-the ADR-0050 claim, unresolved blockers, and the updated stem command
-execution next-slice list.
+the ADR-0050 claim, the ADR-0051 trace, unresolved blockers, and the updated
+stem command execution next-slice list.

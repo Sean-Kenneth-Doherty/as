@@ -25,6 +25,14 @@
       "summary": "AS now has a named transition claim and proof-certificate entry for the recipient init-family command-message consumption subset."
     }
   ],
+  "implemented_traces": [
+    {
+      "adr": "ADR-0051",
+      "artifact_id": "recipient-init-command-message-schematic-and-uc-transition-trace",
+      "path": "schematics/recipient_init_command_message_trace.json",
+      "summary": "AS now has a schematic-linked trace that replays fixed-cell upstream recipient init command-message consumption."
+    }
+  ],
   "formal_model_input_special_message_anchor": {
     "witness_id": "PRC-FORMAL-INPUT-SPECIAL-MESSAGE",
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",

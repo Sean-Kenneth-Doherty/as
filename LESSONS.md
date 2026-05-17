@@ -123,3 +123,6 @@
   it. Fixed upstream input and stem direct input are similar enough to share a
   predicate, but the predicate must still check the source-specific upstream
   clearing rule.
+- A recipient command trace should show where the delivered token entered the
+  cell. For fixed cells, the trace is clearer when it records upstream pull and
+  upstream clearing instead of pretending the token started as direct input.

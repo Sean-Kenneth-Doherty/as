@@ -56,6 +56,16 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             "recipient_init_command_message_processed",
         )
 
+        trace = self.status["implemented_traces"][0]
+        self.assertEqual(
+            trace["artifact_id"],
+            "recipient-init-command-message-schematic-and-uc-transition-trace",
+        )
+        self.assertEqual(
+            trace["path"],
+            "schematics/recipient_init_command_message_trace.json",
+        )
+
     def test_formal_model_records_input_special_message_processing(self):
         formal = self.status["formal_model_input_special_message_anchor"]
 
@@ -109,13 +119,13 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             any(
                 "recipient-side init-family command-message consumption"
                 in item
-                and "schematic-linked trace" in item
+                and "rendered SVG" in item
                 for item in allowed
             )
         )
         self.assertFalse(
             any(
-                "named claim" in item
+                "schematic-linked trace" in item
                 for item in allowed
             )
         )

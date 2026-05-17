@@ -957,3 +957,26 @@ Status: accepted in
 `language/transition_claim_language.json`, and
 `docs/recipient-init-command-message-claim.md`, with tests in
 `tests/test_recipient_init_command_message_claim.py`.
+
+## ADR-0051: Recipient Init Command-Message Trace
+
+Goal: add a schematic-linked trace for one recipient init command-message
+transition over the ADR-0050 named claim.
+
+Deliverables:
+
+- `schematics/recipient_init_command_message_trace.json`;
+- `recipient-init-command-message-schematic-and-uc-transition-trace` artifact
+  identity;
+- schematic-trace validator support for recipient init command-message
+  alignment;
+- tests proving artifact identity, schema vocabulary, upstream command flow,
+  execution replay, PRC witness validation, and drift rejection;
+- human-facing trace note and source-status next-slice update.
+
+Status: accepted in
+`docs/adr/0051-recipient-init-command-message-trace.md`. Implemented in
+`autarkic_systems/schematic_trace.py`,
+`schematics/recipient_init_command_message_trace.json`, and
+`docs/recipient-init-command-message-trace.md`, with tests in
+`tests/test_recipient_init_command_message_trace.py`.

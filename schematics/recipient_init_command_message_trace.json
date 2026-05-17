@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "artifact_id": "recipient-init-command-message-schematic-and-uc-transition-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Tenth AS-owned schematic-linked Universal Cell trace, covering recipient-side init-family command-message consumption from a pulled upstream token.",
+  "required_witness_ids": [
+    "PRC-README-UC-CRITERIA",
+    "PRC-GELC-GEOMETRY",
+    "PRC-RLEM-LITERATURE",
+    "PRC-CIRCULATOR-PHYSICAL",
+    "PRC-RALA-RECONFIGURATION",
+    "PRC-UC-FORMAL-MODEL",
+    "PRC-ASM-SIMULATOR",
+    "PRC-SCHEMATIC-FIGURES"
+  ],
+  "schematic": {
+    "node_id": "AS-PRC-RECIPIENT-INIT-COMMAND-TRIANGULAR-RLEM-001",
+    "geometry": "triangular-rlem-node",
+    "memory_direction": "right",
+    "ports": [
+      {
+        "port_id": "p0",
+        "label": "north",
+        "orientation": "north",
+        "signal_index": 0,
+        "summary": "First signal channel carrying the upstream wire-r-init command-message token."
+      },
+      {
+        "port_id": "p1",
+        "label": "east",
+        "orientation": "east",
+        "signal_index": 1,
+        "summary": "Second signal channel, empty during this recipient init trace."
+      },
+      {
+        "port_id": "p2",
+        "label": "west",
+        "orientation": "west",
+        "signal_index": 2,
+        "summary": "Third signal channel, empty during this recipient init trace."
+      }
+    ],
+    "layers": [
+      {
+        "layer_id": "symbolic-rlem-behavior",
+        "summary": "A wire-r-init command-message token reconfigures the recipient into a wire with right memory.",
+        "boundary": "This layer states recipient init command-message consumption only; it does not execute standard-signal, write-buffer, or multi-command inputs.",
+        "witness_ids": [
+          "PRC-RLEM-LITERATURE",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "gelc-geometry",
+        "summary": "The recipient init node uses the same triangular GELC/RLEM port vocabulary as the other traces.",
+        "boundary": "This layer fixes schematic geometry and port orientation, not a complete multi-cell command-routing circuit.",
+        "witness_ids": [
+          "PRC-GELC-GEOMETRY",
+          "PRC-SCHEMATIC-FIGURES"
+        ]
+      },
+      {
+        "layer_id": "uc-state",
+        "summary": "The trace records every current AS Cell field before and after one recipient init command-message activation.",
+        "boundary": "This layer is limited to the ADR-0049/ADR-0050 init-family recipient subset and adds no non-init command semantics.",
+        "witness_ids": [
+          "PRC-README-UC-CRITERIA",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "candidate-physical-implementation",
+        "summary": "Switchable circulator hardware and auxiliary command-routing support remain candidate interpretations.",
+        "boundary": "This layer keeps physical implementation and RALA-like auxiliary circuitry separate from the tested recipient init command-message transition.",
+        "witness_ids": [
+          "PRC-CIRCULATOR-PHYSICAL",
+          "PRC-RALA-RECONFIGURATION"
+        ]
+      }
+    ]
+  },
+  "trace": {
+    "trace_id": "AS-PRC-RECIPIENT-WIRE-R-INIT-COMMAND-TRACE-001",
+    "transition_function": "step_fixed_cell",
+    "cell_fields": [
+      "role",
+      "memory",
+      "upstream",
+      "input",
+      "output",
+      "automail",
+      "self_mailbox",
+      "control",
+      "buffer"
+    ],
+    "before_cell": {
+      "role": "proc",
+      "memory": "left",
+      "upstream": [
+        "wire-r-init",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "expected_status": "recipient-init-command-message-processed",
+    "expected_after_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "upstream[wire-r-init] -> input[0]",
+      "command[wire-r-init] -> role wire",
+      "command[wire-r-init] -> memory right",
+      "command[wire-r-init] consumed -> _",
+      "upstream cleared; command state cleared"
+    ]
+  }
+}

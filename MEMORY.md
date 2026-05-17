@@ -228,3 +228,8 @@
   `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` is checked by
   `recipient_init_command_message_processed` and covers fixed upstream, stem
   direct-input, and negative wrong-target examples.
+- ADR-0051 adds `docs/recipient-init-command-message-trace.md`,
+  `schematics/recipient_init_command_message_trace.json`, and
+  `tests/test_recipient_init_command_message_trace.py`. The trace replays a
+  fixed processor-left recipient consuming upstream `wire-r-init` into
+  wire-right state with status `recipient-init-command-message-processed`.
