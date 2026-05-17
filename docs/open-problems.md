@@ -56,7 +56,11 @@ predicates only, IS(A)-style arithmetic fragments, or both?
 Why it matters: AFS-R2 requires explicit syntax classes for terms, formulae,
 sentences, proof objects, and substrate claims.
 
-Likely next artifact: a parser/validator test suite for a tiny claim language.
+Status: started by ADR-0012. `language/transition_claim_language.json` now
+names the first explicit syntax classes for current transition claims, and
+`autarkic_systems/object_language.py` validates the current claim/certificate
+surface against that language. IS(A), Type NS, tableaux syntax, and
+arithmetized proof-code syntax remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 

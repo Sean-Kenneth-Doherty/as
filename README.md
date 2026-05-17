@@ -28,6 +28,8 @@ the project legible:
   sources to AS claims and next ADRs.
 - `docs/proof-apparatus-options.md` records the first proof-apparatus
   direction decision.
+- `docs/transition-claim-language.md` explains the first explicit object
+  language for transition claims.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -47,9 +49,10 @@ python -m unittest discover
 ```
 
 The current executable probes live in `autarkic_systems/universal_cell.py` and
-`autarkic_systems/transition_predicates.py`, with claim-manifest and
-proof-certificate support in `autarkic_systems/claim_manifest.py` and
-`autarkic_systems/proof_certificates.py`. They are covered by `tests/`.
+`autarkic_systems/transition_predicates.py`, with claim-manifest,
+proof-certificate, and object-language support in
+`autarkic_systems/claim_manifest.py`, `autarkic_systems/proof_certificates.py`,
+and `autarkic_systems/object_language.py`. They are covered by `tests/`.
 
 ## Subordinate Programs
 

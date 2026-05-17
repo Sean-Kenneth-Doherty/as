@@ -25,6 +25,13 @@ An AFS is not merely a theorem prover. It must support the AS objective of
 cognitive sovereignty by making the relation between formal confidence and
 embodied computation inspectable.
 
+## Object Language
+
+The formal syntax whose terms, formulae, sentences, proof objects, and substrate
+claims can be inspected by AS. The first implemented object language is the
+small transition-claim language in `language/transition_claim_language.json`;
+it is not yet the full IS(A) or SJAS language.
+
 ## Cognitive Sovereignty
 
 The project target in which an artificial entity can reason about itself, its

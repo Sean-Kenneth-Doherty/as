@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "language_id": "as-transition-claim-v1",
+  "description": "Minimal AS object language for current Universal Cell transition claims.",
+  "syntax_classes": {
+    "terms": {
+      "roles": ["wire", "proc", "stem"],
+      "memory": ["right", "left"],
+      "signals": [0, 1, "_", "si"],
+      "automail": ["_", "wr", "wl", "pr", "pl"],
+      "statuses": [
+        "idle",
+        "automail-reconfigured",
+        "blocked-output",
+        "rejected-input",
+        "routed",
+        "stem-init"
+      ],
+      "cell_fields": [
+        "role",
+        "memory",
+        "upstream",
+        "input",
+        "output",
+        "automail",
+        "control",
+        "buffer"
+      ]
+    },
+    "formulae": {
+      "predicate_symbols": [
+        "output_not_overwritten",
+        "consumed_input_cleared",
+        "fixed_role_memory_rule",
+        "stem_init_resets_to_stem",
+        "automail_reconfigures_stem"
+      ],
+      "form": "predicate(before_cell, step_result)"
+    },
+    "sentences": {
+      "kinds": ["transition-claim"],
+      "claim_id_prefixes": ["UC-"]
+    },
+    "proof_objects": {
+      "rules": ["manifest-example"]
+    },
+    "substrate_claims": {
+      "claim_manifest": "claims/transition_claims.json",
+      "certificate_manifest": "claims/proof_certificates.json"
+    }
+  }
+}

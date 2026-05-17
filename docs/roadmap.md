@@ -194,3 +194,20 @@ Status: accepted in `docs/adr/0011-proof-certificate-checker.md`. Implemented
 in `claims/proof_certificates.json` and
 `autarkic_systems/proof_certificates.py`, with tests in
 `tests/test_proof_certificates.py`.
+
+## ADR-0012: Transition Claim Object Language
+
+Goal: make the first AS claim language explicit instead of implicit in Python
+loaders and JSON shapes.
+
+Deliverables:
+
+- transition-claim language manifest;
+- object-language validator;
+- tests for required syntax classes, current claim/certificate coverage, and
+  rejected unknown syntax.
+
+Status: accepted in `docs/adr/0012-transition-claim-language.md`. Implemented
+in `language/transition_claim_language.json` and
+`autarkic_systems/object_language.py`, with tests in
+`tests/test_object_language.py`.

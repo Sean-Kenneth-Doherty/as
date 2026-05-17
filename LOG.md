@@ -168,3 +168,18 @@
 - Verified `python -m unittest tests.test_proof_certificates` passed 6 tests,
   `python -m unittest discover` passed 36 tests, py_compile passed for the new
   module and tests, JSON checks passed, and `git diff --check` passed.
+
+## 2026-05-17 - Transition Claim Object Language
+
+- Added ADR-0012 for the first explicit AS object language.
+- Wrote `tests/test_object_language.py` before implementation. The red run
+  failed because `autarkic_systems.object_language` did not exist.
+- Added `language/transition_claim_language.json` with explicit syntax classes
+  for terms, formulae, sentences, proof objects, and substrate claims.
+- Added `autarkic_systems/object_language.py` to validate the language manifest
+  and the current transition-claim/proof-certificate surface.
+- Added `docs/transition-claim-language.md` as the human-facing note for the
+  language boundary.
+- Verified `python -m unittest tests.test_object_language` passed 6 tests,
+  `python -m unittest discover` passed 42 tests, py_compile passed for the new
+  module and tests, JSON checks passed, and `git diff --check` passed.
