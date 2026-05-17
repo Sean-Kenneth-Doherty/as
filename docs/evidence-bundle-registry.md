@@ -11,6 +11,8 @@ The registry currently lists:
   bundle for the positive upstream `standard-signal` rejection boundary.
 - `evidence/multi_command_recipient_rejection_bundle.json`, the ADR-0069
   bundle for the positive direct simultaneous-command rejection boundary.
+- `evidence/self_mailbox_init_bundle.json`, the ADR-0072 bundle for the
+  positive direct self-mailbox init transition.
 
 Future bundle-producing ADRs should add one entry per bundle.
 
@@ -65,6 +67,7 @@ python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json
 ```
 
-The tests cover registry loading, the current ADR-0065, ADR-0068, and ADR-0069
-bundle entries, whole registry validation, duplicate bundle-ID rejection,
-missing bundle-path rejection, and unregistered sibling bundle-file rejection.
+The tests cover registry loading, the current ADR-0065, ADR-0068, ADR-0069, and
+ADR-0072 bundle entries, whole registry validation, duplicate bundle-ID
+rejection, missing bundle-path rejection, and unregistered sibling bundle-file
+rejection.

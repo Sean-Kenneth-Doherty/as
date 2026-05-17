@@ -342,3 +342,8 @@
   `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`.
   The JSON report includes registry ID, accepted status, bundle count, result
   count, and per-result subject/accepted/detail records.
+- ADR-0072 adds `docs/self-mailbox-init-evidence-bundle.md`,
+  `evidence/self_mailbox_init_bundle.json`, and
+  `tests/test_self_mailbox_init_evidence_bundle.py`. It registers the direct
+  self-mailbox `proc-l-init` transition as the fourth evidence bundle and
+  aligns the checked trace/SVG fixture with the named claim example.

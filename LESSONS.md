@@ -192,3 +192,6 @@
   partial index.
 - Once a validation command matters to agents or CI, add JSON output before
   anyone starts scraping human `OK` lines.
+- Integrated evidence can expose near-miss fixture drift. If a trace and a
+  claim describe the same transition with different incidental state, align the
+  artifacts so the bundle proves one exact path.

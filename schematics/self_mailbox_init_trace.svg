@@ -52,8 +52,8 @@
     <text class="small" x="52" y="220">role after: proc</text>
     <text class="small" x="52" y="244">self_mailbox before: proc-l-init</text>
     <text class="small" x="52" y="268">self_mailbox after: _</text>
-    <text class="small" x="52" y="292">control before: [1, 0, 1]</text>
-    <text class="small" x="52" y="316">buffer before: [0, 1]</text>
+    <text class="small" x="52" y="292">control before: [0, 1, 0]</text>
+    <text class="small" x="52" y="316">buffer before: [1]</text>
     <text class="small" x="52" y="340">control after: []</text>
     <text class="small" x="52" y="364">buffer after: []</text>
     <text class="small" x="52" y="400">routed signal flow</text>

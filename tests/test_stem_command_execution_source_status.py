@@ -59,6 +59,18 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
             ],
         )
 
+    def test_self_mailbox_init_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/self_mailbox_init_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0072")
+        self.assertEqual(bundle["claim_id"], "UC-STEM-SELF-MAILBOX-INIT-COMMAND")
+        self.assertEqual(bundle["positive_example"], "processor left mailbox init")
+        self.assertIn("direct self-mailbox init", bundle["summary"])
+
     def test_legacy_command_and_target_divergences_are_recorded(self):
         divergences = {
             divergence["witness_id"]: divergence

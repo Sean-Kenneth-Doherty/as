@@ -32,6 +32,15 @@
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
     "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, self-target init command-buffer dispatch, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, and the unsupported self-target non-init append boundary. It still does not execute non-init command-message inputs on recipient cells or execute self-target standard-signal/write-buffer commands."
   },
+  "implemented_evidence_bundles": [
+    {
+      "adr": "ADR-0072",
+      "path": "evidence/self_mailbox_init_bundle.json",
+      "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+      "positive_example": "processor left mailbox init",
+      "summary": "AS now has an integrated evidence bundle validating one direct self-mailbox init transition across runtime, claim, proof, trace, render, and source-status boundaries."
+    }
+  ],
   "legacy_divergences": [
     {
       "witness_id": "LEGACY-RAA-BUFFER-PROCESS",

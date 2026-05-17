@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "bundle_id": "self-mailbox-init-evidence-bundle",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Tie one direct self-mailbox init-family transition to its claim, proof certificate, schematic trace, rendered SVG, and source-status boundaries.",
+  "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+  "predicate": "self_mailbox_executes_init_command",
+  "positive_example": "processor left mailbox init",
+  "transition_function": "step_stem_cell",
+  "expected_status": "self-mailbox-processed",
+  "artifacts": {
+    "claim_manifest": "claims/transition_claims.json",
+    "proof_certificates": "claims/proof_certificates.json",
+    "schematic_trace": "schematics/self_mailbox_init_trace.json",
+    "schematic_svg": "schematics/self_mailbox_init_trace.svg",
+    "hardware_witness_map": "sources/prc_hardware_witness_map.json",
+    "source_statuses": [
+      "sources/stem_command_execution_source_status.json",
+      "sources/recipient_non_init_command_source_status.json",
+      "sources/standard_signal_command_semantics_status.json",
+      "sources/write_buffer_command_semantics_status.json"
+    ]
+  },
+  "boundaries": [
+    "This bundle covers only direct self-mailbox init-family command execution.",
+    "Self-mailbox non-init commands remain preserved or blocked by source-status records.",
+    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked."
+  ]
+}

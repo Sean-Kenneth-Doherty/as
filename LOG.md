@@ -1587,3 +1587,29 @@
   modes passed, the adjacent evidence stack passed 31 tests, and
   `python -m unittest discover` passed 415 tests. `py_compile` passed for the
   touched module and tests, and `git diff --check` passed.
+
+## 2026-05-17 - Self-Mailbox Init Evidence Bundle
+
+- Added ADR-0072 to register the direct self-mailbox init transition as the
+  fourth transition evidence bundle.
+- Wrote `tests/test_self_mailbox_init_evidence_bundle.py` before
+  implementation. The red run failed because
+  `evidence/self_mailbox_init_bundle.json` was absent.
+- Added `evidence/self_mailbox_init_bundle.json` for the positive
+  `processor left mailbox init` example under
+  `UC-STEM-SELF-MAILBOX-INIT-COMMAND`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate four bundles: recipient init execution, recipient
+  non-init rejection, multi-command rejection, and direct self-mailbox init.
+- Aligned `schematics/self_mailbox_init_trace.json` and its generated SVG with
+  the named claim example so the integrated validator checks one exact
+  transition path.
+- Added `docs/self-mailbox-init-evidence-bundle.md` and updated README,
+  roadmap, literature map, open problems, evidence registry docs, stem command
+  source status, project memory, and lessons.
+- Verified the focused bundle test passed 5 tests, the registry/CLI/trace/SVG
+  focused stack passed 48 tests, the adjacent self-mailbox/evidence stack
+  passed 76 tests, both actual CLI text and JSON modes passed for four
+  bundles, and `python -m unittest discover` passed 422 tests. `py_compile`
+  passed for the touched tests, JSON parsing passed for the registry, new
+  bundle, touched source status, and aligned trace.

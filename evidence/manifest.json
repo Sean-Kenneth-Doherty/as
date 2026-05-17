@@ -21,6 +21,12 @@
       "path": "evidence/multi_command_recipient_rejection_bundle.json",
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "expected_status": "rejected-input"
+    },
+    {
+      "bundle_id": "self-mailbox-init-evidence-bundle",
+      "path": "evidence/self_mailbox_init_bundle.json",
+      "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+      "expected_status": "self-mailbox-processed"
     }
   ]
 }

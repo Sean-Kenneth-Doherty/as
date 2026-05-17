@@ -22,6 +22,10 @@ This is not full command-buffer execution. It does not cover
 `standard-signal`, `write-buf-zero`, `write-buf-one`, neighbor delivery, larger
 GELC examples, or physical simulation.
 
+ADR-0072 aligns this trace with the exact positive claim example used by
+`evidence/self_mailbox_init_bundle.json`, so the integrated evidence validator
+checks one concrete transition rather than a nearby fixture variant.
+
 ## Schematic Role
 
 The artifact uses the same triangular RLEM/GELC schematic vocabulary as the

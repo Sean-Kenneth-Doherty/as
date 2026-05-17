@@ -99,6 +99,8 @@ ADR-0070 makes that registry complete over sibling bundle files, so future
 bundle artifacts cannot bypass the manifest silently.
 ADR-0071 adds JSON CLI output so the registry can be consumed by automation
 without parsing human-readable `OK` lines.
+ADR-0072 registers the direct self-mailbox init transition as the fourth
+evidence bundle and aligns its trace/SVG fixture with the named claim example.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -242,6 +244,8 @@ covers simultaneous command-token conflicts.
 ADR-0070 adds a closed-index registry check for unregistered sibling bundle
 files.
 ADR-0071 adds machine-readable registry validation output.
+ADR-0072 registers the direct self-mailbox init transition as an integrated
+evidence bundle and claim-aligns the trace/SVG fixture.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

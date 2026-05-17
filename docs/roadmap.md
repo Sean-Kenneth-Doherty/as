@@ -1395,3 +1395,21 @@ Deliverables:
 Status: accepted in `docs/adr/0071-evidence-cli-json-output.md`. Implemented
 in `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_evidence_bundle_cli.py`.
+
+## ADR-0072: Self-Mailbox Init Evidence Bundle
+
+Goal: add the direct self-mailbox init-family transition as the fourth
+transition evidence bundle.
+
+Deliverables:
+
+- `evidence/self_mailbox_init_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- trace/SVG alignment with the existing positive claim example;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted trace-path rejection;
+- human-facing evidence-bundle note and stem command source-status cross-link.
+
+Status: accepted in `docs/adr/0072-self-mailbox-init-evidence-bundle.md`.
+Implemented in `evidence/self_mailbox_init_bundle.json`, with tests in
+`tests/test_self_mailbox_init_evidence_bundle.py`.

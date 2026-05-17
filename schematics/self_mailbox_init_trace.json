@@ -116,12 +116,11 @@
       "automail": "_",
       "self_mailbox": "proc-l-init",
       "control": [
-        1,
         0,
-        1
+        1,
+        0
       ],
       "buffer": [
-        0,
         1
       ]
     },
