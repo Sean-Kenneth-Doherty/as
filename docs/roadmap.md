@@ -1002,3 +1002,23 @@ Status: accepted in
 `schematics/recipient_init_command_message_trace.svg`, and
 `docs/recipient-init-command-message-svg.md`, with tests in
 `tests/test_recipient_init_command_message_svg.py`.
+
+## ADR-0053: Recipient Non-Init Command Source Status
+
+Goal: decide the recipient-side non-init command-message frontier before
+runtime execution.
+
+Deliverables:
+
+- `sources/recipient_non_init_command_source_status.json`;
+- human-facing source-status note;
+- tests covering standard-signal divergence, write-buffer source divergences,
+  multi-command policy, and updated source-status frontier;
+- documentation updates that move the next safe slice to a named
+  non-init command-message rejection-boundary claim.
+
+Status: accepted in
+`docs/adr/0053-recipient-non-init-command-source-status.md`. Implemented in
+`sources/recipient_non_init_command_source_status.json` and
+`docs/recipient-non-init-command-source-status.md`, with tests in
+`tests/test_recipient_non_init_command_source_status.py`.

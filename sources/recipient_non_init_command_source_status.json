@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "decision": "do-not-implement-recipient-non-init-command-messages-yet",
+  "runtime_change": "none-source-status-only",
+  "depends_on": "sources/recipient_command_consumption_source_status.json",
+  "safe_next_slice": "promote-recipient-non-init-command-message-rejection-boundary",
+  "blocked_runtime_commands": [
+    "standard-signal",
+    "write-buf-zero",
+    "write-buf-one"
+  ],
+  "standard_signal_status": {
+    "decision": "blocked",
+    "formal_command_table": {
+      "witness_id": "PRC-FORMAL-COMMAND-TABLE-STANDARD-SIGNAL",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+      "locus": "lines 437-454, command order",
+      "command": "standard-signal",
+      "summary": "The formal command table includes standard-signal as a command-buffer command."
+    },
+    "legacy_special_message_exclusion": {
+      "witness_id": "LEGACY-STANDARD-SIGNAL-NOT-SPECIAL",
+      "local_witnesses": [
+        "/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm",
+        "/home/sean/Projects/_upstream/prc/practice/legacy/fsmsim.scm"
+      ],
+      "loci": [
+        "semsim.scm lines 86-90",
+        "fsmsim.scm lines 10-14"
+      ],
+      "special_messages": [
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
+      "summary": "The legacy special-message sets exclude standard-signal and treat standard input as a separate classification."
+    },
+    "as_boundary": "Continue rejecting standard-signal command-message input until AS decides whether it belongs to command-message execution or standard-signal routing."
+  },
+  "write_buffer_status": {
+    "decision": "blocked",
+    "legacy_divergences": [
+      {
+        "witness_id": "LEGACY-RAA-WRITE-BUFFER",
+        "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm",
+        "locus": "lines 264-282",
+        "summary": "RAA dispatches write-buf-zero and write-buf-one through write-buf, which appends only when the buffer-full check permits it; input processing separately clears channels."
+      },
+      {
+        "witness_id": "LEGACY-SEMSIM-WRITE-BUFFER",
+        "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm",
+        "locus": "lines 346-365",
+        "summary": "SEMSIM defines write-buf-zero and write-buf-one as appends, but stem-process-special-message wraps the selected operation in zero-hig and zero-buf, creating an unclear buffer-clearing boundary."
+      },
+      {
+        "witness_id": "LEGACY-FSMSIM-WRITE-BUFFER",
+        "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/fsmsim.scm",
+        "locus": "lines 240-267",
+        "summary": "FSMSIM dispatches write-buf-zero and write-buf-one through primitive-eval and appends to the buffer while clearing the self mailbox and input channels."
+      }
+    ],
+    "as_boundary": "Continue rejecting write-buffer command-message input until AS selects fixed-cell, stem-cell, input-clearing, and buffer-full behavior from source evidence."
+  },
+  "multi_command_input_status": {
+    "decision": "blocked",
+    "summary": "multiple simultaneous command-message inputs are not yet assigned a priority, sequencing, or rejection policy by an AS source-status decision.",
+    "as_boundary": "ADR-0049 consumes exactly one single command-message input token and leaves multiple simultaneous command-message tokens at the rejected-input boundary."
+  },
+  "allowed_next_slices": [
+    "Promote recipient-side non-init command-message rejection boundary into a named claim and proof certificate.",
+    "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
+    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
+  ]
+}

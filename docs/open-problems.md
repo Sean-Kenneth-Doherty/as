@@ -72,6 +72,8 @@ recipient init slice into the named claim/proof surface. Recipient-side
 non-init command-message consumption and self-target non-init execution remain
 open. ADR-0051 adds a schematic-linked trace for the recipient init slice.
 ADR-0052 adds the rendered SVG view of that trace.
+ADR-0053 records recipient non-init command-message execution as blocked and
+selects a named rejection-boundary claim as the next safe slice.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -189,3 +191,4 @@ ADR-0050 promotes the recipient init-family slice into the named claim/proof
 surface.
 ADR-0051 adds the corresponding schematic-linked trace.
 ADR-0052 adds the corresponding rendered SVG view.
+ADR-0053 records the remaining recipient non-init command-message blockers.

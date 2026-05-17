@@ -67,6 +67,10 @@ ADR-0051 records the same slice as a schematic-linked trace in
 ADR-0052 adds the rendered SVG view in
 `schematics/recipient_init_command_message_trace.svg`.
 
+ADR-0053 records the remaining non-init command-message blockers in
+`sources/recipient_non_init_command_source_status.json` and selects a named
+rejection-boundary claim as the next safe slice.
+
 ## Verification
 
 Run:
@@ -78,4 +82,5 @@ python -m unittest tests.test_recipient_command_consumption_source_status
 The tests check the source-status decision, the formal input-special-message
 anchor, the legacy special-message sets, the implemented ADR-0049 slice,
 the ADR-0050 claim, the ADR-0051 trace, the ADR-0052 SVG, unresolved blockers,
-and the updated stem command execution next-slice list.
+the ADR-0053 non-init source status, and the updated stem command execution
+next-slice list.

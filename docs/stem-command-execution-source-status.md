@@ -31,7 +31,9 @@ AS may execute recipient-side init-family command-message inputs, while
 implements that recipient init-family slice, and ADR-0050 promotes it into
 the named claim/proof surface. ADR-0051 adds a schematic-linked trace for that
 recipient slice, and ADR-0052 adds the rendered SVG view. ADR-0042/ADR-0043
-now cover the self-target `write-buf-one` append boundary.
+now cover the self-target `write-buf-one` append boundary. ADR-0053 records
+recipient non-init command-message inputs as a source-status blocking decision
+and moves the next safe slice to a named rejection-boundary claim.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

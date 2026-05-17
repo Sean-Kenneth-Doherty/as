@@ -129,3 +129,6 @@
 - Recipient command renders need their own summary branch. Generic role-change
   text hides the important proof surface: the upstream command token was
   consumed and the recipient's transient command state was cleared.
+- When legacy command sources agree on command names but disagree on clearing
+  and buffer behavior, record the divergence before implementing. The honest
+  next step can be a claim over the current rejection boundary, not execution.

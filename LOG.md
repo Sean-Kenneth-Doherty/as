@@ -1145,3 +1145,25 @@
   tests. `python -m unittest discover` passed 309 tests, py_compile passed for
   the touched SVG renderer and tests, JSON parsing passed for the recipient
   trace and source-status manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Recipient Non-Init Command Source Status
+
+- Added ADR-0053 to decide the recipient-side non-init command-message
+  frontier before changing runtime behavior.
+- Wrote `tests/test_recipient_non_init_command_source_status.py` before
+  implementation. The red run failed because
+  `sources/recipient_non_init_command_source_status.json` did not exist.
+- Added `sources/recipient_non_init_command_source_status.json`, blocking
+  recipient-side `standard-signal`, `write-buf-zero`, `write-buf-one`, and
+  multi-command input execution.
+- Recorded the formal/legacy `standard-signal` divergence and the RAA,
+  SEMSIM, and FSMSIM write-buffer clearing/buffer-behavior divergences.
+- Updated recipient and stem source-status frontiers so the next safe slice is
+  a named non-init command-message rejection-boundary claim, not execution.
+- Added `docs/recipient-non-init-command-source-status.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused recipient non-init/source-status suite passed 14 tests.
+  `python -m unittest discover` passed 314 tests, py_compile passed for the
+  touched source-status tests, JSON parsing passed for the recipient non-init,
+  recipient consumption, and stem source-status manifests, and
+  `git diff --check` passed.

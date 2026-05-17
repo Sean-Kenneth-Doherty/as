@@ -40,6 +40,13 @@
       "summary": "AS now has a rendered SVG view checked exactly against the recipient init command-message trace."
     }
   ],
+  "implemented_source_statuses": [
+    {
+      "adr": "ADR-0053",
+      "path": "sources/recipient_non_init_command_source_status.json",
+      "summary": "AS now has a source-status decision blocking recipient-side non-init command-message execution and selecting a rejection-boundary claim as the safe next slice."
+    }
+  ],
   "formal_model_input_special_message_anchor": {
     "witness_id": "PRC-FORMAL-INPUT-SPECIAL-MESSAGE",
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
@@ -125,5 +132,10 @@
       "blocker_id": "multi-command-input-conflict-policy",
       "summary": "AS must still decide how to handle multiple simultaneous command-message inputs before claiming full recipient-side command-message consumption."
     }
+  ],
+  "allowed_next_slices": [
+    "Promote recipient-side non-init command-message rejection boundary into a named claim and proof certificate.",
+    "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
+    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
   ]
 }

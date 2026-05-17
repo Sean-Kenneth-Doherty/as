@@ -238,3 +238,8 @@
   `tests/test_recipient_init_command_message_svg.py`. The renderer now has a
   recipient init command-message summary branch exposing upstream before/after
   and cleared command state.
+- ADR-0053 adds `sources/recipient_non_init_command_source_status.json`,
+  `docs/recipient-non-init-command-source-status.md`, and
+  `tests/test_recipient_non_init_command_source_status.py`. It blocks
+  recipient `standard-signal`, write-buffer, and multi-command input execution
+  and selects a named rejection-boundary claim as the next safe slice.

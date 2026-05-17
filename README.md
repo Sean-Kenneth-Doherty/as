@@ -63,6 +63,8 @@ the project legible:
   execution is still blocked after the decoder map.
 - `docs/recipient-command-consumption-source-status.md` records the
   source-backed boundary for recipient-side command-message inputs.
+- `docs/recipient-non-init-command-source-status.md` records why non-init
+  recipient command-message inputs remain blocked.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
@@ -134,6 +136,8 @@ the project legible:
   execution source-status decision machine-checkable.
 - `sources/recipient_command_consumption_source_status.json` makes the
   recipient command-consumption source-status decision machine-checkable.
+- `sources/recipient_non_init_command_source_status.json` makes the recipient
+  non-init command-message blocking decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

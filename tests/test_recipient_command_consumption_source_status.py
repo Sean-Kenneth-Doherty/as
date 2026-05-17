@@ -124,14 +124,14 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "recipient-side standard-signal and write-buffer"
+                "non-init command-message rejection boundary"
                 in item
                 for item in allowed
             )
         )
         self.assertFalse(
             any(
-                "rendered SVG" in item
+                "execute non-init recipient commands" in item
                 for item in allowed
             )
         )

@@ -96,7 +96,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "recipient-side standard-signal and write-buffer" in item
+                "non-init command-message rejection boundary" in item
                 for item in allowed
             )
         )

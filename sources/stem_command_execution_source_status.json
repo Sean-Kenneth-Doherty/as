@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Resolve recipient-side standard-signal and write-buffer command-message semantics before executing non-init recipient commands.",
+    "Promote recipient-side non-init command-message rejection boundary into a named claim and proof certificate.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]
