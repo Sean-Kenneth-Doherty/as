@@ -55,7 +55,7 @@ a schematic-linked trace for one `proc-l-init` self-mailbox command. ADR-0033
 adds the corresponding rendered SVG view. ADR-0034 adds a named claim proving
 that unsupported self-mailbox commands remain preserved rather than executed.
 ADR-0035 adds a schematic-linked trace for one `write-buf-one` unsupported
-self-mailbox command.
+self-mailbox command. ADR-0036 adds the corresponding rendered SVG view.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -148,3 +148,4 @@ same bounded behavior, and ADR-0033 adds the rendered SVG view.
 ADR-0034 records the remaining self-mailbox `standard-signal` and write-buffer
 commands as a checkable unsupported boundary.
 ADR-0035 adds a schematic-linked preservation trace for that boundary.
+ADR-0036 adds the rendered SVG view.

@@ -642,3 +642,21 @@ Status: accepted in `docs/adr/0035-self-mailbox-unsupported-trace.md`.
 Implemented in `autarkic_systems/schematic_trace.py` and
 `schematics/self_mailbox_unsupported_trace.json`, with tests in
 `tests/test_self_mailbox_unsupported_trace.py`.
+
+## ADR-0036: Self Mailbox Unsupported SVG
+
+Goal: add a rendered SVG view of the ADR-0035 unsupported self-mailbox trace.
+
+Deliverables:
+
+- `schematics/self_mailbox_unsupported_trace.svg`;
+- exported unsupported self-mailbox SVG artifact path;
+- renderer summary fields for unsupported mailbox and control/buffer
+  preservation;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  preservation details, exact renderer-output matching, and drift rejection.
+
+Status: accepted in `docs/adr/0036-self-mailbox-unsupported-svg.md`.
+Implemented in `autarkic_systems/schematic_svg.py` and
+`schematics/self_mailbox_unsupported_trace.svg`, with tests in
+`tests/test_self_mailbox_unsupported_svg.py`.

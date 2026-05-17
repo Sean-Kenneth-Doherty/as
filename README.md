@@ -71,6 +71,8 @@ the project legible:
   for one unsupported self-mailbox command.
 - `docs/self-mailbox-init-svg.md` records the rendered view of that
   self-mailbox init trace.
+- `docs/self-mailbox-unsupported-svg.md` records the rendered view of the
+  unsupported self-mailbox trace.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
@@ -114,6 +116,8 @@ the project legible:
   checked against the self-mailbox JSON trace.
 - `schematics/self_mailbox_unsupported_trace.json` makes the unsupported
   self-mailbox preservation trace machine-checkable.
+- `schematics/self_mailbox_unsupported_trace.svg` is the generated rendered
+  view checked against the unsupported self-mailbox JSON trace.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

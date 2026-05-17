@@ -82,3 +82,6 @@
 - Trace dispatch should use the transition status when the same visible field
   can mean different mechanisms. Non-empty `self_mailbox` plus
   `self-mailbox-unsupported` is a preservation boundary, not an init command.
+- No-op evidence still needs visible state. For unsupported commands, the
+  important render fact is preservation of mailbox/control/buffer, not absence
+  of visual change.

@@ -154,3 +154,6 @@
 - ADR-0035 adds `schematics/self_mailbox_unsupported_trace.json`; the
   schematic trace validator now routes `self-mailbox-unsupported` mailbox
   traces through a preservation check instead of the self-mailbox init check.
+- ADR-0036 adds `schematics/self_mailbox_unsupported_trace.svg`; the SVG
+  renderer now has a separate unsupported-mailbox summary case so mailbox,
+  control, and buffer preservation stay visible.

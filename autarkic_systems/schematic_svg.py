@@ -21,6 +21,9 @@ STEM_AUTOMAIL_SVG_ARTIFACT = Path(
 )
 STEM_BUFFER_SVG_ARTIFACT = Path("schematics/stem_buffer_accumulation_trace.svg")
 SELF_MAILBOX_INIT_SVG_ARTIFACT = Path("schematics/self_mailbox_init_trace.svg")
+SELF_MAILBOX_UNSUPPORTED_SVG_ARTIFACT = Path(
+    "schematics/self_mailbox_unsupported_trace.svg"
+)
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
 PORT_LAYOUT = {
@@ -129,7 +132,19 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
         ]
     )
     next_y = 232
-    if _shows_self_mailbox_init(before, after):
+    if _shows_self_mailbox_unsupported(trace):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">self_mailbox before: {_text(before['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">self_mailbox after: {_text(after['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">control before: {_text(_cell_field(before, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"292\">control after: {_text(_cell_field(after, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"316\">buffer before: {_text(_cell_field(before, 'buffer'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"340\">buffer after: {_text(_cell_field(after, 'buffer'))}</text>",
+            ]
+        )
+        next_y = 376
+    elif _shows_self_mailbox_init(before, after):
         lines.extend(
             [
                 f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
@@ -294,6 +309,18 @@ def _shows_self_mailbox_init(
     """Return true for traces that consume a self-mailbox command."""
 
     return before["self_mailbox"] != "_" and after["self_mailbox"] == "_"
+
+
+def _shows_self_mailbox_unsupported(trace: SingleNodeSchematicTrace) -> bool:
+    """Return true for traces that preserve an unsupported mailbox command."""
+
+    before = trace.trace.before_cell
+    after = trace.trace.expected_after_cell
+    return (
+        trace.trace.expected_status == "self-mailbox-unsupported"
+        and before["self_mailbox"] != "_"
+        and before["self_mailbox"] == after["self_mailbox"]
+    )
 
 
 def _shows_buffer_accumulation(

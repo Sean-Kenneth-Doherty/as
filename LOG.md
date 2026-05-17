@@ -733,3 +733,23 @@
   touched module and test, JSON parsing passed for
   `schematics/self_mailbox_unsupported_trace.json`, and `git diff --check`
   passed.
+
+## 2026-05-17 - Self Mailbox Unsupported SVG
+
+- Added ADR-0036 for a generated SVG render of the unsupported self-mailbox
+  trace.
+- Wrote `tests/test_self_mailbox_unsupported_svg.py` before implementation.
+  The red run failed because `SELF_MAILBOX_UNSUPPORTED_SVG_ARTIFACT` did not
+  exist in `autarkic_systems.schematic_svg`.
+- Added `SELF_MAILBOX_UNSUPPORTED_SVG_ARTIFACT` and renderer summary fields
+  that expose mailbox/control/buffer preservation.
+- Generated `schematics/self_mailbox_unsupported_trace.svg` from
+  `render_schematic_svg()`.
+- Added `docs/self-mailbox-unsupported-svg.md` as the human-facing render
+  boundary note.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_unsupported_svg` passed
+  7 tests, the adjacent schematic SVG suite passed 42 tests,
+  `python -m unittest discover` passed 198 tests, py_compile passed for the
+  touched module and test, and `git diff --check` passed.
