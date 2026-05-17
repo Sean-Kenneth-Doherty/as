@@ -116,6 +116,7 @@ def _parse_cell(item: dict[str, Any]) -> Cell:
         input=_parse_signal(item.get("input", ["_", "_", "_"])),
         output=_parse_signal(item.get("output", ["_", "_", "_"])),
         automail=item.get("automail", "_"),
+        self_mailbox=item.get("self_mailbox", "_"),
         control=tuple(item.get("control", [])),
         buffer=tuple(item.get("buffer", [])),
     )

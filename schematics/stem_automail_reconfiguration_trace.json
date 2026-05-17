@@ -91,6 +91,7 @@
       "input",
       "output",
       "automail",
+      "self_mailbox",
       "control",
       "buffer"
     ],
@@ -113,6 +114,7 @@
         "_"
       ],
       "automail": "pl",
+      "self_mailbox": "_",
       "control": [
         1
       ],
@@ -140,6 +142,7 @@
         "_"
       ],
       "automail": "_",
+      "self_mailbox": "_",
       "control": [],
       "buffer": []
     },

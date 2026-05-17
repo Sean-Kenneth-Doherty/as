@@ -36,6 +36,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS stem buffer accumulation SVG | `docs/stem-buffer-accumulation-svg.md` and `schematics/stem_buffer_accumulation_trace.svg` | Visible render of the stem buffer accumulation trace. | Checked against generic renderer output and exposes control/buffer before/after details. |
 | AS stem command-buffer map | `docs/stem-command-buffer-map.md` and `sources/stem_command_buffer_map.json` | Source-backed 32-value target/command decoder for five-bit stem buffers. | Prepares full-buffer command execution without embedding the encoding in transition code. |
 | AS stem command execution source status | `docs/stem-command-execution-source-status.md` and `sources/stem_command_execution_source_status.json` | Source-status decision for why full command execution is blocked after decoding. | Separates the formal command table from unresolved self-mailbox, output-token, and legacy divergence questions. |
+| AS self mailbox representation | `autarkic_systems/universal_cell.py`, `language/transition_claim_language.json`, and checked schematic traces | Explicit Cell field for self-target command delivery preparation. | Covers representation only; command execution and neighbor command outputs remain open. |
 
 ## SJAS: Formal Confidence
 
@@ -84,6 +85,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | A stem buffer render must expose command-buffer state, not only role and port geometry. | `autarkic_systems/schematic_svg.py` and `schematics/stem_buffer_accumulation_trace.svg`. | Implemented in ADR-0025 with exact renderer-output matching and drift rejection. |
 | Stem full-buffer execution needs an explicit target/command map before code mutates cells or routes messages. | PRC formal model, `sources/stem_command_buffer_map.json`, and `autarkic_systems/stem_command_map.py`. | Implemented in ADR-0026 as a validated decoder only. |
 | Stem command execution needs source-status separation before AS trusts legacy simulator sketches. | PRC formal model, legacy `raa.scm`, legacy `semsim.scm`, legacy `fsmsim.scm`, and `sources/stem_command_execution_source_status.json`. | Implemented in ADR-0027 as a do-not-execute-yet decision with allowed narrower next slices. |
+| Self-target stem command work needs a first-class mailbox field before execution. | PRC formal model process-buffer sketch, `autarkic_systems/universal_cell.py`, and `language/transition_claim_language.json`. | Implemented in ADR-0028 as representation only, with reset clearing and parser/trace preservation. |
 
 ## Evidence Gaps
 
@@ -95,7 +97,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 - AS has rendered the wire, processor, stem automail, and stem buffer
   PRC-derived traces, and has a stem command-buffer map. Full stem command
   execution, larger GELC, and physical-simulation renders remain open. ADR-0027
-  records the current source-status blockers for execution.
+  records the current source-status blockers for execution; ADR-0028 clears the
+  self-mailbox representation blocker only.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

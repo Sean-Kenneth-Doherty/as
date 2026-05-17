@@ -8,7 +8,9 @@ Status: ADR-0012 object-language note, 2026-05-17.
 language. It is deliberately small: it covers the Universal Cell transition
 claims that AS can currently execute, not the full IS(A) or SJAS arithmetic
 language. ADR-0023 extends the current predicate vocabulary with
-`stem_buffer_accumulates` for the stem buffer accumulation subset.
+`stem_buffer_accumulates` for the stem buffer accumulation subset. ADR-0028
+extends the term vocabulary with `command_messages` and the `self_mailbox` cell
+field without adding command execution.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before
@@ -18,7 +20,7 @@ later proof or self-reference work builds on them.
 
 | Class | Current meaning |
 | --- | --- |
-| `terms` | Universal Cell term vocabulary: roles, memory values, signals, automail commands, statuses, and cell fields. |
+| `terms` | Universal Cell term vocabulary: roles, memory values, signals, automail commands, command-message mailbox values, statuses, and cell fields. |
 | `formulae` | Predicate applications of the form `predicate(before_cell, step_result)`. |
 | `sentences` | Transition-claim sentences named by claim IDs such as `UC-FIXED-OUTPUT-PRESERVED`. |
 | `proof_objects` | Proof-certificate steps. The only current rule is `manifest-example`. |

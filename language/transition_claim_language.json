@@ -8,6 +8,17 @@
       "memory": ["right", "left"],
       "signals": [0, 1, "_", "si"],
       "automail": ["_", "wr", "wl", "pr", "pl"],
+      "command_messages": [
+        "_",
+        "standard-signal",
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
       "statuses": [
         "idle",
         "automail-reconfigured",
@@ -26,6 +37,7 @@
         "input",
         "output",
         "automail",
+        "self_mailbox",
         "control",
         "buffer"
       ]

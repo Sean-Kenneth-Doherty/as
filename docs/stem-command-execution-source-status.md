@@ -13,10 +13,11 @@ The structured status lives in
 Do not implement full stem command execution yet.
 
 The PRC formal model gives the canonical target and command table now used by
-AS, but the execution path requires state that AS does not currently model:
-self mailbox delivery and output channels that can carry special command
-messages. Legacy simulator sketches also diverge from the formal table in ways
-that should be resolved before AS treats them as executable authority.
+AS, but the execution path requires state that AS only partially models:
+ADR-0028 adds self mailbox representation, while output channels still do not
+carry arbitrary command messages. Legacy simulator sketches also diverge from
+the formal table in ways that should be resolved before AS treats them as
+executable authority.
 
 ## Evidence
 
@@ -51,7 +52,7 @@ ADR-0026 remains correct as a command-buffer decoder because it uses the formal
 model's explicit command table. Execution is a different claim. To execute
 commands honestly, AS first needs to choose:
 
-- whether `Cell` gets an explicit self mailbox;
+- how future self-target execution consumes the explicit `self_mailbox` field;
 - how output channels represent command messages for neighbors;
 - how `standard-signal` behaves when selected as a command rather than received
   as ordinary input.

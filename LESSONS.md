@@ -58,3 +58,6 @@
 - A source-backed decoder is not the same as source-backed execution. When
   legacy sketches disagree about target and command interpretation, record the
   disagreement before mutating the substrate model.
+- Representation unblockers should propagate through every schema boundary.
+  A new `Cell` field is not real project state until claim manifests, object
+  language, and schematic traces all preserve it.

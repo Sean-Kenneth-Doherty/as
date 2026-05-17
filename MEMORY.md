@@ -121,3 +121,7 @@
   `docs/stem-command-execution-source-status.md` record that full stem command
   execution is blocked until AS models self mailbox delivery, command-message
   outputs, and the observed legacy source divergences.
+- ADR-0028 adds `Cell.self_mailbox`, command-message vocabulary in
+  `language/transition_claim_language.json`, and self-mailbox coverage in the
+  checked schematic traces. This is representation only, not command
+  execution.

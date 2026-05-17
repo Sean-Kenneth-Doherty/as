@@ -61,6 +61,8 @@ the project legible:
   command-buffer decoding map.
 - `docs/stem-command-execution-source-status.md` records why full stem command
   execution is still blocked after the decoder map.
+- `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
+  state for future self-target command execution.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over

@@ -16,6 +16,17 @@ Signal = Literal[0, 1, "_", "si"]
 Role = Literal["wire", "proc", "stem"]
 Memory = Literal["right", "left"]
 Automail = Literal["_", "wr", "wl", "pr", "pl"]
+CommandMessage = Literal[
+    "_",
+    "standard-signal",
+    "stem-init",
+    "wire-r-init",
+    "wire-l-init",
+    "proc-r-init",
+    "proc-l-init",
+    "write-buf-zero",
+    "write-buf-one",
+]
 Status = Literal[
     "idle",
     "automail-reconfigured",
@@ -33,6 +44,17 @@ VALID_ROLES = {"wire", "proc", "stem"}
 FIXED_ROLES = {"wire", "proc"}
 VALID_MEMORY = {"right", "left"}
 VALID_AUTOMAIL = {"_", "wr", "wl", "pr", "pl"}
+VALID_SELF_MAILBOX = {
+    "_",
+    "standard-signal",
+    "stem-init",
+    "wire-r-init",
+    "wire-l-init",
+    "proc-r-init",
+    "proc-l-init",
+    "write-buf-zero",
+    "write-buf-one",
+}
 MAX_STEM_BUFFER_SIZE = 5
 AUTOMAIL_RECONFIGURATION: dict[Automail, tuple[Role, Memory]] = {
     "wr": ("wire", "right"),
@@ -56,6 +78,7 @@ class Cell:
     input: tuple[Signal, Signal, Signal] = EMPTY
     output: tuple[Signal, Signal, Signal] = EMPTY
     automail: Automail = "_"
+    self_mailbox: CommandMessage = "_"
     control: tuple[Signal, ...] = ()
     buffer: tuple[Signal, ...] = ()
 
@@ -66,6 +89,7 @@ class Cell:
         _validate_channels("input", self.input)
         _validate_channels("output", self.output)
         _validate_automail(self.automail)
+        _validate_self_mailbox(self.self_mailbox)
         _validate_signal_tuple("control", self.control)
         _validate_signal_tuple("buffer", self.buffer)
 
@@ -158,6 +182,7 @@ def step_stem_cell(cell: Cell) -> StepResult:
             input=EMPTY,
             output=EMPTY,
             automail="_",
+            self_mailbox="_",
             control=(),
             buffer=(),
         ),
@@ -175,7 +200,14 @@ def _pull_upstream(cell: Cell) -> Cell:
 def _to_stem(cell: Cell) -> Cell:
     """Reset a fixed cell to the stem role after a stem-init signal."""
 
-    return _replace(cell, role="stem", memory="right", input=EMPTY, output=EMPTY)
+    return _replace(
+        cell,
+        role="stem",
+        memory="right",
+        input=EMPTY,
+        output=EMPTY,
+        self_mailbox="_",
+    )
 
 
 def _route(
@@ -231,6 +263,7 @@ def _replace(cell: Cell, **changes: object) -> Cell:
         "input": cell.input,
         "output": cell.output,
         "automail": cell.automail,
+        "self_mailbox": cell.self_mailbox,
         "control": cell.control,
         "buffer": cell.buffer,
     }
@@ -251,6 +284,11 @@ def _validate_memory(memory: str) -> None:
 def _validate_automail(automail: str) -> None:
     if automail not in VALID_AUTOMAIL:
         raise ValueError(f"unknown Universal Cell automail: {automail!r}")
+
+
+def _validate_self_mailbox(self_mailbox: str) -> None:
+    if self_mailbox not in VALID_SELF_MAILBOX:
+        raise ValueError(f"unknown Universal Cell self mailbox: {self_mailbox!r}")
 
 
 def _validate_channels(name: str, value: tuple[Signal, ...]) -> None:

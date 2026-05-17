@@ -566,3 +566,24 @@
   passed for the new test,
   `jq -e . sources/stem_command_execution_source_status.json` passed, and
   `git diff --check` passed.
+
+## 2026-05-17 - Self Mailbox Representation
+
+- Added ADR-0028 for explicit `Cell.self_mailbox` representation as the next
+  allowed slice after ADR-0027.
+- Wrote `tests/test_self_mailbox_representation.py` before implementation. The
+  red run failed because `Cell` had no `self_mailbox` field and the language
+  and schematic trace vocabularies did not name it.
+- Added `self_mailbox` with the ADR-0026 command-message vocabulary to
+  `autarkic_systems/universal_cell.py`.
+- Updated claim manifest parsing, object-language validation, schematic trace
+  mapping, `language/transition_claim_language.json`, and all checked
+  schematic trace JSON artifacts to preserve the field.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, stem command execution source-status note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_representation` passed
+  7 tests, the adjacent manifest/language/trace/SVG suite passed 69 tests,
+  `python -m unittest discover` passed 143 tests, py_compile passed for the
+  touched modules and new test, JSON parsing passed for the language manifest
+  and all four checked trace artifacts, and `git diff --check` passed.

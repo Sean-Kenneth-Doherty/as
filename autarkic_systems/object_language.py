@@ -27,6 +27,7 @@ from autarkic_systems.universal_cell import (
     VALID_AUTOMAIL,
     VALID_MEMORY,
     VALID_ROLES,
+    VALID_SELF_MAILBOX,
 )
 
 
@@ -43,6 +44,7 @@ REQUIRED_TERM_KEYS = (
     "memory",
     "signals",
     "automail",
+    "command_messages",
     "statuses",
     "cell_fields",
 )
@@ -54,6 +56,7 @@ REQUIRED_CELL_FIELDS = (
     "input",
     "output",
     "automail",
+    "self_mailbox",
     "control",
     "buffer",
 )
@@ -200,6 +203,13 @@ def _validate_term_class(terms: dict[str, Any]) -> list[LanguageValidation]:
     results.append(_same_set("terms.memory", terms.get("memory"), VALID_MEMORY))
     results.append(_same_set("terms.signals", terms.get("signals"), get_args(Signal)))
     results.append(_same_set("terms.automail", terms.get("automail"), VALID_AUTOMAIL))
+    results.append(
+        _same_set(
+            "terms.command_messages",
+            terms.get("command_messages"),
+            VALID_SELF_MAILBOX,
+        )
+    )
     results.append(_same_set("terms.statuses", terms.get("statuses"), get_args(Status)))
     results.append(
         _same_set("terms.cell_fields", terms.get("cell_fields"), REQUIRED_CELL_FIELDS)
@@ -297,6 +307,7 @@ def _cell_issue(language: TransitionClaimLanguage, cell: Cell) -> str | None:
     roles = _allowed_set(language, "terms", "roles")
     memory = _allowed_set(language, "terms", "memory")
     automail = _allowed_set(language, "terms", "automail")
+    command_messages = _allowed_set(language, "terms", "command_messages")
     signals = _allowed_set(language, "terms", "signals")
     if cell.role not in roles:
         return f"unknown role: {cell.role}"
@@ -304,6 +315,8 @@ def _cell_issue(language: TransitionClaimLanguage, cell: Cell) -> str | None:
         return f"unknown memory: {cell.memory}"
     if cell.automail not in automail:
         return f"unknown automail: {cell.automail}"
+    if cell.self_mailbox not in command_messages:
+        return f"unknown self mailbox: {cell.self_mailbox}"
     channels = (*cell.upstream, *cell.input, *cell.output, *cell.control, *cell.buffer)
     for channel in channels:
         if channel not in signals:

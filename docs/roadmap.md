@@ -485,3 +485,24 @@ Status: accepted in `docs/adr/0027-stem-command-execution-source-status.md`.
 Implemented in `sources/stem_command_execution_source_status.json` and
 `docs/stem-command-execution-source-status.md`, with tests in
 `tests/test_stem_command_execution_source_status.py`.
+
+## ADR-0028: Self Mailbox Representation
+
+Goal: add the explicit self mailbox state needed by PRC's process-buffer sketch
+without implementing command-buffer execution.
+
+Deliverables:
+
+- `Cell.self_mailbox` field and validation;
+- claim-manifest, object-language, and schematic-trace support for the field;
+- updated checked schematic trace JSON artifacts that still map every Cell
+  field;
+- tests proving defaults, accepted command IDs, invalid-value rejection,
+  reset-clearing, non-execution preservation, and parser/language/trace
+  exposure.
+
+Status: accepted in `docs/adr/0028-self-mailbox-representation.md`.
+Implemented in `autarkic_systems/universal_cell.py`,
+`autarkic_systems/claim_manifest.py`, `autarkic_systems/object_language.py`,
+`autarkic_systems/schematic_trace.py`, and checked trace artifacts, with tests
+in `tests/test_self_mailbox_representation.py`.

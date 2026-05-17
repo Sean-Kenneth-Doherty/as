@@ -52,6 +52,7 @@ REQUIRED_CELL_FIELDS = (
     "input",
     "output",
     "automail",
+    "self_mailbox",
     "control",
     "buffer",
 )
@@ -668,6 +669,7 @@ def _cell_from_mapping(mapping: dict[str, Any]) -> Cell:
         input=tuple(mapping["input"]),
         output=tuple(mapping["output"]),
         automail=mapping["automail"],
+        self_mailbox=mapping["self_mailbox"],
         control=tuple(mapping["control"]),
         buffer=tuple(mapping["buffer"]),
     )
@@ -681,6 +683,7 @@ def _cell_to_mapping(cell: Cell) -> dict[str, Any]:
         "input": list(cell.input),
         "output": list(cell.output),
         "automail": cell.automail,
+        "self_mailbox": cell.self_mailbox,
         "control": list(cell.control),
         "buffer": list(cell.buffer),
     }

@@ -39,7 +39,9 @@ accumulation subset. ADR-0024 added a schematic-linked trace for one matching
 buffer append. ADR-0026 added the explicit five-bit target/command map needed
 before command execution. ADR-0027 records the command-execution source-status
 blockers: self mailbox state, command-message output representation, and
-legacy source divergences.
+legacy source divergences. ADR-0028 adds explicit `self_mailbox` representation
+but still leaves command-message output representation and execution semantics
+open.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -123,4 +125,5 @@ processor trace. ADR-0021 added a generated SVG render for the stem trace. Full
 stem command decoding, dynamic reconfiguration, larger GELC examples, and
 physical-simulation renders remain open. ADR-0025 added a generated SVG render
 for the stem buffer trace. ADR-0027 blocks full stem command execution until
-the state model for self mailbox and command-message outputs is explicit.
+the state model for command-message outputs and self-target consumption is
+explicit; ADR-0028 covers representation of the self mailbox only.
