@@ -227,3 +227,20 @@ Deliverables:
 Status: accepted in `docs/adr/0013-willard-definition-map.md`. Implemented in
 `sources/willard_definition_map.json` and `autarkic_systems/willard_map.py`,
 with tests in `tests/test_willard_definition_map.py`.
+
+## ADR-0014: Proflog Source Status
+
+Goal: decide whether public `jpt4/proflog` main can be treated as the active
+SJAS/Proflog frontier or an AS dependency.
+
+Deliverables:
+
+- structured source-status artifact for public Proflog;
+- human-readable source-status note and maintainer question;
+- tests proving the decision, public head, missing frontier terms, and smoke
+  failure are recorded.
+
+Status: accepted in `docs/adr/0014-proflog-source-status.md`. Implemented in
+`sources/proflog_frontier_status.json` and
+`docs/proflog-frontier-status.md`, with tests in
+`tests/test_proflog_frontier_status.py`.

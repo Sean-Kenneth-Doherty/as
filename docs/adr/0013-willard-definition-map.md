@@ -46,8 +46,9 @@ The first map covers:
 - The map contains anchors for Willard 2001, 2011, 2016, and 2020.
 - Each required source has at least one definition and at least one theorem or
   construction anchor.
-- Every anchor points at an existing local SJAS witness under
-  `/home/sean/Projects/_upstream/sjas`.
+- Every anchor pins a local SJAS witness path under
+  `/home/sean/Projects/_upstream/sjas`; live source checkout existence was
+  verified during the ADR run but is not required by the default fast suite.
 - Anchor IDs and source loci are unique.
 - Every anchor names AS requirements or open-problem IDs that it constrains.
 
@@ -85,6 +86,8 @@ Coverage limits:
 
 - The map relies on local PDF text extraction and source-locus labels; it is not
   a formal mechanization of the papers.
+- Default fast tests validate pinned witness paths, not the availability of the
+  disposable `_upstream` source cache.
 - It anchors only the first core Willard set named by P5: 2001, 2011, 2016,
   and 2020.
 - Willard 1993, 1997, 2005, 2014, secondary literature, and Proflog ADR-006x

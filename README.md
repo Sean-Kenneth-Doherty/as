@@ -32,12 +32,16 @@ the project legible:
   language for transition claims.
 - `docs/willard-definition-map.md` records the first definition-granularity map
   of Willard anchors needed for formal-confidence claims.
+- `docs/proflog-frontier-status.md` records why public Proflog main is not a
+  dependency-ready AS proof apparatus.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
+- `sources/proflog_frontier_status.json` makes the Proflog source-status
+  decision machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

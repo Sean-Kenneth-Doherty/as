@@ -121,6 +121,7 @@ def validate_willard_definition_map(
     *,
     required_sources: Iterable[str] = REQUIRED_CORE_SOURCES,
     witness_root: Path | str = Path("/home/sean/Projects/_upstream/sjas"),
+    require_existing_witnesses: bool = False,
 ) -> list[WillardMapValidation]:
     """Validate coverage, uniqueness, local witnesses, and AS relevance."""
 
@@ -156,7 +157,7 @@ def validate_willard_definition_map(
         results.append(_accepted("locus", "source loci are unique"))
 
     for anchor in definition_map.anchors:
-        results.extend(_validate_anchor(anchor, root))
+        results.extend(_validate_anchor(anchor, root, require_existing_witnesses))
 
     return results
 
@@ -185,7 +186,7 @@ def _parse_anchor(item: dict[str, Any]) -> WillardAnchor:
 
 
 def _validate_anchor(
-    anchor: WillardAnchor, witness_root: Path
+    anchor: WillardAnchor, witness_root: Path, require_existing_witnesses: bool
 ) -> list[WillardMapValidation]:
     results: list[WillardMapValidation] = []
 
@@ -195,17 +196,17 @@ def _validate_anchor(
         results.append(_accepted(anchor.anchor_id, "anchor kind known"))
 
     witness = anchor.local_witness.expanduser().resolve()
-    if not witness.exists():
-        results.append(_rejected(anchor.anchor_id, f"missing witness: {witness}"))
-    elif not witness.is_relative_to(witness_root):
+    if not witness.is_relative_to(witness_root):
         results.append(
             _rejected(
                 anchor.anchor_id,
                 f"witness outside expected SJAS root: {witness}",
             )
         )
+    elif require_existing_witnesses and not witness.exists():
+        results.append(_rejected(anchor.anchor_id, f"missing witness: {witness}"))
     else:
-        results.append(_accepted(anchor.anchor_id, "local witness exists"))
+        results.append(_accepted(anchor.anchor_id, "local witness path pinned"))
 
     if not anchor.as_relevance:
         results.append(_rejected(anchor.anchor_id, "missing AS relevance"))

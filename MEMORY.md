@@ -55,3 +55,9 @@
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
   work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
   upstream issue `jpt4/as#1` records the permission blocker and fork handoff.
+- `sources/proflog_frontier_status.json` and
+  `docs/proflog-frontier-status.md` are the P6 source-status record. Public
+  `jpt4/proflog` main at `77af848` is background only, not dependency-ready
+  executable evidence; the active ADR-0063 through ADR-0068 frontier described
+  in SJAS logs is missing from public main. Upstream issue `jpt4/proflog#1`
+  asks where that source lives.

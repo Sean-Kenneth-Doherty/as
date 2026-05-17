@@ -69,8 +69,10 @@ python -m unittest tests.test_willard_definition_map
 ```
 
 The test checks that all four core Willard sources are represented, local
-witness PDFs exist under the SJAS checkout, anchor IDs and source loci are
-unique, and every anchor states AS relevance.
+witness paths are pinned under the SJAS checkout, anchor IDs and source loci are
+unique, and every anchor states AS relevance. The live PDF checkout was used
+when this map was written, but the default fast suite does not require the
+disposable `_upstream` cache to be present.
 
 ## Open Follow-Ups
 

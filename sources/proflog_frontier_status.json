@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "repository": "jpt4/proflog",
+  "url": "https://github.com/jpt4/proflog",
+  "clone_url": "https://github.com/jpt4/proflog.git",
+  "local_public_path": "/home/sean/Projects/_upstream/proflog",
+  "sjas_log_path": "/home/sean/Projects/_upstream/sjas/nachlass/LOG.md",
+  "public_remote_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+  "local_public_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+  "visible_public_branches": [
+    "main"
+  ],
+  "public_files_observed": [
+    "LPTableaus.pdf",
+    "proflog.scm"
+  ],
+  "sjas_frontier_summary": "SJAS nachlass LOG.md describes Proflog ADR-0063 through ADR-0068 work from May 2026, including arithmetized formula/system/proof codes, structural code decoding, Level-1 substitution-proof vocabulary, SelfCons1 construction, subst-prf/4, subst-code/2, tableau-proof/3, and passing focused SJAS gates.",
+  "missing_public_frontier_terms": [
+    "ADR-0063",
+    "ADR-0064",
+    "ADR-0065",
+    "ADR-0066",
+    "ADR-0067",
+    "ADR-0068",
+    "tableau-proof/3",
+    "subst-prf/4",
+    "subst-code/2",
+    "SelfCons1",
+    "IS#_D(beta)",
+    "lt(1,2)",
+    "Gamma_1(g)",
+    "wff/1",
+    "neg-pair/2",
+    "delta-star-0-code"
+  ],
+  "smoke_test": {
+    "command": "guile proflog.scm",
+    "status": "failed",
+    "failure": "/home/sean/Projects/_upstream/proflog/proflog.scm:893:5: Unbound variable: even"
+  },
+  "decision": "do-not-depend-on-public-main",
+  "decision_rationale": "Public Proflog main is relevant background for Fitting-style semantic tableaux, but it is not the active SJAS/Proflog frontier described by SJAS logs and it does not run under Guile in this environment. AS should not make public main a dependency until the active ADR-006x source is recovered, pushed, or deliberately replaced.",
+  "next_actions": [
+    "Ask the repository owner where the ADR-0063 through ADR-0068 Proflog work lives or whether it should be published.",
+    "If the active source is unavailable, treat AS-local proof certificates and Willard anchor work as the safe path until a replacement tableaux/code proof apparatus is chosen.",
+    "Do not cite public jpt4/proflog main as executable SJAS evidence beyond the basic Fitting-style Proflog background."
+  ]
+}

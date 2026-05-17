@@ -15,3 +15,6 @@
 - For AS formal-confidence work, a source list is not enough. Exact definition,
   theorem, construction, and boundary anchors should be made structured and
   testable before any self-consistency claim is implemented.
+- Keep `_upstream` source checkouts out of the default fast-test critical path.
+  Fast tests should validate pinned source-status facts and paths; live clone or
+  smoke-test checks belong in ADR evidence or an explicit extended gate.

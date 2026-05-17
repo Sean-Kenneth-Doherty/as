@@ -71,7 +71,7 @@
       "reviewed_commit": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
       "public_remote_head_at_review": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
       "public_pushed_at": "2026-02-18T18:53:40Z",
-      "status": "public main does not expose the newer Proflog ADR-006x frontier described by SJAS logs; guile proflog.scm fails with an unbound example symbol in this environment",
+      "status": "public main does not expose the newer Proflog ADR-006x frontier described by SJAS logs; guile proflog.scm fails with an unbound example symbol in this environment; see sources/proflog_frontier_status.json",
       "role": "Candidate semantic-tableaux implementation background for SJAS/AFS proof apparatus work."
     },
     {

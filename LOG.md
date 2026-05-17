@@ -220,3 +220,36 @@
 - Opened upstream issue `https://github.com/jpt4/as/issues/1` to report the
   ready fork, latest commit, validation status, and blocked upstream push
   permission.
+
+## 2026-05-17 - Proflog Source Status
+
+- Added ADR-0014 for P6: decide whether public `jpt4/proflog` main can be an
+  AS dependency.
+- Checked the public Proflog remote. `git ls-remote
+  https://github.com/jpt4/proflog.git HEAD refs/heads/*` exposed only `main` at
+  `77af8481d9f41a439eb42e1d8268a5b39f7c5c33`.
+- Rebuilt the disposable `_upstream` cache for SJAS and Proflog and confirmed
+  public Proflog contains only `proflog.scm` and `LPTableaus.pdf` as project
+  payload.
+- Compared public Proflog against `sjas/nachlass/LOG.md`; ADR-0063 through
+  ADR-0068 terms such as `tableau-proof/3`, `subst-prf/4`, `subst-code/2`,
+  `SelfCons1`, and `IS#_D(beta)` are present in the SJAS log but absent from
+  public Proflog main.
+- Ran `guile proflog.scm` in the public Proflog checkout. It failed at
+  `proflog.scm:893:5` with `Unbound variable: even`.
+- Wrote `tests/test_proflog_frontier_status.py` before adding the structured
+  status artifact. The red run failed because
+  `sources/proflog_frontier_status.json` did not exist.
+- Added `sources/proflog_frontier_status.json` and
+  `docs/proflog-frontier-status.md`, recording the decision:
+  `do-not-depend-on-public-main`.
+- Adjusted the Willard-map fast validator to check pinned witness paths rather
+  than requiring disposable `_upstream` clones to exist on every default test
+  run.
+- Opened `https://github.com/jpt4/proflog/issues/1` asking where the
+  ADR-0063 through ADR-0068 source lives and whether public Proflog main should
+  be treated as background only.
+- Verified `python -m unittest tests.test_willard_definition_map
+  tests.test_proflog_frontier_status` passed 8 tests, `python -m unittest
+  discover` passed 50 tests, py_compile passed for touched Python files, JSON
+  checks passed, and `git diff --check` passed.

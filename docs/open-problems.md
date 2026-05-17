@@ -85,8 +85,11 @@ AS depend on it?
 Why it matters: Public Proflog `main` does not match the active SJAS log and
 does not run under Guile in this environment.
 
-Likely next artifact: a source-status note or issue draft documenting the gap,
-plus a decision on whether to repair, replace, or ignore public Proflog.
+Status: started by ADR-0014. `docs/proflog-frontier-status.md` and
+`sources/proflog_frontier_status.json` record that public Proflog main is
+relevant background but not dependency-ready executable evidence. Remaining work
+is to recover/publish the ADR-0063 through ADR-0068 source or choose an AS-local
+replacement path.
 
 ## P7: Hardware/Schematic Evidence Path
 

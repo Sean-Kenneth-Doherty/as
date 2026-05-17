@@ -36,7 +36,7 @@ class WillardDefinitionMapTests(unittest.TestCase):
                     anchors,
                 )
 
-    def test_map_validates_local_witnesses_and_as_relevance(self):
+    def test_map_validates_local_witness_paths_and_as_relevance(self):
         results = validate_willard_definition_map(
             self.definition_map,
             required_sources=REQUIRED_CORE_SOURCES,
