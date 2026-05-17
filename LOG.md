@@ -1549,3 +1549,24 @@
   `python -m unittest discover` passed 410 tests. `py_compile` passed for the
   touched tests, JSON parsing passed for the registry, new bundle, and touched
   source-status manifest, and `git diff --check` passed.
+
+## 2026-05-17 - Evidence Registry Completeness
+
+- Added ADR-0070 to make the evidence registry fail closed over sibling
+  `*_bundle.json` files.
+- Extended `tests/test_evidence_bundle_registry.py` before implementation. The
+  red run failed because registry validation did not emit
+  `registry-completeness` and did not reject an unregistered sibling bundle.
+- Added `source_path` tracking to loaded evidence registries and a
+  `registry-completeness` validation result that discovers sibling bundle
+  files beside the manifest.
+- Updated the CLI report path so
+  `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
+  shows the completeness check.
+- Updated README, roadmap, literature map, open problems, evidence registry
+  docs, project memory, and lessons.
+- Verified the focused registry/CLI tests passed 12 tests, the actual registry
+  CLI printed an all-`OK` report including `registry-completeness`, the
+  adjacent evidence-bundle stack passed 27 tests, and
+  `python -m unittest discover` passed 411 tests. `py_compile` passed for the
+  touched module and tests, and `git diff --check` passed.

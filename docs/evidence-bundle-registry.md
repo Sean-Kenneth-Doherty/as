@@ -27,6 +27,10 @@ The registry validator checks:
 - agreement between each registry entry and the loaded bundle; and
 - the full cross-layer validation for every registered bundle.
 
+ADR-0070 also makes the registry a closed index over sibling `*_bundle.json`
+files. If a bundle file sits beside `evidence/manifest.json` but is not listed
+in the manifest, validation rejects the registry.
+
 ADR-0067 adds an operator-facing command over the same validator:
 
 ```sh
@@ -50,6 +54,6 @@ python -m unittest tests.test_evidence_bundle_registry
 python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json
 ```
 
-The tests cover registry loading, the current ADR-0065 and ADR-0068 bundle
-entries, whole registry validation, duplicate bundle-ID rejection, and missing
-bundle-path rejection.
+The tests cover registry loading, the current ADR-0065, ADR-0068, and ADR-0069
+bundle entries, whole registry validation, duplicate bundle-ID rejection,
+missing bundle-path rejection, and unregistered sibling bundle-file rejection.

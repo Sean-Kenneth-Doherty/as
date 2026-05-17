@@ -187,3 +187,6 @@
 - Multi-command policies deserve their own evidence bundle even when they
   share a rejection claim. The inspected question is not only "is rejection
   correct?" but also "did AS avoid inventing priority or sequencing?"
+- A registry should fail closed over its artifact directory. If a bundle file
+  can sit beside the manifest without being listed, the registry is only a
+  partial index.

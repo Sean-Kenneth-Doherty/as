@@ -334,3 +334,7 @@
   `tests/test_multi_command_evidence_bundle.py`. It registers the direct
   simultaneous `wire-r-init` plus `proc-l-init` rejection boundary as the third
   evidence bundle.
+- ADR-0070 adds registry completeness checking in
+  `autarkic_systems/evidence_bundle.py`. The evidence registry CLI now reports
+  `registry-completeness` and rejects sibling `*_bundle.json` files that are
+  not listed in `evidence/manifest.json`.

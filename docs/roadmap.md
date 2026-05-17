@@ -1359,3 +1359,20 @@ Deliverables:
 Status: accepted in `docs/adr/0069-multi-command-rejection-evidence-bundle.md`.
 Implemented in `evidence/multi_command_recipient_rejection_bundle.json`, with
 tests in `tests/test_multi_command_evidence_bundle.py`.
+
+## ADR-0070: Evidence Registry Completeness
+
+Goal: make the evidence registry a closed index over sibling bundle files.
+
+Deliverables:
+
+- registry completeness validation for sibling `*_bundle.json` files;
+- CLI/report coverage for the new `registry-completeness` result;
+- tests proving the checked-in registry is complete and that unregistered
+  sibling bundle files are rejected;
+- human-facing registry documentation update.
+
+Status: accepted in `docs/adr/0070-evidence-registry-completeness.md`.
+Implemented in `autarkic_systems/evidence_bundle.py`, with tests in
+`tests/test_evidence_bundle_registry.py` and
+`tests/test_evidence_bundle_cli.py`.

@@ -75,6 +75,7 @@ class EvidenceBundleRegistry:
     reviewed_at: str
     purpose: str
     bundles: tuple[EvidenceBundleRegistryEntry, ...]
+    source_path: Path | None = None
 
 
 @dataclass(frozen=True)
@@ -89,7 +90,8 @@ class EvidenceBundleValidation:
 def load_evidence_bundle_registry(path: Path | str) -> EvidenceBundleRegistry:
     """Load the project transition evidence bundle registry."""
 
-    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    registry_path = Path(path)
+    data = json.loads(registry_path.read_text(encoding="utf-8"))
     bundles = data.get("bundles")
     if not isinstance(bundles, list) or not bundles:
         raise ValueError("evidence bundle registry must contain a non-empty bundles list")
@@ -99,6 +101,7 @@ def load_evidence_bundle_registry(path: Path | str) -> EvidenceBundleRegistry:
         reviewed_at=_required_text(data, "reviewed_at"),
         purpose=_required_text(data, "purpose"),
         bundles=tuple(_parse_registry_entry(entry) for entry in bundles),
+        source_path=registry_path,
     )
 
 
@@ -139,6 +142,7 @@ def validate_evidence_bundle_registry(
         _validate_registry_bundle_paths(registry),
     ]
     results.append(_validate_registry_bundles(registry))
+    results.append(_validate_registry_completeness(registry))
     return results
 
 
@@ -265,6 +269,34 @@ def _validate_registry_bundles(
         "registry-bundle-validation",
         f"validated {len(registry.bundles)} bundles",
     )
+
+
+def _validate_registry_completeness(
+    registry: EvidenceBundleRegistry,
+) -> EvidenceBundleValidation:
+    registry_dir = _registry_directory(registry)
+    registered = {_normalized_path(entry.path) for entry in registry.bundles}
+    discovered = {
+        _normalized_path(path)
+        for path in sorted(registry_dir.glob("*_bundle.json"))
+    }
+    unregistered = sorted(discovered - registered)
+    if unregistered:
+        display = ", ".join(str(path) for path in unregistered)
+        return _rejected(
+            "registry-completeness",
+            f"unregistered bundle files: {display}",
+        )
+    return _accepted(
+        "registry-completeness",
+        f"all {len(discovered)} discovered bundle files are registered",
+    )
+
+
+def _registry_directory(registry: EvidenceBundleRegistry) -> Path:
+    if registry.source_path is None:
+        return Path("evidence")
+    return registry.source_path.parent
 
 
 def _parse_registry_entry(item: dict[str, Any]) -> EvidenceBundleRegistryEntry:
@@ -514,6 +546,10 @@ def _duplicates(items: list[Any]) -> set[Any]:
             duplicates.add(item)
         seen.add(item)
     return duplicates
+
+
+def _normalized_path(path: Path) -> Path:
+    return path.resolve(strict=False)
 
 
 def _required_dict(item: dict[str, Any], key: str) -> dict[str, Any]:

@@ -1,6 +1,8 @@
 import unittest
 from dataclasses import replace
 from pathlib import Path
+import json
+import tempfile
 
 from autarkic_systems.evidence_bundle import (
     load_evidence_bundle_registry,
@@ -69,6 +71,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                 "registry-entries",
                 "registry-bundle-paths",
                 "registry-bundle-validation",
+                "registry-completeness",
             },
         )
 
@@ -100,6 +103,53 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                 not result.accepted
                 and result.subject == "registry-bundle-paths"
                 and "missing bundle" in result.detail
+                for result in results
+            ),
+            results,
+        )
+
+    def test_unregistered_sibling_bundle_file_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = Path(tmp) / "manifest.json"
+            registered_bundle = Path(tmp) / "registered_bundle.json"
+            unregistered_bundle = Path(tmp) / "unregistered_bundle.json"
+
+            registered_bundle.write_text(
+                BUNDLE.read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
+            unregistered_bundle.write_text(
+                REJECTION_BUNDLE.read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
+            registry_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "registry_id": "drifted-registry",
+                        "reviewed_at": "2026-05-17",
+                        "purpose": "Exercise unregistered bundle detection.",
+                        "bundles": [
+                            {
+                                "bundle_id": BUNDLE_ID,
+                                "path": str(registered_bundle),
+                                "claim_id": CLAIM_ID,
+                                "expected_status": STATUS,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            registry = load_evidence_bundle_registry(registry_path)
+            results = validate_evidence_bundle_registry(registry)
+
+        self.assertTrue(
+            any(
+                not result.accepted
+                and result.subject == "registry-completeness"
+                and "unregistered bundle files" in result.detail
                 for result in results
             ),
             results,

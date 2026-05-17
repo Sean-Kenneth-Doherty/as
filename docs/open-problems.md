@@ -95,6 +95,8 @@ ADR-0068 adds a second registered evidence bundle for the recipient non-init
 `standard-signal` rejection boundary.
 ADR-0069 adds a third registered evidence bundle for the direct multi-command
 recipient rejection boundary.
+ADR-0070 makes that registry complete over sibling bundle files, so future
+bundle artifacts cannot bypass the manifest silently.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -235,6 +237,8 @@ ADR-0068 registers the recipient non-init rejection bundle, so the registry
 covers both an executable init slice and a blocked-command rejection boundary.
 ADR-0069 registers the multi-command rejection bundle, so the registry also
 covers simultaneous command-token conflicts.
+ADR-0070 adds a closed-index registry check for unregistered sibling bundle
+files.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.
