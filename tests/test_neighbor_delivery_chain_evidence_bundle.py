@@ -64,6 +64,10 @@ class NeighborDeliveryChainEvidenceBundleTests(unittest.TestCase):
             Path("schematics/chains/neighbor_delivery_recipient_chain_trace.json"),
         )
         self.assertEqual(
+            self.bundle.chain_svg_path,
+            Path("schematics/chains/neighbor_delivery_recipient_chain_trace.svg"),
+        )
+        self.assertEqual(
             self.bundle.transition_bundle_paths,
             (
                 Path("evidence/neighbor_command_buffer_delivery_bundle.json"),
@@ -94,6 +98,7 @@ class NeighborDeliveryChainEvidenceBundleTests(unittest.TestCase):
                 "chain-proof-certificate",
                 "chain-language",
                 "chain-trace",
+                "chain-svg",
                 "underlying-transition-bundles",
                 "source-statuses",
                 "boundary",

@@ -121,6 +121,7 @@ chain surface to its underlying transition evidence bundles and source-status
 boundaries.
 ADR-0082 records that handoff as a dedicated two-step chain trace before any
 SVG rendering work.
+ADR-0083 adds the checked SVG render for that chain trace.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -290,6 +291,8 @@ two underlying transition evidence bundles, and source-status blockers into
 one directly validated artifact.
 ADR-0082 adds a dedicated transition-chain trace for the same handoff, replaying
 the sender step, delivered tuple, recipient step, and whole-chain helper.
+ADR-0083 renders that trace as an exact-output checked SVG while keeping the
+JSON trace as authority.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

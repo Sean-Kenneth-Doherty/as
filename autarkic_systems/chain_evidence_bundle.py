@@ -26,6 +26,7 @@ from autarkic_systems.chain_object_language import (
     validate_chain_claim_surface,
     validate_chain_language_manifest,
 )
+from autarkic_systems.chain_svg import validate_transition_chain_svg
 from autarkic_systems.chain_trace import (
     load_transition_chain_trace,
     validate_transition_chain_trace,
@@ -55,6 +56,7 @@ class TransitionChainEvidenceBundle:
     chain_language_path: Path
     chain_claim_validator_path: Path
     chain_trace_path: Path
+    chain_svg_path: Path
     transition_bundle_paths: tuple[Path, ...]
     source_status_paths: tuple[Path, ...]
     boundaries: tuple[str, ...]
@@ -95,6 +97,7 @@ def load_transition_chain_evidence_bundle(
             _required_text(artifacts, "chain_claim_validator")
         ),
         chain_trace_path=Path(_required_text(artifacts, "chain_trace")),
+        chain_svg_path=Path(_required_text(artifacts, "chain_svg")),
         transition_bundle_paths=tuple(
             Path(path) for path in _required_text_list(artifacts, "transition_bundles")
         ),
@@ -116,6 +119,7 @@ def validate_transition_chain_evidence_bundle(
     results.append(_validate_chain_proof_certificate(bundle))
     results.append(_validate_chain_language(bundle))
     results.append(_validate_chain_trace(bundle))
+    results.append(_validate_chain_svg(bundle))
     results.append(_validate_underlying_transition_bundles(bundle))
     results.append(_validate_source_statuses(bundle))
     results.append(_validate_boundary(bundle))
@@ -381,6 +385,26 @@ def _validate_chain_trace(
     if failures:
         return _rejected("chain-trace", " | ".join(failures))
     return _accepted("chain-trace", f"validated {len(results)} chain trace checks")
+
+
+def _validate_chain_svg(
+    bundle: TransitionChainEvidenceBundle,
+) -> ChainEvidenceBundleValidation:
+    try:
+        trace = load_transition_chain_trace(bundle.chain_trace_path)
+        svg_text = bundle.chain_svg_path.read_text(encoding="utf-8")
+        results = validate_transition_chain_svg(trace, svg_text=svg_text)
+    except Exception as exc:  # pragma: no cover - defensive path for drifted files.
+        return _rejected("chain-svg", f"chain SVG error: {exc}")
+
+    failures = [
+        f"{result.subject}: {result.detail}"
+        for result in results
+        if not result.accepted
+    ]
+    if failures:
+        return _rejected("chain-svg", " | ".join(failures))
+    return _accepted("chain-svg", f"validated {len(results)} chain SVG checks")
 
 
 def _validate_underlying_transition_bundles(

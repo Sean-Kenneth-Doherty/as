@@ -15,6 +15,7 @@ artifact:
 - chain helper `execute_neighbor_delivery_recipient_chain`;
 - chain proof certificate and chain object-language manifest;
 - chain trace `schematics/chains/neighbor_delivery_recipient_chain_trace.json`;
+- chain SVG `schematics/chains/neighbor_delivery_recipient_chain_trace.svg`;
 - the neighbor command-buffer delivery transition bundle; and
 - the recipient init command-message transition bundle.
 
@@ -45,5 +46,5 @@ python -m autarkic_systems.chain_evidence_bundle --format json
 
 The validator checks schema, executable chain example status, chain predicate
 acceptance, chain proof certificate verification, chain language validation,
-chain trace validation, both underlying transition evidence bundles,
+chain trace validation, chain SVG validation, both underlying transition evidence bundles,
 source-status JSON, and boundary terms.

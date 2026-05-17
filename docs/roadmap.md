@@ -1596,3 +1596,19 @@ Deliverables:
 Status: accepted in `docs/adr/0082-neighbor-delivery-chain-trace.md`.
 Implemented in `schematics/chains/neighbor_delivery_recipient_chain_trace.json`,
 with tests in `tests/test_neighbor_delivery_chain_trace.py`.
+
+## ADR-0083: Neighbor Delivery Chain SVG
+
+Goal: render the ADR-0082 chain trace as a checked SVG artifact.
+
+Deliverables:
+
+- `schematics/chains/neighbor_delivery_recipient_chain_trace.svg`;
+- `autarkic_systems/chain_svg.py`;
+- `tests/test_neighbor_delivery_chain_svg.py`;
+- ADR-0081 chain evidence bundle linkage to the SVG;
+- human-facing chain SVG note and project navigation updates.
+
+Status: accepted in `docs/adr/0083-neighbor-delivery-chain-svg.md`.
+Implemented in `schematics/chains/neighbor_delivery_recipient_chain_trace.svg`,
+with tests in `tests/test_neighbor_delivery_chain_svg.py`.

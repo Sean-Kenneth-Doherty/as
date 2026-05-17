@@ -30,6 +30,9 @@ The trace is also validated by the composed-chain evidence bundle:
 python -m autarkic_systems.chain_evidence_bundle
 ```
 
+ADR-0083 adds the renderer-locked SVG view of this trace at
+`schematics/chains/neighbor_delivery_recipient_chain_trace.svg`.
+
 ## Boundary
 
 This is a trace artifact, not a renderer. It does not add SVG output,

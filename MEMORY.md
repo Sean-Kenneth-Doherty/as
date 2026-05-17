@@ -407,3 +407,8 @@
   `tests/test_neighbor_delivery_chain_trace.py`. It records the sender step,
   handoff tuple, recipient step, and whole-chain helper replay for the first
   transition-chain handoff, and the ADR-0081 evidence bundle now validates it.
+- ADR-0083 adds `docs/neighbor-delivery-chain-svg.md`,
+  `schematics/chains/neighbor_delivery_recipient_chain_trace.svg`,
+  `autarkic_systems/chain_svg.py`, and
+  `tests/test_neighbor_delivery_chain_svg.py`. The checked SVG must exactly
+  match renderer output, and the ADR-0081 evidence bundle now validates it.

@@ -228,3 +228,6 @@
   drawing two cells. First record the sender step, delivered tuple, recipient
   handoff state, recipient step, and chain replay in a machine-checked JSON
   artifact.
+- Chain SVGs need the same renderer lock as single-transition SVGs. If the
+  visual is checked in, validate exact renderer output and route it through the
+  composed evidence bundle.

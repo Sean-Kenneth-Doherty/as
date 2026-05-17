@@ -1857,3 +1857,34 @@
   the existing transition evidence registry JSON CLI still reported 8 accepted
   bundles, `git diff --check` passed, and `python -m unittest discover` passed
   486 tests.
+
+## 2026-05-17 - Neighbor Delivery Chain SVG
+
+- Added ADR-0083 to render the ADR-0082 transition-chain trace as a checked SVG
+  artifact.
+- Wrote `tests/test_neighbor_delivery_chain_svg.py` before implementation and
+  updated `tests/test_neighbor_delivery_chain_evidence_bundle.py` to require
+  the chain evidence bundle to validate the SVG. The red run failed because
+  `autarkic_systems.chain_svg` was absent, `chain_svg_path` was missing from
+  the bundle model, and `chain-svg` was not yet a bundle validation subject.
+- Added `autarkic_systems/chain_svg.py` to render the two-cell sender/handoff/
+  recipient view from the chain trace and validate XML metadata, exact renderer
+  output, visible labels, and routed flows.
+- Added `schematics/chains/neighbor_delivery_recipient_chain_trace.svg` as the
+  checked renderer output. The first green attempt caught and fixed a trailing
+  blank-line drift in the committed SVG.
+- Updated `evidence/chains/neighbor_delivery_chain_bundle.json` and
+  `autarkic_systems/chain_evidence_bundle.py` so the composed-chain evidence
+  bundle validates the SVG.
+- Added `docs/neighbor-delivery-chain-svg.md` and updated README, roadmap,
+  literature map, open problems, chain trace, chain evidence, memory, and
+  lessons.
+- Verified the focused chain SVG/evidence tests passed 14 tests, the adjacent
+  chain/trace/SVG/evidence stack passed 105 tests, XML parsing passed for the
+  checked SVG, `jq` parsed the updated bundle, `py_compile` passed for the
+  new/touched modules and tests, the chain evidence JSON CLI reported
+  `accepted: true` with `result_count: 9` and an accepted `chain-svg` subject,
+  the chain claims JSON CLI still reported `accepted: true`, the existing
+  transition evidence registry JSON CLI still reported 8 accepted bundles,
+  `git diff --check` passed, and `python -m unittest discover` passed 492
+  tests.

@@ -130,6 +130,8 @@ the project legible:
   init-family command consumption.
 - `docs/neighbor-delivery-chain-trace.md` records the first composed-chain
   trace for that two-step handoff.
+- `docs/neighbor-delivery-chain-svg.md` records the rendered SVG view of that
+  composed-chain trace.
 - `docs/neighbor-delivery-chain-claim.md` records the named claim and
   proof-certificate surface for that two-step handoff.
 - `docs/transition-chain-claim-language.md` records the syntax classes and
@@ -192,6 +194,8 @@ the project legible:
   consumed without adding a general multi-cell simulator.
 - `autarkic_systems/chain_trace.py` validates the first recorded
   transition-chain trace for that two-step handoff.
+- `autarkic_systems/chain_svg.py` renders and validates the first
+  transition-chain SVG view for that two-step handoff.
 - `autarkic_systems/chain_claims.py` validates the first transition-chain
   claim manifest and manifest-example proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
@@ -271,13 +275,15 @@ the project legible:
   same layers.
 - `evidence/chains/neighbor_delivery_chain_bundle.json` makes the two-step
   neighbor-delivery recipient-consumption chain inspectable across its claim,
-  proof, language, chain trace, underlying transition bundles, and
+  proof, language, chain trace, chain SVG, underlying transition bundles, and
   source-status layers.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
 - `schematics/chains/neighbor_delivery_recipient_chain_trace.json` records the
   sender step, handoff tuple, recipient step, and whole-chain status for the
   neighbor-delivery recipient-consumption chain.
+- `schematics/chains/neighbor_delivery_recipient_chain_trace.svg` renders that
+  two-step chain trace as a checked SVG.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered
