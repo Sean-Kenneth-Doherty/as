@@ -1629,3 +1629,18 @@ Deliverables:
 Status: accepted in `docs/adr/0084-chain-evidence-registry.md`. Implemented in
 `evidence/chains/manifest.json`, with tests in
 `tests/test_chain_evidence_bundle_registry.py`.
+
+## ADR-0085: Chain Evidence CLI Target Selection
+
+Goal: make `--bundle` and `--registry` mutually exclusive for the chain
+evidence CLI.
+
+Deliverables:
+
+- parser target exclusivity in `autarkic_systems/chain_evidence_bundle.py`;
+- `tests/test_chain_evidence_cli_target_selection.py`;
+- command documentation update.
+
+Status: accepted in `docs/adr/0085-chain-evidence-cli-target-selection.md`.
+Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
+`tests/test_chain_evidence_cli_target_selection.py`.

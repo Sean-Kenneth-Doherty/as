@@ -233,3 +233,5 @@
   composed evidence bundle.
 - Once chain evidence has its own artifact family, give it its own closed
   registry instead of relaxing the single-transition registry boundary.
+- A CLI that can validate one artifact or a registry should reject ambiguous
+  target flags instead of silently choosing one.

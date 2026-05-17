@@ -259,12 +259,13 @@ def run_chain_evidence_bundle_cli(argv: list[str] | None = None) -> int:
         prog="python -m autarkic_systems.chain_evidence_bundle",
         description="Validate an AS transition-chain evidence bundle.",
     )
-    parser.add_argument(
+    target_group = parser.add_mutually_exclusive_group()
+    target_group.add_argument(
         "--bundle",
         default=None,
         help="Path to the transition-chain evidence bundle JSON.",
     )
-    parser.add_argument(
+    target_group.add_argument(
         "--registry",
         default=None,
         help="Path to a transition-chain evidence bundle registry JSON.",

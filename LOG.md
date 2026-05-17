@@ -1912,3 +1912,23 @@
   reported 8 accepted bundles, `jq` parsed the new registry, `py_compile`
   passed for the touched module and focused test, `git diff --check` passed,
   and `python -m unittest discover` passed 502 tests.
+
+## 2026-05-17 - Chain Evidence CLI Target Selection
+
+- Added ADR-0085 to make `--bundle` and `--registry` mutually exclusive for
+  `python -m autarkic_systems.chain_evidence_bundle`.
+- Wrote `tests/test_chain_evidence_cli_target_selection.py` before
+  implementation. The red run showed the parser accepted both flags and
+  silently validated the registry.
+- Updated `run_chain_evidence_bundle_cli` to put `--bundle` and `--registry`
+  in an argparse mutually exclusive group while preserving the checked-in
+  single-bundle default when neither flag is supplied.
+- Updated `docs/chain-evidence-bundle-registry.md`, roadmap, memory, and
+  lessons with the explicit target-selection rule.
+- Verified the focused target-selection test passed 2 tests, adjacent chain
+  CLI/registry/bundle tests passed 20 tests, the single-bundle chain evidence
+  JSON CLI still reported `accepted: true` with `result_count: 9`, the chain
+  registry JSON CLI still reported `accepted: true` with `bundle_count: 1`,
+  `py_compile` passed for the touched module and focused test,
+  `git diff --check` passed, and `python -m unittest discover` passed 504
+  tests.

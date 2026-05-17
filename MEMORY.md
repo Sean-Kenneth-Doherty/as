@@ -417,3 +417,6 @@
   `tests/test_chain_evidence_bundle_registry.py`. The registry validates
   transition-chain evidence bundles separately from the top-level
   single-transition `evidence/manifest.json` registry.
+- ADR-0085 makes `--bundle` and `--registry` mutually exclusive for
+  `python -m autarkic_systems.chain_evidence_bundle`; supplying both exits
+  through argparse with code `2`.
