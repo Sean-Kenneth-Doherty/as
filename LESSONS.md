@@ -10,3 +10,5 @@
 - When one repo log points to adjacent implementation work, verify the public
   branch before treating it as current. In this case, SJAS describes newer
   Proflog work than public `jpt4/proflog` exposes on `main`.
+- For this repo's standard-library Python tests, keep `tests/__init__.py` so
+  plain `python -m unittest discover` finds the suite from the repository root.

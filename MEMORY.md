@@ -29,3 +29,5 @@
 - `sources/manifest.json` is the repo-owned source baseline for AS, AFS, PRC,
   SJAS, and adjacent Proflog; update it when reviewed commits or source status
   changes.
+- The first executable AS probe is `autarkic_systems/universal_cell.py`; run
+  `python -m unittest discover` for the current fast test suite.

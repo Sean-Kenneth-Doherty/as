@@ -49,3 +49,22 @@
 - Added `docs/source-manifest.md` and `docs/adr/0003-source-manifest.md` to
   explain the manifest, verification commands, and status of each source.
 - Verified that `jq` is available for structural manifest checks.
+
+## 2026-05-16 - Universal Cell Transition Probe
+
+- Added ADR-0004 for the first code-bearing AS artifact: a tiny fixed-role
+  Universal Cell transition probe.
+- Wrote `tests/test_universal_cell.py` before implementation. The first run of
+  `python -m unittest tests.test_universal_cell` failed with
+  `ModuleNotFoundError: No module named 'autarkic_systems'`, confirming the red
+  step.
+- Implemented `autarkic_systems/universal_cell.py` with immutable `Cell` and
+  `StepResult` records plus `step_fixed_cell`.
+- Covered wire right-rotation, processor left-rotation and memory toggle,
+  blocked output, upstream pull, stem-init reconfiguration, malformed input
+  clearing, invalid role rejection, and invalid memory rejection.
+- Added `tests/__init__.py` so the default fast command
+  `python -m unittest discover` actually discovers the suite.
+- Verified `python -m unittest discover`, `python -m py_compile
+  autarkic_systems/universal_cell.py autarkic_systems/__init__.py
+  tests/__init__.py tests/test_universal_cell.py`, and `git diff --check`.

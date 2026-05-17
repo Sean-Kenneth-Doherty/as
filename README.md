@@ -32,6 +32,15 @@ the project legible:
   working context.
 - `LESSONS.md` records durable lessons learned while working this project.
 
+## Fast Verification
+
+```sh
+python -m unittest discover
+```
+
+The current executable probe lives in `autarkic_systems/universal_cell.py` and
+is covered by `tests/test_universal_cell.py`.
+
 ## Subordinate Programs
 
 Autarkic Systems currently subsumes three named programs:

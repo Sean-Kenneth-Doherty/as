@@ -81,6 +81,10 @@ Gate:
 - coverage limits must be documented;
 - slow checks must be split from fast checks.
 
+Status: accepted in `docs/adr/0004-universal-cell-transition-probe.md`.
+Implemented the first substrate-side probe in `autarkic_systems/universal_cell.py`
+with fast tests under `tests/test_universal_cell.py`.
+
 ## ADR-0005: Literature Map And Open Problems
 
 Goal: turn the first review into a usable research map.
