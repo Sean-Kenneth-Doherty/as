@@ -95,7 +95,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "recipient-side command-message consumption" in item
+                "recipient-side init-family command-message consumption" in item
                 for item in allowed
             )
         )

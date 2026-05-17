@@ -176,3 +176,6 @@ ADR-0045 promotes that delivery behavior into the named claim/proof surface.
 ADR-0046 adds the corresponding schematic-linked trace for one neighbor B
 delivery case.
 ADR-0047 adds the rendered SVG view of that trace.
+ADR-0048 records the source-status decision for recipient-side command-message
+inputs and allows the next executable slice to consume init-family command
+messages only.

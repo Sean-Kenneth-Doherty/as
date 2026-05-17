@@ -890,3 +890,24 @@ Status: accepted in
 `autarkic_systems/schematic_svg.py` and
 `schematics/neighbor_command_buffer_delivery_trace.svg`, with tests in
 `tests/test_neighbor_command_buffer_delivery_svg.py`.
+
+## ADR-0048: Recipient Command Consumption Source Status
+
+Goal: decide the next recipient-side command-message consumption slice from
+PRC sources before executing delivered neighbor command tokens.
+
+Deliverables:
+
+- `sources/recipient_command_consumption_source_status.json`;
+- human-facing source-status note;
+- tests covering the formal input special-message anchor, legacy
+  special-message sets, unresolved blockers, and the updated stem command
+  execution next-slice list;
+- documentation updates that move the next executable slice to recipient-side
+  init-family command-message consumption.
+
+Status: accepted in
+`docs/adr/0048-recipient-command-consumption-source-status.md`. Implemented in
+`sources/recipient_command_consumption_source_status.json` and
+`docs/recipient-command-consumption-source-status.md`, with tests in
+`tests/test_recipient_command_consumption_source_status.py`.

@@ -80,7 +80,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Promote recipient-side command-message consumption into a source-status decision before executing delivered neighbor commands.",
+    "Implement recipient-side init-family command-message consumption for delivered neighbor commands.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]

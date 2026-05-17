@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "decision": "implement-recipient-init-family-command-message-consumption-next",
+  "runtime_change": "none-source-status-only",
+  "formal_model_input_special_message_anchor": {
+    "witness_id": "PRC-FORMAL-INPUT-SPECIAL-MESSAGE",
+    "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+    "locus": "lines 604-613",
+    "covered_roles": [
+      "wire",
+      "proc",
+      "stem"
+    ],
+    "summary": "The formal model routes input-channel special messages on wire, proc, and stem cells through process-special-message after clearing input-channel state.",
+    "as_interpretation": "Recipient-side command-message inputs should be executable behavior, but only after each command subset has a source-backed boundary."
+  },
+  "formal_stem_self_mailbox_anchor": {
+    "witness_id": "PRC-FORMAL-STEM-SMB-SPECIAL-MESSAGE",
+    "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+    "locus": "lines 674-681",
+    "summary": "The formal model's stem-process-special-message path clears the self mailbox and then executes the special message; stem-init is the explicit shown case.",
+    "as_interpretation": "AS already uses this source pressure for self-mailbox init-family command execution."
+  },
+  "legacy_special_message_witnesses": [
+    {
+      "witness_id": "LEGACY-RAA-SPECIAL-MESSAGES",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm",
+      "locus": "lines 166-173 and 264-273",
+      "special_messages": [
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
+      "summary": "RAA names seven special messages, processes input-channel special messages, and maps init-family plus write-buffer messages to primitive operations."
+    },
+    {
+      "witness_id": "LEGACY-SEMSIM-SPECIAL-MESSAGES",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm",
+      "locus": "lines 86-90 and 353-365",
+      "special_messages": [
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
+      "summary": "The semantic simulator names the same seven special messages and maps stem input special messages to init-family and write-buffer operations."
+    },
+    {
+      "witness_id": "LEGACY-FSMSIM-SPECIAL-MESSAGES",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/fsmsim.scm",
+      "locus": "lines 10-14, 180-187, and 240-267",
+      "special_messages": [
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one"
+      ],
+      "summary": "The FSM simulator treats special-message input as process-special-message regardless of output occupancy, then dispatches init-family and write-buffer operations."
+    }
+  ],
+  "allowed_next_slice": {
+    "recipient_init_family": true,
+    "standard_signal": false,
+    "write_buffer": false,
+    "summary": "AS may next implement recipient-side input-channel consumption for init-family command messages only: stem-init, wire-r-init, wire-l-init, proc-r-init, and proc-l-init."
+  },
+  "blockers": [
+    {
+      "blocker_id": "standard-signal-command-message-divergence",
+      "summary": "The formal command table includes standard-signal at command offset 0, but the legacy special-message sets exclude standard-signal and treat it as a separate standard input class."
+    },
+    {
+      "blocker_id": "write-buffer-command-message-semantics",
+      "summary": "Legacy sources define write-buf-zero and write-buf-one primitive operations, but AS has not yet selected a source-backed write-buffer boundary for fixed cells, stem cells, and buffer-full behavior."
+    },
+    {
+      "blocker_id": "multi-command-input-conflict-policy",
+      "summary": "AS must still decide how to handle multiple simultaneous command-message inputs before claiming full recipient-side command-message consumption."
+    }
+  ]
+}

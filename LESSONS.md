@@ -112,3 +112,6 @@
   proof obligations instead of direct behavior tests alone.
 - Delivery renders must expose the exact output channel, not only that output
   changed. Otherwise a wrong-channel command delivery can look visually valid.
+- After delivery evidence is complete, decide recipient consumption from source
+  status before changing runtime behavior. A delivered token is only half of
+  the semantics.

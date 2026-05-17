@@ -61,6 +61,8 @@ the project legible:
   command-buffer decoding map.
 - `docs/stem-command-execution-source-status.md` records why full stem command
   execution is still blocked after the decoder map.
+- `docs/recipient-command-consumption-source-status.md` records the
+  source-backed boundary for recipient-side command-message inputs.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
@@ -120,6 +122,8 @@ the project legible:
   target/command map machine-checkable.
 - `sources/stem_command_execution_source_status.json` makes the stem command
   execution source-status decision machine-checkable.
+- `sources/recipient_command_consumption_source_status.json` makes the
+  recipient command-consumption source-status decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

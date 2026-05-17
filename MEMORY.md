@@ -212,3 +212,9 @@
   `tests/test_neighbor_command_buffer_delivery_svg.py`. The SVG renderer now
   has a neighbor-delivery command-buffer summary branch before generic buffer
   rendering.
+- ADR-0048 adds `sources/recipient_command_consumption_source_status.json`,
+  `docs/recipient-command-consumption-source-status.md`, and
+  `tests/test_recipient_command_consumption_source_status.py`. It restores the
+  PRC source cache at commit `7e82c73fac8f108faac801a5c65e2c2b92653ba5` as
+  ADR evidence and permits only recipient-side init-family command-message
+  consumption as the next executable slice.

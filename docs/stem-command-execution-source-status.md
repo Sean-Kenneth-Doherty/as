@@ -25,7 +25,9 @@ ADR-0044 delivers decoded neighbor-target command buffers onto output channels.
 ADR-0045 promotes that delivery behavior into the named transition-claim
 surface. ADR-0046 adds a schematic-linked trace for one
 `neighbor-b/proc-l-init` delivery. ADR-0047 adds the corresponding rendered SVG
-view.
+view. ADR-0048 records a recipient command-consumption source-status decision:
+AS may next execute recipient-side init-family command-message inputs, while
+`standard-signal` and write-buffer command messages remain blocked.
 ADR-0042/ADR-0043 now cover the self-target `write-buf-one` append boundary.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
@@ -61,12 +63,13 @@ Legacy divergences:
 ## AS Interpretation
 
 ADR-0026 remains correct as a command-buffer decoder because it uses the formal
-model's explicit command table. Execution is a different claim. To execute
-commands honestly, AS first needs to choose:
+model's explicit command table. Execution is a different claim. To execute full
+command behavior honestly, AS still needs to choose:
 
-- how decoded output-channel command tokens are consumed by neighbors;
 - how `standard-signal`, `write-buf-zero`, and `write-buf-one` behave when
   selected as self-mailbox or self-target command-buffer commands.
+- how write-buffer and standard-signal command-message inputs behave on
+  recipient cells after the init-family recipient slice.
 
 ## Verification
 

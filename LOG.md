@@ -1020,3 +1020,31 @@
   py_compile passed for the touched Python module and tests, JSON parsing
   passed for the source-status and neighbor-delivery trace manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Recipient Command Consumption Source Status
+
+- Added ADR-0048 to decide the recipient-side command-message consumption
+  frontier from PRC sources before changing runtime behavior.
+- Restored the disposable PRC source cache by cloning
+  `https://github.com/jpt4/prc.git` to `/home/sean/Projects/_upstream/prc`.
+  The checkout is at manifest-pinned commit
+  `7e82c73fac8f108faac801a5c65e2c2b92653ba5`.
+- Inspected the formal model input-channel `process-special-message` anchor
+  and legacy RAA/FSM/Sem simulator special-message sets.
+- Wrote `tests/test_recipient_command_consumption_source_status.py` before
+  implementation. The red run failed because
+  `sources/recipient_command_consumption_source_status.json` did not exist.
+- Added `sources/recipient_command_consumption_source_status.json` and
+  `docs/recipient-command-consumption-source-status.md`.
+- Updated the stem command execution source-status artifact so the next
+  executable slice is recipient-side init-family command-message consumption,
+  while `standard-signal`, write-buffer, and multi-command input policy remain
+  blocked.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons.
+- Verified
+  `python -m unittest tests.test_recipient_command_consumption_source_status`
+  passed 5 tests and the adjacent stem source-status suite passed 9 tests.
+  `python -m unittest discover` passed 279 tests, py_compile passed for the
+  touched tests, JSON parsing passed for the recipient and stem source-status
+  manifests, and `git diff --check` passed.
