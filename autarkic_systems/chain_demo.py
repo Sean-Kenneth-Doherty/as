@@ -33,6 +33,7 @@ def build_chain_demo_report(
     bundle = load_transition_chain_evidence_bundle(bundle_path)
     results = validate_transition_chain_evidence_bundle(bundle)
     validation = chain_evidence_bundle_report_payload(bundle, results)
+    evidence_layers = _evidence_layers(bundle)
     return {
         "accepted": validation["accepted"],
         "bundle_id": bundle.bundle_id,
@@ -47,7 +48,8 @@ def build_chain_demo_report(
             "result_count": validation["result_count"],
             "results": validation["results"],
         },
-        "evidence_layers": _evidence_layers(bundle),
+        "evidence_layers": evidence_layers,
+        "missing_evidence_paths": _missing_evidence_paths(evidence_layers),
         "boundaries": list(bundle.boundaries),
     }
 
@@ -61,6 +63,7 @@ def format_chain_demo_report(report: dict[str, Any]) -> str:
     validation = report["validation"]
     status = "accepted" if report["accepted"] else "rejected"
     failed_subjects = validation["failed_subjects"] or []
+    missing_paths = report["missing_evidence_paths"] or []
 
     lines = [
         f"Vertical chain demo: {report['bundle_id']}",
@@ -72,6 +75,7 @@ def format_chain_demo_report(report: dict[str, Any]) -> str:
         f"Validation: {status}",
         f"Validation checks: {validation['result_count']}",
         f"Failed subjects: {', '.join(failed_subjects) if failed_subjects else 'none'}",
+        f"Missing evidence paths: {', '.join(missing_paths) if missing_paths else 'none'}",
         f"Claim manifest: {_path_for_role(layers, 'chain-claim-manifest')}",
         f"Proof certificates: {_path_for_role(layers, 'chain-proof-certificates')}",
         f"Language: {_path_for_role(layers, 'chain-language')}",
@@ -115,7 +119,7 @@ def run_chain_demo_cli(argv: list[str] | None = None) -> int:
     return 0 if report["accepted"] else 1
 
 
-def _evidence_layers(bundle: Any) -> list[dict[str, str]]:
+def _evidence_layers(bundle: Any) -> list[dict[str, Any]]:
     layers = [
         {
             "role": "chain-claim-manifest",
@@ -150,17 +154,29 @@ def _evidence_layers(bundle: Any) -> list[dict[str, str]]:
         {"role": "source-status", "path": str(path)}
         for path in bundle.source_status_paths
     )
-    return layers
+    return [_with_presence(layer) for layer in layers]
 
 
-def _path_for_role(layers: list[dict[str, str]], role: str) -> str:
+def _with_presence(layer: dict[str, str]) -> dict[str, Any]:
+    return {
+        "role": layer["role"],
+        "path": layer["path"],
+        "exists": Path(layer["path"]).is_file(),
+    }
+
+
+def _missing_evidence_paths(layers: list[dict[str, Any]]) -> list[str]:
+    return [layer["path"] for layer in layers if not layer["exists"]]
+
+
+def _path_for_role(layers: list[dict[str, Any]], role: str) -> str:
     for layer in layers:
         if layer["role"] == role:
             return layer["path"]
     raise ValueError(f"missing evidence layer role {role}")
 
 
-def _paths_for_role(layers: list[dict[str, str]], role: str) -> list[str]:
+def _paths_for_role(layers: list[dict[str, Any]], role: str) -> list[str]:
     return [layer["path"] for layer in layers if layer["role"] == role]
 
 

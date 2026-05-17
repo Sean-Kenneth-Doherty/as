@@ -130,6 +130,9 @@ failure-summarizing.
 ADR-0088 gives single-bundle chain JSON the same failure summary.
 ADR-0089 adds a vertical chain demo report so the current claim-to-evidence
 path can be inspected from one command.
+ADR-0090 makes the demo explicit about artifact presence so missing traces,
+renders, manifests, bundles, or source-status records are visible in the
+first-run surface.
 
 ## P3: Choose The First Proof Apparatus
 

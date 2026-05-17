@@ -212,7 +212,7 @@ the project legible:
 - `autarkic_systems/chain_demo.py` renders the first vertical chain demo
   report, reusing the chain evidence validator while summarizing the claim,
   executable chain, trace, SVG, lower-level evidence bundles, source-status
-  boundaries, and validation result in one command.
+  boundaries, artifact-presence summary, and validation result in one command.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -237,7 +237,7 @@ the project legible:
   machine-readable JSON.
 - `python -m autarkic_systems.chain_demo` emits the current transition-chain
   demo report in text form; `--format json` emits the same claim-to-evidence
-  surface for automation.
+  surface for automation, including per-layer artifact presence.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

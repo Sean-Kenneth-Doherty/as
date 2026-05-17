@@ -430,3 +430,6 @@
   over the current transition-chain claim, validation result, trace, SVG,
   lower-level evidence bundles, source-status boundaries, and explicit
   boundary terms.
+- ADR-0090 adds per-layer `exists` flags and top-level
+  `missing_evidence_paths` to the chain demo report so artifact presence is
+  explicit in text and JSON output.

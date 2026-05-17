@@ -245,3 +245,6 @@
 - Once an evidence stack becomes deep enough, add a vertical demo surface that
   reuses validators and makes the integrated artifact inspectable from one
   command.
+- Demo reports should expose artifact presence directly. A first-run surface
+  should not require readers to infer missing files from lower-level validator
+  details.

@@ -26,12 +26,15 @@ The text report names:
 - the transition-chain claim;
 - the predicate, positive example, chain helper, and expected status;
 - validation status, result count, and failed subjects;
+- missing evidence paths, if any;
 - the chain claim, proof, language, trace, and SVG artifacts;
 - the underlying transition evidence bundles;
 - the source-status boundaries; and
 - the explicit boundary terms.
 
 JSON mode emits the same surface for automation.
+ADR-0090 adds an `exists` flag to every JSON evidence layer and a
+`missing_evidence_paths` summary to both text and JSON output.
 
 ## Boundary
 

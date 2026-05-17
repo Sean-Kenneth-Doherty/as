@@ -2012,3 +2012,22 @@
   `validation.result_count: 9`, and `validation.failed_subjects: []`,
   `py_compile` and `git diff --check` passed, and
   `python -m unittest discover` passed 514 tests.
+
+## 2026-05-17 - Chain Demo Artifact Presence
+
+- Added ADR-0090 to make the vertical chain demo explicit about whether each
+  listed evidence artifact exists.
+- Updated `tests/test_chain_demo_report.py` before implementation. The red run
+  failed because demo evidence layers lacked `exists`, the payload lacked
+  `missing_evidence_paths`, and text output did not summarize missing paths.
+- Extended `autarkic_systems.chain_demo` so every evidence layer reports
+  `exists`, the payload exposes `missing_evidence_paths`, and text output
+  prints `Missing evidence paths: none` for the checked-in bundle.
+- Updated README, the vertical demo note, the chain evidence bundle note, open
+  problems, roadmap, memory, and lessons with the artifact-presence contract.
+- Verified the focused demo test passed 7 tests; adjacent demo, chain bundle,
+  chain registry, and CLI target-selection tests passed 31 tests. Text demo
+  output reported `Missing evidence paths: none`; JSON demo output reported
+  `missing_evidence_paths: []` and `exists: true` for every evidence layer.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
+  with the full suite running 515 tests.

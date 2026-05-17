@@ -38,6 +38,7 @@ class ChainDemoReportTests(unittest.TestCase):
         )
         self.assertEqual(report["validation"]["failed_subjects"], [])
         self.assertEqual(report["validation"]["result_count"], 9)
+        self.assertEqual(report["missing_evidence_paths"], [])
 
         layers = {(layer["role"], layer["path"]) for layer in report["evidence_layers"]}
         self.assertIn(("chain-claim-manifest", "claims/transition_chain_claims.json"), layers)
@@ -72,7 +73,28 @@ class ChainDemoReportTests(unittest.TestCase):
             ),
             layers,
         )
+        self.assertTrue(all(layer["exists"] for layer in report["evidence_layers"]))
         self.assertGreaterEqual(len(report["boundaries"]), 1)
+
+    def test_payload_reports_missing_evidence_layer_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            drifted_bundle = Path(tmp) / "drifted_chain_bundle.json"
+            data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+            missing_path = "sources/missing_chain_demo_status.json"
+            data["artifacts"]["source_statuses"] = [missing_path]
+            drifted_bundle.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_chain_demo_report(drifted_bundle)
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["missing_evidence_paths"], [missing_path])
+        missing_layers = [
+            layer for layer in report["evidence_layers"] if not layer["exists"]
+        ]
+        self.assertEqual(
+            missing_layers,
+            [{"role": "source-status", "path": missing_path, "exists": False}],
+        )
 
     def test_text_report_summarizes_claim_validation_and_artifacts(self):
         report = build_chain_demo_report(BUNDLE)
@@ -84,6 +106,7 @@ class ChainDemoReportTests(unittest.TestCase):
         self.assertIn("Validation: accepted", text)
         self.assertIn(f"Trace: {TRACE}", text)
         self.assertIn(f"SVG: {SVG}", text)
+        self.assertIn("Missing evidence paths: none", text)
         self.assertIn("Transition bundles: 2", text)
         self.assertIn("Source-status boundaries: 5", text)
         self.assertNotIn("FAIL", text)
@@ -100,8 +123,14 @@ class ChainDemoReportTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["validation"]["failed_subjects"], [])
+        self.assertEqual(payload["missing_evidence_paths"], [])
         self.assertTrue(
-            any(layer["role"] == "chain-svg" and layer["path"] == SVG for layer in payload["evidence_layers"])
+            any(
+                layer["role"] == "chain-svg"
+                and layer["path"] == SVG
+                and layer["exists"]
+                for layer in payload["evidence_layers"]
+            )
         )
 
     def test_drifted_bundle_report_exposes_validation_failure(self):

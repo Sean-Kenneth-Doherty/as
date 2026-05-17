@@ -1707,3 +1707,19 @@ Deliverables:
 Status: accepted in `docs/adr/0089-vertical-chain-demo-report.md`.
 Implemented in `autarkic_systems/chain_demo.py`, with tests in
 `tests/test_chain_demo_report.py`.
+
+## ADR-0090: Chain Demo Artifact Presence
+
+Goal: make the vertical chain demo report explicit about whether listed
+evidence artifacts exist.
+
+Deliverables:
+
+- per-layer `exists` flags in `autarkic_systems.chain_demo` JSON output;
+- top-level `missing_evidence_paths` summary in text and JSON output;
+- focused missing-path tests in `tests/test_chain_demo_report.py`;
+- documentation update for the vertical chain demo contract.
+
+Status: accepted in `docs/adr/0090-chain-demo-artifact-presence.md`.
+Implemented in `autarkic_systems/chain_demo.py`, with tests in
+`tests/test_chain_demo_report.py`.

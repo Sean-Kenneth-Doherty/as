@@ -57,6 +57,8 @@ bundle validation reports rejected validation subjects directly.
 ADR-0089 adds `python -m autarkic_systems.chain_demo` as a first-run report
 over the same validated bundle, claim, trace, SVG, transition-bundle, and
 source-status surface.
+ADR-0090 makes that report explicit about artifact presence with per-layer
+`exists` flags and a `missing_evidence_paths` summary.
 
 ADR-0084 adds the chain evidence registry so this bundle is discoverable and
 batch-validatable without merging it into the single-transition evidence
