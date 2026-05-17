@@ -110,3 +110,5 @@
 - New command-buffer behavior should enter the named claim surface before
   schematic evidence depends on it. That keeps later traces tied to explicit
   proof obligations instead of direct behavior tests alone.
+- Delivery renders must expose the exact output channel, not only that output
+  changed. Otherwise a wrong-channel command delivery can look visually valid.

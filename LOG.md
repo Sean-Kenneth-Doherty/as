@@ -996,3 +996,27 @@
   py_compile passed for the touched Python module and tests, JSON parsing
   passed for the source-status and neighbor-delivery trace manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Neighbor Command Buffer Delivery SVG
+
+- Added ADR-0047 for a generated SVG render of the neighbor command-buffer
+  delivery trace.
+- Wrote `tests/test_neighbor_command_buffer_delivery_svg.py` before
+  implementation. The red run failed because
+  `NEIGHBOR_COMMAND_BUFFER_DELIVERY_SVG_ARTIFACT` did not exist in
+  `autarkic_systems.schematic_svg`.
+- Added `NEIGHBOR_COMMAND_BUFFER_DELIVERY_SVG_ARTIFACT` and a renderer summary
+  branch that exposes the delivered output channel and cleared command state
+  before generic buffer summaries.
+- Generated `schematics/neighbor_command_buffer_delivery_trace.svg` from
+  `render_schematic_svg()`.
+- Added `docs/neighbor-command-buffer-delivery-svg.md` as the human-facing
+  render boundary note.
+- Updated README, roadmap, literature map, open problems, stem command
+  execution source-status note/artifact, project memory, and lessons.
+- Verified `python -m unittest tests.test_neighbor_command_buffer_delivery_svg`
+  passed 7 tests and the adjacent SVG/trace/source-status/object-language
+  suite passed 36 tests. `python -m unittest discover` passed 274 tests,
+  py_compile passed for the touched Python module and tests, JSON parsing
+  passed for the source-status and neighbor-delivery trace manifests, and
+  `git diff --check` passed.

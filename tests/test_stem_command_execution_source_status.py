@@ -95,12 +95,6 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "rendered SVG for neighbor-target command delivery" in item
-                for item in allowed
-            )
-        )
-        self.assertTrue(
-            any(
                 "recipient-side command-message consumption" in item
                 for item in allowed
             )

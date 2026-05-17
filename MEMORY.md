@@ -207,3 +207,8 @@
   `docs/neighbor-command-buffer-delivery-trace.md`, and
   `tests/test_neighbor_command_buffer_delivery_trace.py` for one completed
   `neighbor-b/proc-l-init` command buffer delivered to output channel 1.
+- ADR-0047 adds `schematics/neighbor_command_buffer_delivery_trace.svg`,
+  `docs/neighbor-command-buffer-delivery-svg.md`, and
+  `tests/test_neighbor_command_buffer_delivery_svg.py`. The SVG renderer now
+  has a neighbor-delivery command-buffer summary branch before generic buffer
+  rendering.

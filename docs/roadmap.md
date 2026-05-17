@@ -870,3 +870,23 @@ Status: accepted in
 `autarkic_systems/schematic_trace.py` and
 `schematics/neighbor_command_buffer_delivery_trace.json`, with tests in
 `tests/test_neighbor_command_buffer_delivery_trace.py`.
+
+## ADR-0047: Neighbor Command Buffer Delivery SVG
+
+Goal: add a rendered SVG view of the ADR-0046 neighbor command-buffer delivery
+trace.
+
+Deliverables:
+
+- `schematics/neighbor_command_buffer_delivery_trace.svg`;
+- exported neighbor command-buffer delivery SVG artifact path;
+- renderer summary fields for command-buffer before state, output-channel
+  delivery, and cleared command state;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  delivery details, exact renderer-output matching, and drift rejection.
+
+Status: accepted in
+`docs/adr/0047-neighbor-command-buffer-delivery-svg.md`. Implemented in
+`autarkic_systems/schematic_svg.py` and
+`schematics/neighbor_command_buffer_delivery_trace.svg`, with tests in
+`tests/test_neighbor_command_buffer_delivery_svg.py`.

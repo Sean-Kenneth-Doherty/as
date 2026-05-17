@@ -24,7 +24,8 @@ self-target non-init command-buffer cases as an append-boundary claim, and
 ADR-0044 delivers decoded neighbor-target command buffers onto output channels.
 ADR-0045 promotes that delivery behavior into the named transition-claim
 surface. ADR-0046 adds a schematic-linked trace for one
-`neighbor-b/proc-l-init` delivery.
+`neighbor-b/proc-l-init` delivery. ADR-0047 adds the corresponding rendered SVG
+view.
 ADR-0042/ADR-0043 now cover the self-target `write-buf-one` append boundary.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
