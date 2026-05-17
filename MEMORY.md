@@ -401,3 +401,9 @@
   `tests/test_neighbor_delivery_chain_evidence_bundle.py`. Chain evidence
   bundles live under `evidence/chains/` so `evidence/manifest.json` remains the
   closed single-transition evidence registry.
+- ADR-0082 adds `docs/neighbor-delivery-chain-trace.md`,
+  `schematics/chains/neighbor_delivery_recipient_chain_trace.json`,
+  `autarkic_systems/chain_trace.py`, and
+  `tests/test_neighbor_delivery_chain_trace.py`. It records the sender step,
+  handoff tuple, recipient step, and whole-chain helper replay for the first
+  transition-chain handoff, and the ADR-0081 evidence bundle now validates it.

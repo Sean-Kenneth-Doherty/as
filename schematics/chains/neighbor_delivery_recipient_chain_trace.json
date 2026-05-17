@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "artifact_id": "neighbor-delivery-recipient-chain-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Record the composed two-step handoff from neighbor command-buffer delivery into recipient init-family command consumption.",
+  "claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED",
+  "chain_helper": "execute_neighbor_delivery_recipient_chain",
+  "expected_status": "neighbor-delivery-consumed",
+  "recipient_initial_cell": {
+    "role": "wire",
+    "memory": "right",
+    "upstream": [
+      "_",
+      "_",
+      "_"
+    ],
+    "input": [
+      "_",
+      "_",
+      "_"
+    ],
+    "output": [
+      "_",
+      "_",
+      "_"
+    ],
+    "automail": "_",
+    "self_mailbox": "_",
+    "control": [],
+    "buffer": []
+  },
+  "sender_step": {
+    "step_id": "sender-neighbor-delivery",
+    "transition_function": "step_stem_cell",
+    "before_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        1,
+        0,
+        0
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [
+        1,
+        0,
+        0
+      ],
+      "buffer": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "expected_status": "stem-command-buffer-neighbor-delivered",
+    "expected_after_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "proc-l-init",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "control[1,0,0] active",
+      "input[1,0,0] matches control -> append 1",
+      "buffer[1,0,1,0] -> buffer[1,0,1,0,1]",
+      "decode value 21 -> neighbor-b/proc-l-init",
+      "neighbor command[proc-l-init] -> output[1]",
+      "command buffer delivered; control/buffer cleared"
+    ]
+  },
+  "handoff": {
+    "source_step": "sender-neighbor-delivery",
+    "source_field": "output",
+    "target_step": "recipient-init-consumption",
+    "target_field": "upstream",
+    "delivered_tuple": [
+      "_",
+      "proc-l-init",
+      "_"
+    ],
+    "expected_recipient_before_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "proc-l-init",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    }
+  },
+  "recipient_step": {
+    "step_id": "recipient-init-consumption",
+    "transition_function": "step_fixed_cell",
+    "before_cell": {
+      "role": "wire",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "proc-l-init",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "expected_status": "recipient-init-command-message-processed",
+    "expected_after_cell": {
+      "role": "proc",
+      "memory": "left",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "sender output[1] -> recipient upstream[1]",
+      "command[proc-l-init] -> role proc",
+      "command[proc-l-init] -> memory left",
+      "command[proc-l-init] consumed -> _",
+      "recipient upstream cleared; command state cleared"
+    ]
+  },
+  "boundaries": [
+    "This trace covers only the init-family neighbor delivery recipient chain.",
+    "It records a two-step handoff, not a scheduler, topology model, or multi-cell timing semantics.",
+    "Recipient non-init command messages remain blocked by source-status records.",
+    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked."
+  ]
+}

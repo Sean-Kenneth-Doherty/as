@@ -5,6 +5,7 @@ handoff from a stem neighbor-delivery transition into a recipient command
 consumption transition.
 ADR-0078 adds a named chain claim and proof-certificate surface for this
 handoff.
+ADR-0082 records the accepted handoff as a dedicated transition-chain trace.
 
 The chain is intentionally narrower than a multi-cell simulator. It composes
 one sender step and one recipient step:
@@ -34,6 +35,7 @@ Run:
 
 ```sh
 python -m unittest tests.test_neighbor_delivery_recipient_chain
+python -m unittest tests.test_neighbor_delivery_chain_trace
 ```
 
 The tests cover accepted `neighbor-b/proc-l-init` delivery into an empty fixed

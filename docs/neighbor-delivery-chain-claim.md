@@ -52,3 +52,6 @@ outside the unit-test runner.
 ADR-0081 adds a separate chain evidence bundle that ties this claim/proof
 surface to the chain object language, the underlying neighbor-delivery and
 recipient-init transition bundles, and the source-status boundary records.
+
+ADR-0082 adds a dedicated chain trace for the same accepted handoff, giving the
+claim a single recorded sender-step, handoff, and recipient-step artifact.

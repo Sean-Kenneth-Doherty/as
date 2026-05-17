@@ -128,6 +128,8 @@ the project legible:
 - `docs/neighbor-delivery-recipient-chain.md` records the first executable
   two-step handoff from neighbor command-buffer delivery into recipient
   init-family command consumption.
+- `docs/neighbor-delivery-chain-trace.md` records the first composed-chain
+  trace for that two-step handoff.
 - `docs/neighbor-delivery-chain-claim.md` records the named claim and
   proof-certificate surface for that two-step handoff.
 - `docs/transition-chain-claim-language.md` records the syntax classes and
@@ -188,6 +190,8 @@ the project legible:
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
+- `autarkic_systems/chain_trace.py` validates the first recorded
+  transition-chain trace for that two-step handoff.
 - `autarkic_systems/chain_claims.py` validates the first transition-chain
   claim manifest and manifest-example proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
@@ -267,9 +271,13 @@ the project legible:
   same layers.
 - `evidence/chains/neighbor_delivery_chain_bundle.json` makes the two-step
   neighbor-delivery recipient-consumption chain inspectable across its claim,
-  proof, language, underlying transition bundles, and source-status layers.
+  proof, language, chain trace, underlying transition bundles, and
+  source-status layers.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
+- `schematics/chains/neighbor_delivery_recipient_chain_trace.json` records the
+  sender step, handoff tuple, recipient step, and whole-chain status for the
+  neighbor-delivery recipient-consumption chain.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

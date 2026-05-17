@@ -119,6 +119,8 @@ ADR-0080 exposes chain-claim validation as a direct text/JSON CLI.
 ADR-0081 adds the first composed-chain evidence bundle and CLI, tying that
 chain surface to its underlying transition evidence bundles and source-status
 boundaries.
+ADR-0082 records that handoff as a dedicated two-step chain trace before any
+SVG rendering work.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -286,6 +288,8 @@ ADR-0081 adds a separate composed-chain evidence bundle under
 `evidence/chains/`, tying the chain claim, proof certificate, chain language,
 two underlying transition evidence bundles, and source-status blockers into
 one directly validated artifact.
+ADR-0082 adds a dedicated transition-chain trace for the same handoff, replaying
+the sender step, delivered tuple, recipient step, and whole-chain helper.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

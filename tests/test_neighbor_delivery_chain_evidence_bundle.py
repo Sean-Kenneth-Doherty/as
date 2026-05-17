@@ -60,6 +60,10 @@ class NeighborDeliveryChainEvidenceBundleTests(unittest.TestCase):
             Path("autarkic_systems/chain_claims.py"),
         )
         self.assertEqual(
+            self.bundle.chain_trace_path,
+            Path("schematics/chains/neighbor_delivery_recipient_chain_trace.json"),
+        )
+        self.assertEqual(
             self.bundle.transition_bundle_paths,
             (
                 Path("evidence/neighbor_command_buffer_delivery_bundle.json"),
@@ -89,6 +93,7 @@ class NeighborDeliveryChainEvidenceBundleTests(unittest.TestCase):
                 "chain-claim-example",
                 "chain-proof-certificate",
                 "chain-language",
+                "chain-trace",
                 "underlying-transition-bundles",
                 "source-statuses",
                 "boundary",

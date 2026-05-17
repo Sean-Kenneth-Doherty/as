@@ -1579,3 +1579,20 @@ Status: accepted in
 `docs/adr/0081-neighbor-delivery-chain-evidence-bundle.md`. Implemented in
 `evidence/chains/neighbor_delivery_chain_bundle.json`, with tests in
 `tests/test_neighbor_delivery_chain_evidence_bundle.py`.
+
+## ADR-0082: Neighbor Delivery Chain Trace
+
+Goal: record the ADR-0077 neighbor delivery recipient chain as a dedicated
+two-step trace artifact before rendering it.
+
+Deliverables:
+
+- `schematics/chains/neighbor_delivery_recipient_chain_trace.json`;
+- `autarkic_systems/chain_trace.py`;
+- `tests/test_neighbor_delivery_chain_trace.py`;
+- ADR-0081 chain evidence bundle linkage to the trace;
+- human-facing chain trace note and project navigation updates.
+
+Status: accepted in `docs/adr/0082-neighbor-delivery-chain-trace.md`.
+Implemented in `schematics/chains/neighbor_delivery_recipient_chain_trace.json`,
+with tests in `tests/test_neighbor_delivery_chain_trace.py`.

@@ -1824,3 +1824,36 @@
   reported 8 accepted bundles, `jq` parsed the new bundle, `py_compile`
   passed for the new module and focused test, `git diff --check` passed, and
   `python -m unittest discover` passed 479 tests.
+
+## 2026-05-17 - Neighbor Delivery Chain Trace
+
+- Added ADR-0082 to record the ADR-0077 neighbor delivery
+  recipient-consumption handoff as a dedicated transition-chain trace before
+  adding any renderer.
+- Wrote `tests/test_neighbor_delivery_chain_trace.py` before implementation
+  and updated `tests/test_neighbor_delivery_chain_evidence_bundle.py` to
+  require the chain evidence bundle to validate the trace. The red run failed
+  because `autarkic_systems.chain_trace` was absent, `chain_trace_path` was
+  missing from the bundle model, and `chain-trace` was not yet a bundle
+  validation subject.
+- Added `schematics/chains/neighbor_delivery_recipient_chain_trace.json`,
+  recording the stem sender step, delivered `proc-l-init` tuple, recipient
+  initial state, recipient handoff state, recipient init-consumption step, and
+  chain boundaries.
+- Added `autarkic_systems/chain_trace.py` to replay the sender step, verify
+  the output-to-upstream handoff, replay the recipient step, and replay the
+  full chain helper.
+- Updated `evidence/chains/neighbor_delivery_chain_bundle.json` and
+  `autarkic_systems/chain_evidence_bundle.py` so the composed-chain evidence
+  bundle validates the new trace.
+- Added `docs/neighbor-delivery-chain-trace.md` and updated README, roadmap,
+  literature map, open problems, recipient-chain, chain-claim, and
+  chain-evidence notes, memory, and lessons.
+- Verified the focused chain trace/evidence tests passed 15 tests, the
+  adjacent chain/trace/evidence stack passed 85 tests, `jq` parsed the new
+  trace and updated bundle, `py_compile` passed for the new/touched modules and
+  tests, the chain evidence JSON CLI reported `accepted: true` with
+  `result_count: 8`, the chain claims JSON CLI still reported `accepted: true`,
+  the existing transition evidence registry JSON CLI still reported 8 accepted
+  bundles, `git diff --check` passed, and `python -m unittest discover` passed
+  486 tests.

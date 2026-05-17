@@ -26,6 +26,10 @@ from autarkic_systems.chain_object_language import (
     validate_chain_claim_surface,
     validate_chain_language_manifest,
 )
+from autarkic_systems.chain_trace import (
+    load_transition_chain_trace,
+    validate_transition_chain_trace,
+)
 from autarkic_systems.evidence_bundle import (
     load_transition_evidence_bundle,
     validate_transition_evidence_bundle,
@@ -50,6 +54,7 @@ class TransitionChainEvidenceBundle:
     chain_proof_certificate_path: Path
     chain_language_path: Path
     chain_claim_validator_path: Path
+    chain_trace_path: Path
     transition_bundle_paths: tuple[Path, ...]
     source_status_paths: tuple[Path, ...]
     boundaries: tuple[str, ...]
@@ -89,6 +94,7 @@ def load_transition_chain_evidence_bundle(
         chain_claim_validator_path=Path(
             _required_text(artifacts, "chain_claim_validator")
         ),
+        chain_trace_path=Path(_required_text(artifacts, "chain_trace")),
         transition_bundle_paths=tuple(
             Path(path) for path in _required_text_list(artifacts, "transition_bundles")
         ),
@@ -109,6 +115,7 @@ def validate_transition_chain_evidence_bundle(
     results.append(claim_result)
     results.append(_validate_chain_proof_certificate(bundle))
     results.append(_validate_chain_language(bundle))
+    results.append(_validate_chain_trace(bundle))
     results.append(_validate_underlying_transition_bundles(bundle))
     results.append(_validate_source_statuses(bundle))
     results.append(_validate_boundary(bundle))
@@ -350,6 +357,30 @@ def _validate_chain_language(
         "chain-language",
         f"validated {len(language_results)} language clauses and {len(surface_results)} surface clauses",
     )
+
+
+def _validate_chain_trace(
+    bundle: TransitionChainEvidenceBundle,
+) -> ChainEvidenceBundleValidation:
+    try:
+        trace = load_transition_chain_trace(bundle.chain_trace_path)
+        results = validate_transition_chain_trace(trace)
+    except Exception as exc:  # pragma: no cover - defensive path for drifted files.
+        return _rejected("chain-trace", f"chain trace error: {exc}")
+
+    if trace.claim_id != bundle.chain_claim_id:
+        return _rejected("chain-trace", f"claim id mismatch: {trace.claim_id}")
+    if trace.expected_status != bundle.expected_status:
+        return _rejected("chain-trace", f"status mismatch: {trace.expected_status}")
+
+    failures = [
+        f"{result.subject}: {result.detail}"
+        for result in results
+        if not result.accepted
+    ]
+    if failures:
+        return _rejected("chain-trace", " | ".join(failures))
+    return _accepted("chain-trace", f"validated {len(results)} chain trace checks")
 
 
 def _validate_underlying_transition_bundles(

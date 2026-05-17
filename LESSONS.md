@@ -224,3 +224,7 @@
 - Composed-chain evidence should not be silently added to a single-transition
   registry. Keep the chain artifact separate, then validate the claim, proof,
   language, lower-level bundles, and source blockers together.
+- A composed handoff trace is a better precursor to SVG than immediately
+  drawing two cells. First record the sender step, delivered tuple, recipient
+  handoff state, recipient step, and chain replay in a machine-checked JSON
+  artifact.

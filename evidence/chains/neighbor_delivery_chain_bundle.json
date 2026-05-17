@@ -13,6 +13,7 @@
     "chain_proof_certificates": "claims/transition_chain_proof_certificates.json",
     "chain_language": "language/transition_chain_claim_language.json",
     "chain_claim_validator": "autarkic_systems/chain_claims.py",
+    "chain_trace": "schematics/chains/neighbor_delivery_recipient_chain_trace.json",
     "transition_bundles": [
       "evidence/neighbor_command_buffer_delivery_bundle.json",
       "evidence/recipient_init_command_message_bundle.json"

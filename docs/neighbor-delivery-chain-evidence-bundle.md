@@ -14,6 +14,7 @@ artifact:
 - positive example `neighbor b proc left delivery consumed by empty recipient`;
 - chain helper `execute_neighbor_delivery_recipient_chain`;
 - chain proof certificate and chain object-language manifest;
+- chain trace `schematics/chains/neighbor_delivery_recipient_chain_trace.json`;
 - the neighbor command-buffer delivery transition bundle; and
 - the recipient init command-message transition bundle.
 
@@ -44,5 +45,5 @@ python -m autarkic_systems.chain_evidence_bundle --format json
 
 The validator checks schema, executable chain example status, chain predicate
 acceptance, chain proof certificate verification, chain language validation,
-both underlying transition evidence bundles, source-status JSON, and boundary
-terms.
+chain trace validation, both underlying transition evidence bundles,
+source-status JSON, and boundary terms.
