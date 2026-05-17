@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "artifact_id": "self-mailbox-unsupported-schematic-and-uc-transition-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Sixth AS-owned schematic-linked Universal Cell trace, covering the unsupported self-mailbox command boundary that preserves a write-buf-one command without execution.",
+  "required_witness_ids": [
+    "PRC-README-UC-CRITERIA",
+    "PRC-GELC-GEOMETRY",
+    "PRC-RLEM-LITERATURE",
+    "PRC-CIRCULATOR-PHYSICAL",
+    "PRC-RALA-RECONFIGURATION",
+    "PRC-UC-FORMAL-MODEL",
+    "PRC-ASM-SIMULATOR",
+    "PRC-SCHEMATIC-FIGURES"
+  ],
+  "schematic": {
+    "node_id": "AS-PRC-SELF-MAILBOX-UNSUPPORTED-TRIANGULAR-RLEM-001",
+    "geometry": "triangular-rlem-node",
+    "memory_direction": "right",
+    "ports": [
+      {
+        "port_id": "p0",
+        "label": "north",
+        "orientation": "north",
+        "signal_index": 0,
+        "summary": "First signal channel on the triangular unsupported mailbox node."
+      },
+      {
+        "port_id": "p1",
+        "label": "east",
+        "orientation": "east",
+        "signal_index": 1,
+        "summary": "Second signal channel on the triangular unsupported mailbox node."
+      },
+      {
+        "port_id": "p2",
+        "label": "west",
+        "orientation": "west",
+        "signal_index": 2,
+        "summary": "Third signal channel on the triangular unsupported mailbox node."
+      }
+    ],
+    "layers": [
+      {
+        "layer_id": "symbolic-rlem-behavior",
+        "summary": "A write-buf-one self-mailbox command is recognized as unsupported and leaves the stem node unchanged.",
+        "boundary": "This layer states preservation of an unresolved command only; it does not implement write-buffer semantics.",
+        "witness_ids": [
+          "PRC-RLEM-LITERATURE",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "gelc-geometry",
+        "summary": "The unsupported mailbox node uses the same triangular GELC/RLEM port vocabulary as the other traces.",
+        "boundary": "This layer fixes schematic geometry and port orientation, not a complete command-routing circuit.",
+        "witness_ids": [
+          "PRC-GELC-GEOMETRY",
+          "PRC-SCHEMATIC-FIGURES"
+        ]
+      },
+      {
+        "layer_id": "uc-state",
+        "summary": "The trace records every current AS Cell field before and after one unsupported mailbox activation.",
+        "boundary": "This layer is limited to the ADR-0034 preservation boundary and adds no command execution.",
+        "witness_ids": [
+          "PRC-README-UC-CRITERIA",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "candidate-physical-implementation",
+        "summary": "Switchable circulator hardware and auxiliary command-routing support remain candidate interpretations.",
+        "boundary": "This layer keeps physical implementation and RALA-like auxiliary circuitry separate from the tested unsupported boundary.",
+        "witness_ids": [
+          "PRC-CIRCULATOR-PHYSICAL",
+          "PRC-RALA-RECONFIGURATION"
+        ]
+      }
+    ]
+  },
+  "trace": {
+    "trace_id": "AS-PRC-SELF-MAILBOX-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001",
+    "transition_function": "step_stem_cell",
+    "cell_fields": [
+      "role",
+      "memory",
+      "upstream",
+      "input",
+      "output",
+      "automail",
+      "self_mailbox",
+      "control",
+      "buffer"
+    ],
+    "before_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "write-buf-one",
+      "control": [
+        1,
+        1,
+        0
+      ],
+      "buffer": [
+        1,
+        0,
+        1
+      ]
+    },
+    "expected_status": "self-mailbox-unsupported",
+    "expected_after_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "self_mailbox": "write-buf-one",
+      "control": [
+        1,
+        1,
+        0
+      ],
+      "buffer": [
+        1,
+        0,
+        1
+      ]
+    },
+    "routed_signal_flow": [
+      "self_mailbox[write-buf-one] unsupported",
+      "cell state preserved",
+      "write-buffer semantics unresolved"
+    ]
+  }
+}

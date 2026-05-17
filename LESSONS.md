@@ -79,3 +79,6 @@
 - Boundary behavior deserves claims too. When AS deliberately refuses to
   execute an unresolved command, a preservation claim is better than leaving
   that refusal as an informal test side effect.
+- Trace dispatch should use the transition status when the same visible field
+  can mean different mechanisms. Non-empty `self_mailbox` plus
+  `self-mailbox-unsupported` is a preservation boundary, not an init command.

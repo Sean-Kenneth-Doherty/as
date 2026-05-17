@@ -624,3 +624,21 @@ Implemented in `autarkic_systems/transition_predicates.py`,
 `claims/transition_claims.json`, `claims/proof_certificates.json`, and
 `language/transition_claim_language.json`, with tests in
 `tests/test_self_mailbox_unsupported_claim.py`.
+
+## ADR-0035: Self Mailbox Unsupported Trace
+
+Goal: add a schematic-linked trace for one unsupported self-mailbox command.
+
+Deliverables:
+
+- `schematics/self_mailbox_unsupported_trace.json`;
+- unsupported self-mailbox artifact identity in the schematic-trace validator;
+- validation that separates unsupported mailbox preservation from init
+  mailbox execution;
+- tests for artifact identity, schema vocabulary, preservation flow,
+  execution replay, witness-map validation, and drift rejection.
+
+Status: accepted in `docs/adr/0035-self-mailbox-unsupported-trace.md`.
+Implemented in `autarkic_systems/schematic_trace.py` and
+`schematics/self_mailbox_unsupported_trace.json`, with tests in
+`tests/test_self_mailbox_unsupported_trace.py`.

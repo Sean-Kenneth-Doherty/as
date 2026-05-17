@@ -67,6 +67,8 @@ the project legible:
   claim for unresolved self-mailbox commands.
 - `docs/self-mailbox-init-trace.md` records the schematic-linked trace for one
   self-mailbox init command.
+- `docs/self-mailbox-unsupported-trace.md` records the schematic-linked trace
+  for one unsupported self-mailbox command.
 - `docs/self-mailbox-init-svg.md` records the rendered view of that
   self-mailbox init trace.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
@@ -110,6 +112,8 @@ the project legible:
   schematic trace machine-checkable.
 - `schematics/self_mailbox_init_trace.svg` is the generated rendered view
   checked against the self-mailbox JSON trace.
+- `schematics/self_mailbox_unsupported_trace.json` makes the unsupported
+  self-mailbox preservation trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

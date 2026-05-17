@@ -713,3 +713,23 @@
   `python -m unittest discover` passed 182 tests, py_compile passed for the
   touched module and test, JSON parsing passed for the claim/proof/language
   manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Self Mailbox Unsupported Trace
+
+- Added ADR-0035 for a schematic-linked trace of one unsupported
+  `write-buf-one` self-mailbox command.
+- Wrote `tests/test_self_mailbox_unsupported_trace.py` before implementation.
+  The red run failed because `SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID` did
+  not exist in `autarkic_systems.schematic_trace`.
+- Added `schematics/self_mailbox_unsupported_trace.json` and a schematic-trace
+  validator branch for unsupported self-mailbox preservation.
+- Added `docs/self-mailbox-unsupported-trace.md` as the human-facing trace
+  boundary note.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_mailbox_unsupported_trace`
+  passed 9 tests, the adjacent schematic trace suite passed 49 tests,
+  `python -m unittest discover` passed 191 tests, py_compile passed for the
+  touched module and test, JSON parsing passed for
+  `schematics/self_mailbox_unsupported_trace.json`, and `git diff --check`
+  passed.

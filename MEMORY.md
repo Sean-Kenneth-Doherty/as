@@ -151,3 +151,6 @@
   `self_mailbox_preserves_unsupported_command`. This is a preservation
   boundary for `standard-signal`, `write-buf-zero`, and `write-buf-one`, not an
   execution semantics claim.
+- ADR-0035 adds `schematics/self_mailbox_unsupported_trace.json`; the
+  schematic trace validator now routes `self-mailbox-unsupported` mailbox
+  traces through a preservation check instead of the self-mailbox init check.

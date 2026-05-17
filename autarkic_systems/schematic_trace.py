@@ -34,12 +34,16 @@ STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID = (
 SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID = (
     "self-mailbox-init-schematic-and-uc-transition-trace"
 )
+SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID = (
+    "self-mailbox-unsupported-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
     STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID,
     STEM_BUFFER_ACCUMULATION_TRACE_ARTIFACT_ID,
     SELF_MAILBOX_INIT_TRACE_ARTIFACT_ID,
+    SELF_MAILBOX_UNSUPPORTED_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -400,7 +404,12 @@ def _validate_schematic_trace_alignment(
         if schematic_trace.trace.before_cell.get("automail") != "_":
             results.extend(_validate_stem_automail_trace_alignment(schematic_trace))
         elif schematic_trace.trace.before_cell.get("self_mailbox") != "_":
-            results.extend(_validate_self_mailbox_init_trace_alignment(schematic_trace))
+            if schematic_trace.trace.expected_status == "self-mailbox-unsupported":
+                results.extend(
+                    _validate_self_mailbox_unsupported_trace_alignment(schematic_trace)
+                )
+            else:
+                results.extend(_validate_self_mailbox_init_trace_alignment(schematic_trace))
         else:
             results.extend(_validate_stem_buffer_trace_alignment(schematic_trace))
         return results
@@ -673,6 +682,65 @@ def _validate_self_mailbox_init_trace_alignment(
             _accepted(
                 "self-mailbox-init",
                 "self mailbox init target and clearing match",
+            )
+        )
+
+    return results
+
+
+def _validate_self_mailbox_unsupported_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    before = schematic_trace.trace.before_cell
+    after = schematic_trace.trace.expected_after_cell
+    unsupported_commands = {"standard-signal", "write-buf-zero", "write-buf-one"}
+    command = before.get("self_mailbox")
+
+    if command not in unsupported_commands:
+        results.append(
+            _rejected("self-mailbox-unsupported", "mailbox command is not unsupported")
+        )
+        return results
+
+    if schematic_trace.schematic.memory_direction != before.get("memory"):
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match preserved stem memory",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches stem"))
+
+    expected_flow = (
+        f"self_mailbox[{command}] unsupported",
+        "cell state preserved",
+        "write-buffer semantics unresolved",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(_rejected("routed_signal_flow", "unsupported mailbox flow mismatch"))
+    else:
+        results.append(_accepted("routed_signal_flow", "unsupported mailbox flow explicit"))
+
+    if before != after:
+        results.append(
+            _rejected(
+                "self-mailbox-unsupported",
+                "unsupported mailbox trace changed cell state",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "self-mailbox-unsupported",
+                "unsupported mailbox trace preserves cell state",
             )
         )
 
