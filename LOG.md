@@ -1123,3 +1123,25 @@
   `python -m unittest discover` passed 302 tests, py_compile passed for the
   touched schematic module and tests, JSON parsing passed for the recipient
   trace and source-status manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Recipient Init Command-Message SVG
+
+- Added ADR-0052 for the rendered SVG view of the ADR-0051 recipient init
+  command-message trace.
+- Wrote `tests/test_recipient_init_command_message_svg.py` before
+  implementation. The red run failed because
+  `RECIPIENT_INIT_COMMAND_MESSAGE_SVG_ARTIFACT` was absent from
+  `autarkic_systems.schematic_svg`.
+- Added `RECIPIENT_INIT_COMMAND_MESSAGE_SVG_ARTIFACT` and a recipient init
+  command-message summary branch to `render_schematic_svg()`, exposing
+  upstream before/after, recipient role/memory after, cleared input/output,
+  empty self-mailbox, and cleared control/buffer state.
+- Generated `schematics/recipient_init_command_message_trace.svg` from
+  `render_schematic_svg()`.
+- Added `docs/recipient-init-command-message-svg.md` and updated README,
+  roadmap, literature map, open problems, recipient/stem source-status
+  artifacts, project memory, and lessons.
+- Verified the focused recipient SVG/trace/source-status suite passed 39
+  tests. `python -m unittest discover` passed 309 tests, py_compile passed for
+  the touched SVG renderer and tests, JSON parsing passed for the recipient
+  trace and source-status manifests, and `git diff --check` passed.

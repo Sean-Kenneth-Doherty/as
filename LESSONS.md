@@ -126,3 +126,6 @@
 - A recipient command trace should show where the delivered token entered the
   cell. For fixed cells, the trace is clearer when it records upstream pull and
   upstream clearing instead of pretending the token started as direct input.
+- Recipient command renders need their own summary branch. Generic role-change
+  text hides the important proof surface: the upstream command token was
+  consumed and the recipient's transient command state was cleared.

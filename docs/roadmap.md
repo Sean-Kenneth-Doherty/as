@@ -980,3 +980,25 @@ Status: accepted in
 `schematics/recipient_init_command_message_trace.json`, and
 `docs/recipient-init-command-message-trace.md`, with tests in
 `tests/test_recipient_init_command_message_trace.py`.
+
+## ADR-0052: Recipient Init Command-Message SVG
+
+Goal: add a rendered SVG view of the ADR-0051 recipient init command-message
+trace.
+
+Deliverables:
+
+- `schematics/recipient_init_command_message_trace.svg`;
+- exported recipient init command-message SVG artifact path;
+- renderer summary fields for upstream command-message before/after state,
+  role/memory reconfiguration, and cleared command state;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  recipient command details, exact renderer-output matching, and drift
+  rejection.
+
+Status: accepted in
+`docs/adr/0052-recipient-init-command-message-svg.md`. Implemented in
+`autarkic_systems/schematic_svg.py`,
+`schematics/recipient_init_command_message_trace.svg`, and
+`docs/recipient-init-command-message-svg.md`, with tests in
+`tests/test_recipient_init_command_message_svg.py`.

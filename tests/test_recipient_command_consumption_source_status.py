@@ -66,6 +66,13 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             "schematics/recipient_init_command_message_trace.json",
         )
 
+        svg = self.status["implemented_svgs"][0]
+        self.assertEqual(svg["adr"], "ADR-0052")
+        self.assertEqual(
+            svg["path"],
+            "schematics/recipient_init_command_message_trace.svg",
+        )
+
     def test_formal_model_records_input_special_message_processing(self):
         formal = self.status["formal_model_input_special_message_anchor"]
 
@@ -117,15 +124,14 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "recipient-side init-family command-message consumption"
+                "recipient-side standard-signal and write-buffer"
                 in item
-                and "rendered SVG" in item
                 for item in allowed
             )
         )
         self.assertFalse(
             any(
-                "schematic-linked trace" in item
+                "rendered SVG" in item
                 for item in allowed
             )
         )

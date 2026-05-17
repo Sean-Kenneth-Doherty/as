@@ -33,6 +33,13 @@
       "summary": "AS now has a schematic-linked trace that replays fixed-cell upstream recipient init command-message consumption."
     }
   ],
+  "implemented_svgs": [
+    {
+      "adr": "ADR-0052",
+      "path": "schematics/recipient_init_command_message_trace.svg",
+      "summary": "AS now has a rendered SVG view checked exactly against the recipient init command-message trace."
+    }
+  ],
   "formal_model_input_special_message_anchor": {
     "witness_id": "PRC-FORMAL-INPUT-SPECIAL-MESSAGE",
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",

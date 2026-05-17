@@ -233,3 +233,8 @@
   `tests/test_recipient_init_command_message_trace.py`. The trace replays a
   fixed processor-left recipient consuming upstream `wire-r-init` into
   wire-right state with status `recipient-init-command-message-processed`.
+- ADR-0052 adds `docs/recipient-init-command-message-svg.md`,
+  `schematics/recipient_init_command_message_trace.svg`, and
+  `tests/test_recipient_init_command_message_svg.py`. The renderer now has a
+  recipient init command-message summary branch exposing upstream before/after
+  and cleared command state.

@@ -96,8 +96,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertTrue(
             any(
-                "recipient-side init-family command-message consumption" in item
-                and "rendered SVG" in item
+                "recipient-side standard-signal and write-buffer" in item
                 for item in allowed
             )
         )

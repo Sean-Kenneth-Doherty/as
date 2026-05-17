@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from autarkic_systems.schematic_trace import (
     COMMAND_BUFFER_UNSUPPORTED_TRACE_ARTIFACT_ID,
     NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID,
+    RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID,
     SchematicPort,
     SingleNodeSchematicTrace,
 )
@@ -37,6 +38,9 @@ COMMAND_BUFFER_UNSUPPORTED_SVG_ARTIFACT = Path(
 )
 NEIGHBOR_COMMAND_BUFFER_DELIVERY_SVG_ARTIFACT = Path(
     "schematics/neighbor_command_buffer_delivery_trace.svg"
+)
+RECIPIENT_INIT_COMMAND_MESSAGE_SVG_ARTIFACT = Path(
+    "schematics/recipient_init_command_message_trace.svg"
 )
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 
@@ -146,7 +150,22 @@ def render_schematic_svg(trace: SingleNodeSchematicTrace) -> str:
         ]
     )
     next_y = 232
-    if _shows_neighbor_command_buffer_delivery(trace):
+    if _shows_recipient_init_command_message(trace):
+        lines.extend(
+            [
+                f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"244\">upstream before: {_text(_cell_field(before, 'upstream'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"268\">upstream after: {_text(_cell_field(after, 'upstream'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"292\">input after: {_text(_cell_field(after, 'input'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"316\">output after: {_text(_cell_field(after, 'output'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"340\">self_mailbox before: {_text(before['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"364\">self_mailbox after: {_text(after['self_mailbox'])}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"388\">control after: {_text(_cell_field(after, 'control'))}</text>",
+                f"    <text class=\"small\" x=\"52\" y=\"412\">buffer after: {_text(_cell_field(after, 'buffer'))}</text>",
+            ]
+        )
+        next_y = 448
+    elif _shows_neighbor_command_buffer_delivery(trace):
         lines.extend(
             [
                 f"    <text class=\"small\" x=\"52\" y=\"220\">role after: {_text(after['role'])}</text>",
@@ -396,6 +415,12 @@ def _shows_neighbor_command_buffer_delivery(trace: SingleNodeSchematicTrace) -> 
     """Return true for traces that deliver a completed neighbor command buffer."""
 
     return trace.artifact_id == NEIGHBOR_COMMAND_BUFFER_DELIVERY_TRACE_ARTIFACT_ID
+
+
+def _shows_recipient_init_command_message(trace: SingleNodeSchematicTrace) -> bool:
+    """Return true for traces that consume a recipient init command message."""
+
+    return trace.artifact_id == RECIPIENT_INIT_COMMAND_MESSAGE_TRACE_ARTIFACT_ID
 
 
 def _shows_buffer_accumulation(

@@ -6,6 +6,7 @@ ADR-0051 adds `schematics/recipient_init_command_message_trace.json`, a
 structured schematic-linked Universal Cell trace for the recipient init
 command-message behavior implemented in ADR-0049 and named as a claim in
 ADR-0050.
+ADR-0052 adds the rendered SVG view of this trace.
 
 ## Trace Boundary
 
