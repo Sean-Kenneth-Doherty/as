@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "reviewed_commit": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+  "purpose": "Hardware and schematic witness map for the first AS physical-evidence path. This map identifies the PRC anchors that a later schematic or simulation artifact must preserve before AS claims it honors PRC's hardware commitments.",
+  "recommended_next_artifact": "single-node-triangular-rlem-schematic-and-uc-transition-trace",
+  "witnesses": [
+    {
+      "witness_id": "PRC-README-UC-CRITERIA",
+      "source_id": "PRC README",
+      "local_witness": "/home/sean/Projects/_upstream/prc/README.md",
+      "locus": "Logos section, Universal Cell criteria",
+      "hardware_role": "abstract-cell-requirements",
+      "summary": "Names the Universal Cell as the homogeneous primitive for PRC and requires reversible logic, asynchronous operation, explicit signal and power routing, and organic component-wise reconfigurability.",
+      "as_relevance": ["AFS-R6", "AFS-R7", "P7"],
+      "simulation_constraint": "Any first schematic or simulation must preserve the UC as the least semantic element carrying all four PRC hardware requirements.",
+      "next_as_action": "Use these four requirements as acceptance criteria for the first hardware/schematic artifact."
+    },
+    {
+      "witness_id": "PRC-GELC-GEOMETRY",
+      "source_id": "GELC universality note",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/gelc-universality.txt",
+      "locus": "Geometrically explicit circuit definition and triangular RLEM lattice construction",
+      "hardware_role": "geometric-circuit-model",
+      "summary": "Defines GELCs as circuits where wire geometry is part of the formal circuit definition and describes triangular RLEM nodes whose labels and memory states define the circuit.",
+      "as_relevance": ["AFS-R6", "AFS-R7", "P7"],
+      "simulation_constraint": "The first schematic should make wire geometry, node labels, ports, and memory orientation explicit rather than treating routing as an implicit drawing convention.",
+      "next_as_action": "Derive a single triangular RLEM node diagram and port orientation vocabulary from this source before drawing larger circuits."
+    },
+    {
+      "witness_id": "PRC-RLEM-LITERATURE",
+      "source_id": "Morita RLEM literature",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/literature/morita2013-rlem-and-their-universality.pdf",
+      "locus": "RLEM universality literature witness",
+      "hardware_role": "reversible-logic-foundation",
+      "summary": "Local witness for the RLEM universality foundation that PRC translates into geometrically explicit Universal Cell/GELC form.",
+      "as_relevance": ["AFS-R6", "P7"],
+      "simulation_constraint": "Do not treat the AS schematic as a new primitive logic family; its logic direction must remain tied to RLEM-style reversible memory elements.",
+      "next_as_action": "Use RLEM memory and port direction as the logical behavior layer beneath the AS schematic vocabulary."
+    },
+    {
+      "witness_id": "PRC-CIRCULATOR-PHYSICAL",
+      "source_id": "GELC circulator discussion",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/gelc-universality.txt",
+      "locus": "Ferrite junction circulator implementation discussion",
+      "hardware_role": "physical-implementation-candidate",
+      "summary": "Connects RLEM/GELC nodes to switchable latching circulators as a possible hybrid active-electric/passive-EM physical implementation.",
+      "as_relevance": ["AFS-R6", "P7"],
+      "simulation_constraint": "The first hardware note must mark circulator physics as candidate physical evidence, not as already verified PRC hardware.",
+      "next_as_action": "Separate symbolic RLEM behavior from the circulator physical hypothesis in the schematic legend."
+    },
+    {
+      "witness_id": "PRC-RALA-RECONFIGURATION",
+      "source_id": "PRC README and old Thiel project",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/old/old-thiel-project.txt",
+      "locus": "RALA relation and auxiliary reconfiguration circuitry",
+      "hardware_role": "prior-art-reconfiguration",
+      "summary": "Frames PRC against RALA and describes auxiliary electronics for buffering and processing reconfiguration messages around Universal Cells.",
+      "as_relevance": ["AFS-R7", "P7"],
+      "simulation_constraint": "The first schematic should identify which behavior belongs to the UC core and which belongs to auxiliary stem/reconfiguration support.",
+      "next_as_action": "Document RALA-like auxiliary responsibilities before attempting a dynamic reconfiguration simulation."
+    },
+    {
+      "witness_id": "PRC-UC-FORMAL-MODEL",
+      "source_id": "Universal Cell formal model",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+      "locus": "UC as Mealy machine and activation flowchart",
+      "hardware_role": "formal-transition-model",
+      "summary": "Defines the UC as a Mealy machine with wire/proc/stem roles, input/output/upstream channels, memory, automail, control, buffer, and activation flow.",
+      "as_relevance": ["AFS-R6", "AFS-R7", "P7"],
+      "simulation_constraint": "The first simulation trace should use the existing UC fields and activation vocabulary rather than inventing a new state schema.",
+      "next_as_action": "Map AS's existing Python Cell fields to the PRC formal-model fields before adding any new transition behavior."
+    },
+    {
+      "witness_id": "PRC-ASM-SIMULATOR",
+      "source_id": "Universal Cell ASM simulator",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/asmsim.scm",
+      "locus": "uc-asm record and wire/proc/stem activation functions",
+      "hardware_role": "executable-transition-semantics",
+      "summary": "Provides an executable Scheme model of UC abstract-state-machine fields and role-specific activation behavior.",
+      "as_relevance": ["AFS-R6", "AFS-R7", "P7"],
+      "simulation_constraint": "Treat this as an implementation witness but not an unquestioned oracle; AS should preserve its field vocabulary while testing extracted behavior independently.",
+      "next_as_action": "Use the current AS Universal Cell tests as a cleaned-room extraction boundary and add only one schematic-linked trace at a time."
+    },
+    {
+      "witness_id": "PRC-SCHEMATIC-FIGURES",
+      "source_id": "GELC figures",
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/figures.pdf",
+      "locus": "GELC/RLEM diagrams referenced by gelc-universality.txt",
+      "hardware_role": "schematic-source",
+      "summary": "Diagram witness for RLEM/GELC node shapes, wire components, and hand-synthesized universal GELC examples.",
+      "as_relevance": ["P7"],
+      "simulation_constraint": "The first AS schematic should cite the figure source but redraw only the minimum single-node/port-orientation vocabulary needed for executable trace work.",
+      "next_as_action": "Create a small AS-owned schematic key before attempting a larger GELC circuit diagram."
+    }
+  ]
+}

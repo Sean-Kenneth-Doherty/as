@@ -34,6 +34,8 @@ the project legible:
   of Willard anchors needed for formal-confidence claims.
 - `docs/proflog-frontier-status.md` records why public Proflog main is not a
   dependency-ready AS proof apparatus.
+- `docs/prc-hardware-witness-map.md` records the first source-backed
+  hardware/schematic evidence path for PRC-derived work.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -42,6 +44,8 @@ the project legible:
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status
   decision machine-checkable.
+- `sources/prc_hardware_witness_map.json` makes the PRC hardware/schematic
+  witness map machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.
@@ -61,7 +65,8 @@ The current executable probes live in `autarkic_systems/universal_cell.py` and
 proof-certificate, and object-language support in
 `autarkic_systems/claim_manifest.py`, `autarkic_systems/proof_certificates.py`,
 `autarkic_systems/object_language.py`, and
-`autarkic_systems/willard_map.py`. They are covered by `tests/`.
+`autarkic_systems/willard_map.py`. Source-backed structured maps also live in
+`autarkic_systems/prc_hardware_map.py`. They are covered by `tests/`.
 
 ## Subordinate Programs
 

@@ -61,3 +61,8 @@
   executable evidence; the active ADR-0063 through ADR-0068 frontier described
   in SJAS logs is missing from public main. Upstream issue `jpt4/proflog#1`
   asks where that source lives.
+- `docs/prc-hardware-witness-map.md`,
+  `sources/prc_hardware_witness_map.json`, and
+  `autarkic_systems/prc_hardware_map.py` are the P7 hardware/schematic witness
+  layer. The next recommended artifact is
+  `single-node-triangular-rlem-schematic-and-uc-transition-trace`.

@@ -253,3 +253,31 @@
   tests.test_proflog_frontier_status` passed 8 tests, `python -m unittest
   discover` passed 50 tests, py_compile passed for touched Python files, JSON
   checks passed, and `git diff --check` passed.
+
+## 2026-05-17 - PRC Hardware Witness Map
+
+- Added ADR-0015 for P7: define the PRC hardware/schematic witness path before
+  drawing or simulating hardware.
+- Refreshed the disposable PRC checkout at `/home/sean/Projects/_upstream/prc`
+  and reviewed PRC README criteria, GELC/RLEM geometry, switchable-circulator
+  physical hypotheses, RALA/reconfiguration notes, the UC formal model, the
+  ASM simulator, and schematic figure witnesses.
+- Wrote `tests/test_prc_hardware_witness_map.py` before implementation. The
+  red run failed because `autarkic_systems.prc_hardware_map` did not exist.
+- Added `sources/prc_hardware_witness_map.json` with required witnesses for UC
+  criteria, GELC geometry, RLEM literature, circulator physical hypotheses,
+  RALA/reconfiguration pressure, the UC formal model, the ASM simulator, and
+  PRC schematic figures.
+- Added `autarkic_systems/prc_hardware_map.py` to load and validate required
+  witness coverage, PRC-local path pinning, unique witness IDs/loci, AS
+  relevance, simulation constraints, and next AS actions.
+- Added `docs/prc-hardware-witness-map.md` as the human-facing guide. The
+  recommended next artifact is
+  `single-node-triangular-rlem-schematic-and-uc-transition-trace`.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons so P7 now points to the source-backed hardware witness layer.
+- Verified `python -m unittest tests.test_prc_hardware_witness_map` passed 4
+  tests, `python -m unittest discover` passed 54 tests, py_compile passed for
+  the new module and tests, `jq -e .
+  sources/prc_hardware_witness_map.json` passed, and `git diff --check`
+  passed.

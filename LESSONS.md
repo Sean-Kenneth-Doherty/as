@@ -18,3 +18,7 @@
 - Keep `_upstream` source checkouts out of the default fast-test critical path.
   Fast tests should validate pinned source-status facts and paths; live clone or
   smoke-test checks belong in ADR evidence or an explicit extended gate.
+- For PRC hardware/schematic work, draw nothing until the source constraints
+  are structured. The first useful artifact is a witness map that separates
+  symbolic RLEM behavior, GELC geometry, UC state, reconfiguration support, and
+  candidate physical implementation claims.

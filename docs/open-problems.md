@@ -99,5 +99,9 @@ PRC's physical implementation claims without requiring full hardware design?
 Why it matters: The AS prelude explicitly includes schematics and hardware
 simulation as lower-bound project content.
 
-Likely next artifact: a PRC hardware witness map around RLEM, GELC, circulator,
-RALA, and lattice geometry sources.
+Status: started by ADR-0015. `docs/prc-hardware-witness-map.md` and
+`sources/prc_hardware_witness_map.json` now map the required PRC witnesses for
+RLEM, GELC geometry, circulator physical hypotheses, RALA/reconfiguration
+pressure, the UC formal model, the ASM simulator, and schematic figures.
+Remaining work is to draw the first AS-owned single-node triangular RLEM
+schematic key and pair it with one executable Universal Cell transition trace.

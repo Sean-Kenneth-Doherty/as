@@ -244,3 +244,22 @@ Status: accepted in `docs/adr/0014-proflog-source-status.md`. Implemented in
 `sources/proflog_frontier_status.json` and
 `docs/proflog-frontier-status.md`, with tests in
 `tests/test_proflog_frontier_status.py`.
+
+## ADR-0015: PRC Hardware Witness Map
+
+Goal: define the source-backed hardware/schematic evidence path before AS draws
+or simulates PRC-derived hardware.
+
+Deliverables:
+
+- structured PRC hardware witness map;
+- loader and validator for required witness coverage, PRC-local path pinning,
+  AS relevance, and simulation constraints;
+- human-facing hardware witness note;
+- recommended next artifact for a single-node triangular RLEM schematic and UC
+  transition trace.
+
+Status: accepted in `docs/adr/0015-prc-hardware-witness-map.md`. Implemented
+in `sources/prc_hardware_witness_map.json` and
+`autarkic_systems/prc_hardware_map.py`, with tests in
+`tests/test_prc_hardware_witness_map.py`.
