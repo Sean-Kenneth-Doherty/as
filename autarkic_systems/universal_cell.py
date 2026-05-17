@@ -23,6 +23,9 @@ Status = Literal[
     "rejected-input",
     "routed",
     "stem-init",
+    "stem-buffer-appended",
+    "stem-buffer-full",
+    "stem-control-selected",
 ]
 
 EMPTY: tuple[Signal, Signal, Signal] = ("_", "_", "_")
@@ -30,6 +33,7 @@ VALID_ROLES = {"wire", "proc", "stem"}
 FIXED_ROLES = {"wire", "proc"}
 VALID_MEMORY = {"right", "left"}
 VALID_AUTOMAIL = {"_", "wr", "wl", "pr", "pl"}
+MAX_STEM_BUFFER_SIZE = 5
 AUTOMAIL_RECONFIGURATION: dict[Automail, tuple[Role, Memory]] = {
     "wr": ("wire", "right"),
     "wl": ("wire", "left"),
@@ -109,11 +113,11 @@ def step_fixed_cell(cell: Cell) -> StepResult:
 
 
 def step_stem_cell(cell: Cell) -> StepResult:
-    """Perform one high-level stem activation for the automail subset.
+    """Perform one high-level stem activation for the first stem subsets.
 
-    Full PRC stem behavior includes input classification, command-buffer
-    construction, target routing, and buffer processing. This first stem probe
-    covers only the explicit automail reconfiguration commands.
+    Full PRC stem behavior includes command decoding, target routing, and
+    buffer execution. This probe covers explicit automail reconfiguration plus
+    the first standard-signal buffer accumulation rule.
     """
 
     if cell.role != "stem":
@@ -123,7 +127,26 @@ def step_stem_cell(cell: Cell) -> StepResult:
         return StepResult("blocked-output", cell)
 
     if cell.automail == "_":
-        return StepResult("idle", cell)
+        if _empty(cell.input):
+            return StepResult("idle", cell)
+
+        if not _is_one_hot_standard_signal(cell.input):
+            return StepResult("rejected-input", _replace(cell, input=EMPTY))
+
+        if not cell.control:
+            return StepResult(
+                "stem-control-selected",
+                _replace(cell, input=EMPTY, control=cell.input),
+            )
+
+        if len(cell.buffer) >= MAX_STEM_BUFFER_SIZE:
+            return StepResult("stem-buffer-full", cell)
+
+        bit = 1 if cell.input == cell.control else 0
+        return StepResult(
+            "stem-buffer-appended",
+            _replace(cell, input=EMPTY, buffer=cell.buffer + (bit,)),
+        )
 
     role, memory = AUTOMAIL_RECONFIGURATION[cell.automail]
     return StepResult(
@@ -182,6 +205,12 @@ def _is_stem_init(signal: tuple[Signal, Signal, Signal]) -> bool:
     """Stem-init is a single special token embedded in otherwise empty input."""
 
     return signal.count("si") == 1 and signal.count("_") == 2
+
+
+def _is_one_hot_standard_signal(signal: tuple[Signal, Signal, Signal]) -> bool:
+    """A stem command-buffer signal has one high binary channel."""
+
+    return all(value in (0, 1) for value in signal) and sum(signal) == 1
 
 
 def _empty(signal: tuple[Signal, Signal, Signal]) -> bool:

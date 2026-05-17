@@ -40,3 +40,6 @@
 - A stem reconfiguration render must show the state change, not merely the
   node geometry. Role after-transition and automail consumption are part of the
   visual evidence contract.
+- For stem behavior, implementing accumulation separately from command
+  execution keeps the PRC source model honest. A full buffer should be an
+  explicit boundary until command decoding and target routing are tested.

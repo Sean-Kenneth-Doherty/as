@@ -49,6 +49,8 @@ the project legible:
   reconfiguration.
 - `docs/stem-automail-reconfiguration-svg.md` records the rendered view of that
   stem automail reconfiguration trace.
+- `docs/stem-buffer-accumulation.md` records the first standard-signal stem
+  buffer accumulation behavior.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over

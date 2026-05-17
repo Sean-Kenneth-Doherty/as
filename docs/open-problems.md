@@ -28,9 +28,12 @@ Why it matters: Reconfiguration is central to PRC and AS, while the current
 probe only covers fixed wire/proc behavior.
 
 Status: started by ADR-0008. `step_stem_cell` now covers automail
-reconfiguration commands `wr`, `wl`, `pr`, and `pl`. Full stem input
-classification and buffer processing remain open. ADR-0009 added the
-corresponding `automail_reconfigures_stem` predicate and manifest claim.
+reconfiguration commands `wr`, `wl`, `pr`, and `pl`. ADR-0022 adds the first
+standard-signal buffer accumulation subset: high-rail selection, matching and
+non-matching bit append, explicit full-buffer boundary, and malformed-input
+rejection. Full command decoding, target delivery, and dynamic reconfiguration
+remain open. ADR-0009 added the corresponding `automail_reconfigures_stem`
+predicate and manifest claim.
 
 ## P3: Choose The First Proof Apparatus
 

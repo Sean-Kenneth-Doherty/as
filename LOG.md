@@ -427,3 +427,28 @@
   passed 21 tests, `python -m unittest discover` passed 98 tests, py_compile
   passed for the touched module and new test, XML parsing passed for all three
   checked-in SVGs, and `git diff --check` passed.
+
+## 2026-05-17 - Stem Buffer Accumulation
+
+- Added ADR-0022 for the first standard-signal stem buffer subset from the PRC
+  formal model.
+- Wrote `tests/test_stem_buffer_accumulation.py` before implementation. The
+  red run failed because current `step_stem_cell` returned `idle` for one-hot
+  standard-signal stem inputs.
+- Extended `step_stem_cell` so a one-hot standard input selects the control
+  rail, matching control input appends `1`, non-matching one-hot input appends
+  `0`, full buffers report `stem-buffer-full` without consuming input, and
+  malformed stem input is rejected and cleared.
+- Preserved automail priority over standard-signal buffering.
+- Updated `language/transition_claim_language.json` after the full suite caught
+  that the object-language status vocabulary did not yet include the new stem
+  buffer statuses.
+- Added `docs/stem-buffer-accumulation.md` as the human-facing subset and
+  boundary note.
+- Updated README, roadmap, literature map, open problems, project memory, and
+  lessons so P2 no longer describes stem behavior as automail-only.
+- Verified `python -m unittest tests.test_stem_buffer_accumulation
+  tests.test_stem_automail` passed 14 tests, `python -m unittest discover`
+  passed 104 tests, py_compile passed for the touched module and new test,
+  `jq -e . language/transition_claim_language.json` passed, and
+  `git diff --check` passed.

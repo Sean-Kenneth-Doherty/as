@@ -30,6 +30,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS processor memory-toggle SVG | `docs/processor-memory-toggle-svg.md` and `schematics/processor_memory_toggle_trace.svg` | Visible render of the processor memory-toggle trace. | Checked against generic renderer output so the processor diagram cannot drift from the JSON trace. |
 | AS stem automail reconfiguration trace | `docs/stem-automail-reconfiguration-trace.md` and `schematics/stem_automail_reconfiguration_trace.json` | Third schematic-linked trace, covering one stem automail reconfiguration into processor-left. | Extends P7 coverage into the first reconfiguration subset. |
 | AS stem automail reconfiguration SVG | `docs/stem-automail-reconfiguration-svg.md` and `schematics/stem_automail_reconfiguration_trace.svg` | Visible render of the stem automail trace. | Checked against generic renderer output and exposes role/automail reconfiguration details. |
+| AS stem buffer accumulation | `docs/stem-buffer-accumulation.md`, `autarkic_systems/universal_cell.py`, and `tests/test_stem_buffer_accumulation.py` | First standard-signal stem command-buffer subset. | Implements high-rail selection and 1/0 buffer append while leaving full command execution open. |
 
 ## SJAS: Formal Confidence
 
@@ -72,6 +73,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | A generic schematic SVG renderer can render fixed-role wire and processor traces while preserving JSON authority. | `schematics/processor_memory_toggle_trace.json`, `schematics/processor_memory_toggle_trace.svg`, and `autarkic_systems/schematic_svg.py`. | Implemented in ADR-0020 with exact renderer-output matching tests for wire and processor SVGs. |
 | Schematic-linked traces can cover the first stem automail reconfiguration subset without claiming full dynamic reconfiguration. | AS Universal Cell stem automail probe and `schematics/stem_automail_reconfiguration_trace.json`. | Implemented in ADR-0019 with validation in `tests/test_stem_automail_reconfiguration_trace.py`. |
 | A stem reconfiguration SVG must expose role and automail changes, not only port geometry. | `schematics/stem_automail_reconfiguration_trace.json`, `schematics/stem_automail_reconfiguration_trace.svg`, and `tests/test_stem_automail_svg.py`. | Implemented in ADR-0021 with exact renderer-output matching and drift rejection. |
+| Stem command-buffer behavior can advance in a bounded subset before full command execution. | PRC formal model, `autarkic_systems/universal_cell.py`, and `tests/test_stem_buffer_accumulation.py`. | Implemented in ADR-0022 for high-rail selection and bit accumulation only. |
 
 ## Evidence Gaps
 
@@ -81,8 +83,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 - PRC's Scheme simulator and TLA+ sketch need deeper verification before AS
   treats either as canonical.
 - AS has rendered the wire, processor, and stem automail PRC-derived traces.
-  Full stem buffering, larger GELC, and physical-simulation renders remain
-  open.
+  Full stem command decoding, larger GELC, and physical-simulation renders
+  remain open.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

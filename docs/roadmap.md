@@ -375,3 +375,21 @@ Status: accepted in `docs/adr/0021-stem-automail-svg.md`. Implemented in
 `schematics/stem_automail_reconfiguration_trace.svg` and
 `autarkic_systems/schematic_svg.py`, with tests in
 `tests/test_stem_automail_svg.py`.
+
+## ADR-0022: Stem Buffer Accumulation
+
+Goal: add the first PRC source-backed standard-signal buffer behavior to
+`step_stem_cell` without pretending to implement full command execution.
+
+Deliverables:
+
+- one-hot stem input control-rail selection;
+- matching/non-matching one-hot input append behavior for a non-full buffer;
+- explicit full-buffer boundary status;
+- malformed stem-input rejection;
+- human-facing note for the implemented subset and remaining boundary;
+- tests proving the new behavior and automail priority.
+
+Status: accepted in `docs/adr/0022-stem-buffer-accumulation.md`. Implemented in
+`autarkic_systems/universal_cell.py`, with tests in
+`tests/test_stem_buffer_accumulation.py`.

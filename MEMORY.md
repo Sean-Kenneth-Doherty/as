@@ -38,9 +38,10 @@
   problem.
 - `claims/transition_claims.json` plus `autarkic_systems/claim_manifest.py`
   make the current transition predicates executable as named AS claims.
-- `step_stem_cell` in `autarkic_systems/universal_cell.py` covers only the
-  stem automail reconfiguration subset (`wr`, `wl`, `pr`, `pl`), not full stem
-  buffer processing.
+- `step_stem_cell` in `autarkic_systems/universal_cell.py` covers the stem
+  automail reconfiguration subset (`wr`, `wl`, `pr`, `pl`) and the first
+  standard-signal command-buffer accumulation subset. It still does not decode
+  full buffers or route commands.
 - `automail_reconfigures_stem` is the predicate/claim bridge for stem automail;
   `claim_manifest.py` must preserve `automail`, `control`, and `buffer` when
   parsing manifest cells.
@@ -95,3 +96,7 @@
   `tests/test_stem_automail_svg.py` render the stem automail trace. The SVG
   must expose role and automail before/after fields so reconfiguration is not
   hidden behind a generic triangular node render.
+- `docs/stem-buffer-accumulation.md` and
+  `tests/test_stem_buffer_accumulation.py` add the first non-automail stem
+  behavior: one-hot high-rail selection, 1/0 bit append, full-buffer boundary,
+  malformed-input rejection, and automail priority.
