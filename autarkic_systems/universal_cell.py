@@ -53,6 +53,7 @@ Status = Literal[
     "stem-buffer-appended",
     "stem-buffer-full",
     "stem-control-selected",
+    "stem-command-buffer-neighbor-delivered",
     "stem-command-buffer-self-processed",
     "self-mailbox-processed",
     "self-mailbox-unsupported",
@@ -101,6 +102,11 @@ SELF_MAILBOX_INIT_TARGETS: dict[CommandMessage, tuple[Role, Memory]] = {
     "wire-l-init": ("wire", "left"),
     "proc-r-init": ("proc", "right"),
     "proc-l-init": ("proc", "left"),
+}
+NEIGHBOR_OUTPUT_INDEX = {
+    "neighbor-a": 0,
+    "neighbor-b": 1,
+    "neighbor-c": 2,
 }
 
 
@@ -182,7 +188,8 @@ def step_stem_cell(cell: Cell) -> StepResult:
     Full PRC stem behavior includes complete command decoding, target routing,
     and buffer execution. This probe covers explicit automail reconfiguration,
     standard-signal buffer accumulation, direct self-mailbox handling, and the
-    narrow self-target init command-buffer dispatch slice.
+    narrow self-target init command-buffer dispatch slice, and neighbor-target
+    command-buffer delivery onto output channels.
     """
 
     if cell.role != "stem":
@@ -212,7 +219,7 @@ def step_stem_cell(cell: Cell) -> StepResult:
 
         bit = 1 if cell.input == cell.control else 0
         next_buffer = cell.buffer + (bit,)
-        completed = _process_completed_self_init_buffer(
+        completed = _process_completed_command_buffer(
             _replace(cell, input=EMPTY, buffer=next_buffer),
         )
         if completed is not None:
@@ -263,28 +270,48 @@ def _process_self_mailbox(cell: Cell) -> StepResult:
     )
 
 
-def _process_completed_self_init_buffer(cell: Cell) -> StepResult | None:
-    """Process the narrow self-target init slice for a just-filled buffer."""
+def _process_completed_command_buffer(cell: Cell) -> StepResult | None:
+    """Process supported just-filled command-buffer slices."""
 
     decoded = _decode_command_buffer(cell.buffer)
     if decoded is None:
         return None
 
     target_id, command_id = decoded
-    if target_id != "self" or command_id not in SELF_MAILBOX_INIT_TARGETS:
+    if target_id == "self":
+        if command_id not in SELF_MAILBOX_INIT_TARGETS:
+            return None
+
+        mailbox_cell = _replace(
+            cell,
+            input=EMPTY,
+            output=EMPTY,
+            automail="_",
+            self_mailbox=command_id,
+            control=(),
+            buffer=(),
+        )
+        processed = _process_self_mailbox(mailbox_cell)
+        return StepResult("stem-command-buffer-self-processed", processed.cell)
+
+    output_index = NEIGHBOR_OUTPUT_INDEX.get(target_id)
+    if output_index is None:
         return None
 
-    mailbox_cell = _replace(
-        cell,
-        input=EMPTY,
-        output=EMPTY,
-        automail="_",
-        self_mailbox=command_id,
-        control=(),
-        buffer=(),
+    output = list(EMPTY)
+    output[output_index] = command_id
+    return StepResult(
+        "stem-command-buffer-neighbor-delivered",
+        _replace(
+            cell,
+            input=EMPTY,
+            output=tuple(output),
+            automail="_",
+            self_mailbox="_",
+            control=(),
+            buffer=(),
+        ),
     )
-    processed = _process_self_mailbox(mailbox_cell)
-    return StepResult("stem-command-buffer-self-processed", processed.cell)
 
 
 def _decode_command_buffer(buffer: tuple[Signal, ...]) -> tuple[str, str] | None:

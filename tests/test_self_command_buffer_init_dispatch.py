@@ -55,7 +55,7 @@ class SelfCommandBufferInitDispatchTests(unittest.TestCase):
         self.assertEqual(result.cell.control, ())
         self.assertEqual(result.cell.buffer, ())
 
-    def test_completed_neighbor_buffer_remains_append_boundary(self):
+    def test_completed_neighbor_buffer_delivers_command_without_neighbor_execution(self):
         cell = Cell(
             role="stem",
             memory="right",
@@ -66,11 +66,12 @@ class SelfCommandBufferInitDispatchTests(unittest.TestCase):
 
         result = step_stem_cell(cell)
 
-        self.assertEqual(result.status, "stem-buffer-appended")
+        self.assertEqual(result.status, "stem-command-buffer-neighbor-delivered")
         self.assertEqual(result.cell.role, "stem")
-        self.assertEqual(result.cell.output, EMPTY)
+        self.assertEqual(result.cell.output, ("stem-init", "_", "_"))
         self.assertEqual(result.cell.self_mailbox, "_")
-        self.assertEqual(result.cell.buffer, (0, 1, 0, 0, 1))
+        self.assertEqual(result.cell.control, ())
+        self.assertEqual(result.cell.buffer, ())
 
     def test_completed_self_non_init_buffer_remains_append_boundary(self):
         cell = Cell(

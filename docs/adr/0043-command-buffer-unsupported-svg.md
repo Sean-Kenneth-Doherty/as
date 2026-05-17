@@ -4,6 +4,10 @@ Date: 2026-05-17
 
 Status: Accepted
 
+Revision note: ADR-0044 later revises the rendered trace from the original
+neighbor-target example to the self-target non-init append boundary that
+remains unsupported.
+
 ## Context
 
 ADR-0042 added a structured schematic-linked trace for one completed
@@ -64,3 +68,6 @@ checked-in SVG generated from
 `schematics/command_buffer_unsupported_trace.json`.
 
 Final verification is recorded in `LOG.md`.
+
+ADR-0044 revision: `schematics/command_buffer_unsupported_trace.svg` was
+regenerated from the updated self-target `write-buf-one` JSON trace.

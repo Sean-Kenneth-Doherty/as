@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, a narrow self-target init command-buffer dispatch, the unsupported completed command-buffer append boundary, and a schematic-linked trace plus SVG for one neighbor-target command preserved at that boundary. It still does not route neighbor-target commands or execute self-target standard-signal/write-buffer commands."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, self-target init command-buffer dispatch, neighbor-target command-buffer delivery onto output channels, and the unsupported self-target non-init append boundary. It still does not execute command-message inputs on recipient cells or execute self-target standard-signal/write-buffer commands."
   },
   "legacy_divergences": [
     {
@@ -67,8 +67,8 @@
   ],
   "blockers": [
     {
-      "blocker_id": "neighbor-command-delivery-semantics",
-      "summary": "AS can represent command-message output tokens, but it does not yet route decoded neighbor-target command buffers onto output channels."
+      "blocker_id": "neighbor-command-consumption-semantics",
+      "summary": "AS can deliver decoded neighbor-target command buffers onto output channels, but recipient cells still reject command-message inputs rather than executing them."
     },
     {
       "blocker_id": "standard-signal-command-semantics",
@@ -80,7 +80,8 @@
     }
   ],
   "allowed_next_slices": [
-    "Define neighbor-target command delivery onto output channels without executing neighbor-side commands.",
+    "Promote neighbor-target command delivery into a named claim.",
+    "Add a schematic trace and SVG for neighbor-target command delivery.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]

@@ -2,22 +2,21 @@
 
 Status: named claim and proof-certificate surface, 2026-05-17.
 
-ADR-0041 promotes the unsupported completed command-buffer boundary into the
-transition-claim surface. The claim is
+ADR-0041 promotes the unsupported self-target non-init command-buffer boundary
+into the transition-claim surface. The claim is
 `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` in
 `claims/transition_claims.json`, checked by
 `stem_command_buffer_preserves_unsupported_completion` in
 `autarkic_systems/transition_predicates.py`.
-ADR-0042 adds a schematic-linked trace for one positive neighbor-target
-example.
+ADR-0044 narrows this claim after neighbor-target command buffers become
+delivered output tokens.
 
 ## Claim Boundary
 
 The claim covers command-buffer transitions where a standard-signal append
-completes a five-bit buffer that is outside the ADR-0037 self-target
-init-family execution slice. That includes:
+completes a self-target five-bit buffer that is outside the ADR-0037 init-family
+execution slice:
 
-- neighbor-target completed buffers;
 - self-target `standard-signal`;
 - self-target `write-buf-zero`;
 - self-target `write-buf-one`.
@@ -27,14 +26,15 @@ clears consumed input, preserves output, preserves role/memory/upstream,
 preserves the control rail, keeps automail and `self_mailbox` empty, and leaves
 the completed five-bit buffer intact.
 
-The claim does not define neighbor routing, self-target `standard-signal`,
-write-buffer commands, or full command-buffer execution.
+The claim does not define self-target `standard-signal`, write-buffer command
+execution, or full command-buffer execution. Neighbor-target completions are no
+longer part of this boundary after ADR-0044.
 
 ## Proof Surface
 
 `claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for positive self non-init and neighbor-target examples plus a negative
-wrongly processed neighbor example.
+steps for a positive self non-init example plus a negative wrongly processed
+self non-init example.
 
 ## Verification
 

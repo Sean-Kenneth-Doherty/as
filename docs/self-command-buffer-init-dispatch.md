@@ -32,15 +32,17 @@ On that path, the transition:
 - clears control and buffer;
 - applies the commanded role/memory target.
 
-Completed neighbor-target buffers still stop at `stem-buffer-appended`.
-Completed self-target `standard-signal`, `write-buf-zero`, and
+Completed neighbor-target buffers now deliver the decoded command token to the
+corresponding output channel and return
+`stem-command-buffer-neighbor-delivered`. Completed self-target
+`standard-signal`, `write-buf-zero`, and
 `write-buf-one` buffers also still stop at `stem-buffer-appended`.
 
 ## Source Boundary
 
 This is not full command-buffer execution. It uses the source-backed target and
-command map from `sources/stem_command_buffer_map.json`, but it does not route
-neighbor commands, implement write-buffer commands, or resolve
+command map from `sources/stem_command_buffer_map.json`, but it does not execute
+neighbor-side command tokens, implement write-buffer commands, or resolve
 `standard-signal` command semantics.
 
 ## Verification
@@ -51,5 +53,5 @@ Run:
 python -m unittest tests.test_self_command_buffer_init_dispatch
 ```
 
-The tests cover self `proc-l-init`, self `stem-init`, neighbor non-routing,
+The tests cover self `proc-l-init`, self `stem-init`, neighbor delivery,
 self non-init non-execution, and transition-language status coverage.

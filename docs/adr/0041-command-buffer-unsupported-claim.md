@@ -4,6 +4,10 @@ Date: 2026-05-17
 
 Status: Accepted
 
+Revision note: ADR-0044 later narrows the live claim to self-target non-init
+completed command buffers. Neighbor-target completed buffers now deliver onto
+output channels instead of remaining at this append boundary.
+
 ## Context
 
 ADR-0037 deliberately executes only completed self-target init-family command
@@ -71,3 +75,8 @@ manifest-example proof certificate coverage, and the transition-language
 predicate symbol.
 
 Final verification is recorded in `LOG.md`.
+
+ADR-0044 revision: the predicate and manifest examples were updated so
+neighbor-target delivery is treated as outside this preservation precondition.
+The current positive boundary is self-target non-init command-buffer
+completion.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc" data-artifact-id="command-buffer-unsupported-schematic-and-uc-transition-trace" data-trace-id="AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc" data-artifact-id="command-buffer-unsupported-schematic-and-uc-transition-trace" data-trace-id="AS-PRC-COMMAND-BUFFER-SELF-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001">
   <title id="title">AS-PRC-COMMAND-BUFFER-UNSUPPORTED-TRIANGULAR-RLEM-001</title>
-  <desc id="desc">Generated from command-buffer-unsupported-schematic-and-uc-transition-trace; trace AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001.</desc>
+  <desc id="desc">Generated from command-buffer-unsupported-schematic-and-uc-transition-trace; trace AS-PRC-COMMAND-BUFFER-SELF-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001.</desc>
   <style>
     .node { fill: #f7f4ea; stroke: #1e3a3a; stroke-width: 4; }
     .port-dot { fill: #f06449; stroke: #1e3a3a; stroke-width: 3; }
@@ -42,27 +42,27 @@
       <title>Third signal channel on the triangular unsupported command-buffer node.</title>
     </g>
   </g>
-  <g class="trace-summary" data-trace-id="AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001">
-    <text class="label" x="52" y="72">trace: AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001</text>
+  <g class="trace-summary" data-trace-id="AS-PRC-COMMAND-BUFFER-SELF-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001">
+    <text class="label" x="52" y="72">trace: AS-PRC-COMMAND-BUFFER-SELF-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001</text>
     <text class="small" x="52" y="100">status: stem-buffer-appended</text>
-    <text class="small" x="52" y="124">input: [0, 0, 1]</text>
+    <text class="small" x="52" y="124">input: [0, 1, 0]</text>
     <text class="small" x="52" y="148">output: [_, _, _]</text>
     <text class="small" x="52" y="172">memory before: right</text>
     <text class="small" x="52" y="196">memory after: right</text>
     <text class="small" x="52" y="220">role after: stem</text>
     <text class="small" x="52" y="244">self_mailbox before: _</text>
     <text class="small" x="52" y="268">self_mailbox after: _</text>
-    <text class="small" x="52" y="292">control before: [0, 0, 1]</text>
-    <text class="small" x="52" y="316">buffer before: [0, 1, 0, 0]</text>
+    <text class="small" x="52" y="292">control before: [0, 1, 0]</text>
+    <text class="small" x="52" y="316">buffer before: [0, 0, 1, 1]</text>
     <text class="small" x="52" y="340">input after: [_, _, _]</text>
-    <text class="small" x="52" y="364">control after: [0, 0, 1]</text>
-    <text class="small" x="52" y="388">buffer after: [0, 1, 0, 0, 1]</text>
+    <text class="small" x="52" y="364">control after: [0, 1, 0]</text>
+    <text class="small" x="52" y="388">buffer after: [0, 0, 1, 1, 1]</text>
     <text class="small" x="52" y="424">routed signal flow</text>
-    <text class="small" x="72" y="450">control[0,0,1] active</text>
-    <text class="small" x="72" y="474">input[0,0,1] matches control -&gt; append 1</text>
-    <text class="small" x="72" y="498">buffer[0,1,0,0] -&gt; buffer[0,1,0,0,1]</text>
-    <text class="small" x="72" y="522">decode value 9 -&gt; neighbor-a/stem-init</text>
-    <text class="small" x="72" y="546">neighbor command[stem-init] unsupported</text>
+    <text class="small" x="72" y="450">control[0,1,0] active</text>
+    <text class="small" x="72" y="474">input[0,1,0] matches control -&gt; append 1</text>
+    <text class="small" x="72" y="498">buffer[0,0,1,1] -&gt; buffer[0,0,1,1,1]</text>
+    <text class="small" x="72" y="522">decode value 7 -&gt; self/write-buf-one</text>
+    <text class="small" x="72" y="546">self command[write-buf-one] unsupported</text>
     <text class="small" x="72" y="570">completed command buffer preserved at append boundary</text>
   </g>
   <g class="interpretive-layers">

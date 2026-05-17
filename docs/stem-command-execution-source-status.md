@@ -19,13 +19,13 @@ channel-token representation, ADR-0030 processes the init-family
 self-mailbox commands, and ADR-0037 dispatches just-completed self-target
 init-family command buffers through that self-mailbox path. ADR-0034 records
 the remaining self-mailbox `standard-signal` and write-buffer commands as an
-explicit preserve-and-report unsupported boundary, and ADR-0041 records the
-remaining completed command-buffer cases as an append-boundary claim. ADR-0042
-adds a schematic-linked trace for one neighbor-target command preserved at that
-boundary, and ADR-0043 adds its rendered SVG view. Legacy simulator sketches
-still diverge from the formal table in ways that should be resolved before AS
-treats them as executable authority, and AS still does not route or execute
-full command buffers.
+explicit preserve-and-report unsupported boundary, ADR-0041 records the
+self-target non-init command-buffer cases as an append-boundary claim, and
+ADR-0044 delivers decoded neighbor-target command buffers onto output channels.
+ADR-0042/ADR-0043 now cover the self-target `write-buf-one` append boundary.
+Legacy simulator sketches still diverge from the formal table in ways that
+should be resolved before AS treats them as executable authority, and AS still
+does not execute command-message inputs on recipient cells.
 
 ## Evidence
 
@@ -60,7 +60,7 @@ ADR-0026 remains correct as a command-buffer decoder because it uses the formal
 model's explicit command table. Execution is a different claim. To execute
 commands honestly, AS first needs to choose:
 
-- how decoded output-channel command tokens are delivered to neighbors;
+- how decoded output-channel command tokens are consumed by neighbors;
 - how `standard-signal`, `write-buf-zero`, and `write-buf-one` behave when
   selected as self-mailbox or self-target command-buffer commands.
 

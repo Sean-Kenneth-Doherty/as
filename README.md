@@ -90,17 +90,18 @@ the project legible:
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
-  full command-buffer execution is still intentionally absent.
+  recipient-side command-message execution is still intentionally absent.
 - `step_stem_cell` processes the self-mailbox init-family commands while
   leaving full command-buffer execution open.
 - `step_stem_cell` also dispatches a just-completed self-target init-family
-  command buffer, while leaving neighbor routing and non-init command semantics
-  open.
+  command buffer and delivers just-completed neighbor-target command buffers to
+  output channels, while leaving neighbor consumption and self non-init command
+  semantics open.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
-  subset, unsupported-command preservation boundary, and self-target
-  command-buffer init dispatch plus unsupported completed-buffer append
-  boundary.
+  subset, unsupported-command preservation boundary, self-target command-buffer
+  init dispatch, neighbor-target command-buffer delivery behavior, and the
+  self-target non-init completed-buffer append boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map

@@ -4,6 +4,10 @@ Date: 2026-05-17
 
 Status: Accepted
 
+Revision note: ADR-0044 later revises the live trace from the original
+`neighbor-a/stem-init` example to a self-target `write-buf-one` example because
+neighbor-target completed buffers now deliver onto output channels.
+
 ## Context
 
 ADR-0041 promoted completed command buffers outside the self-target init slice
@@ -60,3 +64,7 @@ completed unsupported command-buffer alignment check instead of the ordinary
 stem-buffer accumulation check.
 
 Final verification is recorded in `LOG.md`.
+
+ADR-0044 revision: `schematics/command_buffer_unsupported_trace.json` now
+records a self-target `write-buf-one` buffer preserved at the append boundary.
+The original neighbor-target example became delivered behavior.

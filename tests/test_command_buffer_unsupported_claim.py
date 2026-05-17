@@ -60,7 +60,7 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
         )
         self.assertTrue(predicate.holds)
 
-    def test_predicate_accepts_neighbor_completed_append_boundary(self):
+    def test_predicate_ignores_neighbor_delivery_after_adr_0044(self):
         before = Cell(
             role="stem",
             memory="right",
@@ -69,16 +69,16 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
             buffer=(0, 1, 0, 0),
         )
         result = StepResult(
-            status="stem-buffer-appended",
+            status="stem-command-buffer-neighbor-delivered",
             cell=Cell(
                 role="stem",
                 memory="right",
                 input=EMPTY,
-                output=EMPTY,
+                output=("stem-init", "_", "_"),
                 automail="_",
                 self_mailbox="_",
-                control=(0, 0, 1),
-                buffer=(0, 1, 0, 0, 1),
+                control=(),
+                buffer=(),
             ),
         )
 
@@ -88,14 +88,15 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
         )
 
         self.assertTrue(predicate.holds)
+        self.assertIn("neighbor delivery", predicate.detail)
 
     def test_predicate_rejects_processed_status_or_mutated_append_boundary(self):
         before = Cell(
             role="stem",
             memory="right",
-            input=(0, 0, 1),
-            control=(0, 0, 1),
-            buffer=(0, 1, 0, 0),
+            input=(0, 1, 0),
+            control=(0, 1, 0),
+            buffer=(0, 0, 1, 1),
         )
         processed = StepResult(
             status="stem-command-buffer-self-processed",
@@ -110,7 +111,7 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
                 output=EMPTY,
                 automail="_",
                 self_mailbox="_",
-                control=(0, 0, 1),
+                control=(0, 1, 0),
                 buffer=(),
             ),
         )
@@ -123,8 +124,8 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
                 output=(1, "_", "_"),
                 automail="_",
                 self_mailbox="_",
-                control=(0, 0, 1),
-                buffer=(0, 1, 0, 0, 1),
+                control=(0, 1, 0),
+                buffer=(0, 0, 1, 1, 1),
             ),
         )
 

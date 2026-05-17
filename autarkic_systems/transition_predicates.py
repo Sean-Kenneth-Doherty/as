@@ -319,6 +319,12 @@ def stem_command_buffer_preserves_unsupported_completion(
         return PredicateResult(name, True, "precondition not active")
 
     target_id, command_id, completed_buffer = decoded
+    if target_id != "self":
+        return PredicateResult(
+            name,
+            True,
+            "precondition not active: neighbor delivery",
+        )
     if target_id == "self" and command_id in SELF_MAILBOX_INIT_TARGETS:
         return PredicateResult(
             name,

@@ -918,3 +918,34 @@
   passed 49 tests, `python -m unittest discover` passed 246 tests, py_compile
   passed for the touched Python files, JSON parsing passed for the
   source-status manifest, and `git diff --check` passed.
+
+## 2026-05-17 - Neighbor Command Buffer Delivery
+
+- Added ADR-0044 for neighbor-target command-buffer delivery onto output
+  channels without executing recipient-side command-message inputs.
+- Wrote `tests/test_neighbor_command_buffer_delivery.py` before
+  implementation. The red run failed because completed neighbor buffers still
+  returned `stem-buffer-appended` and
+  `stem-command-buffer-neighbor-delivered` was absent from the transition
+  status vocabulary.
+- Added `stem-command-buffer-neighbor-delivered`, decoded neighbor A/B/C
+  output-channel delivery, and transient command-state clearing after
+  delivery.
+- Kept blocked-output behavior, command-message input rejection, and
+  self-target non-init append-boundary preservation in scope as guardrails.
+- Narrowed `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` and
+  `stem_command_buffer_preserves_unsupported_completion` to self-target
+  non-init command-buffer completion because neighbor-target completion is now
+  delivered behavior.
+- Revised `schematics/command_buffer_unsupported_trace.json` and the generated
+  SVG from the former neighbor-target example to the remaining self-target
+  `write-buf-one` append boundary.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, self command-buffer dispatch note, source-status note/artifact,
+  project memory, lessons, and ADR-0041 through ADR-0043 revision notes.
+- Verified `python -m unittest tests.test_neighbor_command_buffer_delivery`
+  passed 6 tests, the adjacent neighbor/unsupported/source-status/claim/
+  object-language suite passed 53 tests, `python -m unittest discover` passed
+  252 tests, py_compile passed for the touched Python modules and tests, JSON
+  parsing passed for the claim/proof/language/source-status/trace manifests,
+  and `git diff --check` passed.

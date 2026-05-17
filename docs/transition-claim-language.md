@@ -11,7 +11,7 @@ language. ADR-0023 extends the current predicate vocabulary with
 `stem_buffer_accumulates` for the stem buffer accumulation subset. ADR-0028
 extends the term vocabulary with `command_messages` and the `self_mailbox` cell
 field without adding command execution. ADR-0029 extends `signals` so channel
-tuples can represent command-message tokens for future neighbor delivery.
+tuples can represent command-message tokens for neighbor delivery.
 ADR-0030 extends `statuses` for the first self-mailbox init-command execution
 slice. ADR-0031 extends `formulae.predicate_symbols` with
 `self_mailbox_executes_init_command` so that execution subset can be checked as
@@ -23,7 +23,9 @@ the first narrow self-target init command-buffer dispatch. ADR-0038 adds
 `stem_command_buffer_executes_self_init` for the corresponding transition
 claim. ADR-0041 adds
 `stem_command_buffer_preserves_unsupported_completion` for completed command
-buffers that remain at the append boundary.
+buffers that remain at the append boundary. ADR-0044 adds
+`stem-command-buffer-neighbor-delivered` for neighbor-target command buffers
+that deliver decoded command tokens onto output channels.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before

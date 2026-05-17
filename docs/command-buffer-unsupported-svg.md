@@ -19,14 +19,15 @@ The SVG shows:
 - stem role and `step_stem_cell` transition function;
 - the `stem-buffer-appended` transition status;
 - the active control rail `[0, 0, 1]`;
-- command buffer before `[0, 1, 0, 0]` and after `[0, 1, 0, 0, 1]`;
+- command buffer before `[0, 0, 1, 1]` and after `[0, 0, 1, 1, 1]`;
 - cleared input after the append;
-- the recorded decode-flow text for `neighbor-a/stem-init`;
+- the recorded decode-flow text for `self/write-buf-one`;
 - the four interpretive layer IDs from the shared schematic schema.
 
-The SVG does not claim neighbor routing, self-target non-init execution,
-dynamic GELC reconfiguration, or physical circulator verification. It renders
-the one completed unsupported command-buffer trace from ADR-0042.
+The SVG does not claim write-buffer execution, neighbor-side command
+consumption, dynamic GELC reconfiguration, or physical circulator verification.
+It renders the one completed unsupported command-buffer trace from ADR-0042 as
+revised by ADR-0044.
 
 ## Verification
 

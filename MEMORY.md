@@ -132,7 +132,8 @@
 - ADR-0030 processes self-mailbox init-family commands
   (`stem-init`, `wire-r-init`, `wire-l-init`, `proc-r-init`, `proc-l-init`) in
   `step_stem_cell`. It intentionally leaves `standard-signal`,
-  `write-buf-zero`, `write-buf-one`, and neighbor delivery open.
+  `write-buf-zero`, `write-buf-one`, and neighbor-side command consumption
+  open.
 - ADR-0031 promotes that self-mailbox init execution subset into
   `UC-STEM-SELF-MAILBOX-INIT-COMMAND`,
   `self_mailbox_executes_init_command`, and matching proof-certificate
@@ -159,12 +160,13 @@
   control, and buffer preservation stay visible.
 - ADR-0037 adds the first narrow command-buffer-to-behavior path:
   `step_stem_cell` decodes a just-completed five-bit buffer and processes it
-  only when it is a self-target init-family command. Neighbor targets and
-  self-target non-init commands still stop at `stem-buffer-appended`.
+  only when it is a self-target init-family command. ADR-0044 later changes
+  neighbor targets from append-boundary cases into output-channel delivery
+  cases; self-target non-init commands still stop at `stem-buffer-appended`.
 - ADR-0038 promotes ADR-0037 into `UC-STEM-COMMAND-BUFFER-SELF-INIT` and
   `stem_command_buffer_executes_self_init`, with manifest examples and
-  proof-certificate coverage. It still excludes neighbor routing and self
-  non-init command semantics.
+  proof-certificate coverage. It still excludes neighbor-target delivery until
+  ADR-0044 and self non-init command semantics.
 - ADR-0039 adds `schematics/self_command_buffer_init_trace.json`,
   `docs/self-command-buffer-init-trace.md`, and
   `tests/test_self_command_buffer_init_trace.py` for one completed
@@ -178,14 +180,21 @@
   reconfiguration or buffer rendering.
 - ADR-0041 promotes completed command buffers outside the self-target init
   slice into `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` and
-  `stem_command_buffer_preserves_unsupported_completion`. Neighbor-target and
-  self non-init completed buffers still stop at `stem-buffer-appended`.
+  `stem_command_buffer_preserves_unsupported_completion`. ADR-0044 later
+  narrows this live boundary to self-target non-init completed buffers because
+  neighbor-target completions now deliver to output channels.
 - ADR-0042 adds `schematics/command_buffer_unsupported_trace.json`,
   `docs/command-buffer-unsupported-trace.md`, and
-  `tests/test_command_buffer_unsupported_trace.py` for one completed
-  `neighbor-a/stem-init` command buffer preserved at the append boundary.
+  `tests/test_command_buffer_unsupported_trace.py`. ADR-0044 revises the
+  trace from the original `neighbor-a/stem-init` example to a self-target
+  `write-buf-one` example preserved at the append boundary.
 - ADR-0043 adds `schematics/command_buffer_unsupported_trace.svg`,
   `docs/command-buffer-unsupported-svg.md`, and
-  `tests/test_command_buffer_unsupported_svg.py`. The SVG renderer now gives
+  `tests/test_command_buffer_unsupported_svg.py`. The SVG renderer gives
   unsupported command-buffer traces their own summary branch before generic
-  buffer rendering.
+  buffer rendering; ADR-0044 updates the rendered example to the self-target
+  non-init boundary.
+- ADR-0044 adds `stem-command-buffer-neighbor-delivered` and implements
+  neighbor-target command-buffer delivery onto output channels 0, 1, and 2 for
+  `neighbor-a`, `neighbor-b`, and `neighbor-c`. It still does not execute
+  command-message inputs on recipient cells.

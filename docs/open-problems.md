@@ -63,10 +63,11 @@ ADR-0038 promotes that dispatch into a named claim with proof-certificate
 coverage. ADR-0039 adds the corresponding schematic-linked trace for one
 completed `self/proc-l-init` command buffer. ADR-0040 adds the rendered SVG
 view of that trace. ADR-0041 adds the named claim for completed command buffers
-that still stop at the append boundary because they are neighbor-target or
-self-target non-init commands. ADR-0042 adds a schematic-linked trace for one
-decoded `neighbor-a/stem-init` buffer that remains at that boundary. ADR-0043
-adds the rendered SVG view of that trace.
+that still stop at the append boundary; ADR-0044 narrows that boundary to
+self-target non-init commands by delivering neighbor-target command buffers to
+output channels. ADR-0042/ADR-0043 now use a self-target `write-buf-one`
+trace/render for the remaining unsupported append boundary. Recipient-side
+command-message consumption and self-target non-init execution remain open.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -161,10 +162,13 @@ commands as a checkable unsupported boundary.
 ADR-0035 adds a schematic-linked preservation trace for that boundary.
 ADR-0036 adds the rendered SVG view.
 ADR-0037 adds narrow self-target init command-buffer dispatch while leaving
-neighbor routing and self-target non-init commands open.
+neighbor routing and self-target non-init commands open at that point.
 ADR-0038 adds the corresponding claim/proof surface.
 ADR-0039 adds the corresponding schematic-linked trace.
 ADR-0040 adds the corresponding rendered SVG view.
 ADR-0041 adds the corresponding unsupported completed-buffer boundary claim.
 ADR-0042 adds the corresponding schematic-linked trace.
 ADR-0043 adds the corresponding rendered SVG view.
+ADR-0044 delivers neighbor-target command buffers to output channels, narrowing
+the remaining open command-buffer questions to recipient-side consumption and
+self-target non-init commands.

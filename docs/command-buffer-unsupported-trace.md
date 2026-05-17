@@ -3,17 +3,20 @@
 Status: schematic-linked trace artifact, 2026-05-17.
 
 ADR-0042 adds `schematics/command_buffer_unsupported_trace.json`, a structured
-schematic-linked Universal Cell trace for the unsupported completed
+schematic-linked Universal Cell trace for the unsupported self-target non-init
 command-buffer append boundary named as a claim in ADR-0041.
 ADR-0043 adds the rendered SVG view of this trace.
+ADR-0044 revises the trace from its original neighbor-target example to a
+self-target `write-buf-one` example because neighbor-target completions now
+deliver command tokens to output channels.
 
 ## Trace Boundary
 
 The trace records a stem cell with empty `automail` and `self_mailbox`, a
 matching one-hot input/control pair, and a four-bit command buffer
-`[0, 1, 0, 0]`. One `step_stem_cell` activation appends bit `1`, producing the
-five-bit buffer `01001`. The ADR-0026 map decodes that value as
-`neighbor-a/stem-init`, and the transition must:
+`[0, 0, 1, 1]`. One `step_stem_cell` activation appends bit `1`, producing the
+five-bit buffer `00111`. The ADR-0026 map decodes that value as
+`self/write-buf-one`, and the transition must:
 
 - return `stem-buffer-appended`;
 - keep the cell in the `stem` role with `right` memory;
@@ -21,8 +24,9 @@ five-bit buffer `01001`. The ADR-0026 map decodes that value as
 - preserve the control rail;
 - preserve the completed five-bit buffer.
 
-This is not neighbor routing. It does not cover self-target non-init command
-execution, larger GELC examples, or physical simulation.
+This does not execute the write-buffer command. It does not cover
+`standard-signal`, neighbor-side command consumption, larger GELC examples, or
+physical simulation.
 
 ## Schematic Role
 

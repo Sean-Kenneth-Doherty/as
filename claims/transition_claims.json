@@ -465,7 +465,7 @@
     {
       "id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "predicate": "stem_command_buffer_preserves_unsupported_completion",
-      "description": "A stem cell that completes an unsupported command buffer remains at the append boundary without routing or execution.",
+      "description": "A stem cell that completes a self-target non-init command buffer remains at the append boundary without execution.",
       "examples": [
         {
           "name": "self write buffer command remains appended",
@@ -492,38 +492,14 @@
           }
         },
         {
-          "name": "neighbor command remains appended",
-          "expected": true,
-          "before": {
-            "role": "stem",
-            "memory": "right",
-            "input": [0, 0, 1],
-            "control": [0, 0, 1],
-            "buffer": [0, 1, 0, 0]
-          },
-          "result": {
-            "status": "stem-buffer-appended",
-            "cell": {
-              "role": "stem",
-              "memory": "right",
-              "input": ["_", "_", "_"],
-              "output": ["_", "_", "_"],
-              "automail": "_",
-              "self_mailbox": "_",
-              "control": [0, 0, 1],
-              "buffer": [0, 1, 0, 0, 1]
-            }
-          }
-        },
-        {
-          "name": "neighbor command wrongfully processed",
+          "name": "self write buffer command wrongfully processed",
           "expected": false,
           "before": {
             "role": "stem",
             "memory": "right",
-            "input": [0, 0, 1],
-            "control": [0, 0, 1],
-            "buffer": [0, 1, 0, 0]
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0, 0, 1, 1]
           },
           "result": {
             "status": "stem-command-buffer-self-processed",

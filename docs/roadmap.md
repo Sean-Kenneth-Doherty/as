@@ -673,15 +673,17 @@ Deliverables:
 - `stem-command-buffer-self-processed` transition status;
 - transition-language status vocabulary update;
 - source-status update showing the remaining full-execution blockers;
-- tests proving self `proc-l-init`, self `stem-init`, neighbor non-routing,
-  self non-init non-execution, and status vocabulary coverage.
+- tests proving self `proc-l-init`, self `stem-init`, then-current neighbor
+  no-delivery behavior, self non-init non-execution, and status vocabulary
+  coverage.
 
 Status: accepted in `docs/adr/0037-self-command-buffer-init-dispatch.md`.
 Implemented in `autarkic_systems/universal_cell.py`,
 `language/transition_claim_language.json`, and
 `sources/stem_command_execution_source_status.json`, with tests in
 `tests/test_self_command_buffer_init_dispatch.py` and the updated source-status
-tests.
+tests. ADR-0044 later replaces that neighbor no-delivery expectation with
+neighbor-target output-channel delivery.
 
 ## ADR-0038: Self Command Buffer Init Claim
 
@@ -744,13 +746,14 @@ Implemented in `autarkic_systems/schematic_svg.py` and
 ## ADR-0041: Command Buffer Unsupported Claim
 
 Goal: promote completed command buffers outside the self-target init slice into
-the named append-boundary claim surface.
+the named append-boundary claim surface. ADR-0044 later narrows the live
+boundary to self-target non-init command buffers.
 
 Deliverables:
 
 - `stem_command_buffer_preserves_unsupported_completion` predicate;
 - `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` manifest claim with positive
-  self non-init and neighbor-target examples plus a negative processed example;
+  self non-init examples plus a negative processed example;
 - proof-certificate coverage for the new claim;
 - transition-language predicate vocabulary update;
 - tests proving predicate behavior, manifest evaluation, certificate coverage,
@@ -760,12 +763,13 @@ Status: accepted in `docs/adr/0041-command-buffer-unsupported-claim.md`.
 Implemented in `autarkic_systems/transition_predicates.py`,
 `claims/transition_claims.json`, `claims/proof_certificates.json`, and
 `language/transition_claim_language.json`, with tests in
-`tests/test_command_buffer_unsupported_claim.py`.
+`tests/test_command_buffer_unsupported_claim.py`. Revised by ADR-0044 after
+neighbor-target command-buffer delivery became implemented behavior.
 
 ## ADR-0042: Command Buffer Unsupported Trace
 
 Goal: add a schematic-linked trace for one unsupported completed command
-buffer.
+buffer. ADR-0044 revises the live trace to a self-target non-init example.
 
 Deliverables:
 
@@ -780,7 +784,9 @@ Deliverables:
 Status: accepted in `docs/adr/0042-command-buffer-unsupported-trace.md`.
 Implemented in `autarkic_systems/schematic_trace.py` and
 `schematics/command_buffer_unsupported_trace.json`, with tests in
-`tests/test_command_buffer_unsupported_trace.py`.
+`tests/test_command_buffer_unsupported_trace.py`. Revised by ADR-0044 from the
+original neighbor-target example to a self-target `write-buf-one` append
+boundary.
 
 ## ADR-0043: Command Buffer Unsupported SVG
 
@@ -798,4 +804,26 @@ Deliverables:
 Status: accepted in `docs/adr/0043-command-buffer-unsupported-svg.md`.
 Implemented in `autarkic_systems/schematic_svg.py` and
 `schematics/command_buffer_unsupported_trace.svg`, with tests in
-`tests/test_command_buffer_unsupported_svg.py`.
+`tests/test_command_buffer_unsupported_svg.py`. Revised by ADR-0044 alongside
+the updated unsupported command-buffer trace.
+
+## ADR-0044: Neighbor Command Buffer Delivery
+
+Goal: deliver completed neighbor-target command buffers onto output channels
+without executing recipient-side command-message inputs.
+
+Deliverables:
+
+- `stem-command-buffer-neighbor-delivered` status vocabulary;
+- neighbor A/B/C output-channel delivery for decoded command buffers;
+- transient command-state clearing after delivery;
+- tests proving neighbor delivery, blocked-output behavior, self non-init
+  preservation, and command-message input rejection;
+- source-status and documentation updates that move the blocker from delivery
+  to recipient-side consumption.
+
+Status: accepted in `docs/adr/0044-neighbor-command-buffer-delivery.md`.
+Implemented in `autarkic_systems/universal_cell.py`,
+`language/transition_claim_language.json`,
+`sources/stem_command_execution_source_status.json`, and the adjacent
+command-buffer tests.
