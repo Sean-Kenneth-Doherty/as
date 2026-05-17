@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "certificates": [
+    {
+      "claim_id": "UC-FIXED-OUTPUT-PRESERVED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "blocked output preserved",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "blocked output changed",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "claim_id": "UC-FIXED-CONSUMED-INPUT-CLEARED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "routed input cleared",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "routed input uncleared",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "claim_id": "UC-FIXED-MEMORY-RULE",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "processor toggled",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "processor did not toggle",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "claim_id": "UC-FIXED-STEM-INIT-RESET",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "stem init reset",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "stem init stayed fixed",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "claim_id": "UC-STEM-AUTOMAIL-RECONFIGURES",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "left wire automail",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "wrong automail target",
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

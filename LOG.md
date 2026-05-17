@@ -152,3 +152,19 @@
   start with a minimal AS-local proof-certificate checker for the current
   transition claims, use LeanTAP as a transparent design reference, and defer
   Proflog as a dependency until its active frontier is recovered or replaced.
+
+## 2026-05-17 - Proof Certificate Checker
+
+- Added ADR-0011 for the first proof-object layer over current transition
+  claims.
+- Wrote `tests/test_proof_certificates.py` before implementation. The red run
+  failed because `autarkic_systems.proof_certificates` did not exist.
+- Added `claims/proof_certificates.json` with one certificate per current
+  transition claim. The first rule is `manifest-example`, tying proof steps to
+  named claim examples and their expected predicate outcomes.
+- Added `autarkic_systems/proof_certificates.py` to load certificates and
+  reject missing claim certificates, unknown claims, unknown rules, missing
+  examples, duplicate examples, and mismatched expectations.
+- Verified `python -m unittest tests.test_proof_certificates` passed 6 tests,
+  `python -m unittest discover` passed 36 tests, py_compile passed for the new
+  module and tests, JSON checks passed, and `git diff --check` passed.

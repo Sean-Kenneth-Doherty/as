@@ -179,3 +179,18 @@ Status: accepted in `docs/adr/0010-proof-apparatus-options.md`. The decision is
 to start with a minimal AS-local proof-certificate checker, use LeanTAP as a
 transparent reference, and defer public Proflog as a dependency until the
 active SJAS/Proflog frontier is recovered or replaced.
+
+## ADR-0011: Proof Certificate Checker
+
+Goal: add the first proof-object layer over the current transition claims.
+
+Deliverables:
+
+- proof-certificate manifest tied to claim IDs;
+- checker for `manifest-example` certificate steps;
+- tests for accepted certificates and rejected unknown/mismatched certificates.
+
+Status: accepted in `docs/adr/0011-proof-certificate-checker.md`. Implemented
+in `claims/proof_certificates.json` and
+`autarkic_systems/proof_certificates.py`, with tests in
+`tests/test_proof_certificates.py`.

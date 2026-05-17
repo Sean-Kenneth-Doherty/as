@@ -68,10 +68,10 @@ LeanTAP should inform design, not become the first dependency.
 
 ## Next ADR Shape
 
-The next proof-side ADR should define a tiny proof-object vocabulary for the
-existing transition claims.
+ADR-0011 defines the first tiny proof-object vocabulary for the existing
+transition claims.
 
-Minimum deliverables:
+Implemented minimum deliverables:
 
 - a JSON or Python-literal proof certificate format tied to claim IDs;
 - red tests for accepted and rejected certificates;
@@ -80,9 +80,12 @@ Minimum deliverables:
 - documentation that the checker is proof-certificate validation for current
   AS claims, not general theorem proving.
 
-Candidate first certificate clauses:
+First certificate clause:
 
 - `manifest-example`: a claim example was evaluated by the manifest evaluator;
+
+Candidate future certificate clauses:
+
 - `predicate-result`: a named predicate returned the expected boolean result;
 - `transition-witness`: a before/after transition pair matches a concrete
   Universal Cell step result.

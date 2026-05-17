@@ -30,6 +30,8 @@ the project legible:
   direction decision.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
+- `claims/proof_certificates.json` adds the first tiny proof certificates over
+  those transition claims.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.
@@ -45,8 +47,9 @@ python -m unittest discover
 ```
 
 The current executable probes live in `autarkic_systems/universal_cell.py` and
-`autarkic_systems/transition_predicates.py`, with claim-manifest support in
-`autarkic_systems/claim_manifest.py`. They are covered by `tests/`.
+`autarkic_systems/transition_predicates.py`, with claim-manifest and
+proof-certificate support in `autarkic_systems/claim_manifest.py` and
+`autarkic_systems/proof_certificates.py`. They are covered by `tests/`.
 
 ## Subordinate Programs
 

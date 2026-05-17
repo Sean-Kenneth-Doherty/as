@@ -15,7 +15,9 @@ to formal claims.
 
 Status: started by ADR-0007. `claims/transition_claims.json` names the current
 predicate claims and executable examples. Remaining work is to add proof objects
-or proof-apparatus clauses behind those claim IDs.
+or proof-apparatus clauses behind those claim IDs. ADR-0011 adds the first
+minimal proof certificates over the manifest examples; richer object-language
+proof clauses remain open.
 
 ## P2: Expand From Fixed Roles To Stem/Reconfiguration
 
@@ -43,8 +45,8 @@ proof-certificate checker over the current transition-claim surface, use
 LeanTAP as a transparent tableaux reference, and keep Proflog/Fitting as the
 long-term SJAS-aligned path once the active frontier is recovered or replaced.
 
-Likely next artifact: ADR-0011 should define the first proof-object syntax and
-red tests for a local checker.
+Status update: ADR-0011 added the first local proof-certificate checker for the
+current transition claims.
 
 ## P4: Define The First Object Language
 
