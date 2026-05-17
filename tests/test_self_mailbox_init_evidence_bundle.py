@@ -84,7 +84,7 @@ class SelfMailboxInitEvidenceBundleTests(unittest.TestCase):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
-        self.assertEqual(len(entries), 6)
+        self.assertEqual(len(entries), 7)
         self.assertIn("recipient-init-command-message-transition-evidence-bundle", entries)
         self.assertIn("recipient-non-init-command-rejection-evidence-bundle", entries)
         self.assertIn("multi-command-recipient-rejection-evidence-bundle", entries)

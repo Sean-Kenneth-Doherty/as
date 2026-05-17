@@ -201,3 +201,6 @@
 - Evidence bundles should also cover decoded-command paths, not only direct
   mailbox or channel tokens. That proves the decoder, runtime transition,
   claim, proof, trace, and render stay aligned as a chain.
+- When an evidence bundle covers a negative decoded-command path, keep the
+  renderer docs honest about the exact active rail and completed buffer; small
+  visible-detail drift undercuts the point of the bundle.

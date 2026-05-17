@@ -39,6 +39,12 @@
       "path": "evidence/self_command_buffer_init_bundle.json",
       "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
       "expected_status": "stem-command-buffer-self-processed"
+    },
+    {
+      "bundle_id": "command-buffer-unsupported-evidence-bundle",
+      "path": "evidence/command_buffer_unsupported_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+      "expected_status": "stem-buffer-appended"
     }
   ]
 }

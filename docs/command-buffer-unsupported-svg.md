@@ -18,7 +18,7 @@ The SVG shows:
 - north, east, and west ports from the structured trace;
 - stem role and `step_stem_cell` transition function;
 - the `stem-buffer-appended` transition status;
-- the active control rail `[0, 0, 1]`;
+- the active control rail `[0, 1, 0]`;
 - command buffer before `[0, 0, 1, 1]` and after `[0, 0, 1, 1, 1]`;
 - cleared input after the append;
 - the recorded decode-flow text for `self/write-buf-one`;
@@ -28,6 +28,10 @@ The SVG does not claim write-buffer execution, neighbor-side command
 consumption, dynamic GELC reconfiguration, or physical circulator verification.
 It renders the one completed unsupported command-buffer trace from ADR-0042 as
 revised by ADR-0044.
+
+ADR-0075 registers this SVG in
+`evidence/command_buffer_unsupported_bundle.json`, so the render is validated
+as part of the same claim/proof/trace evidence path.
 
 ## Verification
 

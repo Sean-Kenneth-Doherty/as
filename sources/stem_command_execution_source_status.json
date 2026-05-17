@@ -53,6 +53,13 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
       "positive_example": "self command buffer processor left init",
       "summary": "AS now has an integrated evidence bundle validating one completed self-target command-buffer init dispatch across runtime, claim, proof, trace, render, and source-status boundaries."
+    },
+    {
+      "adr": "ADR-0075",
+      "path": "evidence/command_buffer_unsupported_bundle.json",
+      "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+      "positive_example": "self write buffer command remains appended",
+      "summary": "AS now has an integrated evidence bundle validating one completed self-target non-init command-buffer append boundary across runtime, claim, proof, trace, render, and source-status boundaries."
     }
   ],
   "legacy_divergences": [

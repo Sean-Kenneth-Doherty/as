@@ -1450,3 +1450,21 @@ Status: accepted in
 `docs/adr/0074-self-command-buffer-init-evidence-bundle.md`. Implemented in
 `evidence/self_command_buffer_init_bundle.json`, with tests in
 `tests/test_self_command_buffer_init_evidence_bundle.py`.
+
+## ADR-0075: Command-Buffer Unsupported Evidence Bundle
+
+Goal: add the completed self-target non-init command-buffer append boundary as
+the seventh transition evidence bundle.
+
+Deliverables:
+
+- `evidence/command_buffer_unsupported_bundle.json`;
+- registry entry in `evidence/manifest.json`;
+- tests proving bundle fields, artifact paths, cross-layer validation,
+  registry coverage, and drifted status rejection;
+- human-facing evidence-bundle note and stem command source-status cross-link.
+
+Status: accepted in
+`docs/adr/0075-command-buffer-unsupported-evidence-bundle.md`. Implemented in
+`evidence/command_buffer_unsupported_bundle.json`, with tests in
+`tests/test_command_buffer_unsupported_evidence_bundle.py`.

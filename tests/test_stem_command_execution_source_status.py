@@ -104,6 +104,24 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
         self.assertIn("self-target command-buffer init", bundle["summary"])
 
+    def test_command_buffer_unsupported_evidence_bundle_is_recorded(self):
+        bundles = {
+            bundle["path"]: bundle
+            for bundle in self.status["implemented_evidence_bundles"]
+        }
+        bundle = bundles["evidence/command_buffer_unsupported_bundle.json"]
+
+        self.assertEqual(bundle["adr"], "ADR-0075")
+        self.assertEqual(
+            bundle["claim_id"],
+            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+        )
+        self.assertEqual(
+            bundle["positive_example"],
+            "self write buffer command remains appended",
+        )
+        self.assertIn("non-init command-buffer append boundary", bundle["summary"])
+
     def test_legacy_command_and_target_divergences_are_recorded(self):
         divergences = {
             divergence["witness_id"]: divergence

@@ -358,3 +358,8 @@
   `tests/test_self_command_buffer_init_evidence_bundle.py`. It registers the
   completed self-target `self/proc-l-init` command-buffer dispatch as the
   sixth evidence bundle.
+- ADR-0075 adds `docs/command-buffer-unsupported-evidence-bundle.md`,
+  `evidence/command_buffer_unsupported_bundle.json`, and
+  `tests/test_command_buffer_unsupported_evidence_bundle.py`. It registers the
+  completed self-target `self/write-buf-one` command-buffer append boundary as
+  the seventh evidence bundle.

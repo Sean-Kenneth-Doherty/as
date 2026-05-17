@@ -28,6 +28,11 @@ This does not execute the write-buffer command. It does not cover
 `standard-signal`, neighbor-side command consumption, larger GELC examples, or
 physical simulation.
 
+ADR-0075 registers this trace in
+`evidence/command_buffer_unsupported_bundle.json`, so the integrated evidence
+validator checks the claim example, proof certificate, JSON trace, SVG render,
+and source-status boundaries together.
+
 ## Schematic Role
 
 The artifact uses the same triangular RLEM/GELC schematic vocabulary as the

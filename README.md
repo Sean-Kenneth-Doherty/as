@@ -117,6 +117,9 @@ the project legible:
 - `docs/self-command-buffer-init-evidence-bundle.md` records the sixth
   integrated evidence bundle, tying one completed self-target command-buffer
   init dispatch to that evidence surface.
+- `docs/command-buffer-unsupported-evidence-bundle.md` records the seventh
+  integrated evidence bundle, tying one completed self-target non-init
+  command-buffer append boundary to that evidence surface.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -218,6 +221,9 @@ the project legible:
 - `evidence/self_command_buffer_init_bundle.json` makes one completed
   self-target command-buffer init evidence path inspectable across the same
   layers.
+- `evidence/command_buffer_unsupported_bundle.json` makes one completed
+  self-target non-init command-buffer append-boundary evidence path
+  inspectable across the same layers.
 - `evidence/manifest.json` indexes transition evidence bundles for
   batch-validation.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first

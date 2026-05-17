@@ -106,6 +106,8 @@ the fifth evidence bundle and aligns its trace/SVG fixture with the named
 preservation example.
 ADR-0074 registers the completed self-target command-buffer init dispatch as
 the sixth evidence bundle.
+ADR-0075 registers the completed self-target non-init command-buffer append
+boundary as the seventh evidence bundle.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -255,6 +257,8 @@ ADR-0073 registers the direct unsupported self-mailbox preservation boundary as
 an integrated evidence bundle and claim-aligns the trace/SVG fixture.
 ADR-0074 registers the completed self-target command-buffer init dispatch as
 an integrated evidence bundle.
+ADR-0075 registers the completed self-target non-init command-buffer append
+boundary as an integrated evidence bundle.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

@@ -10,31 +10,31 @@ from autarkic_systems.evidence_bundle import (
 )
 
 
-BUNDLE = Path("evidence/multi_command_recipient_rejection_bundle.json")
+BUNDLE = Path("evidence/command_buffer_unsupported_bundle.json")
 REGISTRY = Path("evidence/manifest.json")
-BUNDLE_ID = "multi-command-recipient-rejection-evidence-bundle"
-CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
-EXAMPLE = "fixed all-init command conflict rejected"
-STATUS = "rejected-input"
+BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
+CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
+EXAMPLE = "self write buffer command remains appended"
+STATUS = "stem-buffer-appended"
 
 
-class MultiCommandEvidenceBundleTests(unittest.TestCase):
+class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
     def setUp(self):
         self.bundle = load_transition_evidence_bundle(BUNDLE)
 
-    def test_bundle_names_the_existing_multi_command_rejection(self):
+    def test_bundle_names_the_existing_command_buffer_unsupported_boundary(self):
         self.assertEqual(self.bundle.schema_version, 1)
         self.assertEqual(self.bundle.bundle_id, BUNDLE_ID)
         self.assertEqual(self.bundle.claim_id, CLAIM_ID)
         self.assertEqual(
             self.bundle.predicate,
-            "recipient_non_init_command_message_rejected",
+            "stem_command_buffer_preserves_unsupported_completion",
         )
         self.assertEqual(self.bundle.positive_example, EXAMPLE)
-        self.assertEqual(self.bundle.transition_function, "step_fixed_cell")
+        self.assertEqual(self.bundle.transition_function, "step_stem_cell")
         self.assertEqual(self.bundle.expected_status, STATUS)
 
-    def test_bundle_records_multi_command_artifact_paths(self):
+    def test_bundle_records_command_buffer_unsupported_artifact_paths(self):
         self.assertEqual(self.bundle.claim_manifest_path, Path("claims/transition_claims.json"))
         self.assertEqual(
             self.bundle.proof_certificate_path,
@@ -42,11 +42,11 @@ class MultiCommandEvidenceBundleTests(unittest.TestCase):
         )
         self.assertEqual(
             self.bundle.schematic_trace_path,
-            Path("schematics/multi_command_recipient_rejection_trace.json"),
+            Path("schematics/command_buffer_unsupported_trace.json"),
         )
         self.assertEqual(
             self.bundle.schematic_svg_path,
-            Path("schematics/multi_command_recipient_rejection_trace.svg"),
+            Path("schematics/command_buffer_unsupported_trace.svg"),
         )
         self.assertEqual(
             self.bundle.hardware_witness_map_path,
@@ -55,14 +55,14 @@ class MultiCommandEvidenceBundleTests(unittest.TestCase):
         self.assertEqual(
             self.bundle.source_status_paths,
             (
-                Path("sources/multi_command_recipient_input_policy_status.json"),
+                Path("sources/stem_command_execution_source_status.json"),
                 Path("sources/recipient_non_init_command_source_status.json"),
                 Path("sources/standard_signal_command_semantics_status.json"),
                 Path("sources/write_buffer_command_semantics_status.json"),
             ),
         )
 
-    def test_bundle_validates_multi_command_claim_proof_trace_svg_and_statuses(self):
+    def test_bundle_validates_claim_proof_trace_svg_and_statuses(self):
         results = validate_transition_evidence_bundle(self.bundle)
 
         self.assertTrue(results)
@@ -80,13 +80,12 @@ class MultiCommandEvidenceBundleTests(unittest.TestCase):
             },
         )
 
-    def test_registry_includes_three_recipient_command_bundles(self):
+    def test_registry_includes_command_buffer_unsupported_bundle(self):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
         self.assertEqual(len(entries), 7)
-        self.assertIn("recipient-init-command-message-transition-evidence-bundle", entries)
-        self.assertIn("recipient-non-init-command-rejection-evidence-bundle", entries)
+        self.assertIn("self-command-buffer-init-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)
         self.assertEqual(entries[BUNDLE_ID].path, BUNDLE)
         self.assertEqual(entries[BUNDLE_ID].claim_id, CLAIM_ID)
@@ -95,10 +94,10 @@ class MultiCommandEvidenceBundleTests(unittest.TestCase):
         results = validate_evidence_bundle_registry(registry)
         self.assertTrue(all(result.accepted for result in results), results)
 
-    def test_drifted_multi_command_claim_id_is_rejected(self):
+    def test_drifted_unsupported_status_is_rejected(self):
         drifted = replace(
             self.bundle,
-            claim_id="UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+            expected_status="stem-command-buffer-self-processed",
         )
 
         results = validate_transition_evidence_bundle(drifted)
@@ -106,8 +105,8 @@ class MultiCommandEvidenceBundleTests(unittest.TestCase):
         self.assertTrue(
             any(
                 not result.accepted
-                and result.subject == "claim-example"
-                and "predicate mismatch" in result.detail
+                and result.subject in {"claim-example", "schematic-trace"}
+                and "status mismatch" in result.detail
                 for result in results
             ),
             results,

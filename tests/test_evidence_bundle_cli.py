@@ -31,7 +31,7 @@ class EvidenceBundleCliTests(unittest.TestCase):
             report,
         )
         self.assertIn("OK registry-schema: registry schema accepted", report)
-        self.assertIn("OK registry-bundle-validation: validated 6 bundles", report)
+        self.assertIn("OK registry-bundle-validation: validated 7 bundles", report)
         self.assertIn("OK registry-completeness:", report)
         self.assertNotIn("FAIL", report)
 
@@ -57,7 +57,7 @@ class EvidenceBundleCliTests(unittest.TestCase):
             "transition-evidence-bundle-registry",
         )
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 6)
+        self.assertEqual(payload["bundle_count"], 7)
         self.assertEqual(payload["result_count"], len(results))
         self.assertTrue(
             any(
@@ -78,7 +78,7 @@ class EvidenceBundleCliTests(unittest.TestCase):
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 6)
+        self.assertEqual(payload["bundle_count"], 7)
         self.assertNotIn("OK registry", stdout.getvalue())
 
     def test_cli_returns_one_for_missing_registered_bundle(self):
@@ -194,7 +194,7 @@ class EvidenceBundleCliTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 6)
+        self.assertEqual(payload["bundle_count"], 7)
 
 
 if __name__ == "__main__":

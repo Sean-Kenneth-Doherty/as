@@ -51,7 +51,8 @@ registers the direct self-mailbox init transition as an integrated evidence
 bundle without widening the command-execution boundary. ADR-0073 registers the
 direct unsupported self-mailbox preservation boundary the same way. ADR-0074
 registers the completed self-target command-buffer init dispatch as an
-integrated evidence bundle.
+integrated evidence bundle. ADR-0075 registers the completed self-target
+non-init command-buffer append boundary as an integrated evidence bundle.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

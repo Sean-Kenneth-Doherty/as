@@ -84,7 +84,7 @@ class SelfMailboxUnsupportedEvidenceBundleTests(unittest.TestCase):
         registry = load_evidence_bundle_registry(REGISTRY)
         entries = {entry.bundle_id: entry for entry in registry.bundles}
 
-        self.assertEqual(len(entries), 6)
+        self.assertEqual(len(entries), 7)
         self.assertIn("self-mailbox-init-evidence-bundle", entries)
         self.assertIn(BUNDLE_ID, entries)
         self.assertEqual(entries[BUNDLE_ID].path, BUNDLE)

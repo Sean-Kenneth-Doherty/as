@@ -1660,3 +1660,27 @@
   `python -m unittest discover` passed 436 tests. `py_compile` passed for the
   touched tests, and JSON parsing passed for the registry, new bundle, touched
   source status, and existing self command-buffer trace.
+
+## 2026-05-17 - Command-Buffer Unsupported Evidence Bundle
+
+- Added ADR-0075 to register the completed self-target non-init command-buffer
+  append boundary as the seventh transition evidence bundle.
+- Wrote `tests/test_command_buffer_unsupported_evidence_bundle.py` before
+  implementation. The red run failed because
+  `evidence/command_buffer_unsupported_bundle.json` was absent.
+- Added `evidence/command_buffer_unsupported_bundle.json` for the positive
+  `self write buffer command remains appended` example under
+  `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED`.
+- Registered the bundle in `evidence/manifest.json`, so the evidence registry
+  and CLI now validate seven bundles.
+- Corrected the human SVG note for the unsupported command-buffer trace to name
+  the active control rail `[0, 1, 0]`.
+- Added `docs/command-buffer-unsupported-evidence-bundle.md` and updated
+  README, roadmap, literature map, open problems, evidence registry docs, stem
+  command source status, project memory, and lessons.
+- Verified the focused bundle/registry/CLI/source-status stack passed 33
+  tests, the adjacent unsupported command-buffer/evidence stack passed 74
+  tests, both actual CLI text and JSON modes passed for seven bundles, and
+  `python -m unittest discover` passed 443 tests. `py_compile` passed for the
+  touched tests, and JSON parsing passed for the registry, new bundle, touched
+  source status, and existing unsupported command-buffer trace.
