@@ -58,6 +58,8 @@ ADR-0035 adds a schematic-linked trace for one `write-buf-one` unsupported
 self-mailbox command. ADR-0036 adds the corresponding rendered SVG view.
 ADR-0037 adds the first narrow command-buffer execution slice: self-target
 init-family commands when the fifth buffer bit is appended.
+ADR-0038 promotes that dispatch into a named claim with proof-certificate
+coverage.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -153,3 +155,4 @@ ADR-0035 adds a schematic-linked preservation trace for that boundary.
 ADR-0036 adds the rendered SVG view.
 ADR-0037 adds narrow self-target init command-buffer dispatch while leaving
 neighbor routing and self-target non-init commands open.
+ADR-0038 adds the corresponding claim/proof surface.

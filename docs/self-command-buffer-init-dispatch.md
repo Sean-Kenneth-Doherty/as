@@ -7,6 +7,8 @@ ADR-0037 adds the first command-buffer-to-behavior path in
 decodes the buffer with the ADR-0026 command map. If the decoded command is a
 self-target init-family command, AS reuses the direct self-mailbox init
 semantics and returns `stem-command-buffer-self-processed`.
+ADR-0038 promotes this behavior into the named claim
+`UC-STEM-COMMAND-BUFFER-SELF-INIT`.
 
 ## Execution Boundary
 

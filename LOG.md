@@ -781,3 +781,25 @@
   passed 203 tests, py_compile passed for the touched Python files, JSON
   parsing passed for the language and source-status manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Self Command Buffer Init Claim
+
+- Added ADR-0038 to promote the narrow self-target init command-buffer
+  dispatch into the named claim and proof-certificate surface.
+- Wrote `tests/test_self_command_buffer_init_claim.py` before implementation.
+  The red run failed because `stem_command_buffer_executes_self_init` did not
+  exist in `autarkic_systems.transition_predicates`.
+- Added `stem_command_buffer_executes_self_init`,
+  `UC-STEM-COMMAND-BUFFER-SELF-INIT`, proof-certificate coverage, and the
+  transition-language predicate symbol.
+- Added `docs/self-command-buffer-init-claim.md` as the human-facing claim
+  boundary note.
+- Updated README, roadmap, literature map, open problems, transition-claim
+  language note, self command-buffer dispatch note, project memory, and
+  lessons.
+- Verified `python -m unittest tests.test_self_command_buffer_init_claim`
+  passed 5 tests, the adjacent command-buffer dispatch/transition
+  predicate/claim manifest/proof certificate/object-language suite passed 41
+  tests, `python -m unittest discover` passed 208 tests, py_compile passed for
+  the touched module and test, JSON parsing passed for the claim/proof/language
+  manifests, and `git diff --check` passed.

@@ -161,3 +161,7 @@
   `step_stem_cell` decodes a just-completed five-bit buffer and processes it
   only when it is a self-target init-family command. Neighbor targets and
   self-target non-init commands still stop at `stem-buffer-appended`.
+- ADR-0038 promotes ADR-0037 into `UC-STEM-COMMAND-BUFFER-SELF-INIT` and
+  `stem_command_buffer_executes_self_init`, with manifest examples and
+  proof-certificate coverage. It still excludes neighbor routing and self
+  non-init command semantics.

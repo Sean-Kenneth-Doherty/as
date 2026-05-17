@@ -36,6 +36,7 @@ SELF_MAILBOX_UNSUPPORTED_COMMANDS = {
     "write-buf-zero",
     "write-buf-one",
 }
+COMMAND_BUFFER_WIDTH = 5
 
 
 @dataclass(frozen=True)
@@ -268,6 +269,80 @@ def self_mailbox_preserves_unsupported_command(
     if result.cell != before:
         return PredicateResult(name, False, "unsupported command changed cell state")
     return PredicateResult(name, True, "unsupported self mailbox command preserved")
+
+
+def stem_command_buffer_executes_self_init(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check the narrow completed-buffer self init dispatch slice."""
+
+    name = "stem_command_buffer_executes_self_init"
+    expected = _completed_self_init_target(before)
+    if expected is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    if result.status != "stem-command-buffer-self-processed":
+        return PredicateResult(
+            name,
+            False,
+            f"expected stem-command-buffer-self-processed, got {result.status}",
+        )
+
+    expected_role, expected_memory = expected
+    if (result.cell.role, result.cell.memory) != expected:
+        return PredicateResult(
+            name,
+            False,
+            "expected "
+            f"{expected_role}/{expected_memory}, got "
+            f"{result.cell.role}/{result.cell.memory}",
+        )
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    if result.cell.automail != "_" or result.cell.self_mailbox != "_":
+        return PredicateResult(name, False, "automail or self mailbox was not cleared")
+    if result.cell.control or result.cell.buffer:
+        return PredicateResult(name, False, "control or buffer was not cleared")
+    return PredicateResult(name, True, "self-target init command buffer executed")
+
+
+def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
+    if (
+        before.role != "stem"
+        or before.automail != "_"
+        or before.self_mailbox != "_"
+        or before.output != EMPTY
+        or before.input == EMPTY
+        or not before.control
+        or len(before.buffer) != COMMAND_BUFFER_WIDTH - 1
+        or not _is_one_hot_standard_signal(before.input)
+    ):
+        return None
+
+    completed_buffer = before.buffer + (
+        1 if before.input == before.control else 0,
+    )
+    if any(bit not in (0, 1) for bit in completed_buffer):
+        return None
+
+    value = 0
+    for bit in completed_buffer:
+        value = (value << 1) | bit
+    if value >= 8:
+        return None
+
+    command_id = (
+        "standard-signal",
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init",
+        "write-buf-zero",
+        "write-buf-one",
+    )[value]
+    return SELF_MAILBOX_INIT_TARGETS.get(command_id)
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:

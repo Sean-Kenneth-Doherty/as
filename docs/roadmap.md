@@ -682,3 +682,24 @@ Implemented in `autarkic_systems/universal_cell.py`,
 `sources/stem_command_execution_source_status.json`, with tests in
 `tests/test_self_command_buffer_init_dispatch.py` and the updated source-status
 tests.
+
+## ADR-0038: Self Command Buffer Init Claim
+
+Goal: promote the ADR-0037 self-target init command-buffer dispatch into the
+named transition-claim and proof-certificate surface.
+
+Deliverables:
+
+- `stem_command_buffer_executes_self_init` predicate;
+- `UC-STEM-COMMAND-BUFFER-SELF-INIT` manifest claim with positive and negative
+  executable examples;
+- proof-certificate coverage for the new claim;
+- transition-language predicate vocabulary update;
+- tests proving predicate behavior, manifest evaluation, certificate coverage,
+  and object-language validation.
+
+Status: accepted in `docs/adr/0038-self-command-buffer-init-claim.md`.
+Implemented in `autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, `claims/proof_certificates.json`, and
+`language/transition_claim_language.json`, with tests in
+`tests/test_self_command_buffer_init_claim.py`.

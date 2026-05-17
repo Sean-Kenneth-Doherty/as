@@ -75,6 +75,8 @@ the project legible:
   unsupported self-mailbox trace.
 - `docs/self-command-buffer-init-dispatch.md` records the first narrow
   command-buffer-to-behavior slice for self-target init commands.
+- `docs/self-command-buffer-init-claim.md` records the named claim and
+  proof-certificate surface for that command-buffer slice.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
@@ -86,7 +88,8 @@ the project legible:
   open.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
-  subset and unsupported-command preservation boundary.
+  subset, unsupported-command preservation boundary, and self-target
+  command-buffer init dispatch.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map

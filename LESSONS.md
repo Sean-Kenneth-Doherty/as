@@ -88,3 +88,6 @@
 - Command-buffer execution should advance through previously claimed behavior.
   Dispatching self-target init buffers is acceptable because direct
   self-mailbox init semantics are already tested, claimed, and rendered.
+- Once a command-buffer behavior is executable, claim it before drawing it.
+  The schematic layer should rest on named transition claims where practical,
+  not just ad hoc replay behavior.

@@ -406,6 +406,61 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
+      "predicate": "stem_command_buffer_executes_self_init",
+      "description": "A stem cell that completes a self-target init-family command buffer reconfigures to the decoded target and clears transient command state.",
+      "examples": [
+        {
+          "name": "self command buffer processor left init",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0, 0, 1, 0]
+          },
+          "result": {
+            "status": "stem-command-buffer-self-processed",
+            "cell": {
+              "role": "proc",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "self command buffer wrong target",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0, 0, 1, 0]
+          },
+          "result": {
+            "status": "stem-command-buffer-self-processed",
+            "cell": {
+              "role": "wire",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        }
+      ]
     }
   ]
 }
