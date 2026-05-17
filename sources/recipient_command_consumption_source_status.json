@@ -134,8 +134,8 @@
     }
   ],
   "allowed_next_slices": [
-    "Add a rendered SVG for the non-init command-message rejection trace.",
     "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
-    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
+    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens.",
+    "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens."
   ]
 }

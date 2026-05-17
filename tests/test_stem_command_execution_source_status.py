@@ -94,14 +94,9 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         allowed = self.status["allowed_next_slices"]
 
         self.assertTrue(allowed)
-        self.assertTrue(
-            any(
-                "non-init command-message rejection trace" in item
-                and "SVG" in item
-                for item in allowed
-            )
-        )
         self.assertTrue(any("write-buffer semantics" in item for item in allowed))
+        self.assertTrue(any("standard-signal" in item for item in allowed))
+        self.assertFalse(any("rejection trace" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)
         )

@@ -35,7 +35,7 @@ now cover the self-target `write-buf-one` append boundary. ADR-0053 records
 recipient non-init command-message inputs as a source-status blocking decision
 and ADR-0054 promotes that rejection boundary into the named claim/proof
 surface. ADR-0055 adds a schematic-linked trace for one fixed-recipient
-upstream `standard-signal` rejection.
+upstream `standard-signal` rejection, and ADR-0056 adds the rendered SVG view.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

@@ -4,7 +4,7 @@
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "add-recipient-non-init-command-message-rejection-svg",
+  "safe_next_slice": "resolve-write-buffer-command-message-execution-semantics",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -19,6 +19,13 @@
       "artifact_id": "recipient-non-init-command-rejection-schematic-and-uc-transition-trace",
       "path": "schematics/recipient_non_init_command_rejection_trace.json",
       "summary": "AS now has a schematic-linked trace that replays fixed-cell upstream standard-signal command-message rejection."
+    }
+  ],
+  "implemented_svgs": [
+    {
+      "adr": "ADR-0056",
+      "path": "schematics/recipient_non_init_command_rejection_trace.svg",
+      "summary": "AS now has a rendered SVG view checked exactly against the recipient non-init command-message rejection trace."
     }
   ],
   "blocked_runtime_commands": [
@@ -88,8 +95,8 @@
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token and leaves multiple simultaneous command-message tokens at the rejected-input boundary."
   },
   "allowed_next_slices": [
-    "Add a rendered SVG for the non-init command-message rejection trace.",
     "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
-    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens."
+    "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens.",
+    "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens."
   ]
 }

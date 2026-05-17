@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "add-recipient-non-init-command-message-rejection-svg",
+            "resolve-write-buffer-command-message-execution-semantics",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -45,6 +45,12 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(
             trace["path"],
             "schematics/recipient_non_init_command_rejection_trace.json",
+        )
+        svg = self.status["implemented_svgs"][0]
+        self.assertEqual(svg["adr"], "ADR-0056")
+        self.assertEqual(
+            svg["path"],
+            "schematics/recipient_non_init_command_rejection_trace.svg",
         )
 
         blocked = self.status["blocked_runtime_commands"]
@@ -92,22 +98,32 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertIn("single command-message", policy["as_boundary"])
         self.assertIn("multiple simultaneous", policy["summary"])
 
-    def test_frontier_points_to_rejection_boundary_claim(self):
+    def test_frontier_moves_from_rejection_evidence_to_source_resolution(self):
         recipient_status = json.loads(RECIPIENT_STATUS.read_text(encoding="utf-8"))
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
 
         self.assertTrue(
             any(
-                "non-init command-message rejection trace" in item
-                and "SVG" in item
+                "write-buffer" in item
                 for item in recipient_status["allowed_next_slices"]
             )
         )
         self.assertTrue(
             any(
-                "non-init command-message rejection trace" in item
-                and "SVG" in item
+                "standard-signal" in item
+                for item in recipient_status["allowed_next_slices"]
+            )
+        )
+        self.assertTrue(
+            any(
+                "standard-signal and write-buffer semantics" in item
                 for item in stem_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
+            any(
+                "rejection trace" in item
+                for item in recipient_status["allowed_next_slices"]
             )
         )
         self.assertFalse(

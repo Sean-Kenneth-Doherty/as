@@ -1070,3 +1070,25 @@ Status: accepted in
 `schematics/recipient_non_init_command_rejection_trace.json`, and
 `docs/recipient-non-init-command-rejection-trace.md`, with tests in
 `tests/test_recipient_non_init_command_rejection_trace.py`.
+
+## ADR-0056: Recipient Non-Init Command Rejection SVG
+
+Goal: add a rendered SVG view of the ADR-0055 recipient non-init
+command-message rejection trace.
+
+Deliverables:
+
+- `schematics/recipient_non_init_command_rejection_trace.svg`;
+- exported recipient non-init command-message rejection SVG artifact path;
+- renderer summary fields for rejected upstream command-message before/after
+  state, preserved role/memory, cleared input/output, and preserved command
+  side state;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  rejection details, exact renderer-output matching, and drift rejection.
+
+Status: accepted in
+`docs/adr/0056-recipient-non-init-command-rejection-svg.md`. Implemented in
+`autarkic_systems/schematic_svg.py`,
+`schematics/recipient_non_init_command_rejection_trace.svg`, and
+`docs/recipient-non-init-command-rejection-svg.md`, with tests in
+`tests/test_recipient_non_init_command_rejection_svg.py`.

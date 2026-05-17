@@ -254,3 +254,8 @@
   a fixed processor-left recipient rejecting an upstream `standard-signal`
   command-message token while preserving role/memory and clearing upstream
   command state.
+- ADR-0056 adds `docs/recipient-non-init-command-rejection-svg.md`,
+  `schematics/recipient_non_init_command_rejection_trace.svg`, and
+  `tests/test_recipient_non_init_command_rejection_svg.py`. The renderer now
+  has a recipient non-init rejection summary branch exposing upstream
+  before/after state, role/memory preservation, and cleared command channels.

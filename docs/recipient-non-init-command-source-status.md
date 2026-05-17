@@ -34,8 +34,14 @@ before trace/render work could depend on it.
 ADR-0054 completes that promotion as
 `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. ADR-0055 adds the
 schematic-linked rejection trace in
-`schematics/recipient_non_init_command_rejection_trace.json`. The next safe
-evidence slice is a rendered SVG for that trace.
+`schematics/recipient_non_init_command_rejection_trace.json`. ADR-0056 adds
+the rendered SVG view in
+`schematics/recipient_non_init_command_rejection_trace.svg`.
+
+The rejection evidence ladder is now complete. The next safe slice is source
+resolution for write-buffer command-message execution semantics, with
+standard-signal command-message divergence and multi-command conflict policy
+still blocked.
 
 ## Verification
 
@@ -45,6 +51,6 @@ Run:
 python -m unittest tests.test_recipient_non_init_command_source_status
 ```
 
-The tests check the blocking decision, implemented claim and trace surfaces,
+The tests check the blocking decision, implemented claim/trace/SVG surfaces,
 standard-signal divergence, write-buffer source divergences, multi-command
 policy boundary, and the updated source-status frontier.

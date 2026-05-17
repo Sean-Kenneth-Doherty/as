@@ -124,12 +124,11 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "non-init command-message rejection trace"
-                in item
-                and "SVG" in item
+                "write-buffer" in item
                 for item in allowed
             )
         )
+        self.assertTrue(any("standard-signal" in item for item in allowed))
         self.assertFalse(
             any(
                 "execute non-init recipient commands" in item

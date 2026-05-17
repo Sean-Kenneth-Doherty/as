@@ -138,3 +138,6 @@
 - Rejection traces should show the rejected token as active state, not mere
   absence of execution. For pulled-upstream recipient commands, the trace must
   record source clearing and role/memory preservation together.
+- Rejection renders need their own summary branch when the state mostly stays
+  the same. Generic no-change rendering hides the evidence that the command
+  source was actively rejected and cleared.

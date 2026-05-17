@@ -1217,3 +1217,28 @@
   `python -m unittest discover` passed 332 tests, py_compile passed for the
   touched schematic module and tests, JSON parsing passed for the rejection
   trace and source-status manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Recipient Non-Init Command Rejection SVG
+
+- Added ADR-0056 for the rendered SVG view of the ADR-0055 recipient non-init
+  command-message rejection trace.
+- Wrote `tests/test_recipient_non_init_command_rejection_svg.py` before
+  implementation. The first red run failed because
+  `RECIPIENT_NON_INIT_COMMAND_REJECTION_SVG_ARTIFACT` was absent from
+  `autarkic_systems.schematic_svg`.
+- Added `RECIPIENT_NON_INIT_COMMAND_REJECTION_SVG_ARTIFACT` and a recipient
+  non-init rejection summary branch to `render_schematic_svg()`, exposing
+  upstream before/after, role/memory preservation, cleared input/output,
+  empty self-mailbox, and preserved control/buffer state.
+- Generated `schematics/recipient_non_init_command_rejection_trace.svg` from
+  `render_schematic_svg()`.
+- Updated recipient non-init, recipient consumption, and stem source-status
+  artifacts so the next safe slice moves from rejection evidence to source
+  resolution for write-buffer, standard-signal, and multi-command semantics.
+- Added `docs/recipient-non-init-command-rejection-svg.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused rejection-SVG/source-status suite passed 31 tests and
+  the full SVG suite passed 77 tests. `python -m unittest discover` passed
+  339 tests, py_compile passed for the touched SVG renderer and tests, JSON
+  parsing passed for the source-status manifests, and `git diff --check`
+  passed.

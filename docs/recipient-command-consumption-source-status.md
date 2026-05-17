@@ -78,6 +78,9 @@ ADR-0055 records one fixed-recipient upstream `standard-signal` rejection as a
 schematic-linked trace in
 `schematics/recipient_non_init_command_rejection_trace.json`.
 
+ADR-0056 adds the rendered SVG view in
+`schematics/recipient_non_init_command_rejection_trace.svg`.
+
 ## Verification
 
 Run:
@@ -89,5 +92,5 @@ python -m unittest tests.test_recipient_command_consumption_source_status
 The tests check the source-status decision, the formal input-special-message
 anchor, the legacy special-message sets, the implemented ADR-0049 slice,
 the ADR-0050 claim, the ADR-0051 trace, the ADR-0052 SVG, unresolved blockers,
-the ADR-0053 non-init source status, the ADR-0055 rejection trace frontier, and
-the updated stem command execution next-slice list.
+the ADR-0053 non-init source status, the ADR-0055/ADR-0056 rejection evidence
+frontier, and the updated stem command execution next-slice list.
