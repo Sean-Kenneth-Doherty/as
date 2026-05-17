@@ -1092,3 +1092,26 @@ Status: accepted in
 `schematics/recipient_non_init_command_rejection_trace.svg`, and
 `docs/recipient-non-init-command-rejection-svg.md`, with tests in
 `tests/test_recipient_non_init_command_rejection_svg.py`.
+
+## ADR-0057: Write-Buffer Command Semantics Status
+
+Goal: decide whether write-buffer command execution is source-backed enough to
+implement after the recipient non-init rejection evidence ladder.
+
+Deliverables:
+
+- `sources/write_buffer_command_semantics_status.json`;
+- formal-model anchors for the named write-buffer commands and special-message
+  paths;
+- RAA, SEMSIM, and FSMSIM write-buffer witness records;
+- explicit blocked runtime surfaces for recipient command-message,
+  self-mailbox, and self-target command-buffer commands;
+- tests proving the source-status decision, witness divergence, required
+  resolution questions, and updated source-status frontiers;
+- human-facing source-status note.
+
+Status: accepted in
+`docs/adr/0057-write-buffer-command-semantics-status.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json` and
+`docs/write-buffer-command-semantics-status.md`, with tests in
+`tests/test_write_buffer_command_semantics_status.py`.

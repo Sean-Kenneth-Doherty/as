@@ -141,3 +141,6 @@
 - Rejection renders need their own summary branch when the state mostly stays
   the same. Generic no-change rendering hides the evidence that the command
   source was actively rejected and cleared.
+- A command name appearing in every source is not enough to implement it. For
+  write-buffer commands, append semantics, clearing behavior, and buffer-full
+  boundaries must agree before runtime execution is honest.

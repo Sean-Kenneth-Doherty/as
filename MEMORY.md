@@ -259,3 +259,9 @@
   `tests/test_recipient_non_init_command_rejection_svg.py`. The renderer now
   has a recipient non-init rejection summary branch exposing upstream
   before/after state, role/memory preservation, and cleared command channels.
+- ADR-0057 adds `docs/write-buffer-command-semantics-status.md`,
+  `sources/write_buffer_command_semantics_status.json`, and
+  `tests/test_write_buffer_command_semantics_status.py`. It keeps
+  `write-buf-zero` and `write-buf-one` execution blocked because formal, RAA,
+  SEMSIM, and FSMSIM witnesses do not agree on append, clearing, and
+  buffer-full boundaries.

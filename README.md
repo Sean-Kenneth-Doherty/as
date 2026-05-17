@@ -71,6 +71,8 @@ the project legible:
   schematic-linked trace for one recipient non-init command-message rejection.
 - `docs/recipient-non-init-command-rejection-svg.md` records the rendered view
   of that recipient non-init command-message rejection trace.
+- `docs/write-buffer-command-semantics-status.md` records why write-buffer
+  command execution remains source-blocked.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
 - `docs/recipient-init-command-message-claim.md` records the named claim and
@@ -144,6 +146,8 @@ the project legible:
   recipient command-consumption source-status decision machine-checkable.
 - `sources/recipient_non_init_command_source_status.json` makes the recipient
   non-init command-message blocking decision machine-checkable.
+- `sources/write_buffer_command_semantics_status.json` makes the write-buffer
+  command semantics source-status decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first
   schematic-linked transition trace machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.svg` is the generated rendered

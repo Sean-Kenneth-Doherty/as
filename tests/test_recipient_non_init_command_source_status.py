@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "resolve-write-buffer-command-message-execution-semantics",
+            "resolve-standard-signal-command-message-divergence",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -51,6 +51,12 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(
             svg["path"],
             "schematics/recipient_non_init_command_rejection_trace.svg",
+        )
+        source_status = self.status["implemented_source_statuses"][0]
+        self.assertEqual(source_status["adr"], "ADR-0057")
+        self.assertEqual(
+            source_status["path"],
+            "sources/write_buffer_command_semantics_status.json",
         )
 
         blocked = self.status["blocked_runtime_commands"]
@@ -89,7 +95,14 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertIn("zero-buf", divergences["LEGACY-SEMSIM-WRITE-BUFFER"]["summary"])
         self.assertEqual(Path(divergences["LEGACY-FSMSIM-WRITE-BUFFER"]["local_witness"]), LEGACY_FSMSIM)
         self.assertIn("append", divergences["LEGACY-FSMSIM-WRITE-BUFFER"]["summary"])
-        self.assertEqual(self.status["write_buffer_status"]["decision"], "blocked")
+        self.assertEqual(
+            self.status["write_buffer_status"]["decision"],
+            "blocked-by-source-divergence",
+        )
+        self.assertEqual(
+            self.status["write_buffer_status"]["depends_on"],
+            "sources/write_buffer_command_semantics_status.json",
+        )
 
     def test_multi_command_policy_remains_blocked(self):
         policy = self.status["multi_command_input_status"]
@@ -116,7 +129,13 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
-                "standard-signal and write-buffer semantics" in item
+                "standard-signal semantics" in item
+                for item in stem_status["allowed_next_slices"]
+            )
+        )
+        self.assertFalse(
+            any(
+                "write-buffer semantics before executing" in item
                 for item in stem_status["allowed_next_slices"]
             )
         )

@@ -1242,3 +1242,29 @@
   339 tests, py_compile passed for the touched SVG renderer and tests, JSON
   parsing passed for the source-status manifests, and `git diff --check`
   passed.
+
+## 2026-05-17 - Write-Buffer Command Semantics Status
+
+- Added ADR-0057 to decide whether `write-buf-zero` and `write-buf-one`
+  command execution is source-backed enough to implement.
+- Wrote `tests/test_write_buffer_command_semantics_status.py` before
+  implementation. The red run failed because
+  `sources/write_buffer_command_semantics_status.json` did not exist.
+- Added `sources/write_buffer_command_semantics_status.json`, keeping
+  write-buffer command execution blocked across recipient command-message,
+  self-mailbox, and self-target command-buffer surfaces.
+- Recorded the formal-model gap: write-buffer commands are named in the
+  command table and special-message paths, but no executable write-buffer
+  primitive or clearing/buffer-full boundary is defined.
+- Recorded the legacy divergence: RAA appends with a buffer-full guard, SEMSIM
+  appends then clears the buffer through its stem wrapper, and FSMSIM appends
+  while clearing self-mailbox/input state without the same buffer-full guard.
+- Updated recipient non-init, recipient consumption, and stem source-status
+  artifacts so the next safe slice moves to `standard-signal` source
+  resolution and multi-command conflict policy.
+- Added `docs/write-buffer-command-semantics-status.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused write-buffer/source-status suite passed 19 tests.
+  `python -m unittest discover` passed 344 tests, py_compile passed for the
+  touched tests, JSON parsing passed for the write-buffer and source-status
+  manifests, and `git diff --check` passed.

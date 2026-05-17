@@ -118,17 +118,25 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
         self.assertIn("write-buffer-command-message-semantics", blocker_ids)
         self.assertIn("multi-command-input-conflict-policy", blocker_ids)
 
+        implemented_statuses = {
+            item["adr"]: item for item in self.status["implemented_source_statuses"]
+        }
+        self.assertEqual(
+            implemented_statuses["ADR-0057"]["path"],
+            "sources/write_buffer_command_semantics_status.json",
+        )
+
     def test_stem_status_points_to_recipient_init_consumption_next(self):
         stem_status = json.loads(STEM_STATUS.read_text(encoding="utf-8"))
         allowed = stem_status["allowed_next_slices"]
 
-        self.assertTrue(
+        self.assertTrue(any("standard-signal" in item for item in allowed))
+        self.assertFalse(
             any(
-                "write-buffer" in item
+                item.startswith("Resolve write-buffer")
                 for item in allowed
             )
         )
-        self.assertTrue(any("standard-signal" in item for item in allowed))
         self.assertFalse(
             any(
                 "execute non-init recipient commands" in item

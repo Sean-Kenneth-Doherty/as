@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "decision": "do-not-implement-write-buffer-command-execution-yet",
+  "runtime_change": "none-source-status-only",
+  "safe_next_slice": "resolve-standard-signal-command-message-divergence",
+  "commands": [
+    "write-buf-zero",
+    "write-buf-one"
+  ],
+  "blocked_runtime_surfaces": [
+    "recipient-command-message",
+    "self-mailbox-command",
+    "self-target-command-buffer"
+  ],
+  "formal_model_status": {
+    "decision": "insufficient",
+    "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
+    "command_table_locus": "lines 437-454, command order",
+    "input_special_message_locus": "lines 604-613, process-special-message",
+    "stem_self_mailbox_locus": "lines 674-681, stem-process-special-message and stem-init",
+    "named_commands": [
+      "write-buf-zero",
+      "write-buf-one"
+    ],
+    "gap": "The formal model names write-buffer commands in the command table and generic special-message paths, but does not define an executable write-buffer primitive or its buffer-full and clearing boundaries."
+  },
+  "legacy_write_buffer_witnesses": [
+    {
+      "witness_id": "LEGACY-RAA-WRITE-BUFFER",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm",
+      "special_message_locus": "lines 171-173 and 264-273",
+      "write_buffer_locus": "lines 280-282",
+      "append_behavior": "append-if-buffer-not-full",
+      "buffer_full_guard": "present",
+      "post_append_buffer_clearing": "none",
+      "input_clearing": "input-process clears channels after process-special-message",
+      "summary": "RAA dispatches write-buf-zero and write-buf-one through write-buf; write-buf appends 0 or 1 only when buffer-full? is false."
+    },
+    {
+      "witness_id": "LEGACY-SEMSIM-WRITE-BUFFER",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm",
+      "special_message_locus": "lines 88-90 and 353-365",
+      "write_buffer_locus": "lines 346-365",
+      "append_behavior": "append-then-stem-wrapper-clears-buffer",
+      "buffer_full_guard": "absent",
+      "post_append_buffer_clearing": "zero-buf",
+      "input_clearing": "stem-process-special-message wrapper clears input through zero-buf/zero-hig flow rather than a matching RAA-style input-process boundary",
+      "summary": "SEMSIM defines write-buf-zero and write-buf-one as appends, but stem-process-special-message wraps the selected operation in zero-hig and zero-buf, erasing the buffer after the append."
+    },
+    {
+      "witness_id": "LEGACY-FSMSIM-WRITE-BUFFER",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/fsmsim.scm",
+      "special_message_locus": "lines 12-14 and 240-245",
+      "write_buffer_locus": "lines 262-267",
+      "append_behavior": "append-and-clear-mail-input",
+      "buffer_full_guard": "absent",
+      "post_append_buffer_clearing": "none",
+      "input_clearing": "write-buf-zero and write-buf-one clear smb and input channels",
+      "summary": "FSMSIM appends 0 or 1 to the buffer and clears self-mailbox plus input channels, without a matching buffer-full guard."
+    }
+  ],
+  "required_resolution_questions": [
+    {
+      "question_id": "recipient-vs-stem-surface",
+      "summary": "Decide whether write-buffer command messages execute on fixed recipient cells, stem cells only, or only through self-mailbox / command-buffer surfaces."
+    },
+    {
+      "question_id": "buffer-full-boundary",
+      "summary": "Decide whether write-buffer commands are ignored, rejected, preserve state, or report a status when the command buffer is full."
+    },
+    {
+      "question_id": "post-append-clearing",
+      "summary": "Decide whether write-buffer execution preserves the appended buffer, clears it like SEMSIM's stem wrapper, or clears only input/mail state."
+    },
+    {
+      "question_id": "standard-signal-interaction",
+      "summary": "Decide how write-buffer commands interact with the high rail and standard-signal command-buffer path."
+    }
+  ],
+  "as_boundary": "Continue rejecting or preserving write-buffer commands at the existing claimed boundaries until a later ADR selects one source-backed execution semantics."
+}

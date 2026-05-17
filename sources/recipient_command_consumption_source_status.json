@@ -45,6 +45,11 @@
       "adr": "ADR-0053",
       "path": "sources/recipient_non_init_command_source_status.json",
       "summary": "AS now has a source-status decision blocking recipient-side non-init command-message execution and selecting a rejection-boundary claim as the safe next slice."
+    },
+    {
+      "adr": "ADR-0057",
+      "path": "sources/write_buffer_command_semantics_status.json",
+      "summary": "AS now has a source-status decision keeping write-buffer command execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
     }
   ],
   "formal_model_input_special_message_anchor": {
@@ -134,8 +139,8 @@
     }
   ],
   "allowed_next_slices": [
-    "Resolve write-buffer command-message execution semantics before appending to recipient buffers.",
     "Resolve standard-signal command-message divergence before routing or executing standard-signal command tokens.",
-    "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens."
+    "Select a multi-command recipient input conflict policy before accepting multiple simultaneous command-message tokens.",
+    "Revisit write-buffer command execution only if new source evidence resolves append, clearing, and buffer-full boundaries."
   ]
 }

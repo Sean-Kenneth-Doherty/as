@@ -38,10 +38,14 @@ schematic-linked rejection trace in
 the rendered SVG view in
 `schematics/recipient_non_init_command_rejection_trace.svg`.
 
-The rejection evidence ladder is now complete. The next safe slice is source
-resolution for write-buffer command-message execution semantics, with
-standard-signal command-message divergence and multi-command conflict policy
-still blocked.
+The rejection evidence ladder is now complete. ADR-0057 records the
+write-buffer command semantics source-status decision in
+`sources/write_buffer_command_semantics_status.json` and keeps write-buffer
+execution blocked across recipient, self-mailbox, and self-target
+command-buffer surfaces.
+
+The next safe slice is source resolution for `standard-signal` command-message
+divergence, with multi-command conflict policy still blocked.
 
 ## Verification
 
@@ -51,6 +55,6 @@ Run:
 python -m unittest tests.test_recipient_non_init_command_source_status
 ```
 
-The tests check the blocking decision, implemented claim/trace/SVG surfaces,
-standard-signal divergence, write-buffer source divergences, multi-command
-policy boundary, and the updated source-status frontier.
+The tests check the blocking decision, implemented claim/trace/SVG/source-status
+surfaces, standard-signal divergence, write-buffer source divergences,
+multi-command policy boundary, and the updated source-status frontier.

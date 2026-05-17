@@ -78,6 +78,7 @@ ADR-0054 promotes that rejection boundary into the named claim/proof surface.
 ADR-0055 adds a schematic-linked trace for one fixed recipient upstream
 `standard-signal` rejection.
 ADR-0056 adds the rendered SVG view of that rejection trace.
+ADR-0057 records write-buffer command execution as still source-blocked.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -199,3 +200,5 @@ ADR-0053 records the remaining recipient non-init command-message blockers.
 ADR-0054 adds the corresponding named rejection-boundary claim.
 ADR-0055 adds the corresponding schematic-linked rejection trace.
 ADR-0056 adds the corresponding rendered SVG view.
+ADR-0057 records the corresponding write-buffer semantics source-status
+decision.

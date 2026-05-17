@@ -76,11 +76,11 @@
     },
     {
       "blocker_id": "write-buffer-command-semantics",
-      "summary": "AS preserves write-buf-zero and write-buf-one as unsupported self-mailbox commands, but it does not yet define their command-buffer execution semantics."
+      "summary": "ADR-0057 records write-buf-zero and write-buf-one as blocked by source divergence across formal, RAA, SEMSIM, and FSMSIM witnesses."
     }
   ],
   "allowed_next_slices": [
-    "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
+    "Resolve or further document self-target standard-signal semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]
 }

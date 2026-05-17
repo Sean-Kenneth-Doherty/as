@@ -81,6 +81,10 @@ schematic-linked trace in
 ADR-0056 adds the rendered SVG view in
 `schematics/recipient_non_init_command_rejection_trace.svg`.
 
+ADR-0057 records the write-buffer command semantics source-status decision in
+`sources/write_buffer_command_semantics_status.json` and keeps write-buffer
+execution blocked.
+
 ## Verification
 
 Run:
@@ -93,4 +97,5 @@ The tests check the source-status decision, the formal input-special-message
 anchor, the legacy special-message sets, the implemented ADR-0049 slice,
 the ADR-0050 claim, the ADR-0051 trace, the ADR-0052 SVG, unresolved blockers,
 the ADR-0053 non-init source status, the ADR-0055/ADR-0056 rejection evidence
-frontier, and the updated stem command execution next-slice list.
+frontier, the ADR-0057 write-buffer status, and the updated stem command
+execution next-slice list.
