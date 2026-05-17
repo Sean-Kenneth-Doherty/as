@@ -22,9 +22,10 @@ the remaining self-mailbox `standard-signal` and write-buffer commands as an
 explicit preserve-and-report unsupported boundary, and ADR-0041 records the
 remaining completed command-buffer cases as an append-boundary claim. ADR-0042
 adds a schematic-linked trace for one neighbor-target command preserved at that
-boundary. Legacy simulator sketches still diverge from the formal table in ways
-that should be resolved before AS treats them as executable authority, and AS
-still does not route or execute full command buffers.
+boundary, and ADR-0043 adds its rendered SVG view. Legacy simulator sketches
+still diverge from the formal table in ways that should be resolved before AS
+treats them as executable authority, and AS still does not route or execute
+full command buffers.
 
 ## Evidence
 

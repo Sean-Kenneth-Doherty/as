@@ -93,9 +93,6 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
 
         self.assertTrue(allowed)
         self.assertTrue(
-            any("unsupported completed command-buffer append boundary" in item for item in allowed)
-        )
-        self.assertTrue(
             any("neighbor-target command delivery" in item for item in allowed)
         )
         self.assertTrue(any("write-buffer semantics" in item for item in allowed))

@@ -103,3 +103,6 @@
 - Unsupported command-buffer traces should prefer neighbor examples first.
   They keep the biggest remaining blocker, delivery semantics, visible without
   inventing routing behavior.
+- Unsupported command-buffer renders must show preservation as an active fact.
+  A completed neighbor command left in the buffer is evidence, not a missing
+  arrow.

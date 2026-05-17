@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, a narrow self-target init command-buffer dispatch, the unsupported completed command-buffer append boundary, and a schematic-linked trace for one neighbor-target command preserved at that boundary. It still does not route neighbor-target commands or execute self-target standard-signal/write-buffer commands."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, a narrow self-target init command-buffer dispatch, the unsupported completed command-buffer append boundary, and a schematic-linked trace plus SVG for one neighbor-target command preserved at that boundary. It still does not route neighbor-target commands or execute self-target standard-signal/write-buffer commands."
   },
   "legacy_divergences": [
     {
@@ -80,7 +80,6 @@
     }
   ],
   "allowed_next_slices": [
-    "Add a rendered SVG for the unsupported completed command-buffer append boundary.",
     "Define neighbor-target command delivery onto output channels without executing neighbor-side commands.",
     "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."

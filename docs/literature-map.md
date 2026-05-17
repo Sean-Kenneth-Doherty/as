@@ -50,6 +50,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS unsupported command-buffer claim | `docs/command-buffer-unsupported-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named claim and proof-certificate surface for completed buffers that still stop at `stem-buffer-appended`. | Makes neighbor-target and self non-init non-execution an explicit boundary rather than an incidental dispatch test. |
 | AS self command-buffer init trace | `docs/self-command-buffer-init-trace.md` and `schematics/self_command_buffer_init_trace.json` | Schematic-linked trace for one completed `self/proc-l-init` command buffer. | Extends P7 evidence to the ADR-0037/ADR-0038 slice without adding neighbor routing or self non-init semantics. |
 | AS unsupported command-buffer trace | `docs/command-buffer-unsupported-trace.md` and `schematics/command_buffer_unsupported_trace.json` | Schematic-linked trace for one completed `neighbor-a/stem-init` command buffer. | Extends P7 evidence to the ADR-0041 append boundary without adding neighbor delivery. |
+| AS unsupported command-buffer SVG | `docs/command-buffer-unsupported-svg.md` and `schematics/command_buffer_unsupported_trace.svg` | Visible render of the unsupported command-buffer trace. | Checked against generic renderer output and exposes completed buffer preservation details. |
 | AS self command-buffer init SVG | `docs/self-command-buffer-init-svg.md` and `schematics/self_command_buffer_init_trace.svg` | Visible render of the self command-buffer init trace. | Checked against generic renderer output and exposes completed buffer dispatch details. |
 
 ## SJAS: Formal Confidence
@@ -112,6 +113,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Schematic-linked evidence can cover completed self-target init command buffers without widening command execution. | `schematics/self_command_buffer_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_command_buffer_init_trace.py`. | Implemented in ADR-0039 with replay and drift rejection. |
 | Schematic-linked evidence can cover unsupported completed command buffers without routing them. | `schematics/command_buffer_unsupported_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_command_buffer_unsupported_trace.py`. | Implemented in ADR-0042 with replay and drift rejection. |
 | A self command-buffer init render must expose decoded buffer state rather than only role reconfiguration. | `autarkic_systems/schematic_svg.py`, `schematics/self_command_buffer_init_trace.svg`, and `tests/test_self_command_buffer_init_svg.py`. | Implemented in ADR-0040 with exact renderer-output matching and drift rejection. |
+| An unsupported command-buffer render must expose preservation rather than implying neighbor delivery. | `autarkic_systems/schematic_svg.py`, `schematics/command_buffer_unsupported_trace.svg`, and `tests/test_command_buffer_unsupported_svg.py`. | Implemented in ADR-0043 with exact renderer-output matching and drift rejection. |
 | Schematic-linked evidence should cover the self-mailbox init subset before larger command-routing traces. | `schematics/self_mailbox_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_mailbox_init_trace.py`. | Implemented in ADR-0032 with replay and drift rejection. |
 | A self-mailbox init render must expose mailbox consumption rather than only role reconfiguration. | `autarkic_systems/schematic_svg.py`, `schematics/self_mailbox_init_trace.svg`, and `tests/test_self_mailbox_init_svg.py`. | Implemented in ADR-0033 with exact renderer-output matching and drift rejection. |
 
@@ -142,6 +144,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   named append-boundary claim for completed command buffers outside the
   self-target init slice. ADR-0042 adds a schematic-linked trace for one
   completed `neighbor-a/stem-init` command buffer preserved at that boundary.
+  ADR-0043 adds the generated SVG render for that trace.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

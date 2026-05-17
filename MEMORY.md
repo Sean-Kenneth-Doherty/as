@@ -184,3 +184,8 @@
   `docs/command-buffer-unsupported-trace.md`, and
   `tests/test_command_buffer_unsupported_trace.py` for one completed
   `neighbor-a/stem-init` command buffer preserved at the append boundary.
+- ADR-0043 adds `schematics/command_buffer_unsupported_trace.svg`,
+  `docs/command-buffer-unsupported-svg.md`, and
+  `tests/test_command_buffer_unsupported_svg.py`. The SVG renderer now gives
+  unsupported command-buffer traces their own summary branch before generic
+  buffer rendering.

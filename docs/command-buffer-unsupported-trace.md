@@ -5,6 +5,7 @@ Status: schematic-linked trace artifact, 2026-05-17.
 ADR-0042 adds `schematics/command_buffer_unsupported_trace.json`, a structured
 schematic-linked Universal Cell trace for the unsupported completed
 command-buffer append boundary named as a claim in ADR-0041.
+ADR-0043 adds the rendered SVG view of this trace.
 
 ## Trace Boundary
 

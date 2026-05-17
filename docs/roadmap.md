@@ -781,3 +781,21 @@ Status: accepted in `docs/adr/0042-command-buffer-unsupported-trace.md`.
 Implemented in `autarkic_systems/schematic_trace.py` and
 `schematics/command_buffer_unsupported_trace.json`, with tests in
 `tests/test_command_buffer_unsupported_trace.py`.
+
+## ADR-0043: Command Buffer Unsupported SVG
+
+Goal: add a rendered SVG view of the ADR-0042 unsupported command-buffer trace.
+
+Deliverables:
+
+- `schematics/command_buffer_unsupported_trace.svg`;
+- exported unsupported command-buffer SVG artifact path;
+- renderer summary fields for command-buffer before/after and preserved
+  append-boundary state;
+- tests proving parseability, trace metadata, port/layer annotations, visible
+  command-buffer details, exact renderer-output matching, and drift rejection.
+
+Status: accepted in `docs/adr/0043-command-buffer-unsupported-svg.md`.
+Implemented in `autarkic_systems/schematic_svg.py` and
+`schematics/command_buffer_unsupported_trace.svg`, with tests in
+`tests/test_command_buffer_unsupported_svg.py`.

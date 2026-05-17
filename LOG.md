@@ -895,3 +895,26 @@
   for the touched Python files, JSON parsing passed for
   `schematics/command_buffer_unsupported_trace.json` and the source-status
   manifest, and `git diff --check` passed.
+
+## 2026-05-17 - Command Buffer Unsupported SVG
+
+- Added ADR-0043 for a generated SVG render of the unsupported command-buffer
+  trace.
+- Wrote `tests/test_command_buffer_unsupported_svg.py` before implementation.
+  The red run failed because `COMMAND_BUFFER_UNSUPPORTED_SVG_ARTIFACT` did not
+  exist in `autarkic_systems.schematic_svg`.
+- Added `COMMAND_BUFFER_UNSUPPORTED_SVG_ARTIFACT` and a renderer summary branch
+  that exposes unsupported command-buffer append details before generic buffer
+  summaries.
+- Generated `schematics/command_buffer_unsupported_trace.svg` from
+  `render_schematic_svg()`.
+- Added `docs/command-buffer-unsupported-svg.md` as the human-facing render
+  boundary note.
+- Updated README, roadmap, literature map, open problems, unsupported
+  command-buffer trace note, stem command execution source-status note/artifact,
+  project memory, and lessons.
+- Verified `python -m unittest tests.test_command_buffer_unsupported_svg`
+  passed 7 tests, the adjacent command-buffer SVG/trace/source-status suite
+  passed 49 tests, `python -m unittest discover` passed 246 tests, py_compile
+  passed for the touched Python files, JSON parsing passed for the
+  source-status manifest, and `git diff --check` passed.

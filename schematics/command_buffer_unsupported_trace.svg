@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc" data-artifact-id="command-buffer-unsupported-schematic-and-uc-transition-trace" data-trace-id="AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001">
+  <title id="title">AS-PRC-COMMAND-BUFFER-UNSUPPORTED-TRIANGULAR-RLEM-001</title>
+  <desc id="desc">Generated from command-buffer-unsupported-schematic-and-uc-transition-trace; trace AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001.</desc>
+  <style>
+    .node { fill: #f7f4ea; stroke: #1e3a3a; stroke-width: 4; }
+    .port-dot { fill: #f06449; stroke: #1e3a3a; stroke-width: 3; }
+    .route { fill: none; stroke: #2f80ed; stroke-width: 4; marker-end: url(#arrow); }
+    .label { fill: #162020; font: 700 18px sans-serif; }
+    .small { fill: #162020; font: 14px monospace; }
+    .layer { fill: #fffdf6; stroke: #8a8f98; stroke-width: 1.5; }
+    .layer-title { fill: #162020; font: 700 13px sans-serif; }
+    .layer-body { fill: #384444; font: 12px sans-serif; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f80ed" />
+    </marker>
+  </defs>
+  <rect x="24" y="24" width="912" height="592" rx="10" fill="#fbfaf5" stroke="#d0d5dd" />
+  <g class="schematic-node" data-node-id="AS-PRC-COMMAND-BUFFER-UNSUPPORTED-TRIANGULAR-RLEM-001">
+    <polygon class="node" points="480,112 704,432 256,432" />
+    <path class="route" d="M 628 404 C 560 332 504 240 480 112" />
+    <path class="route" d="M 480 112 C 416 232 336 336 256 432" />
+    <path class="route" d="M 256 432 C 386 476 574 476 704 432" />
+    <text class="label" x="480" y="324" text-anchor="middle">memory: right</text>
+    <text class="small" x="480" y="350" text-anchor="middle">role: stem</text>
+    <text class="small" x="480" y="374" text-anchor="middle">transition: step_stem_cell</text>
+    <g class="port" data-port-id="p0" data-orientation="north" data-signal-index="0">
+      <circle class="port-dot" cx="480" cy="112" r="14" />
+      <text class="label" x="480" y="72" text-anchor="middle">north p0</text>
+      <title>First signal channel on the triangular unsupported command-buffer node.</title>
+    </g>
+    <g class="port" data-port-id="p1" data-orientation="east" data-signal-index="1">
+      <circle class="port-dot" cx="704" cy="432" r="14" />
+      <text class="label" x="756" y="448" text-anchor="start">east p1</text>
+      <title>Second signal channel on the triangular unsupported command-buffer node.</title>
+    </g>
+    <g class="port" data-port-id="p2" data-orientation="west" data-signal-index="2">
+      <circle class="port-dot" cx="256" cy="432" r="14" />
+      <text class="label" x="204" y="448" text-anchor="end">west p2</text>
+      <title>Third signal channel on the triangular unsupported command-buffer node.</title>
+    </g>
+  </g>
+  <g class="trace-summary" data-trace-id="AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001">
+    <text class="label" x="52" y="72">trace: AS-PRC-COMMAND-BUFFER-NEIGHBOR-STEM-INIT-UNSUPPORTED-TRACE-001</text>
+    <text class="small" x="52" y="100">status: stem-buffer-appended</text>
+    <text class="small" x="52" y="124">input: [0, 0, 1]</text>
+    <text class="small" x="52" y="148">output: [_, _, _]</text>
+    <text class="small" x="52" y="172">memory before: right</text>
+    <text class="small" x="52" y="196">memory after: right</text>
+    <text class="small" x="52" y="220">role after: stem</text>
+    <text class="small" x="52" y="244">self_mailbox before: _</text>
+    <text class="small" x="52" y="268">self_mailbox after: _</text>
+    <text class="small" x="52" y="292">control before: [0, 0, 1]</text>
+    <text class="small" x="52" y="316">buffer before: [0, 1, 0, 0]</text>
+    <text class="small" x="52" y="340">input after: [_, _, _]</text>
+    <text class="small" x="52" y="364">control after: [0, 0, 1]</text>
+    <text class="small" x="52" y="388">buffer after: [0, 1, 0, 0, 1]</text>
+    <text class="small" x="52" y="424">routed signal flow</text>
+    <text class="small" x="72" y="450">control[0,0,1] active</text>
+    <text class="small" x="72" y="474">input[0,0,1] matches control -&gt; append 1</text>
+    <text class="small" x="72" y="498">buffer[0,1,0,0] -&gt; buffer[0,1,0,0,1]</text>
+    <text class="small" x="72" y="522">decode value 9 -&gt; neighbor-a/stem-init</text>
+    <text class="small" x="72" y="546">neighbor command[stem-init] unsupported</text>
+    <text class="small" x="72" y="570">completed command buffer preserved at append boundary</text>
+  </g>
+  <g class="interpretive-layers">
+    <g class="interpretive-layer" data-layer-id="symbolic-rlem-behavior">
+      <rect class="layer" x="560" y="72" width="348" height="68" rx="6" />
+      <text class="layer-title" x="576" y="96">symbolic-rlem-behavior</text>
+      <text class="layer-body" x="576" y="120">A matching one-hot standard input completes buffer ...</text>
+    </g>
+    <g class="interpretive-layer" data-layer-id="gelc-geometry">
+      <rect class="layer" x="560" y="160" width="348" height="68" rx="6" />
+      <text class="layer-title" x="576" y="184">gelc-geometry</text>
+      <text class="layer-body" x="576" y="208">The unsupported command-buffer node uses the same t...</text>
+    </g>
+    <g class="interpretive-layer" data-layer-id="uc-state">
+      <rect class="layer" x="560" y="248" width="348" height="68" rx="6" />
+      <text class="layer-title" x="576" y="272">uc-state</text>
+      <text class="layer-body" x="576" y="296">The trace records every current AS Cell field befor...</text>
+    </g>
+    <g class="interpretive-layer" data-layer-id="candidate-physical-implementation">
+      <rect class="layer" x="560" y="336" width="348" height="68" rx="6" />
+      <text class="layer-title" x="576" y="360">candidate-physical-implementation</text>
+      <text class="layer-body" x="576" y="384">Switchable circulator hardware and auxiliary comman...</text>
+    </g>
+  </g>
+</svg>
