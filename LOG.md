@@ -1951,3 +1951,26 @@
   `result_count: 9`, `py_compile` passed for the touched module and focused
   test, `git diff --check` passed, and `python -m unittest discover` passed
   504 tests.
+
+## 2026-05-17 - Chain Registry JSON Failure Summary
+
+- Added ADR-0087 to make failed chain evidence registry JSON output summarize
+  rejected validation subjects directly.
+- Updated `tests/test_chain_evidence_bundle_registry.py` before implementation.
+  The red run failed because `chain_registry_validation_report_payload` did
+  not include `failed_subjects`.
+- Added `failed_subjects` to chain registry JSON output. Successful registry
+  runs report an empty list; drifted registries report the rejected validation
+  subjects in result order.
+- The first green attempt showed that a drifted in-place registry correctly
+  fails both missing-path validation and closed-index completeness, so the test
+  expectation now preserves that signal.
+- Updated `docs/chain-evidence-bundle-registry.md`, roadmap, memory, and
+  lessons with the failure-summary contract.
+- Verified the focused chain registry test passed 12 tests, adjacent chain
+  CLI/registry/bundle tests passed 22 tests, chain registry JSON reported
+  `accepted: true`, `bundle_count: 1`, and `failed_subjects: []`, the
+  single-bundle chain evidence JSON CLI still reported `accepted: true` and
+  `result_count: 9`, `py_compile` passed for the touched module and focused
+  test, `git diff --check` passed, and `python -m unittest discover` passed
+  506 tests.

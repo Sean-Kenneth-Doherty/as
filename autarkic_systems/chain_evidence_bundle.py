@@ -240,6 +240,9 @@ def chain_registry_validation_report_payload(
         "registry_id": registry.registry_id,
         "accepted": all(result.accepted for result in results),
         "bundle_count": len(registry.bundles),
+        "failed_subjects": [
+            result.subject for result in results if not result.accepted
+        ],
         "bundles": [
             {
                 "bundle_id": entry.bundle_id,

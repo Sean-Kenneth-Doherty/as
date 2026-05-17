@@ -1659,3 +1659,19 @@ Deliverables:
 Status: accepted in `docs/adr/0086-chain-registry-json-entries.md`.
 Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
 `tests/test_chain_evidence_bundle_registry.py`.
+
+## ADR-0087: Chain Registry JSON Failure Summary
+
+Goal: make failed chain evidence registry JSON output report the rejected
+validation subjects directly.
+
+Deliverables:
+
+- `failed_subjects` array in `chain_registry_validation_report_payload`;
+- focused success/failure payload tests in
+  `tests/test_chain_evidence_bundle_registry.py`;
+- documentation update for the chain registry JSON contract.
+
+Status: accepted in `docs/adr/0087-chain-registry-json-failure-summary.md`.
+Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
+`tests/test_chain_evidence_bundle_registry.py`.

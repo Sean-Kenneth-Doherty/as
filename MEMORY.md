@@ -422,3 +422,5 @@
   through argparse with code `2`.
 - ADR-0086 adds a `bundles` array to chain evidence registry JSON output,
   listing each registered bundle ID, path, chain claim ID, and expected status.
+- ADR-0087 adds `failed_subjects` to chain evidence registry JSON output so
+  failed registry runs summarize rejected validation subjects directly.

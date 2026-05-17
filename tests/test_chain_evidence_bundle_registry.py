@@ -167,6 +167,7 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
             "transition-chain-evidence-bundle-registry",
         )
         self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["result_count"], len(results))
         self.assertEqual(
             payload["bundles"],
@@ -214,8 +215,73 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
+
+    def test_json_payload_summarizes_failed_subjects(self):
+        entry = self.registry.bundles[0]
+        drifted_entry = replace(entry, path=Path("evidence/chains/missing_bundle.json"))
+        drifted = replace(self.registry, bundles=(drifted_entry,))
+        results = validate_chain_evidence_bundle_registry(drifted)
+
+        payload = chain_registry_validation_report_payload(drifted, results)
+
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["failed_subjects"],
+            [
+                "registry-bundle-paths",
+                "registry-bundle-validation",
+                "registry-completeness",
+            ],
+        )
+
+    def test_module_execution_emits_json_failure_summary_for_missing_bundle(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = Path(tmp) / "manifest.json"
+            registry_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "registry_id": "drifted-chain-registry",
+                        "reviewed_at": "2026-05-17",
+                        "purpose": "Exercise JSON failure summary.",
+                        "bundles": [
+                            {
+                                "bundle_id": BUNDLE_ID,
+                                "path": "evidence/chains/missing_bundle.json",
+                                "chain_claim_id": CLAIM_ID,
+                                "expected_status": STATUS,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "autarkic_systems.chain_evidence_bundle",
+                    "--registry",
+                    str(registry_path),
+                    "--format",
+                    "json",
+                ],
+                check=False,
+                cwd=Path.cwd(),
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["failed_subjects"],
+            ["registry-bundle-paths", "registry-bundle-validation"],
+        )
 
 
 if __name__ == "__main__":

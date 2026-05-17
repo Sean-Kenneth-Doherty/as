@@ -238,3 +238,5 @@
 - Registry JSON should identify what it validated, not only how many entries
   passed. Include bundle IDs and paths so automation does not have to re-read
   the manifest.
+- Registry JSON should also summarize why it failed. A small `failed_subjects`
+  list saves automation from reimplementing result scanning.
