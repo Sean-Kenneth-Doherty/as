@@ -38,8 +38,8 @@ the project legible:
 python -m unittest discover
 ```
 
-The current executable probe lives in `autarkic_systems/universal_cell.py` and
-is covered by `tests/test_universal_cell.py`.
+The current executable probes live in `autarkic_systems/universal_cell.py` and
+`autarkic_systems/transition_predicates.py`, covered by `tests/`.
 
 ## Subordinate Programs
 

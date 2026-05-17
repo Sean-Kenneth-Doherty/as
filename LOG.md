@@ -68,3 +68,16 @@
 - Verified `python -m unittest discover`, `python -m py_compile
   autarkic_systems/universal_cell.py autarkic_systems/__init__.py
   tests/__init__.py tests/test_universal_cell.py`, and `git diff --check`.
+
+## 2026-05-16 - Transition Predicate Bridge
+
+- Added ADR-0005 for named predicates over Universal Cell transition results.
+- Wrote `tests/test_transition_predicates.py` before implementation. The first
+  targeted run failed with `ModuleNotFoundError: No module named
+  'autarkic_systems.transition_predicates'`, confirming the red step.
+- Implemented `autarkic_systems/transition_predicates.py` with
+  `PredicateResult`, `output_not_overwritten`, `consumed_input_cleared`,
+  `fixed_role_memory_rule`, and `stem_init_resets_to_stem`.
+- Verified `python -m unittest tests.test_transition_predicates` passed 8
+  tests, `python -m unittest discover` passed 16 tests, and `git diff --check`
+  passed.

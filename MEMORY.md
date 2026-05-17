@@ -31,3 +31,5 @@
   changes.
 - The first executable AS probe is `autarkic_systems/universal_cell.py`; run
   `python -m unittest discover` for the current fast test suite.
+- `autarkic_systems/transition_predicates.py` is the first named predicate
+  bridge over Universal Cell transition results.

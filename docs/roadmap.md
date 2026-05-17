@@ -85,6 +85,23 @@ Status: accepted in `docs/adr/0004-universal-cell-transition-probe.md`.
 Implemented the first substrate-side probe in `autarkic_systems/universal_cell.py`
 with fast tests under `tests/test_universal_cell.py`.
 
+## ADR-0005: Transition Predicate Bridge
+
+Goal: name and check the first substrate invariants as predicate results.
+
+Deliverables:
+
+- predicate result object;
+- output preservation predicate;
+- consumed-input clearing predicate;
+- fixed-role memory predicate;
+- stem-init reset predicate;
+- fast tests covering true and false cases.
+
+Status: accepted in `docs/adr/0005-transition-predicates.md`. Implemented in
+`autarkic_systems/transition_predicates.py` with tests under
+`tests/test_transition_predicates.py`.
+
 ## ADR-0005: Literature Map And Open Problems
 
 Goal: turn the first review into a usable research map.
