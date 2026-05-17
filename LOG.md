@@ -1375,3 +1375,25 @@
   discover` passed 369 tests. `py_compile` passed for the touched renderer and
   tests, JSON parsing passed for the touched source-status manifests and trace,
   and `git diff --check` passed.
+
+## 2026-05-17 - Guile ASMSIM Command Semantics Status
+
+- Added ADR-0062 after scanning the local PRC source tree for evidence that
+  might resolve `standard-signal` or write-buffer command-token semantics.
+- Wrote `tests/test_guile_asmsim_command_semantics_status.py` before
+  implementation. The red run failed because
+  `sources/guile_asmsim_command_semantics_status.json` was absent.
+- Added `sources/guile_asmsim_command_semantics_status.json`, recording
+  `practice/legacy/guile-asmsim.scm` as blocker-strengthening evidence rather
+  than runtime authority: init-family-only `special-messages`, binary
+  `write-buf`, self-mailbox numeric append, and a divergent command-list
+  expression.
+- Cross-linked the evidence from the standard-signal, write-buffer, and stem
+  command source-status artifacts.
+- Added `docs/guile-asmsim-command-semantics-status.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused Guile ASMSIM source-status test passed 5 tests, the
+  adjacent command source-status suite passed 29 tests, and
+  `python -m unittest discover` passed 374 tests. `py_compile` passed for the
+  new test, JSON parsing passed for the touched source-status manifests, and
+  `git diff --check` passed.

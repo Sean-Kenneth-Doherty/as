@@ -291,3 +291,10 @@
   the recipient non-init rejection summary branch for the direct
   `wire-r-init` plus `proc-l-init` conflict, and the frontier returns to
   source resolution for `standard-signal` or write-buffer command semantics.
+- ADR-0062 adds `docs/guile-asmsim-command-semantics-status.md`,
+  `sources/guile_asmsim_command_semantics_status.json`, and
+  `tests/test_guile_asmsim_command_semantics_status.py`. It records
+  `guile-asmsim.scm` as blocker-strengthening evidence: init-family-only
+  special messages, binary/numeric write-buffer behavior, and a divergent
+  command-list expression rather than executable standard-signal/write-buffer
+  command-token semantics.

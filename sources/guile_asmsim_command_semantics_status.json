@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "decision": "do-not-implement-command-semantics-from-guile-asmsim",
+  "runtime_change": "none-source-status-only",
+  "safe_next_slice": "keep-command-execution-blocked-pending-source-resolution",
+  "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/guile-asmsim.scm",
+  "status_summary": "guile-asmsim.scm is relevant command-semantics evidence, but it diverges from the formal command table and the older RAA/SEMSIM/FSMSIM sketches. AS should not use it as direct executable authority for standard-signal or write-buffer command tokens.",
+  "special_message_status": {
+    "locus": "lines 15-18",
+    "special_messages": [
+      "stem-init",
+      "wire-r-init",
+      "wire-l-init",
+      "proc-r-init",
+      "proc-l-init"
+    ],
+    "excluded_tokens": [
+      "standard-signal",
+      "write-buf-zero",
+      "write-buf-one"
+    ],
+    "summary": "Unlike RAA, SEMSIM, and FSMSIM, this witness names only init-family special messages and omits write-buffer names as well as standard-signal."
+  },
+  "standard_signal_status": {
+    "ordinary_standard_signal_locus": "lines 78-119 and 195-201",
+    "command_buffer_locus": "lines 213-234",
+    "command_list_expression": "(append special-messages standard-signals)",
+    "summary": "Standard signals remain ordinary binary input in the role-step clauses, while process-buffer appends numeric standard-signals to the command list. This does not resolve whether a standard-signal command token should replay ordinary binary-input behavior."
+  },
+  "write_buffer_status": {
+    "write_buf_locus": "lines 210-212",
+    "self_mailbox_numeric_append_locus": "lines 259-265",
+    "named_write_buffer_commands": [],
+    "summary": "The witness has a write-buf helper over binary 0/1 values and a self-mailbox numeric append path, but it does not define named write-buf-zero or write-buf-one command tokens."
+  },
+  "command_buffer_status": {
+    "locus": "lines 213-234",
+    "command_list_expression": "(append special-messages standard-signals)",
+    "as_interpretation": "The process-buffer command list diverges from the formal named command table and has an index-shape ambiguity at the list-ref/list-tail boundary. It is evidence of unresolved command representation, not a stable execution rule."
+  },
+  "impacted_status_files": [
+    "sources/standard_signal_command_semantics_status.json",
+    "sources/write_buffer_command_semantics_status.json",
+    "sources/stem_command_execution_source_status.json"
+  ],
+  "as_boundary": "Keep standard-signal and write-buffer command-token execution blocked until a later ADR selects a source-backed command representation, target mapping, and clearing boundary."
+}

@@ -78,5 +78,12 @@
       "summary": "Decide how write-buffer commands interact with the high rail and standard-signal command-buffer path."
     }
   ],
+  "additional_source_statuses": [
+    {
+      "adr": "ADR-0062",
+      "path": "sources/guile_asmsim_command_semantics_status.json",
+      "summary": "guile-asmsim.scm exposes binary write-buf and self-mailbox numeric append behavior, but omits named write-buf-zero/write-buf-one command tokens from its special-message list."
+    }
+  ],
   "as_boundary": "Continue rejecting or preserving write-buffer commands at the existing claimed boundaries until a later ADR selects one source-backed execution semantics."
 }

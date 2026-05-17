@@ -36,7 +36,9 @@ boundary until a later ADR selects source-backed semantics for append,
 buffer-full behavior, input/mail clearing, and high-rail interaction. ADR-0061
 completes the current multi-command rejection render frontier, so future
 write-buffer work should start from source resolution rather than another
-rejection artifact.
+rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
+`write-buf` and self-mailbox numeric append behavior but omits named
+`write-buf-zero` and `write-buf-one` command tokens.
 
 ## Verification
 

@@ -141,6 +141,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | A recipient non-init command-message rejection render must expose source clearing. | `autarkic_systems/schematic_svg.py`, `schematics/recipient_non_init_command_rejection_trace.svg`, and `tests/test_recipient_non_init_command_rejection_svg.py`. | Implemented in ADR-0056 with exact renderer-output matching and drift rejection. |
 | Write-buffer command execution requires a source-status decision before runtime behavior changes. | `sources/write_buffer_command_semantics_status.json`, restored PRC formal model, and legacy RAA/SEMSIM/FSMSIM witnesses. | Implemented in ADR-0057; execution remains blocked pending source resolution. |
 | Standard-signal command-token execution requires a source-status decision before runtime behavior changes. | `sources/standard_signal_command_semantics_status.json`, restored PRC formal model, and legacy RAA/SEMSIM/FSMSIM witnesses. | Implemented in ADR-0058; command-token execution remains blocked while ordinary binary-input standard-signal behavior stays implemented. |
+| Guile ASMSIM is command-semantics evidence, not executable authority for the blocked commands. | `sources/guile_asmsim_command_semantics_status.json` and `/home/sean/Projects/_upstream/prc/practice/legacy/guile-asmsim.scm`. | Implemented in ADR-0062; the witness omits named write-buffer commands, treats `0`/`1` numerically, and reinforces the standard-signal/write-buffer blocker. |
 | Multiple simultaneous recipient command-message inputs need an explicit policy before traces depend on them. | `sources/multi_command_recipient_input_policy_status.json`, current AS runtime behavior, and `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`. | Implemented in ADR-0059; two or more command-message tokens are rejected and cleared, not prioritized or sequenced. |
 | Schematic-linked evidence can cover multi-command recipient rejection without adding priority or sequencing. | `schematics/multi_command_recipient_rejection_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_multi_command_recipient_rejection_trace.py`. | Implemented in ADR-0060 with replay, predicate coverage, witness-map validation, and drift rejection. |
 | A multi-command recipient rejection render must expose the simultaneous conflict. | `autarkic_systems/schematic_svg.py`, `schematics/multi_command_recipient_rejection_trace.svg`, and `tests/test_multi_command_recipient_rejection_svg.py`. | Implemented in ADR-0061 with exact renderer-output matching and drift rejection. |
@@ -205,7 +206,9 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   moves the next visible slice to a multi-command rejection trace. ADR-0060
   adds that trace, and ADR-0061 adds the generated SVG render. The current
   rejection evidence ladder is complete again; standard-signal and write-buffer
-  command execution remain source-blocked.
+  command execution remain source-blocked. ADR-0062 reviews
+  `guile-asmsim.scm` and records it as blocker-strengthening evidence rather
+  than executable authority.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

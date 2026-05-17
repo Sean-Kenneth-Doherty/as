@@ -42,7 +42,10 @@ binary-input behavior, not command-token execution. ADR-0059 selects
 reject-and-clear for multi-command recipient input conflicts, and ADR-0060
 adds the corresponding trace. ADR-0061 adds the rendered SVG view for that
 trace, so the next useful command-execution work is source resolution rather
-than more rejection rendering.
+than more rejection rendering. ADR-0062 reviews `guile-asmsim.scm`, which keeps
+standard signals as ordinary binary input while appending numeric standard
+signals to a process-buffer command list; this strengthens the blocker rather
+than resolving command-token semantics.
 
 ## Verification
 

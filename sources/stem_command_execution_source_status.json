@@ -63,6 +63,23 @@
         "write-buf-one"
       ],
       "divergence": "These legacy sketches define seven special messages and exclude standard-signal from that special-message list."
+    },
+    {
+      "witness_id": "LEGACY-GUILE-ASMSIM-COMMAND-LIST",
+      "local_witness": "/home/sean/Projects/_upstream/prc/practice/legacy/guile-asmsim.scm",
+      "loci": [
+        "guile-asmsim.scm lines 15-18",
+        "guile-asmsim.scm lines 210-234",
+        "guile-asmsim.scm lines 259-265"
+      ],
+      "special_messages": [
+        "stem-init",
+        "wire-r-init",
+        "wire-l-init",
+        "proc-r-init",
+        "proc-l-init"
+      ],
+      "divergence": "This witness omits standard-signal and named write-buffer commands from special-messages, then appends numeric standard-signals to the process-buffer command list and appends self-mailbox 0/1 values to the buffer."
     }
   ],
   "blockers": [

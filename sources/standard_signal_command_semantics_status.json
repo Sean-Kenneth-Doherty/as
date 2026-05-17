@@ -65,5 +65,12 @@
       "summary": "Decide whether self-mailbox and self-target command-buffer standard-signal tokens should execute, be preserved, or be reported as unsupported."
     }
   ],
+  "additional_source_statuses": [
+    {
+      "adr": "ADR-0062",
+      "path": "sources/guile_asmsim_command_semantics_status.json",
+      "summary": "guile-asmsim.scm keeps standard signals as ordinary binary input while process-buffer appends numeric standard-signals to its command list; this strengthens the command-token blocker rather than resolving it."
+    }
+  ],
   "as_boundary": "Continue rejecting or preserving standard-signal command tokens at the existing claimed boundaries. AS already has ordinary standard-signal routing and stem buffer accumulation for binary input; this artifact blocks only command-token execution."
 }

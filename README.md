@@ -76,6 +76,9 @@ the project legible:
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented.
+- `docs/guile-asmsim-command-semantics-status.md` records why the
+  `guile-asmsim.scm` command witness strengthens the standard-signal and
+  write-buffer blocker rather than resolving it.
 - `docs/multi-command-recipient-input-policy-status.md` records the
   reject-and-clear policy for multiple simultaneous recipient command-message
   inputs.
@@ -160,6 +163,9 @@ the project legible:
   command semantics source-status decision machine-checkable.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
+  machine-checkable.
+- `sources/guile_asmsim_command_semantics_status.json` makes the
+  `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.
 - `sources/multi_command_recipient_input_policy_status.json` makes the
   multi-command recipient input policy decision machine-checkable.

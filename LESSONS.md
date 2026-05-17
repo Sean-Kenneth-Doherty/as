@@ -161,3 +161,7 @@
   Multi-command rejection needs the same rejection summary as the single-token
   non-init case, with the simultaneous conflict kept visible in the input
   field and flow text.
+- A newly found simulator witness is not automatically a green light. If it
+  changes command names or uses numeric command values where other sources use
+  named tokens, record that as source divergence before changing runtime
+  behavior.

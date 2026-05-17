@@ -1203,3 +1203,25 @@ Status: accepted in
 `schematics/multi_command_recipient_rejection_trace.svg`, and
 `docs/multi-command-recipient-rejection-svg.md`, with tests in
 `tests/test_multi_command_recipient_rejection_svg.py`.
+
+## ADR-0062: Guile ASMSIM Command Semantics Status
+
+Goal: decide whether `practice/legacy/guile-asmsim.scm` resolves the blocked
+`standard-signal` or write-buffer command-token semantics.
+
+Deliverables:
+
+- `sources/guile_asmsim_command_semantics_status.json`;
+- source-status record for the init-family-only `special-messages` list;
+- source-status record for binary `write-buf`, self-mailbox numeric append,
+  and the command-buffer list expression;
+- cross-links from standard-signal, write-buffer, and stem command
+  source-status artifacts;
+- tests proving the source-only blocking decision and local witness facts;
+- human-facing source-status note.
+
+Status: accepted in
+`docs/adr/0062-guile-asmsim-command-semantics-status.md`. Implemented in
+`sources/guile_asmsim_command_semantics_status.json` and
+`docs/guile-asmsim-command-semantics-status.md`, with tests in
+`tests/test_guile_asmsim_command_semantics_status.py`.
