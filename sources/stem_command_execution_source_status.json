@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "Current AS Cell state has automail, control, buffer, input, and output, but no explicit self mailbox and no output-token model for all special messages."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, and a narrow self-target init command-buffer dispatch. It still does not route neighbor-target commands or execute self-target standard-signal/write-buffer commands."
   },
   "legacy_divergences": [
     {
@@ -67,22 +67,23 @@
   ],
   "blockers": [
     {
-      "blocker_id": "self-mailbox-missing-from-as-cell",
-      "summary": "The formal process-buffer path routes self-target commands through a self mailbox before special-message processing, but AS Cell does not yet model that mailbox."
-    },
-    {
-      "blocker_id": "neighbor-output-special-message-representation",
-      "summary": "The formal process-buffer path routes neighbor-target commands through output channels, but AS output channels currently model binary and stem-init tokens rather than all command messages."
+      "blocker_id": "neighbor-command-delivery-semantics",
+      "summary": "AS can represent command-message output tokens, but it does not yet route decoded neighbor-target command buffers onto output channels."
     },
     {
       "blocker_id": "standard-signal-command-semantics",
       "summary": "ADR-0026 records standard-signal as command offset 0 from the formal command table, while legacy special-message lists omit it and at least one legacy sketch puts standard-signal at the final command case."
+    },
+    {
+      "blocker_id": "write-buffer-command-semantics",
+      "summary": "AS preserves write-buf-zero and write-buf-one as unsupported self-mailbox commands, but it does not yet define their command-buffer execution semantics."
     }
   ],
   "allowed_next_slices": [
-    "Add an explicit self mailbox field and tests without executing every stem command.",
-    "Define an output-token representation for neighbor-target special messages without routing all commands.",
-    "Implement a narrow self-target execution subset only after the self mailbox and standard-signal boundary are documented.",
+    "Promote the narrow self-target init command-buffer dispatch into a named claim.",
+    "Add a schematic trace and SVG for the narrow self-target init command-buffer dispatch.",
+    "Define neighbor-target command delivery onto output channels without executing neighbor-side commands.",
+    "Resolve or further document self-target standard-signal and write-buffer semantics before executing them.",
     "Add more source-status tests if another PRC source resolves the target or command-order divergence."
   ]
 }

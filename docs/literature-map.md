@@ -45,6 +45,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS self mailbox init SVG | `docs/self-mailbox-init-svg.md` and `schematics/self_mailbox_init_trace.svg` | Visible render of the self-mailbox init trace. | Checked against generic renderer output and exposes mailbox before/after plus control/buffer clearing. |
 | AS self mailbox unsupported trace | `docs/self-mailbox-unsupported-trace.md` and `schematics/self_mailbox_unsupported_trace.json` | Schematic-linked trace for one `write-buf-one` unsupported mailbox command. | Extends P7 evidence to the ADR-0034 preservation boundary without adding write-buffer semantics. |
 | AS self mailbox unsupported SVG | `docs/self-mailbox-unsupported-svg.md` and `schematics/self_mailbox_unsupported_trace.svg` | Visible render of the unsupported self-mailbox trace. | Checked against generic renderer output and exposes mailbox plus control/buffer preservation. |
+| AS self command-buffer init dispatch | `docs/self-command-buffer-init-dispatch.md`, `autarkic_systems/universal_cell.py`, and `tests/test_self_command_buffer_init_dispatch.py` | First narrow command-buffer-to-behavior path for self-target init-family commands. | Dispatches completed self init buffers while leaving neighbor routing and self non-init semantics open. |
 
 ## SJAS: Formal Confidence
 
@@ -100,6 +101,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | Unsupported self-mailbox commands should be preserved as an explicit boundary claim until their semantics are resolved. | `claims/transition_claims.json`, `claims/proof_certificates.json`, and `autarkic_systems/transition_predicates.py`. | Implemented in ADR-0034 with positive/negative manifest examples and certificate coverage. |
 | Schematic-linked evidence should distinguish unsupported mailbox preservation from init mailbox execution. | `schematics/self_mailbox_unsupported_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_mailbox_unsupported_trace.py`. | Implemented in ADR-0035 with replay and drift rejection. |
 | A self-mailbox unsupported render must expose preservation rather than implying command execution. | `autarkic_systems/schematic_svg.py`, `schematics/self_mailbox_unsupported_trace.svg`, and `tests/test_self_mailbox_unsupported_svg.py`. | Implemented in ADR-0036 with exact renderer-output matching and drift rejection. |
+| Self-target init-family command buffers can safely dispatch after the self-mailbox path is explicit. | ADR-0026 command map, ADR-0030 self-mailbox init execution, and `autarkic_systems/universal_cell.py`. | Implemented in ADR-0037 for self-target init commands only. |
 | Schematic-linked evidence should cover the self-mailbox init subset before larger command-routing traces. | `schematics/self_mailbox_init_trace.json`, `autarkic_systems/schematic_trace.py`, and `tests/test_self_mailbox_init_trace.py`. | Implemented in ADR-0032 with replay and drift rejection. |
 | A self-mailbox init render must expose mailbox consumption rather than only role reconfiguration. | `autarkic_systems/schematic_svg.py`, `schematics/self_mailbox_init_trace.svg`, and `tests/test_self_mailbox_init_svg.py`. | Implemented in ADR-0033 with exact renderer-output matching and drift rejection. |
 
@@ -123,6 +125,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   claim/proof boundary for the remaining unsupported self-mailbox commands.
   ADR-0035 adds a schematic-linked trace for one unsupported `write-buf-one`
   self-mailbox command. ADR-0036 adds a generated SVG render for that trace.
+  ADR-0037 dispatches completed self-target init-family command buffers only.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

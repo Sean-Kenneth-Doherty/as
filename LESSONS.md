@@ -85,3 +85,6 @@
 - No-op evidence still needs visible state. For unsupported commands, the
   important render fact is preservation of mailbox/control/buffer, not absence
   of visual change.
+- Command-buffer execution should advance through previously claimed behavior.
+  Dispatching self-target init buffers is acceptable because direct
+  self-mailbox init semantics are already tested, claimed, and rendered.

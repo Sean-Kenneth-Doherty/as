@@ -73,12 +73,17 @@ the project legible:
   self-mailbox init trace.
 - `docs/self-mailbox-unsupported-svg.md` records the rendered view of the
   unsupported self-mailbox trace.
+- `docs/self-command-buffer-init-dispatch.md` records the first narrow
+  command-buffer-to-behavior slice for self-target init commands.
 - `autarkic_systems/universal_cell.py` now exposes explicit `self_mailbox`
   state for future self-target command execution.
 - Universal Cell channel tuples can represent command-message tokens, but
-  command-buffer execution is still intentionally absent.
+  full command-buffer execution is still intentionally absent.
 - `step_stem_cell` processes the self-mailbox init-family commands while
   leaving full command-buffer execution open.
+- `step_stem_cell` also dispatches a just-completed self-target init-family
+  command buffer, while leaving neighbor routing and non-init command semantics
+  open.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset and unsupported-command preservation boundary.

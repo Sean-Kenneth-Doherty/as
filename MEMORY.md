@@ -157,3 +157,7 @@
 - ADR-0036 adds `schematics/self_mailbox_unsupported_trace.svg`; the SVG
   renderer now has a separate unsupported-mailbox summary case so mailbox,
   control, and buffer preservation stay visible.
+- ADR-0037 adds the first narrow command-buffer-to-behavior path:
+  `step_stem_cell` decodes a just-completed five-bit buffer and processes it
+  only when it is a self-target init-family command. Neighbor targets and
+  self-target non-init commands still stop at `stem-buffer-appended`.

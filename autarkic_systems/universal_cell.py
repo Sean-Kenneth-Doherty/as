@@ -1,15 +1,18 @@
 """Minimal Universal Cell transition probe.
 
 This module is intentionally much smaller than PRC's full Universal Cell
-simulator. It captures only the fixed-role behavior needed for AS's first
-executable substrate contract: wire/proc routing, output blocking, upstream
-pulling, malformed input rejection, and stem-init reconfiguration.
+simulator. It captures only the fixed-role and early stem behavior needed for
+AS's first executable substrate contracts: wire/proc routing, output blocking,
+upstream pulling, malformed input rejection, stem-init reconfiguration, and
+bounded stem command-buffer slices.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Literal
+
+from autarkic_systems.stem_command_map import EXPECTED_COMMANDS, EXPECTED_TARGET_RANGES
 
 
 Signal = Literal[
@@ -50,6 +53,7 @@ Status = Literal[
     "stem-buffer-appended",
     "stem-buffer-full",
     "stem-control-selected",
+    "stem-command-buffer-self-processed",
     "self-mailbox-processed",
     "self-mailbox-unsupported",
 ]
@@ -175,9 +179,10 @@ def step_fixed_cell(cell: Cell) -> StepResult:
 def step_stem_cell(cell: Cell) -> StepResult:
     """Perform one high-level stem activation for the first stem subsets.
 
-    Full PRC stem behavior includes command decoding, target routing, and
-    buffer execution. This probe covers explicit automail reconfiguration plus
-    the first standard-signal buffer accumulation rule.
+    Full PRC stem behavior includes complete command decoding, target routing,
+    and buffer execution. This probe covers explicit automail reconfiguration,
+    standard-signal buffer accumulation, direct self-mailbox handling, and the
+    narrow self-target init command-buffer dispatch slice.
     """
 
     if cell.role != "stem":
@@ -206,9 +211,15 @@ def step_stem_cell(cell: Cell) -> StepResult:
             return StepResult("stem-buffer-full", cell)
 
         bit = 1 if cell.input == cell.control else 0
+        next_buffer = cell.buffer + (bit,)
+        completed = _process_completed_self_init_buffer(
+            _replace(cell, input=EMPTY, buffer=next_buffer),
+        )
+        if completed is not None:
+            return completed
         return StepResult(
             "stem-buffer-appended",
-            _replace(cell, input=EMPTY, buffer=cell.buffer + (bit,)),
+            _replace(cell, input=EMPTY, buffer=next_buffer),
         )
 
     role, memory = AUTOMAIL_RECONFIGURATION[cell.automail]
@@ -250,6 +261,54 @@ def _process_self_mailbox(cell: Cell) -> StepResult:
             buffer=(),
         ),
     )
+
+
+def _process_completed_self_init_buffer(cell: Cell) -> StepResult | None:
+    """Process the narrow self-target init slice for a just-filled buffer."""
+
+    decoded = _decode_command_buffer(cell.buffer)
+    if decoded is None:
+        return None
+
+    target_id, command_id = decoded
+    if target_id != "self" or command_id not in SELF_MAILBOX_INIT_TARGETS:
+        return None
+
+    mailbox_cell = _replace(
+        cell,
+        input=EMPTY,
+        output=EMPTY,
+        automail="_",
+        self_mailbox=command_id,
+        control=(),
+        buffer=(),
+    )
+    processed = _process_self_mailbox(mailbox_cell)
+    return StepResult("stem-command-buffer-self-processed", processed.cell)
+
+
+def _decode_command_buffer(buffer: tuple[Signal, ...]) -> tuple[str, str] | None:
+    """Decode a complete five-bit command buffer with the ADR-0026 map."""
+
+    if len(buffer) != MAX_STEM_BUFFER_SIZE or any(bit not in (0, 1) for bit in buffer):
+        return None
+
+    value = 0
+    for bit in buffer:
+        value = (value << 1) | bit
+
+    target_id = next(
+        target
+        for start, end, target in EXPECTED_TARGET_RANGES
+        if start <= value <= end
+    )
+    command_offset = value % len(EXPECTED_COMMANDS)
+    command_id = next(
+        command
+        for offset, command in EXPECTED_COMMANDS
+        if offset == command_offset
+    )
+    return target_id, command_id
 
 
 def _pull_upstream(cell: Cell) -> Cell:

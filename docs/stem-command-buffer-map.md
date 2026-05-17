@@ -35,10 +35,11 @@ work must preserve or explicitly revise that convention.
 
 ## Boundary
 
-This map only decodes target and command identity. It does not mutate a
-`Cell`, deliver a message to a neighbor, interpret `standard-signal`, or execute
-write-buffer commands. ADR-0027 records why that execution boundary remains in
-place after source review.
+This map only decodes target and command identity. ADR-0037 uses the map for a
+narrow self-target init-family dispatch, but the map itself does not deliver a
+message to a neighbor, interpret `standard-signal`, or execute write-buffer
+commands. ADR-0027 records why the full execution boundary remains in place
+after source review.
 
 ## Verification
 

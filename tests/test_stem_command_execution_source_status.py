@@ -14,7 +14,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
     def setUp(self):
         self.status = json.loads(STATUS.read_text(encoding="utf-8"))
 
-    def test_full_execution_is_blocked_until_state_model_is_explicit(self):
+    def test_full_execution_is_blocked_after_narrow_self_init_dispatch(self):
         self.assertEqual(self.status["schema_version"], 1)
         self.assertEqual(
             self.status["decision"],
@@ -26,8 +26,13 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
 
         blocker_ids = {blocker["blocker_id"] for blocker in self.status["blockers"]}
-        self.assertIn("self-mailbox-missing-from-as-cell", blocker_ids)
-        self.assertIn("neighbor-output-special-message-representation", blocker_ids)
+        self.assertIn("neighbor-command-delivery-semantics", blocker_ids)
+        self.assertIn("standard-signal-command-semantics", blocker_ids)
+        self.assertIn("write-buffer-command-semantics", blocker_ids)
+
+        execution_gap = self.status["formal_model_execution_anchor"]["as_gap"]
+        self.assertIn("narrow self-target init command-buffer dispatch", execution_gap)
+        self.assertIn("does not route neighbor-target commands", execution_gap)
 
     def test_formal_model_command_table_matches_adr_0026_map(self):
         formal = self.status["formal_model_command_table"]
@@ -86,8 +91,13 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         allowed = self.status["allowed_next_slices"]
 
         self.assertTrue(allowed)
-        self.assertTrue(any("self mailbox" in item for item in allowed))
-        self.assertTrue(any("self-target" in item for item in allowed))
+        self.assertTrue(
+            any("self-target init command-buffer dispatch" in item for item in allowed)
+        )
+        self.assertTrue(
+            any("neighbor-target command delivery" in item for item in allowed)
+        )
+        self.assertTrue(any("write-buffer semantics" in item for item in allowed))
         self.assertTrue(
             all("full stem command execution" not in item for item in allowed)
         )

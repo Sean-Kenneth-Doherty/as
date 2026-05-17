@@ -6,6 +6,8 @@ This note records the first `step_stem_cell` behavior beyond explicit automail
 reconfiguration. PRC's formal model describes stem cells using standard signals
 to select a high rail and accumulate a five-bit command buffer before later
 command processing. ADR-0022 implements only that accumulation boundary.
+ADR-0037 later adds a narrow exception for just-completed self-target
+init-family command buffers.
 
 The implementation lives in `autarkic_systems/universal_cell.py`. ADR-0023
 promotes the implemented subset into the named claim
@@ -20,6 +22,8 @@ When a stem cell has no automail command and its output is empty:
 - a one-hot standard input selects the control rail if no control rail is set;
 - a matching one-hot input appends `1` to a non-full buffer;
 - a non-matching one-hot input appends `0` to a non-full buffer;
+- if the append completes a self-target init-family command buffer, the command
+  is processed as `stem-command-buffer-self-processed`;
 - a full five-bit buffer returns `stem-buffer-full` without consuming input;
 - malformed stem input is rejected and cleared.
 
@@ -28,9 +32,10 @@ Automail reconfiguration still has priority over standard-signal buffering.
 ## Source Boundary
 
 This slice follows the PRC formal-model text that describes the constant-count
-five-bit command buffer and the `stem-process-standard-signal` transitions. It
-does not implement the later `process-buffer` step, command decoding, target
-selection, neighbor delivery, or dynamic GELC reconfiguration.
+five-bit command buffer and the `stem-process-standard-signal` transitions.
+ADR-0037 adds the first narrow `process-buffer` slice for self-target init
+commands only. Neighbor delivery, write-buffer commands, `standard-signal`
+command semantics, and dynamic GELC reconfiguration remain out of scope.
 
 ## Verification
 

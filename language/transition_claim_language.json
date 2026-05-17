@@ -41,6 +41,7 @@
         "stem-buffer-appended",
         "stem-buffer-full",
         "stem-control-selected",
+        "stem-command-buffer-self-processed",
         "stem-init",
         "self-mailbox-processed",
         "self-mailbox-unsupported"

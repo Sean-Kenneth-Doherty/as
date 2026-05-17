@@ -753,3 +753,31 @@
   7 tests, the adjacent schematic SVG suite passed 42 tests,
   `python -m unittest discover` passed 198 tests, py_compile passed for the
   touched module and test, and `git diff --check` passed.
+
+## 2026-05-17 - Self Command Buffer Init Dispatch
+
+- Added ADR-0037 for the first narrow command-buffer-to-behavior path:
+  just-completed self-target init-family command buffers.
+- Wrote `tests/test_self_command_buffer_init_dispatch.py` before
+  implementation. The red run showed self `proc-l-init` and self `stem-init`
+  buffers only returned `stem-buffer-appended`, and the transition-language
+  status vocabulary did not include `stem-command-buffer-self-processed`.
+- Added the narrow dispatch path in `step_stem_cell`, reusing the ADR-0026
+  command map and ADR-0030 direct self-mailbox init semantics.
+- Left neighbor-target buffers and self-target non-init buffers at the existing
+  `stem-buffer-appended` boundary.
+- Updated `language/transition_claim_language.json`,
+  `sources/stem_command_execution_source_status.json`, and the source-status
+  test to reflect the new narrow dispatch and remaining blockers.
+- Added `docs/self-command-buffer-init-dispatch.md` as the human-facing
+  behavior boundary note.
+- Updated README, roadmap, literature map, open problems, stem buffer and
+  command-map notes, transition-claim language note, stem command execution
+  source-status note, project memory, and lessons.
+- Verified `python -m unittest tests.test_self_command_buffer_init_dispatch
+  tests.test_stem_buffer_accumulation tests.test_stem_command_execution_source_status
+  tests.test_command_channel_tokens tests.test_stem_command_buffer_map
+  tests.test_object_language` passed 35 tests, `python -m unittest discover`
+  passed 203 tests, py_compile passed for the touched Python files, JSON
+  parsing passed for the language and source-status manifests, and
+  `git diff --check` passed.

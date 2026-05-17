@@ -660,3 +660,25 @@ Status: accepted in `docs/adr/0036-self-mailbox-unsupported-svg.md`.
 Implemented in `autarkic_systems/schematic_svg.py` and
 `schematics/self_mailbox_unsupported_trace.svg`, with tests in
 `tests/test_self_mailbox_unsupported_svg.py`.
+
+## ADR-0037: Self Command Buffer Init Dispatch
+
+Goal: dispatch just-completed self-target init-family command buffers without
+implementing full command-buffer execution.
+
+Deliverables:
+
+- narrow `step_stem_cell` dispatch for completed self-target init-family
+  command buffers;
+- `stem-command-buffer-self-processed` transition status;
+- transition-language status vocabulary update;
+- source-status update showing the remaining full-execution blockers;
+- tests proving self `proc-l-init`, self `stem-init`, neighbor non-routing,
+  self non-init non-execution, and status vocabulary coverage.
+
+Status: accepted in `docs/adr/0037-self-command-buffer-init-dispatch.md`.
+Implemented in `autarkic_systems/universal_cell.py`,
+`language/transition_claim_language.json`, and
+`sources/stem_command_execution_source_status.json`, with tests in
+`tests/test_self_command_buffer_init_dispatch.py` and the updated source-status
+tests.
