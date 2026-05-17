@@ -934,3 +934,26 @@ Status: accepted in
 `language/transition_claim_language.json`, and
 `docs/recipient-init-command-message-consumption.md`, with tests in
 `tests/test_recipient_init_command_messages.py`.
+
+## ADR-0050: Recipient Init Command-Message Claim
+
+Goal: promote the ADR-0049 recipient init command-message consumption subset
+into the named transition-claim and proof-certificate surface.
+
+Deliverables:
+
+- `recipient_init_command_message_processed` predicate;
+- `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` claim manifest entry;
+- proof-certificate manifest entry using `manifest-example`;
+- transition-language predicate vocabulary update;
+- human-facing claim note;
+- tests covering predicate behavior, inactive preconditions, manifest
+  examples, proof certificates, and object-language coverage.
+
+Status: accepted in
+`docs/adr/0050-recipient-init-command-message-claim.md`. Implemented in
+`autarkic_systems/transition_predicates.py`,
+`claims/transition_claims.json`, `claims/proof_certificates.json`,
+`language/transition_claim_language.json`, and
+`docs/recipient-init-command-message-claim.md`, with tests in
+`tests/test_recipient_init_command_message_claim.py`.

@@ -65,6 +65,8 @@ the project legible:
   source-backed boundary for recipient-side command-message inputs.
 - `docs/recipient-init-command-message-consumption.md` records the first
   executable recipient-side init-family command-message input slice.
+- `docs/recipient-init-command-message-claim.md` records the named claim and
+  proof-certificate surface for that recipient init command-message slice.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
@@ -111,8 +113,9 @@ the project legible:
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
-  init dispatch, neighbor-target command-buffer delivery, and the self-target
-  non-init completed-buffer append boundary.
+  init dispatch, neighbor-target command-buffer delivery, recipient
+  init-family command-message consumption, and the self-target non-init
+  completed-buffer append boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
 - `sources/willard_definition_map.json` makes the Willard anchor map

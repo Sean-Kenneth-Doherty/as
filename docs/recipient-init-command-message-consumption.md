@@ -6,6 +6,9 @@ ADR-0049 implements the first recipient-side command-message behavior after
 neighbor command-buffer delivery. It is intentionally narrower than full PRC
 command execution.
 
+ADR-0050 promotes this behavior into the named claim
+`UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED`.
+
 ## Behavior
 
 `step_fixed_cell` and `step_stem_cell` now consume a single input-channel

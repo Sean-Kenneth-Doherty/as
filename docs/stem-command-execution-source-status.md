@@ -28,8 +28,9 @@ surface. ADR-0046 adds a schematic-linked trace for one
 view. ADR-0048 records a recipient command-consumption source-status decision:
 AS may execute recipient-side init-family command-message inputs, while
 `standard-signal` and write-buffer command messages remain blocked. ADR-0049
-implements that recipient init-family slice. ADR-0042/ADR-0043 now cover the
-self-target `write-buf-one` append boundary.
+implements that recipient init-family slice, and ADR-0050 promotes it into
+the named claim/proof surface. ADR-0042/ADR-0043 now cover the self-target
+`write-buf-one` append boundary.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

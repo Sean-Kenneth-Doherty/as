@@ -119,3 +119,7 @@
   first. Keeping `standard-signal`, write-buffer, and multi-command inputs at
   the rejection boundary avoids laundering unresolved command semantics through
   an otherwise source-backed slice.
+- When recipient command behavior becomes executable, claim it before drawing
+  it. Fixed upstream input and stem direct input are similar enough to share a
+  predicate, but the predicate must still check the source-specific upstream
+  clearing rule.

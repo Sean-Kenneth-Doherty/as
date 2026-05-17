@@ -17,6 +17,14 @@
       "summary": "AS now consumes single input-channel init-family command messages on fixed and stem recipient cells while leaving non-init command-message inputs blocked."
     }
   ],
+  "implemented_claims": [
+    {
+      "adr": "ADR-0050",
+      "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+      "predicate": "recipient_init_command_message_processed",
+      "summary": "AS now has a named transition claim and proof-certificate entry for the recipient init-family command-message consumption subset."
+    }
+  ],
   "formal_model_input_special_message_anchor": {
     "witness_id": "PRC-FORMAL-INPUT-SPECIAL-MESSAGE",
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",

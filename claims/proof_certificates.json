@@ -175,6 +175,26 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "fixed upstream wire right init processed",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "stem recipient wire left init processed",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "recipient init wrong target",
+          "expected": false
+        }
+      ]
     }
   ]
 }

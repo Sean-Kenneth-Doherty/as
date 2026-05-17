@@ -46,6 +46,16 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             ],
         )
 
+        claim = self.status["implemented_claims"][0]
+        self.assertEqual(
+            claim["claim_id"],
+            "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+        )
+        self.assertEqual(
+            claim["predicate"],
+            "recipient_init_command_message_processed",
+        )
+
     def test_formal_model_records_input_special_message_processing(self):
         formal = self.status["formal_model_input_special_message_anchor"]
 
@@ -99,13 +109,13 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
             any(
                 "recipient-side init-family command-message consumption"
                 in item
-                and "named claim" in item
+                and "schematic-linked trace" in item
                 for item in allowed
             )
         )
         self.assertFalse(
             any(
-                item.startswith("Implement recipient-side init-family")
+                "named claim" in item
                 for item in allowed
             )
         )

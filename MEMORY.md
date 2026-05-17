@@ -223,3 +223,8 @@
   `step_stem_cell` now consume single input-channel init-family command-message
   tokens with status `recipient-init-command-message-processed`, while
   `standard-signal`, write-buffer, and multi-command inputs remain rejected.
+- ADR-0050 adds `docs/recipient-init-command-message-claim.md` and
+  `tests/test_recipient_init_command_message_claim.py`. The claim
+  `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` is checked by
+  `recipient_init_command_message_processed` and covers fixed upstream, stem
+  direct-input, and negative wrong-target examples.

@@ -571,6 +571,83 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+      "predicate": "recipient_init_command_message_processed",
+      "description": "A recipient cell that receives a single init-family command-message input reconfigures to the commanded role and clears command state.",
+      "examples": [
+        {
+          "name": "fixed upstream wire right init processed",
+          "expected": true,
+          "before": {
+            "role": "proc",
+            "memory": "left",
+            "upstream": ["wire-r-init", "_", "_"]
+          },
+          "result": {
+            "status": "recipient-init-command-message-processed",
+            "cell": {
+              "role": "wire",
+              "memory": "right",
+              "upstream": ["_", "_", "_"],
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "stem recipient wire left init processed",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": ["_", "wire-l-init", "_"],
+            "self_mailbox": "proc-r-init",
+            "control": [0, 1, 0],
+            "buffer": [1, 0]
+          },
+          "result": {
+            "status": "recipient-init-command-message-processed",
+            "cell": {
+              "role": "wire",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        },
+        {
+          "name": "recipient init wrong target",
+          "expected": false,
+          "before": {
+            "role": "wire",
+            "memory": "right",
+            "input": ["proc-l-init", "_", "_"]
+          },
+          "result": {
+            "status": "recipient-init-command-message-processed",
+            "cell": {
+              "role": "wire",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        }
+      ]
     }
   ]
 }

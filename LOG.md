@@ -1073,3 +1073,30 @@
   `python -m unittest discover` passed 286 tests, py_compile passed for the
   touched Python module and tests, JSON parsing passed for the transition
   language and source-status manifests, and `git diff --check` passed.
+
+## 2026-05-17 - Recipient Init Command-Message Claim
+
+- Added ADR-0050 to promote the ADR-0049 recipient init command-message
+  behavior into the named transition-claim and proof-certificate surface.
+- Wrote `tests/test_recipient_init_command_message_claim.py` before
+  implementation. The red run failed because
+  `recipient_init_command_message_processed` was absent from
+  `autarkic_systems.transition_predicates`.
+- Added `recipient_init_command_message_processed` to
+  `autarkic_systems/transition_predicates.py`. The predicate covers fixed
+  direct input, fixed pulled-upstream input, and stem direct input for the
+  init-family command-message subset. It checks target role/memory, cleared
+  input/output, cleared command state, and source-specific upstream handling.
+- Added `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` to
+  `claims/transition_claims.json`, added the matching proof-certificate entry,
+  and updated the transition-claim object language.
+- Updated the recipient and stem source-status artifacts so the next slice is
+  a schematic-linked recipient init command-message trace rather than claim
+  promotion.
+- Added `docs/recipient-init-command-message-claim.md` and updated README,
+  roadmap, literature map, open problems, project memory, and lessons.
+- Verified the focused claim/source-status/predicate suite passed 38 tests.
+  `python -m unittest discover` passed 293 tests, py_compile passed for the
+  touched predicate module and tests, JSON parsing passed for claim,
+  certificate, language, and source-status manifests, and `git diff --check`
+  passed.

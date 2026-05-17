@@ -97,7 +97,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertTrue(
             any(
                 "recipient-side init-family command-message consumption" in item
-                and "named claim" in item
+                and "schematic-linked trace" in item
                 for item in allowed
             )
         )

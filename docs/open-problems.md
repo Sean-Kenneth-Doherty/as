@@ -67,8 +67,10 @@ that still stop at the append boundary; ADR-0044 narrows that boundary to
 self-target non-init commands by delivering neighbor-target command buffers to
 output channels. ADR-0042/ADR-0043 now use a self-target `write-buf-one`
 trace/render for the remaining unsupported append boundary. ADR-0049 consumes
-recipient-side init-family command-message inputs. Recipient-side non-init
-command-message consumption and self-target non-init execution remain open.
+recipient-side init-family command-message inputs. ADR-0050 promotes that
+recipient init slice into the named claim/proof surface. Recipient-side
+non-init command-message consumption and self-target non-init execution remain
+open.
 
 ## P3: Choose The First Proof Apparatus
 
@@ -182,3 +184,5 @@ inputs and allows the next executable slice to consume init-family command
 messages only.
 ADR-0049 implements that recipient init-family command-message consumption
 slice while leaving non-init command messages blocked.
+ADR-0050 promotes the recipient init-family slice into the named claim/proof
+surface.

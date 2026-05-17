@@ -441,6 +441,54 @@ def stem_command_buffer_delivers_neighbor_command(
     )
 
 
+def recipient_init_command_message_processed(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check the recipient-side init command-message consumption subset."""
+
+    name = "recipient_init_command_message_processed"
+    command_source = _recipient_init_command_source(before)
+    if command_source is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    command_id, source_kind = command_source
+    expected_role, expected_memory = SELF_MAILBOX_INIT_TARGETS[command_id]
+    if result.status != "recipient-init-command-message-processed":
+        return PredicateResult(
+            name,
+            False,
+            "expected recipient-init-command-message-processed, "
+            f"got {result.status}",
+        )
+    if (result.cell.role, result.cell.memory) != (expected_role, expected_memory):
+        return PredicateResult(
+            name,
+            False,
+            "expected "
+            f"{expected_role}/{expected_memory}, got "
+            f"{result.cell.role}/{result.cell.memory}",
+        )
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    if result.cell.automail != "_" or result.cell.self_mailbox != "_":
+        return PredicateResult(name, False, "command state was not cleared")
+    if result.cell.control or result.cell.buffer:
+        return PredicateResult(name, False, "command state was not cleared")
+
+    if source_kind == "upstream":
+        if result.cell.upstream != EMPTY:
+            return PredicateResult(name, False, "pulled upstream command was not cleared")
+    elif result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "direct input changed upstream")
+
+    return PredicateResult(
+        name,
+        True,
+        f"{source_kind} {command_id} command message processed",
+    )
+
+
 def _completed_self_init_target(before: Cell) -> tuple[str, str] | None:
     decoded = _completed_command_buffer(before)
     if decoded is None:
@@ -494,6 +542,38 @@ def _completed_command_buffer(
         "write-buf-one",
     )[value % 8]
     return target_id, command_id, completed_buffer
+
+
+def _recipient_init_command_source(before: Cell) -> tuple[str, str] | None:
+    if before.output != EMPTY:
+        return None
+
+    direct_command = _single_init_command_message(before.input)
+    if before.role in {"wire", "proc"}:
+        if direct_command is not None:
+            return direct_command, "direct"
+        if before.input == EMPTY:
+            upstream_command = _single_init_command_message(before.upstream)
+            if upstream_command is not None:
+                return upstream_command, "upstream"
+        return None
+
+    if before.role == "stem" and before.automail == "_" and direct_command is not None:
+        return direct_command, "direct"
+    return None
+
+
+def _single_init_command_message(
+    signal: tuple[object, object, object],
+) -> str | None:
+    commands = [
+        channel
+        for channel in signal
+        if isinstance(channel, str) and channel in SELF_MAILBOX_INIT_TARGETS
+    ]
+    if len(commands) != 1 or signal.count("_") != 2:
+        return None
+    return commands[0]
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:
