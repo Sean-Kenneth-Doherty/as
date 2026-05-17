@@ -305,3 +305,8 @@
   explicit documentation/code-confirmation warnings, code-shape predicates,
   and a `msg-list` placeholder rather than resolved named command-token
   semantics.
+- ADR-0064 adds `docs/official-tla-universal-cell-status.md`,
+  `sources/official_tla_universal_cell_status.json`, and
+  `tests/test_official_tla_universal_cell_status.py`. It records PRC's
+  official TLA files as partial, stub, or empty and not executable Universal
+  Cell or command-semantics authority.

@@ -1420,3 +1420,23 @@
   `python -m unittest discover` passed 379 tests. `py_compile` passed for the
   new test, JSON parsing passed for the touched source-status manifests, and
   `git diff --check` passed.
+
+## 2026-05-17 - Official TLA Universal Cell Status
+
+- Added ADR-0064 after reviewing PRC's official TLA files as a possible formal
+  source for blocked Universal Cell command semantics.
+- Wrote `tests/test_official_tla_universal_cell_status.py` before
+  implementation. The red run failed because
+  `sources/official_tla_universal_cell_status.json` was absent.
+- Added `sources/official_tla_universal_cell_status.json`, recording
+  `universal-cell.tla` as a partial 45-line activation skeleton,
+  `universalcell.tla` as a one-line stub, and `uc.tla` as empty.
+- Cross-linked the evidence from the standard-signal, write-buffer, and stem
+  command source-status artifacts.
+- Added `docs/official-tla-universal-cell-status.md` and updated README,
+  roadmap, literature map, open problems, PRC hardware witness notes, project
+  memory, and lessons.
+- Verified the focused TLA/adjacent source-status suite passed 33 tests and
+  `python -m unittest discover` passed 384 tests. `py_compile` passed for the
+  new test, JSON parsing passed for the touched source-status manifests, and
+  `git diff --check` passed.

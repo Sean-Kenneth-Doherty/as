@@ -98,6 +98,20 @@
         "tar+nop?"
       ],
       "divergence": "This source organizes process-buffer behavior around code-shape predicates, a msg-list placeholder, tar+sic?, and explicit comments that the message-list codes need documentation and confirmation."
+    },
+    {
+      "witness_id": "PRC-OFFICIAL-TLA-INCOMPLETE",
+      "local_witnesses": [
+        "/home/sean/Projects/_upstream/prc/theory/official/universal-cell.tla",
+        "/home/sean/Projects/_upstream/prc/theory/official/universalcell.tla",
+        "/home/sean/Projects/_upstream/prc/theory/official/uc.tla"
+      ],
+      "loci": [
+        "universal-cell.tla lines 1-45",
+        "universalcell.tla line 1",
+        "uc.tla empty file"
+      ],
+      "divergence": "The official TLA witnesses are partial, stub, or empty and do not define Next, process-buffer, command-buffer, standard-signal, or write-buffer command semantics."
     }
   ],
   "blockers": [

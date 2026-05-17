@@ -169,3 +169,6 @@
   simulator says its process-buffer needs documentation or code confirmation,
   preserve that warning in machine-checkable status before building behavior on
   top of it.
+- Formal-looking files still need source-status verification. A TLA file that
+  is empty, a one-line stub, or an unfinished skeleton is context, not
+  executable authority for command semantics.

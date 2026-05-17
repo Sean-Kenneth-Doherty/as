@@ -213,6 +213,8 @@ ADR-0062 records the corresponding `guile-asmsim.scm` command-semantics
 source-status decision, strengthening the standard-signal/write-buffer blocker.
 ADR-0063 records the corresponding `practice/asmsim.scm` process-buffer
 source-status decision, again keeping command-token execution source-blocked.
+ADR-0064 records the corresponding official TLA source-status decision: the
+TLA files are partial, stub, or empty and do not resolve command semantics.
 ADR-0059 records the corresponding multi-command recipient input policy
 decision.
 ADR-0060 records the corresponding multi-command recipient rejection trace.

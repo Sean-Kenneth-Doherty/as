@@ -75,6 +75,11 @@
       "adr": "ADR-0063",
       "path": "sources/asmsim_process_buffer_status.json",
       "summary": "practice/asmsim.scm uses process-buffer code-shape predicates and a tar+sic? helper rather than the formal standard-signal command token, with comments warning that message codes need documentation and confirmation."
+    },
+    {
+      "adr": "ADR-0064",
+      "path": "sources/official_tla_universal_cell_status.json",
+      "summary": "The official PRC TLA files are partial/stub/empty and do not define standard-signal command-token semantics."
     }
   ],
   "as_boundary": "Continue rejecting or preserving standard-signal command tokens at the existing claimed boundaries. AS already has ordinary standard-signal routing and stem buffer accumulation for binary input; this artifact blocks only command-token execution."

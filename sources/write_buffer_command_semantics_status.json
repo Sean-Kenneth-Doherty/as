@@ -88,6 +88,11 @@
       "adr": "ADR-0063",
       "path": "sources/asmsim_process_buffer_status.json",
       "summary": "practice/asmsim.scm process-buffer code has id+10b5?/id+11b5? branches and explicit message-code uncertainty, but no named write-buf-zero/write-buf-one command-token surface."
+    },
+    {
+      "adr": "ADR-0064",
+      "path": "sources/official_tla_universal_cell_status.json",
+      "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
   "as_boundary": "Continue rejecting or preserving write-buffer commands at the existing claimed boundaries until a later ADR selects one source-backed execution semantics."

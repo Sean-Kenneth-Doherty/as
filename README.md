@@ -82,6 +82,8 @@ the project legible:
 - `docs/asmsim-process-buffer-status.md` records why the newer
   `practice/asmsim.scm` process-buffer witness is still source-blocked by
   incomplete message-code documentation.
+- `docs/official-tla-universal-cell-status.md` records why the official PRC
+  TLA files are partial/stub/empty and not executable UC authority.
 - `docs/multi-command-recipient-input-policy-status.md` records the
   reject-and-clear policy for multiple simultaneous recipient command-message
   inputs.
@@ -172,6 +174,8 @@ the project legible:
   machine-checkable.
 - `sources/asmsim_process_buffer_status.json` makes the newer ASMSIM
   process-buffer source-status decision machine-checkable.
+- `sources/official_tla_universal_cell_status.json` makes the official TLA
+  Universal Cell source-status decision machine-checkable.
 - `sources/multi_command_recipient_input_policy_status.json` makes the
   multi-command recipient input policy decision machine-checkable.
 - `schematics/single_node_triangular_rlem_trace.json` makes the first

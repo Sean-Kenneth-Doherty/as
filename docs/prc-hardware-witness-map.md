@@ -44,6 +44,9 @@ simulation. The point is to make one node inspectable before scaling up.
 | `PRC-ASM-SIMULATOR` | Executable transition semantics | Treat `asmsim.scm` as an implementation witness, not an oracle. |
 | `PRC-SCHEMATIC-FIGURES` | Schematic source | Redraw only the minimum single-node/port-orientation key needed for trace work. |
 
+Status update: ADR-0064 records the official PRC TLA files as partial, stub,
+or empty. They are project context, not executable UC authority.
+
 ## Immediate Constraints
 
 The first schematic must distinguish four layers:

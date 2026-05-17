@@ -1248,3 +1248,25 @@ Status: accepted in `docs/adr/0063-asmsim-process-buffer-status.md`.
 Implemented in `sources/asmsim_process_buffer_status.json` and
 `docs/asmsim-process-buffer-status.md`, with tests in
 `tests/test_asmsim_process_buffer_status.py`.
+
+## ADR-0064: Official TLA Universal Cell Status
+
+Goal: decide whether PRC's official TLA files can serve as executable
+Universal Cell or command-semantics authority.
+
+Deliverables:
+
+- `sources/official_tla_universal_cell_status.json`;
+- source-status record for `universal-cell.tla`, `universalcell.tla`, and
+  `uc.tla`;
+- tests proving line counts, partial/stub/empty status, and absent command
+  semantics;
+- cross-links from standard-signal, write-buffer, and stem command
+  source-status artifacts;
+- human-facing source-status note.
+
+Status: accepted in
+`docs/adr/0064-official-tla-universal-cell-status.md`. Implemented in
+`sources/official_tla_universal_cell_status.json` and
+`docs/official-tla-universal-cell-status.md`, with tests in
+`tests/test_official_tla_universal_cell_status.py`.

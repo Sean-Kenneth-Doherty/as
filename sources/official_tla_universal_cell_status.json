@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-17",
+  "decision": "do-not-use-official-tla-as-executable-uc-spec",
+  "runtime_change": "none-source-status-only",
+  "safe_next_slice": "keep-command-execution-blocked-pending-complete-specification",
+  "status_summary": "The official PRC TLA files are not complete enough to act as AS executable Universal Cell or command-semantics authority.",
+  "tla_witnesses": [
+    {
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/universal-cell.tla",
+      "line_count": 45,
+      "status": "partial-incomplete",
+      "summary": "Partial Universal Cell skeleton with constants, variables, Init, Activate, and an unfinished Wire branch."
+    },
+    {
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/universalcell.tla",
+      "line_count": 1,
+      "status": "stub",
+      "summary": "Single-line module stub."
+    },
+    {
+      "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/uc.tla",
+      "line_count": 0,
+      "status": "empty",
+      "summary": "Empty file."
+    }
+  ],
+  "universal_cell_status": {
+    "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/universal-cell.tla",
+    "status": "partial-incomplete",
+    "module_locus": "lines 4-12",
+    "init_locus": "lines 14-22",
+    "activate_locus": "lines 24-33",
+    "incomplete_wire_locus": "lines 37-41",
+    "summary": "The partial TLA sketch reaches an unfinished Wire definition and does not define a complete Next action or role-specific transition system."
+  },
+  "command_semantics_status": {
+    "decision": "absent",
+    "missing_terms": [
+      "Next",
+      "process-buffer",
+      "command-buffer",
+      "standard-signal",
+      "write-buf-zero",
+      "write-buf-one"
+    ],
+    "summary": "The official TLA files do not contain command-buffer, standard-signal command-token, or write-buffer command-token semantics."
+  },
+  "impacted_status_files": [
+    "sources/standard_signal_command_semantics_status.json",
+    "sources/write_buffer_command_semantics_status.json",
+    "sources/stem_command_execution_source_status.json"
+  ],
+  "as_boundary": "Do not use the official TLA files as executable Universal Cell authority until a complete specification with Next, role transitions, and command semantics is recovered or constructed."
+}

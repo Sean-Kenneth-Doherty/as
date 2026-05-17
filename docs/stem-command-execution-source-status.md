@@ -45,7 +45,8 @@ schematic-linked trace. ADR-0061 adds the matching rendered SVG view.
 ADR-0062 records `guile-asmsim.scm` as another divergent command-semantics
 witness rather than an execution-ready source. ADR-0063 records the newer
 `practice/asmsim.scm` process-buffer branch as still needing documentation and
-confirmed message-list codes.
+confirmed message-list codes. ADR-0064 records the official PRC TLA files as
+partial, stub, or empty rather than executable command authority.
 Legacy simulator sketches still diverge from the formal table in ways that
 should be resolved before AS treats them as executable authority, and AS still
 does not execute non-init command-message inputs on recipient cells.

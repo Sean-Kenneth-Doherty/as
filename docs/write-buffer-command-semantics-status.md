@@ -41,6 +41,8 @@ rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
 `write-buf-zero` and `write-buf-one` command tokens. ADR-0063 reviews
 `practice/asmsim.scm`, whose process-buffer code uses code-shape predicates
 and warning comments rather than named write-buffer command semantics.
+ADR-0064 records the official PRC TLA files as incomplete and missing
+write-buffer command-token semantics.
 
 ## Verification
 

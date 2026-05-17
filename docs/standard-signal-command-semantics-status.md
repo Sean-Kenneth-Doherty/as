@@ -47,7 +47,8 @@ standard signals as ordinary binary input while appending numeric standard
 signals to a process-buffer command list; this strengthens the blocker rather
 than resolving command-token semantics. ADR-0063 reviews `practice/asmsim.scm`,
 which uses `tar+sic?` and code-shape predicates rather than a named
-`standard-signal` command token.
+`standard-signal` command token. ADR-0064 records the official PRC TLA files
+as incomplete and missing `standard-signal` command-token semantics.
 
 ## Verification
 
