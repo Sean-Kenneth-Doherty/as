@@ -1,6 +1,7 @@
 import unittest
 
 from autarkic_systems.transition_predicates import (
+    automail_reconfigures_stem,
     consumed_input_cleared,
     fixed_role_memory_rule,
     output_not_overwritten,
@@ -82,6 +83,30 @@ class TransitionPredicateTests(unittest.TestCase):
         predicate = stem_init_resets_to_stem(before, bad)
 
         self.assertFalse(predicate.holds)
+
+    def test_automail_reconfigures_stem_holds_for_valid_command(self):
+        before = Cell(role="stem", memory="right", automail="wl")
+        result = StepResult(
+            status="automail-reconfigured",
+            cell=Cell(role="wire", memory="left", automail="_"),
+        )
+
+        predicate = automail_reconfigures_stem(before, result)
+
+        self.assertEqual(predicate.name, "automail_reconfigures_stem")
+        self.assertTrue(predicate.holds)
+
+    def test_automail_reconfigures_stem_detects_wrong_target(self):
+        before = Cell(role="stem", memory="right", automail="pl")
+        bad = StepResult(
+            status="automail-reconfigured",
+            cell=Cell(role="wire", memory="left", automail="_"),
+        )
+
+        predicate = automail_reconfigures_stem(before, bad)
+
+        self.assertFalse(predicate.holds)
+        self.assertIn("expected", predicate.detail)
 
 
 if __name__ == "__main__":

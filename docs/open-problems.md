@@ -27,7 +27,8 @@ probe only covers fixed wire/proc behavior.
 
 Status: started by ADR-0008. `step_stem_cell` now covers automail
 reconfiguration commands `wr`, `wl`, `pr`, and `pl`. Full stem input
-classification and buffer processing remain open.
+classification and buffer processing remain open. ADR-0009 added the
+corresponding `automail_reconfigures_stem` predicate and manifest claim.
 
 ## P3: Choose The First Proof Apparatus
 

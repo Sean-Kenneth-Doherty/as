@@ -148,3 +148,18 @@ Deliverables:
 Status: accepted in `docs/adr/0008-stem-automail-probe.md`. Implemented in
 `autarkic_systems/universal_cell.py` with tests in
 `tests/test_stem_automail.py`.
+
+## ADR-0009: Stem Automail Claim
+
+Goal: promote stem automail reconfiguration into the named claim surface.
+
+Deliverables:
+
+- `automail_reconfigures_stem` predicate;
+- transition claim manifest entry;
+- positive and negative executable examples;
+- manifest-loader support for stem fields.
+
+Status: accepted in `docs/adr/0009-stem-automail-claim.md`. Implemented in
+`autarkic_systems/transition_predicates.py`, `claims/transition_claims.json`,
+and `autarkic_systems/claim_manifest.py`.

@@ -12,6 +12,14 @@ from dataclasses import dataclass
 from autarkic_systems.universal_cell import EMPTY, Cell, StepResult
 
 
+AUTOMAIL_TARGETS = {
+    "wr": ("wire", "right"),
+    "wl": ("wire", "left"),
+    "pr": ("proc", "right"),
+    "pl": ("proc", "left"),
+}
+
+
 @dataclass(frozen=True)
 class PredicateResult:
     """A named claim result that can later be attached to proof artifacts."""
@@ -85,3 +93,32 @@ def stem_init_resets_to_stem(before: Cell, result: StepResult) -> PredicateResul
     if before.role not in {"wire", "proc"}:
         return PredicateResult(name, False, f"unexpected source role {before.role!r}")
     return PredicateResult(name, True, "stem-init reset fixed cell to stem")
+
+
+def automail_reconfigures_stem(before: Cell, result: StepResult) -> PredicateResult:
+    """Check that stem automail commands produce the expected fixed role."""
+
+    name = "automail_reconfigures_stem"
+    if before.role != "stem" or before.automail == "_":
+        return PredicateResult(name, True, "precondition not active")
+    if result.status != "automail-reconfigured":
+        return PredicateResult(
+            name, False, f"expected automail-reconfigured, got {result.status}"
+        )
+    expected = AUTOMAIL_TARGETS.get(before.automail)
+    if expected is None:
+        return PredicateResult(name, False, f"unexpected automail {before.automail!r}")
+    expected_role, expected_memory = expected
+    if (result.cell.role, result.cell.memory) != expected:
+        return PredicateResult(
+            name,
+            False,
+            "expected "
+            f"{expected_role}/{expected_memory}, got "
+            f"{result.cell.role}/{result.cell.memory}",
+        )
+    if result.cell.automail != "_":
+        return PredicateResult(name, False, "automail was not cleared")
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    return PredicateResult(name, True, "automail reconfigured stem as expected")

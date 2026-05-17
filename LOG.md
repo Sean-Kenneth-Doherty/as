@@ -120,3 +120,19 @@
 - Verified `python -m unittest tests.test_stem_automail` passed 8 tests,
   `python -m unittest discover` passed 28 tests, and `git diff --check`
   passed.
+
+## 2026-05-17 - Stem Automail Claim
+
+- Added ADR-0009 to promote stem automail behavior into the named AS claim
+  surface.
+- Wrote predicate tests before implementation. The first run failed because
+  `automail_reconfigures_stem` did not exist, confirming the red step.
+- Implemented `automail_reconfigures_stem` and added the
+  `UC-STEM-AUTOMAIL-RECONFIGURES` claim to `claims/transition_claims.json`.
+- The claim manifest evaluator initially caught a mismatch because
+  `claim_manifest.py` was not preserving stem fields such as `automail` when
+  parsing cells. Fixed the loader to parse automail, control, and buffer.
+- Verified `python -m unittest tests.test_transition_predicates` passed 10
+  tests, `python -m unittest tests.test_claim_manifest` passed 4 tests,
+  `python -m unittest discover` passed 30 tests, JSON checks passed, and
+  `git diff --check` passed.

@@ -41,3 +41,6 @@
 - `step_stem_cell` in `autarkic_systems/universal_cell.py` covers only the
   stem automail reconfiguration subset (`wr`, `wl`, `pr`, `pl`), not full stem
   buffer processing.
+- `automail_reconfigures_stem` is the predicate/claim bridge for stem automail;
+  `claim_manifest.py` must preserve `automail`, `control`, and `buffer` when
+  parsing manifest cells.
