@@ -68,7 +68,8 @@
     },
     "chain_formulae": {
       "predicate_symbols": [
-        "neighbor_delivery_consumed_by_recipient"
+        "neighbor_delivery_consumed_by_recipient",
+        "neighbor_delivery_rejected_by_recipient"
       ],
       "form": "predicate(chain_result)"
     },

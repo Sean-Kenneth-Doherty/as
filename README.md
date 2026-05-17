@@ -132,8 +132,8 @@ the project legible:
   trace for that two-step handoff.
 - `docs/neighbor-delivery-chain-svg.md` records the rendered SVG view of that
   composed-chain trace.
-- `docs/neighbor-delivery-chain-claim.md` records the named claim and
-  proof-certificate surface for that two-step handoff.
+- `docs/neighbor-delivery-chain-claim.md` records the named consumed and
+  rejected claim/proof-certificate surface for that two-step handoff.
 - `docs/transition-chain-claim-language.md` records the syntax classes and
   validator boundary for transition-chain claims.
 - `docs/neighbor-delivery-chain-evidence-bundle.md` records the first
@@ -200,7 +200,7 @@ the project legible:
   transition-chain trace for that two-step handoff.
 - `autarkic_systems/chain_svg.py` renders and validates the first
   transition-chain SVG view for that two-step handoff.
-- `autarkic_systems/chain_claims.py` validates the first transition-chain
+- `autarkic_systems/chain_claims.py` validates the transition-chain
   claim manifest and manifest-example proof certificates, and exposes
   `python -m autarkic_systems.chain_claims` for direct chain-claim validation.
 - `autarkic_systems/chain_object_language.py` validates the first
@@ -221,10 +221,11 @@ the project legible:
   rejection, and the self-target non-init completed-buffer append boundary.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims.
-- `claims/transition_chain_claims.json` names the first executable two-step
-  transition-chain claim.
-- `claims/transition_chain_proof_certificates.json` adds the matching
-  manifest-example proof certificate for that chain claim.
+- `claims/transition_chain_claims.json` names the executable two-step
+  transition-chain claims for consumed init delivery and rejected non-init
+  delivery.
+- `claims/transition_chain_proof_certificates.json` adds matching
+  manifest-example proof certificates for those chain claims.
 - `language/transition_chain_claim_language.json` names the first explicit
   syntax classes for transition-chain claims.
 - `python -m autarkic_systems.chain_claims --format json` emits the

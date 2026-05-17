@@ -133,6 +133,9 @@ path can be inspected from one command.
 ADR-0090 makes the demo explicit about artifact presence so missing traces,
 renders, manifests, bundles, or source-status records are visible in the
 first-run surface.
+ADR-0091 promotes the delivered non-init rejection boundary into a named
+transition-chain claim, proving the composed handoff can preserve a blocked
+recipient command path as well as consume the init path.
 
 ## P3: Choose The First Proof Apparatus
 

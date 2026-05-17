@@ -1723,3 +1723,23 @@ Deliverables:
 Status: accepted in `docs/adr/0090-chain-demo-artifact-presence.md`.
 Implemented in `autarkic_systems/chain_demo.py`, with tests in
 `tests/test_chain_demo_report.py`.
+
+## ADR-0091: Neighbor Delivery Rejection Chain Claim
+
+Goal: name the delivered non-init recipient rejection boundary as its own
+transition-chain claim.
+
+Deliverables:
+
+- `neighbor_delivery_rejected_by_recipient` in
+  `autarkic_systems/transition_chain_predicates.py`;
+- `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED` in
+  `claims/transition_chain_claims.json`;
+- matching manifest-example proof certificate coverage;
+- transition-chain claim language update for the new predicate symbol;
+- focused claim, CLI, and language test updates.
+
+Status: accepted in
+`docs/adr/0091-neighbor-delivery-rejection-chain-claim.md`. Implemented in
+`autarkic_systems/transition_chain_predicates.py`, with tests in
+`tests/test_neighbor_delivery_chain_claim.py`.

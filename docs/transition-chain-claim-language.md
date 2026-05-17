@@ -3,16 +3,16 @@
 ADR-0079 adds `language/transition_chain_claim_language.json`, the first
 explicit object language for AS transition-chain claims.
 
-The language is deliberately narrow. It covers the current ADR-0078 chain claim
-surface, not arbitrary temporal logic, graph topology, scheduling, or future
-multi-cell simulation.
+The language is deliberately narrow. It covers the current neighbor delivery
+chain claim surface, not arbitrary temporal logic, graph topology, scheduling,
+or future multi-cell simulation.
 
 ## Syntax Classes
 
 | Class | Current Meaning |
 | --- | --- |
 | `terms` | Universal Cell term vocabulary reused by chain examples, transition statuses, chain statuses, and cell fields. |
-| `chain_formulae` | Predicate applications of the form `predicate(chain_result)`. |
+| `chain_formulae` | Predicate applications of the form `predicate(chain_result)`, currently covering consumed and rejected neighbor-delivery handoffs. |
 | `chain_sentences` | Transition-chain claim sentences named by IDs such as `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED`. |
 | `proof_objects` | Proof-certificate steps. The only current rule is `manifest-example`. |
 | `substrate_chain_claims` | Paths to the chain-claim and chain-certificate manifests. |
@@ -49,3 +49,7 @@ bundle:
 ```sh
 python -m autarkic_systems.chain_evidence_bundle
 ```
+
+ADR-0091 extends the language predicate-symbol set with
+`neighbor_delivery_rejected_by_recipient` and validates two chain claims, two
+proof certificates, and seven manifest examples.

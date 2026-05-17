@@ -248,3 +248,6 @@
 - Demo reports should expose artifact presence directly. A first-run surface
   should not require readers to infer missing files from lower-level validator
   details.
+- Important negative composed paths deserve positive claim names. A rejection
+  boundary should be proved as itself, not only as a false example of a green
+  consumption claim.

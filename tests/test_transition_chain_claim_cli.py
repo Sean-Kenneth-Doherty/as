@@ -32,9 +32,9 @@ class TransitionChainClaimCliTests(unittest.TestCase):
 
         self.assertIn("Transition chain claims: as-transition-chain-claim-v1", text)
         self.assertIn("OK chain-language-manifest:", text)
-        self.assertIn("OK chain-examples: evaluated 4 examples", text)
-        self.assertIn("OK chain-certificates: verified 1 certificates", text)
-        self.assertIn("OK chain-surface: validated 1 chain claims", text)
+        self.assertIn("OK chain-examples: evaluated 7 examples", text)
+        self.assertIn("OK chain-certificates: verified 2 certificates", text)
+        self.assertIn("OK chain-surface: validated 2 chain claims", text)
         self.assertNotIn("FAIL", text)
 
     def test_json_payload_records_successful_chain_claim_validation(self):
@@ -48,8 +48,8 @@ class TransitionChainClaimCliTests(unittest.TestCase):
 
         self.assertEqual(payload["language_id"], "as-transition-chain-claim-v1")
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["claim_count"], 1)
-        self.assertEqual(payload["certificate_count"], 1)
+        self.assertEqual(payload["claim_count"], 2)
+        self.assertEqual(payload["certificate_count"], 2)
         self.assertEqual(payload["result_count"], len(report.results))
         self.assertTrue(
             any(
@@ -98,8 +98,8 @@ class TransitionChainClaimCliTests(unittest.TestCase):
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["claim_count"], 1)
-        self.assertEqual(payload["certificate_count"], 1)
+        self.assertEqual(payload["claim_count"], 2)
+        self.assertEqual(payload["certificate_count"], 2)
         self.assertNotIn("OK chain", stdout.getvalue())
 
     def test_cli_returns_one_for_incomplete_certificate_manifest(self):
@@ -191,7 +191,7 @@ class TransitionChainClaimCliTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["claim_count"], 1)
+        self.assertEqual(payload["claim_count"], 2)
 
 
 if __name__ == "__main__":

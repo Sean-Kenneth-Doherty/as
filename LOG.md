@@ -2031,3 +2031,24 @@
   `missing_evidence_paths: []` and `exists: true` for every evidence layer.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
   with the full suite running 515 tests.
+
+## 2026-05-17 - Neighbor Delivery Rejection Chain Claim
+
+- Added ADR-0091 to promote the delivered non-init recipient rejection
+  boundary into its own transition-chain claim.
+- Updated `tests/test_neighbor_delivery_chain_claim.py` and
+  `tests/test_transition_chain_claim_cli.py` before implementation. The red
+  run failed because `neighbor_delivery_rejected_by_recipient` did not exist.
+- Added `neighbor_delivery_rejected_by_recipient`, the
+  `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED` manifest claim, its
+  manifest-example proof certificate, and the language predicate symbol.
+- Updated the chain claim docs, transition-chain language docs, README, open
+  problems, roadmap, memory, and lessons with the second chain claim.
+- Verified the focused chain claim test passed 8 tests; adjacent chain claim,
+  object-language, and CLI tests passed 20 tests; adjacent chain evidence,
+  registry, and demo tests passed 29 tests. Chain claim JSON reported
+  `accepted: true`, `claim_count: 2`, `certificate_count: 2`, and
+  `chain-examples: evaluated 7 examples`; chain evidence JSON remained
+  accepted with `result_count: 9` and `failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 518 tests.

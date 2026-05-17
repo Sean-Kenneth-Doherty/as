@@ -25,6 +25,26 @@
           "expected": false
         }
       ]
+    },
+    {
+      "claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "neighbor c write buffer delivery rejected by recipient",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "neighbor b proc left delivery is consumed not rejected",
+          "expected": false
+        },
+        {
+          "rule": "manifest-example",
+          "example": "self write buffer completion is not neighbor rejection",
+          "expected": false
+        }
+      ]
     }
   ]
 }

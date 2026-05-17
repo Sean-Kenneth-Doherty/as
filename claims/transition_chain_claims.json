@@ -68,6 +68,58 @@
           }
         }
       ]
+    },
+    {
+      "id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
+      "predicate": "neighbor_delivery_rejected_by_recipient",
+      "description": "A neighbor delivery chain that produces a non-init command token can install that token as recipient upstream state and rejects it through the recipient non-init boundary.",
+      "examples": [
+        {
+          "name": "neighbor c write buffer delivery rejected by recipient",
+          "expected": true,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [1, 1, 1, 1]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          }
+        },
+        {
+          "name": "neighbor b proc left delivery is consumed not rejected",
+          "expected": false,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "control": [1, 0, 0],
+            "buffer": [1, 0, 1, 0]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          }
+        },
+        {
+          "name": "self write buffer completion is not neighbor rejection",
+          "expected": false,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0, 0, 1, 1]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          }
+        }
+      ]
     }
   ]
 }

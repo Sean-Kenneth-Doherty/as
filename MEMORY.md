@@ -433,3 +433,6 @@
 - ADR-0090 adds per-layer `exists` flags and top-level
   `missing_evidence_paths` to the chain demo report so artifact presence is
   explicit in text and JSON output.
+- ADR-0091 adds `neighbor_delivery_rejected_by_recipient` and
+  `UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED`, naming the delivered
+  non-init recipient rejection boundary as a second transition-chain claim.
