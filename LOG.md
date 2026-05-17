@@ -352,3 +352,30 @@
   passed for the touched module and new test, `jq -e .
   schematics/processor_memory_toggle_trace.json` passed, and `git diff --check`
   passed.
+
+## 2026-05-17 - Stem Automail Reconfiguration Trace
+
+- Added ADR-0019 for the first schematic-linked stem reconfiguration trace: a
+  stem cell with `pl` automail reconfiguring into processor-left.
+- Wrote `tests/test_stem_automail_reconfiguration_trace.py` before
+  implementation. The red run failed because
+  `STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID` was not yet exported from
+  `autarkic_systems.schematic_trace`.
+- Added `schematics/stem_automail_reconfiguration_trace.json` with the stem
+  role, `pl` automail command, expected processor-left target, automail
+  consumption, complete AS `Cell` field mapping, PRC witness references, and
+  explicit automail reconfiguration flow.
+- Extended `autarkic_systems/schematic_trace.py` so generic trace validation
+  distinguishes fixed-role signal routing from stem automail reconfiguration.
+- Added `docs/stem-automail-reconfiguration-trace.md` as the human-facing
+  trace boundary note.
+- Updated README, roadmap, literature map, open problems, single-node trace
+  note, project memory, and lessons so P7 now has wire, processor, and one stem
+  automail schematic-linked trace.
+- Verified `python -m unittest tests.test_single_node_schematic_trace
+  tests.test_single_node_schematic_svg tests.test_processor_memory_toggle_trace
+  tests.test_stem_automail_reconfiguration_trace` passed 30 tests, `python -m
+  unittest discover` passed 84 tests, py_compile passed for the touched module
+  and new test, `jq -e .
+  schematics/stem_automail_reconfiguration_trace.json` passed, and
+  `git diff --check` passed.

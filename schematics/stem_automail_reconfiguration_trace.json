@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "artifact_id": "stem-automail-reconfiguration-schematic-and-uc-transition-trace",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Third AS-owned schematic-linked Universal Cell trace, covering the stem automail subset that reconfigures a stem cell into a processor-left cell.",
+  "required_witness_ids": [
+    "PRC-README-UC-CRITERIA",
+    "PRC-GELC-GEOMETRY",
+    "PRC-RLEM-LITERATURE",
+    "PRC-CIRCULATOR-PHYSICAL",
+    "PRC-RALA-RECONFIGURATION",
+    "PRC-UC-FORMAL-MODEL",
+    "PRC-ASM-SIMULATOR",
+    "PRC-SCHEMATIC-FIGURES"
+  ],
+  "schematic": {
+    "node_id": "AS-PRC-STEM-AUTOMAIL-TRIANGULAR-RLEM-001",
+    "geometry": "triangular-rlem-node",
+    "memory_direction": "left",
+    "ports": [
+      {
+        "port_id": "p0",
+        "label": "north",
+        "orientation": "north",
+        "signal_index": 0,
+        "summary": "First signal channel on the triangular stem node."
+      },
+      {
+        "port_id": "p1",
+        "label": "east",
+        "orientation": "east",
+        "signal_index": 1,
+        "summary": "Second signal channel on the triangular stem node."
+      },
+      {
+        "port_id": "p2",
+        "label": "west",
+        "orientation": "west",
+        "signal_index": 2,
+        "summary": "Third signal channel on the triangular stem node."
+      }
+    ],
+    "layers": [
+      {
+        "layer_id": "symbolic-rlem-behavior",
+        "summary": "A pl automail command reconfigures the stem node into a processor with left memory and consumes the automail marker.",
+        "boundary": "This layer states symbolic stem automail reconfiguration only; it does not assert full PRC buffer processing.",
+        "witness_ids": [
+          "PRC-RLEM-LITERATURE",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "gelc-geometry",
+        "summary": "The stem node is represented using the same triangular GELC/RLEM port vocabulary as the fixed-role traces.",
+        "boundary": "This layer fixes schematic geometry and port orientation, not a complete dynamic GELC reconfiguration circuit.",
+        "witness_ids": [
+          "PRC-GELC-GEOMETRY",
+          "PRC-SCHEMATIC-FIGURES"
+        ]
+      },
+      {
+        "layer_id": "uc-state",
+        "summary": "The trace records every current AS Cell field before and after one stem automail activation.",
+        "boundary": "This layer is limited to the existing AS stem automail subset and adds no new transition semantics.",
+        "witness_ids": [
+          "PRC-README-UC-CRITERIA",
+          "PRC-UC-FORMAL-MODEL",
+          "PRC-ASM-SIMULATOR"
+        ]
+      },
+      {
+        "layer_id": "candidate-physical-implementation",
+        "summary": "Switchable circulator hardware and auxiliary reconfiguration support remain candidate interpretations, not verified AS hardware.",
+        "boundary": "This layer keeps physical implementation and RALA-like auxiliary circuitry separate from the tested automail subset.",
+        "witness_ids": [
+          "PRC-CIRCULATOR-PHYSICAL",
+          "PRC-RALA-RECONFIGURATION"
+        ]
+      }
+    ]
+  },
+  "trace": {
+    "trace_id": "AS-PRC-STEM-PL-TRACE-001",
+    "transition_function": "step_stem_cell",
+    "cell_fields": [
+      "role",
+      "memory",
+      "upstream",
+      "input",
+      "output",
+      "automail",
+      "control",
+      "buffer"
+    ],
+    "before_cell": {
+      "role": "stem",
+      "memory": "right",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "pl",
+      "control": [
+        1
+      ],
+      "buffer": [
+        0
+      ]
+    },
+    "expected_status": "automail-reconfigured",
+    "expected_after_cell": {
+      "role": "proc",
+      "memory": "left",
+      "upstream": [
+        "_",
+        "_",
+        "_"
+      ],
+      "input": [
+        "_",
+        "_",
+        "_"
+      ],
+      "output": [
+        "_",
+        "_",
+        "_"
+      ],
+      "automail": "_",
+      "control": [],
+      "buffer": []
+    },
+    "routed_signal_flow": [
+      "automail[pl] -> role proc",
+      "automail[pl] -> memory left",
+      "automail[pl] consumed -> _"
+    ]
+  }
+}

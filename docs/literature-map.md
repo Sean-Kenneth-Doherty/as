@@ -27,6 +27,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS single-node schematic trace | `docs/single-node-schematic-trace.md` and `schematics/single_node_triangular_rlem_trace.json` | First AS-owned schematic key connecting one triangular RLEM/UC node to an executable Universal Cell transition. | Active P7 artifact for schematic-linked trace work. |
 | AS single-node schematic SVG | `docs/single-node-schematic-svg.md` and `schematics/single_node_triangular_rlem_trace.svg` | First visible render of the structured single-node schematic trace. | Checked against renderer output so the diagram cannot drift from the JSON trace. |
 | AS processor memory-toggle trace | `docs/processor-memory-toggle-trace.md` and `schematics/processor_memory_toggle_trace.json` | Second schematic-linked trace, covering processor routing plus memory toggle. | Extends P7 fixed-role coverage beyond wire behavior. |
+| AS stem automail reconfiguration trace | `docs/stem-automail-reconfiguration-trace.md` and `schematics/stem_automail_reconfiguration_trace.json` | Third schematic-linked trace, covering one stem automail reconfiguration into processor-left. | Extends P7 coverage into the first reconfiguration subset. |
 
 ## SJAS: Formal Confidence
 
@@ -66,6 +67,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | A PRC-derived schematic key can be tied to executable AS behavior before larger circuit design. | ADR-0015 witness map, AS Universal Cell probe, and `schematics/single_node_triangular_rlem_trace.json`. | First implemented in ADR-0016 with validation in `tests/test_single_node_schematic_trace.py`. |
 | A rendered schematic can stay subordinate to a structured executable trace. | `schematics/single_node_triangular_rlem_trace.json`, `autarkic_systems/schematic_svg.py`, and `schematics/single_node_triangular_rlem_trace.svg`. | First implemented in ADR-0017 with exact renderer-output matching tests. |
 | Schematic-linked traces can cover processor memory toggle without adding new UC semantics. | AS Universal Cell processor probe and `schematics/processor_memory_toggle_trace.json`. | Implemented in ADR-0018 with validation in `tests/test_processor_memory_toggle_trace.py`. |
+| Schematic-linked traces can cover the first stem automail reconfiguration subset without claiming full dynamic reconfiguration. | AS Universal Cell stem automail probe and `schematics/stem_automail_reconfiguration_trace.json`. | Implemented in ADR-0019 with validation in `tests/test_stem_automail_reconfiguration_trace.py`. |
 
 ## Evidence Gaps
 
@@ -75,8 +77,8 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 - PRC's Scheme simulator and TLA+ sketch need deeper verification before AS
   treats either as canonical.
 - AS has rendered only the first single-node PRC-derived schematic; processor
-  rendering, stem traces, larger GELC, and physical-simulation renders remain
-  open.
+  and stem rendering, full stem buffering, larger GELC, and physical-simulation
+  renders remain open.
 - The active Proflog ADR-006x frontier described by SJAS logs is not present on
   public Proflog `main`; ADR-0014 records this as a do-not-depend decision.
 - AS has not yet annotated the actual Willard papers at theorem/definition

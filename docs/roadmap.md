@@ -319,3 +319,22 @@ Status: accepted in `docs/adr/0018-processor-memory-toggle-trace.md`.
 Implemented in `schematics/processor_memory_toggle_trace.json` and
 `autarkic_systems/schematic_trace.py`, with tests in
 `tests/test_processor_memory_toggle_trace.py`.
+
+## ADR-0019: Stem Automail Reconfiguration Trace
+
+Goal: add a third schematic-linked Universal Cell trace covering the first stem
+automail reconfiguration subset.
+
+Deliverables:
+
+- stem automail schematic trace artifact;
+- validator support for stem automail target role, target memory, automail
+  consumption, and recorded reconfiguration flow;
+- human-facing note for the stem trace boundary;
+- tests proving schema reuse, executable replay through `step_stem_cell`, and
+  rejection of drifted target role or automail consumption.
+
+Status: accepted in `docs/adr/0019-stem-automail-reconfiguration-trace.md`.
+Implemented in `schematics/stem_automail_reconfiguration_trace.json` and
+`autarkic_systems/schematic_trace.py`, with tests in
+`tests/test_stem_automail_reconfiguration_trace.py`.

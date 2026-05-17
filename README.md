@@ -42,6 +42,9 @@ the project legible:
   structured schematic trace.
 - `docs/processor-memory-toggle-trace.md` records the second schematic-linked
   Universal Cell trace, covering processor memory toggle behavior.
+- `docs/stem-automail-reconfiguration-trace.md` records the third
+  schematic-linked Universal Cell trace, covering one stem automail
+  reconfiguration.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
@@ -58,6 +61,8 @@ the project legible:
   view checked against the JSON trace.
 - `schematics/processor_memory_toggle_trace.json` makes the processor
   memory-toggle schematic trace machine-checkable.
+- `schematics/stem_automail_reconfiguration_trace.json` makes the stem
+  automail reconfiguration schematic trace machine-checkable.
 - `docs/roadmap.md` maps the first sequence of ADR-scoped work.
 - `docs/adr/` holds Architecture Decision Records and their after-action
   follow-ups.

@@ -80,3 +80,8 @@
   `tests/test_processor_memory_toggle_trace.py` add the second P7 schematic
   trace. It covers processor `step_fixed_cell` behavior with left-memory
   routing and memory toggle to right.
+- `schematics/stem_automail_reconfiguration_trace.json`,
+  `docs/stem-automail-reconfiguration-trace.md`, and
+  `tests/test_stem_automail_reconfiguration_trace.py` add the third P7
+  schematic trace. It covers the existing `step_stem_cell` automail subset for
+  `pl`, reconfiguring stem to processor-left and consuming automail.

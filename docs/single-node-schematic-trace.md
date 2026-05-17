@@ -18,6 +18,10 @@ Status update: ADR-0018 adds the next schematic-linked trace,
 `schematics/processor_memory_toggle_trace.json`, covering processor routing and
 memory toggle behavior with the same schema.
 
+Status update: ADR-0019 adds
+`schematics/stem_automail_reconfiguration_trace.json`, covering one `pl`
+automail reconfiguration from stem to processor-left.
+
 ## Schematic Key
 
 The node is a triangular RLEM/Universal Cell key with three oriented ports:
@@ -88,8 +92,8 @@ the executable transition result.
 
 ## Open Follow-Ups
 
-- Add a stem automail schematic trace.
 - Add a rendered SVG for the processor memory-toggle trace.
+- Add a rendered SVG for the stem automail trace.
 - Improve the generated SVG rendering while preserving JSON-as-source tests.
 - Decide whether larger GELC examples should be reconstructed as structured
   diagrams or redrawn from `figures.pdf`.

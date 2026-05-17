@@ -25,9 +25,13 @@ SINGLE_NODE_TRACE_ARTIFACT_ID = (
 PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID = (
     "processor-memory-toggle-schematic-and-uc-transition-trace"
 )
+STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID = (
+    "stem-automail-reconfiguration-schematic-and-uc-transition-trace"
+)
 VALID_SCHEMATIC_TRACE_ARTIFACT_IDS = (
     SINGLE_NODE_TRACE_ARTIFACT_ID,
     PROCESSOR_MEMORY_TOGGLE_TRACE_ARTIFACT_ID,
+    STEM_AUTOMAIL_RECONFIGURATION_TRACE_ARTIFACT_ID,
 )
 
 REQUIRED_INTERPRETIVE_LAYERS = (
@@ -381,6 +385,11 @@ def _validate_schematic_trace_alignment(
     schematic_trace: SingleNodeSchematicTrace,
 ) -> list[SchematicTraceValidation]:
     results: list[SchematicTraceValidation] = []
+    before_role = schematic_trace.trace.before_cell.get("role")
+
+    if before_role == "stem":
+        results.extend(_validate_stem_automail_trace_alignment(schematic_trace))
+        return results
 
     if schematic_trace.schematic.geometry != "triangular-rlem-node":
         results.append(_rejected("geometry", "schematic geometry is not triangular"))
@@ -415,7 +424,6 @@ def _validate_schematic_trace_alignment(
     else:
         results.append(_accepted("routed_signal_flow", "memory flow is explicit"))
 
-    before_role = schematic_trace.trace.before_cell.get("role")
     before_memory = schematic_trace.trace.before_cell.get("memory")
     after_memory = schematic_trace.trace.expected_after_cell.get("memory")
     if before_role == "proc":
@@ -434,6 +442,77 @@ def _validate_schematic_trace_alignment(
                     "processor trace toggles memory",
                 )
             )
+
+    return results
+
+
+def _validate_stem_automail_trace_alignment(
+    schematic_trace: SingleNodeSchematicTrace,
+) -> list[SchematicTraceValidation]:
+    results: list[SchematicTraceValidation] = []
+
+    if schematic_trace.schematic.geometry != "triangular-rlem-node":
+        results.append(_rejected("geometry", "schematic geometry is not triangular"))
+    else:
+        results.append(_accepted("geometry", "schematic geometry is triangular"))
+
+    automail = schematic_trace.trace.before_cell.get("automail")
+    expected_targets = {
+        "wr": ("wire", "right"),
+        "wl": ("wire", "left"),
+        "pr": ("proc", "right"),
+        "pl": ("proc", "left"),
+    }
+    target = expected_targets.get(automail)
+    if target is None:
+        results.append(
+            _rejected("stem-automail-reconfiguration", "unknown stem automail")
+        )
+        return results
+
+    expected_role, expected_memory = target
+    after = schematic_trace.trace.expected_after_cell
+
+    if schematic_trace.schematic.memory_direction != expected_memory:
+        results.append(
+            _rejected(
+                "memory_direction",
+                "schematic memory does not match automail target",
+            )
+        )
+    else:
+        results.append(_accepted("memory_direction", "schematic memory matches target"))
+
+    expected_flow = (
+        f"automail[{automail}] -> role {expected_role}",
+        f"automail[{automail}] -> memory {expected_memory}",
+        f"automail[{automail}] consumed -> _",
+    )
+    if schematic_trace.trace.routed_signal_flow != expected_flow:
+        results.append(
+            _rejected("routed_signal_flow", "stem automail flow mismatch")
+        )
+    else:
+        results.append(_accepted("routed_signal_flow", "stem automail flow explicit"))
+
+    if (
+        after.get("role") != expected_role
+        or after.get("memory") != expected_memory
+        or after.get("automail") != "_"
+    ):
+        results.append(
+            _rejected(
+                "stem-automail-reconfiguration",
+                "stem automail target or consumption mismatch",
+            )
+        )
+    else:
+        results.append(
+            _accepted(
+                "stem-automail-reconfiguration",
+                "stem automail target and consumption match",
+            )
+        )
 
     return results
 

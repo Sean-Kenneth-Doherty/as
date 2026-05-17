@@ -31,3 +31,6 @@
 - Reusing the schematic trace schema for processor behavior is better than
   adding a one-off artifact. It keeps wire and processor evidence comparable
   while still testing role-specific behavior.
+- Stem reconfiguration evidence must name what it does not cover. A tested
+  automail trace is useful, but it is not full stem buffering or dynamic
+  circuit reconfiguration.
