@@ -316,3 +316,6 @@
 - Registry JSON should be self-describing. A green bundle count is much less
   useful than the same green result plus the concrete bundle IDs, paths, claim
   IDs, and expected statuses that were checked.
+- Keep parallel registry APIs parallel. Once chain registry JSON exposes a
+  compact failure summary, transition registry JSON should expose the same
+  shape unless there is a documented reason not to.

@@ -2551,3 +2551,25 @@
   resolution questions, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 571 tests.
+
+## 2026-05-18 - Transition Registry JSON Failure Summary
+
+- Added ADR-0114 to add a compact `failed_subjects` list to transition
+  evidence registry JSON, matching the chain registry JSON contract.
+- Updated `tests/test_evidence_bundle_registry.py` before implementation. The
+  red run failed because transition registry JSON did not include
+  `failed_subjects`.
+- Updated `autarkic_systems.evidence_bundle.registry_validation_report_payload`
+  so successful transition registry JSON reports `failed_subjects: []`, and
+  rejected registry runs report the rejected validation subjects in order.
+- The initial green implementation exposed the expected live-registry boundary:
+  a drifted in-process transition registry also reports `registry-completeness`
+  when bundle files remain on disk but are removed from the registry, matching
+  the chain registry completeness behavior.
+- Updated evidence-bundle registry docs, open problems, roadmap, memory, and
+  lessons with the transition registry JSON failure-summary contract.
+- Verification passed: focused transition registry tests ran 17 tests; the
+  adjacent transition/chain/project-status regression ran 62 tests;
+  `py_compile` and `git diff --check` passed; transition registry JSON,
+  chain registry JSON, and project status JSON were accepted with
+  `failed_subjects: []`; and `python -m unittest discover` passed 573 tests.

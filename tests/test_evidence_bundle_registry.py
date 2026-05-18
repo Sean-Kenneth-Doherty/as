@@ -146,6 +146,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
 
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 8)
+        self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(
             payload["bundles"],
             [
@@ -212,6 +213,7 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 8)
+        self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
         self.assertEqual(
@@ -254,6 +256,61 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                 for result in results
             ),
             results,
+        )
+
+    def test_json_payload_summarizes_failed_subjects(self):
+        entry = self.registry.bundles[0]
+        drifted_entry = replace(entry, path=Path("evidence/missing_bundle.json"))
+        drifted = replace(self.registry, bundles=(drifted_entry,))
+        results = validate_evidence_bundle_registry(drifted)
+
+        payload = registry_validation_report_payload(drifted, results)
+
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["failed_subjects"],
+            [
+                "registry-bundle-paths",
+                "registry-bundle-validation",
+                "registry-completeness",
+            ],
+        )
+
+    def test_json_cli_emits_failed_subjects_for_missing_bundle(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = Path(tmp) / "manifest.json"
+            registry_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "registry_id": "drifted-transition-registry",
+                        "reviewed_at": "2026-05-18",
+                        "purpose": "Exercise transition registry JSON failure summary.",
+                        "bundles": [
+                            {
+                                "bundle_id": BUNDLE_ID,
+                                "path": "evidence/missing_bundle.json",
+                                "claim_id": CLAIM_ID,
+                                "expected_status": STATUS,
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                exit_code = run_evidence_bundle_cli(
+                    ["--registry", str(registry_path), "--format", "json"]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["failed_subjects"],
+            ["registry-bundle-paths", "registry-bundle-validation"],
         )
 
     def test_unregistered_sibling_bundle_file_is_rejected(self):

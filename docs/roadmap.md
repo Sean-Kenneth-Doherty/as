@@ -2153,3 +2153,21 @@ Deliverables:
 Status: accepted in `docs/adr/0113-transition-registry-json-entries.md`.
 Implemented in `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_evidence_bundle_registry.py`.
+
+## ADR-0114: Transition Registry JSON Failure Summary
+
+Goal: give transition evidence registry JSON the same compact failure-summary
+surface as chain registry JSON.
+
+Deliverables:
+
+- `failed_subjects` array in `registry_validation_report_payload`;
+- successful registry JSON reports `failed_subjects: []`;
+- failed registry JSON reports rejected validation subjects in order;
+- JSON CLI output includes the same failure summary; and
+- unchanged registry validation semantics and manifest schema.
+
+Status: accepted in
+`docs/adr/0114-transition-registry-json-failure-summary.md`. Implemented in
+`autarkic_systems/evidence_bundle.py`, with tests in
+`tests/test_evidence_bundle_registry.py`.

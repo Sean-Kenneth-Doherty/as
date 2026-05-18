@@ -510,3 +510,6 @@
   rejects malformed surface lists as `source-status-schema`.
 - ADR-0113 adds a `bundles` array to transition evidence registry JSON output,
   listing each registered bundle ID, path, claim ID, and expected status.
+- ADR-0114 adds `failed_subjects` to transition evidence registry JSON output,
+  matching the compact failure-summary shape already used by chain registry
+  JSON.

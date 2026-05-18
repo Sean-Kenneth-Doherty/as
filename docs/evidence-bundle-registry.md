@@ -61,11 +61,13 @@ python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --f
 ```
 
 The JSON payload records the registry ID, overall accepted status, bundle
-count, validation result count, one structured record per registered bundle,
-and one structured record per validation result.
+count, compact failed-subject list, validation result count, one structured
+record per registered bundle, and one structured record per validation result.
 
 ADR-0113 makes the JSON payload self-describing by including a `bundles` array
 with each registered bundle ID, path, claim ID, and expected status.
+ADR-0114 adds `failed_subjects`, an ordered list of rejected validation
+subjects, matching the transition-chain registry JSON contract.
 
 ## Boundary
 
