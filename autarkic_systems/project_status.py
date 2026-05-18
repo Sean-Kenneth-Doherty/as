@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 1
+PROJECT_STATUS_SCHEMA_VERSION = 2
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -252,13 +252,15 @@ def _frontier_summary(
         safe_next_slice = _optional_text(data, "safe_next_slice")
         if safe_next_slice:
             safe_next_slices.append(safe_next_slice)
-        blocked_commands.update(_blocked_commands_from_status(data))
+        source_commands = _blocked_commands_from_status(data)
+        blocked_commands.update(source_commands)
         source_statuses.append(
             {
                 "path": str(path),
                 "decision": _optional_text(data, "decision"),
                 "safe_next_slice": safe_next_slice,
                 "as_boundary": _optional_text(data, "as_boundary"),
+                "commands": _ordered_blocked_commands(source_commands),
             }
         )
 

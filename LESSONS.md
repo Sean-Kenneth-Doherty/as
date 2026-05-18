@@ -284,3 +284,6 @@
 - A frontier status record must expose the frontier terms it claims to
   summarize. Decision text and next-step text are not enough if a drifted file
   can silently remove the command tokens from an operator report.
+- When a status report aggregates evidence from multiple artifacts, preserve
+  attribution in the machine-readable surface. A single summary list is useful,
+  but scripts also need to know which file contributed each term.

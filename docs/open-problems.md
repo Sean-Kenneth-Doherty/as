@@ -158,6 +158,8 @@ but unusable source-status records cannot pass as an empty frontier.
 ADR-0101 adds a top-level project status schema version for automation.
 ADR-0102 tightens the shape check so source-status records without command
 tokens cannot erase the blocked-command frontier.
+ADR-0103 attributes blocked commands to each source-status entry and bumps the
+project status schema version to `2`.
 
 ## P3: Choose The First Proof Apparatus
 

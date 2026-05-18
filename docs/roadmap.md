@@ -1946,3 +1946,20 @@ Deliverables:
 Status: accepted in `docs/adr/0102-project-status-source-command-shape.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0103: Project Status Source Command Attribution
+
+Goal: expose which blocked command tokens each accepted source-status artifact
+contributes to the project status frontier.
+
+Deliverables:
+
+- `commands` list on each accepted `frontier.source_statuses` entry;
+- schema bump from project status `schema_version: 1` to `schema_version: 2`;
+- focused in-process and JSON CLI tests for source command attribution; and
+- documentation update for the project status schema change.
+
+Status: accepted in
+`docs/adr/0103-project-status-source-command-attribution.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

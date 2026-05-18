@@ -477,3 +477,7 @@
   that has process fields but no extractable command tokens, reporting
   `source-status-schema` instead of accepting an empty blocked-command
   frontier.
+- ADR-0103 bumps `autarkic_systems.project_status` to `schema_version: 2` and
+  adds a per-source `commands` list to accepted `frontier.source_statuses`
+  entries so the status report attributes blocked commands to source-status
+  artifacts.

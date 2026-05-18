@@ -21,6 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
+PROJECT_STATUS_SCHEMA_VERSION = 2
 
 
 class ProjectStatusReportTests(unittest.TestCase):
@@ -28,7 +29,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         report = build_project_status_report()
 
         self.assertTrue(report["accepted"])
-        self.assertEqual(report["schema_version"], 1)
+        self.assertEqual(report["schema_version"], PROJECT_STATUS_SCHEMA_VERSION)
         self.assertEqual(
             report["transition_evidence"]["registry_id"],
             "transition-evidence-bundle-registry",
@@ -51,6 +52,14 @@ class ProjectStatusReportTests(unittest.TestCase):
                 str(RECIPIENT_STATUS),
                 str(STANDARD_SIGNAL_STATUS),
                 str(WRITE_BUFFER_STATUS),
+            ],
+        )
+        self.assertEqual(
+            [item["commands"] for item in report["frontier"]["source_statuses"]],
+            [
+                BLOCKED_COMMANDS,
+                ["standard-signal"],
+                ["write-buf-zero", "write-buf-one"],
             ],
         )
 
@@ -81,11 +90,19 @@ class ProjectStatusReportTests(unittest.TestCase):
         payload = json.loads(stdout.getvalue())
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["schema_version"], 1)
+        self.assertEqual(payload["schema_version"], PROJECT_STATUS_SCHEMA_VERSION)
         self.assertEqual(payload["transition_evidence"]["bundle_count"], 8)
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(payload["frontier"]["failed_subjects"], [])
+        self.assertEqual(
+            [item["commands"] for item in payload["frontier"]["source_statuses"]],
+            [
+                BLOCKED_COMMANDS,
+                ["standard-signal"],
+                ["write-buf-zero", "write-buf-one"],
+            ],
+        )
 
     def test_missing_source_status_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
