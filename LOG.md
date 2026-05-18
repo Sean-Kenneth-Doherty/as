@@ -3779,3 +3779,19 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 772 tests.
+
+## 2026-05-18 - Automail Predicate Result Certificates
+
+- Added ADR-0175 to migrate `UC-STEM-AUTOMAIL-RECONFIGURES` from
+  `manifest-example` proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 93 tests and failed because the automail
+  certificate still used `manifest-example`, and proof/project-status reports
+  still described it as two `manifest-example` steps.
+- Updated `claims/proof_certificates.json` so both automail certificate steps
+  use `predicate-result` and name `automail_reconfigures_stem` directly.
+- Focused green verification passed 93 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 773 tests.

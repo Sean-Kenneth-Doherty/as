@@ -295,8 +295,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims, including `manifest-example` steps and explicit
   `predicate-result` steps for fixed-output preservation, consumed-input
-  clearing, fixed-role memory behavior, and stem-init reset behavior that name
-  the evaluated predicates directly.
+  clearing, fixed-role memory behavior, stem-init reset behavior, and stem
+  automail reconfiguration that name the evaluated predicates directly.
 - `python -m autarkic_systems.proof_certificates` validates the transition
   proof-certificate surface in text or JSON form.
 - `python -m autarkic_systems.object_language` validates the transition claim

@@ -73,14 +73,16 @@
       "claim_id": "UC-STEM-AUTOMAIL-RECONFIGURES",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "left wire automail",
-          "expected": true
+          "expected": true,
+          "predicate": "automail_reconfigures_stem"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "wrong automail target",
-          "expected": false
+          "expected": false,
+          "predicate": "automail_reconfigures_stem"
         }
       ]
     },

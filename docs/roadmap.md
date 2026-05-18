@@ -3531,3 +3531,23 @@ Deliverables:
 Status: accepted in
 `docs/adr/0174-stem-init-predicate-result-certificates.md`. Implemented in the
 proof-certificate manifest and focused proof/project-status tests.
+
+## ADR-0175: Automail Predicate Result Certificates
+
+Goal: make the stem automail reconfiguration proof certificate name the
+predicate it evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-AUTOMAIL-RECONFIGURES` proof-certificate steps use
+  `predicate-result`;
+- both automail certificate steps name `automail_reconfigures_stem`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  automail certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0175-automail-predicate-result-certificates.md`. Implemented in the
+proof-certificate manifest and focused proof/project-status tests.
