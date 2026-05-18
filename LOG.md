@@ -4521,3 +4521,24 @@
   `schema_version: 20` with accepted-path `bundle_failed_subjects: []`.
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 898 tests.
+
+## 2026-05-18 - Chain Registry Bundle Failed Subjects
+
+- Added ADR-0212 to make transition-chain evidence registry JSON preserve
+  inner failed subjects for rejected existing bundles.
+- Added red chain registry tests before implementation. The focused red run
+  failed because direct and CLI chain registry JSON lacked
+  `bundle_failed_subjects`, including for a registry pointing at a drifted
+  existing chain bundle.
+- Updated `autarkic_systems/chain_evidence_bundle.py` so
+  `chain_registry_validation_report_payload` reports `bundle_failed_subjects`
+  from loadable registered bundle validation results, while missing registered
+  bundle paths keep the existing registry-level failure subjects and an empty
+  bundle-failure list.
+- Updated the chain evidence-bundle registry docs, README, and roadmap notes
+  for the registry JSON failure-detail summary.
+- Focused chain evidence-bundle registry tests passed 14 tests. Adjacent
+  chain-demo/project-status tests passed 112 tests. Live chain registry JSON
+  reported `accepted: true`, `bundle_count: 2`, and
+  `bundle_failed_subjects: []`. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 900 tests.

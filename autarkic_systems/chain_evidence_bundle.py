@@ -246,6 +246,7 @@ def chain_registry_validation_report_payload(
         "failed_subjects": [
             result.subject for result in results if not result.accepted
         ],
+        "bundle_failed_subjects": _registry_bundle_failed_subjects(registry),
         "bundles": [
             {
                 "bundle_id": entry.bundle_id,
@@ -384,6 +385,29 @@ def _validate_registry_bundles(
         "registry-bundle-validation",
         f"validated {len(registry.bundles)} bundles",
     )
+
+
+def _registry_bundle_failed_subjects(
+    registry: ChainEvidenceBundleRegistry,
+) -> list[dict[str, Any]]:
+    failed: list[dict[str, Any]] = []
+    for entry in registry.bundles:
+        if not entry.path.exists():
+            continue
+        try:
+            bundle = load_transition_chain_evidence_bundle(entry.path)
+        except Exception:
+            continue
+        results = validate_transition_chain_evidence_bundle(bundle)
+        failed_subjects = [
+            result.subject for result in results if not result.accepted
+        ]
+        if failed_subjects:
+            failed.append({
+                "bundle_id": entry.bundle_id,
+                "failed_subjects": failed_subjects,
+            })
+    return failed
 
 
 def _validate_registry_completeness(

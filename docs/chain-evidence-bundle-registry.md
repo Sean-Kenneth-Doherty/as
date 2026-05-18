@@ -43,6 +43,9 @@ ADR-0087 adds `failed_subjects`, an ordered list of rejected validation
 subjects for failed registry runs.
 ADR-0088 adds the same `failed_subjects` contract to single-bundle chain
 evidence JSON output.
+ADR-0212 adds `bundle_failed_subjects`, an ordered list of loadable registered
+bundle IDs with their rejected inner bundle subjects. Missing registered bundle
+files remain registry-level failures and leave `bundle_failed_subjects` empty.
 ADR-0094 registers the rejection chain bundle, so the registry now validates
 two composed-chain evidence paths.
 ADR-0095 exposes the same two-bundle surface through the vertical chain demo:

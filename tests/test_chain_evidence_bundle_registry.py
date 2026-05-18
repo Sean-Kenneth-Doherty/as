@@ -28,6 +28,28 @@ STATUS = "neighbor-delivery-consumed"
 REJECTION_STATUS = "recipient-not-consumed"
 
 
+def _write_registry_with_drifted_existing_bundle(directory: Path) -> Path:
+    bundle_path = directory / "neighbor_delivery_chain_bundle.json"
+    registry_path = directory / "manifest.json"
+    drifted_status = "recipient-not-consumed"
+
+    bundle_data = json.loads(BUNDLE.read_text(encoding="utf-8"))
+    bundle_data["expected_status"] = drifted_status
+    bundle_path.write_text(json.dumps(bundle_data), encoding="utf-8")
+
+    registry_data = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    registry_data["bundles"] = [
+        {
+            "bundle_id": BUNDLE_ID,
+            "path": str(bundle_path),
+            "chain_claim_id": CLAIM_ID,
+            "expected_status": drifted_status,
+        }
+    ]
+    registry_path.write_text(json.dumps(registry_data), encoding="utf-8")
+    return registry_path
+
+
 class ChainEvidenceBundleRegistryTests(unittest.TestCase):
     def setUp(self):
         self.registry = load_chain_evidence_bundle_registry(REGISTRY)
@@ -176,6 +198,7 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         )
         self.assertEqual(payload["bundle_count"], 2)
         self.assertEqual(payload["failed_subjects"], [])
+        self.assertEqual(payload["bundle_failed_subjects"], [])
         self.assertEqual(payload["result_count"], len(results))
         self.assertEqual(
             payload["bundles"],
@@ -191,6 +214,26 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
                     "path": str(REJECTION_BUNDLE),
                     "chain_claim_id": REJECTION_CLAIM_ID,
                     "expected_status": REJECTION_STATUS,
+                }
+            ],
+        )
+
+    def test_json_payload_records_inner_bundle_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_registry_with_drifted_existing_bundle(Path(tmp))
+            registry = load_chain_evidence_bundle_registry(registry_path)
+            results = validate_chain_evidence_bundle_registry(registry)
+
+            payload = chain_registry_validation_report_payload(registry, results)
+
+        self.assertFalse(payload["accepted"])
+        self.assertIn("registry-bundle-validation", payload["failed_subjects"])
+        self.assertEqual(
+            payload["bundle_failed_subjects"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "failed_subjects": ["chain-claim-example", "chain-trace"],
                 }
             ],
         )
@@ -230,6 +273,7 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["bundle_count"], 2)
         self.assertEqual(payload["failed_subjects"], [])
+        self.assertEqual(payload["bundle_failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
         self.assertEqual(payload["bundles"][1]["bundle_id"], REJECTION_BUNDLE_ID)
@@ -297,6 +341,38 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         self.assertEqual(
             payload["failed_subjects"],
             ["registry-bundle-paths", "registry-bundle-validation"],
+        )
+        self.assertEqual(payload["bundle_failed_subjects"], [])
+
+    def test_module_execution_emits_registry_bundle_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_registry_with_drifted_existing_bundle(Path(tmp))
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "autarkic_systems.chain_evidence_bundle",
+                    "--registry",
+                    str(registry_path),
+                    "--format",
+                    "json",
+                ],
+                check=False,
+                cwd=Path.cwd(),
+                capture_output=True,
+                text=True,
+            )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 1, payload)
+        self.assertEqual(
+            payload["bundle_failed_subjects"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "failed_subjects": ["chain-claim-example", "chain-trace"],
+                }
+            ],
         )
 
 

@@ -4307,3 +4307,24 @@ Status: accepted in
 `docs/adr/0211-sequence-registry-bundle-failed-subjects.md`.
 Implemented in `autarkic_systems/network_sequence_evidence_bundle.py`, with
 tests in `tests/test_network_sequence_evidence_bundle.py`.
+
+## ADR-0212: Chain Registry Bundle Failed Subjects
+
+Goal: make transition-chain evidence registry JSON preserve inner failed
+subjects for rejected existing bundles.
+
+Deliverables:
+
+- `bundle_failed_subjects` in `chain_registry_validation_report_payload`;
+- accepted chain registry JSON with `bundle_failed_subjects: []`;
+- rejected existing chain bundle reports with `{bundle_id, failed_subjects}`;
+- CLI JSON output carrying the same field;
+- unchanged missing registered-bundle behavior; and
+- no runtime behavior, claim, proof-rule, validation-authority,
+  project-status schema, demo schema, source-status boundary, trace/SVG
+  rendering, scheduler, topology, timing, or command-semantics changes.
+
+Status: accepted in
+`docs/adr/0212-chain-registry-bundle-failed-subjects.md`.
+Implemented in `autarkic_systems/chain_evidence_bundle.py`, with tests in
+`tests/test_chain_evidence_bundle_registry.py`.

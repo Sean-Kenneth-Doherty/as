@@ -880,3 +880,6 @@
   `network_sequence_registry_validation_report_payload.bundle_failed_subjects`;
   project status now consumes that source payload while keeping its flattened
   `sequence_evidence.bundle_failed_subjects` field.
+- ADR-0212 adds the same source-registry inner-failure detail to transition
+  chain evidence via `chain_registry_validation_report_payload.bundle_failed_subjects`,
+  leaving missing registered-bundle paths as registry-level failures.

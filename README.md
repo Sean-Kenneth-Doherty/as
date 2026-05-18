@@ -356,7 +356,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   machine-readable JSON.
 - `python -m autarkic_systems.chain_evidence_bundle --registry evidence/chains/manifest.json --format json`
   emits the transition-chain evidence registry validation report as
-  machine-readable JSON.
+  machine-readable JSON, including per-bundle failed subjects when a registered
+  existing chain bundle rejects.
 - `python -m autarkic_systems.chain_demo` emits the default transition-chain
   demo report in text form; `--registry evidence/chains/manifest.json` emits
   one report over every registered chain bundle, and `--format json` emits the
