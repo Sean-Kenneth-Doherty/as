@@ -14,8 +14,8 @@ numeral quotation examples, token-numeral sequence examples, quotation term
 examples, a checked `substitution_code` term surface, a checked naive equation
 candidate, a checked diagonal seed surface, a checked substitution graph
 witness for that seed, a checked delta0 graph-formula target boundary, a
-Level-1 consistency target, and a selected deduction-apparatus target. Those
-are prerequisites for a
+checked substitution graph formula schema candidate, a Level-1 consistency
+target, and a selected deduction-apparatus target. Those are prerequisites for a
 SelfCons-style statement, but they still do not construct a diagonal fixed
 point.
 
@@ -50,8 +50,8 @@ instance for that route while leaving substitution representability and the
 diagonal lemma open. ADR-0244 checks the corresponding meta-level
 self-application graph witness without claiming the delta0 graph formula or
 representability proof. ADR-0246 records the delta0 graph-formula target
-boundary for that witness, while still leaving the actual formula and proof
-open.
+boundary for that witness, and ADR-0248 records the first checked formula
+schema candidate, while still leaving formula correctness and proof open.
 
 ## Run
 
@@ -63,6 +63,7 @@ python -m autarkic_systems.formal_quotation_term
 python -m autarkic_systems.diagonal_construction
 python -m autarkic_systems.substitution_representability
 python -m autarkic_systems.substitution_graph_target
+python -m autarkic_systems.substitution_graph_formula
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary

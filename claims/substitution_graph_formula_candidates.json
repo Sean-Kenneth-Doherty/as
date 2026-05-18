@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "candidate_set_id": "as-substitution-graph-formula-candidates-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First checked syntactic formula schema for the substitution_code graph target. This constructs the delta0 candidate substitution_code(x,y) = z and verifies its checked witness instance without proving formula correctness or substitution representability.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "substitution_graph_targets_path": "claims/substitution_graph_targets.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "candidates": [
+    {
+      "candidate_id": "AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA",
+      "target_id": "AS-SUBSTITUTION-GRAPH-DELTA0-TARGET",
+      "witness_id": "AS-SUBSTITUTION-REPRESENTABILITY-DIAGONAL-SEED-WITNESS",
+      "relation_name": "subst_code_graph",
+      "formula_class": "delta0",
+      "status": "formula-schema-not-proved",
+      "formula_node": {
+        "kind": "equals",
+        "left": {
+          "kind": "substitution_code",
+          "left": {"kind": "variable", "name": "x"},
+          "right": {"kind": "variable", "name": "y"}
+        },
+        "right": {"kind": "variable", "name": "z"}
+      },
+      "graph_variables": {
+        "formula_code": "x",
+        "argument_code": "y",
+        "output_code": "z"
+      },
+      "expected_formula_code": [21, 18, 11, 1, 11, 2, 11, 3],
+      "expected_formula_free_variables": ["x", "y", "z"],
+      "expected_witness_instance_code_length": 4815,
+      "expected_witness_instance_code_prefix": [21, 18, 17, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13],
+      "expected_witness_instance_free_variables": [],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove that this formula schema correctly represents the checked substitution_code graph before using it in the diagonal lemma route."
+    }
+  ]
+}

@@ -5346,3 +5346,25 @@
   formal-confidence text/JSON output reported the substitution graph target
   dependency accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`.
+
+## 2026-05-18 - Substitution Graph Formula Schema
+
+- Added ADR-0248 to record the first checked syntactic formula schema
+  candidate for the substitution graph target without claiming formula
+  correctness.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_formula` and
+  `claims/substitution_graph_formula_candidates.json` did not exist.
+- Added `claims/substitution_graph_formula_candidates.json`, recording
+  `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA` as
+  `formula-schema-not-proved`.
+- Added `autarkic_systems/substitution_graph_formula.py`, validating the
+  formal arithmetic language, formal codebook, substitution graph target,
+  substitution-representability witness, exact formula node
+  `substitution_code(x,y) = z`, formula code, and the closed witness instance.
+- The checked formula code is `[21, 18, 11, 1, 11, 2, 11, 3]`; the checked
+  witness instance is closed and has code length `4815`.
+- Focused substitution-graph formula tests passed 13 tests. This preserves the
+  fixed-point blocker: no formula correctness proof, substitution
+  representability proof, diagonal lemma, fixed-point equation proof, or
+  self-consistency theorem is claimed.

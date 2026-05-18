@@ -5178,3 +5178,31 @@ Status: accepted in
 `docs/adr/0247-formal-confidence-substitution-graph-dependency.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0248: Substitution Graph Formula Schema
+
+Goal: record the first checked syntactic formula schema candidate for the
+substitution graph target without proving formula correctness.
+
+Deliverables:
+
+- `claims/substitution_graph_formula_candidates.json` with one checked
+  `substitution_code(x,y) = z` schema candidate;
+- `autarkic_systems.substitution_graph_formula` validation that checks formal
+  language, codebook, substitution-graph target, and
+  substitution-representability witness dependencies;
+- validation that the formula node, formula code, free variables, and closed
+  witness instance match the current manifest;
+- text/JSON CLI validation for the formula candidate surface;
+- fail-closed rejection for unknown graph targets, stale formula codes, stale
+  witness-instance facts, missing `substitution_code`, and proved-status
+  overclaims; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, self-consistency theorem, runtime
+  behavior, command semantics, evidence bundle, or GitHub submission logic
+  changes.
+
+Status: accepted in
+`docs/adr/0248-substitution-graph-formula-schema.md`. Implemented in
+`autarkic_systems/substitution_graph_formula.py`, with tests in
+`tests/test_substitution_graph_formula.py`.

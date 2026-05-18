@@ -58,10 +58,13 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal lemma open.
 - `docs/substitution-representability.md` records the first checked
   meta-level substitution graph witness for that diagonal seed, while leaving
-  the delta0 graph formula and representability proof open.
+  formula correctness and representability proofs open.
 - `docs/substitution-graph-target.md` records the first checked target
   boundary for a future delta0 formula representing that substitution graph,
-  while leaving formula construction and correctness proof open.
+  while leaving formula correctness proof open.
+- `docs/substitution-graph-formula.md` records the first checked syntactic
+  formula schema candidate for that graph target, while leaving formula
+  correctness and representability proofs open.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -404,11 +407,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   proof open.
 - `autarkic_systems/substitution_representability.py` validates and runs the
   first checked meta-level substitution graph witness for the diagonal seed,
-  while leaving the delta0 graph formula and substitution representability
-  proof open.
+  while leaving formula correctness and substitution representability proofs
+  open.
 - `autarkic_systems/substitution_graph_target.py` validates and runs the first
   checked delta0 graph-formula target boundary for `subst_code_graph(x,y,z)`,
-  while leaving formula construction and representability proof open.
+  while leaving formula correctness and representability proof open.
+- `autarkic_systems/substitution_graph_formula.py` validates and runs the
+  first checked syntactic formula schema candidate
+  `substitution_code(x,y) = z`, while leaving formula correctness and
+  representability proofs open.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, substitution surface, and complement surface without
@@ -514,6 +521,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.substitution_graph_target --format json`
   validates `claims/substitution_graph_targets.json`, including the checked
   `delta0` target boundary for a future `subst_code_graph(x,y,z)` formula.
+- `python -m autarkic_systems.substitution_graph_formula --format json`
+  validates `claims/substitution_graph_formula_candidates.json`, including
+  the checked `substitution_code(x,y) = z` schema and closed witness instance.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct
