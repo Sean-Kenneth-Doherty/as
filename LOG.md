@@ -2809,3 +2809,14 @@
   remained accepted with the standard-signal and write-buffer cross-links;
   project status JSON remained accepted at `schema_version: 8`; and
   `python -m unittest discover` passed 585 tests.
+
+## 2026-05-18 - Project Status Source-Status Cross-Link JSON Targets
+
+- Added ADR-0126 to require source-status `additional_source_statuses` paths
+  consumed by project status to point to parseable top-level JSON objects.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run executed 43 tests and failed because existing invalid-JSON and
+  non-object JSON cross-link targets were still accepted.
+- Updated `autarkic_systems.project_status` so invalid JSON and non-object JSON
+  cross-link targets reject the owning source-status record as
+  `source-status-schema`.

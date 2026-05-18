@@ -559,6 +559,20 @@ def _additional_source_status_shape_error(data: dict[str, Any]) -> str:
                 "source-status additional source-status "
                 f"path must exist: {source_status_path}"
             )
+        try:
+            linked_source_status = json.loads(
+                source_status_path.read_text(encoding="utf-8")
+            )
+        except json.JSONDecodeError:
+            return (
+                "source-status additional source-status "
+                f"path must contain JSON: {source_status_path}"
+            )
+        if not isinstance(linked_source_status, dict):
+            return (
+                "source-status additional source-status "
+                f"path must contain a source-status object: {source_status_path}"
+            )
     return ""
 
 

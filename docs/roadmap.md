@@ -2405,3 +2405,23 @@ Status: accepted in
 `docs/adr/0125-source-status-cross-link-paths.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0126: Project Status Source-Status Cross-Link JSON Targets
+
+Goal: require source-status cross-links consumed by project status to point to
+JSON object artifacts, not merely existing files.
+
+Deliverables:
+
+- `source-status-schema` failure for invalid JSON
+  `additional_source_statuses[].path` targets;
+- `source-status-schema` failure for non-object JSON cross-link targets;
+- checked-in standard-signal and write-buffer cross-links still accepted;
+- unchanged project status JSON at `schema_version: 8`;
+- unchanged default text layout from ADR-0124; and
+- focused project-status schema tests.
+
+Status: accepted in
+`docs/adr/0126-source-status-cross-link-json-targets.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

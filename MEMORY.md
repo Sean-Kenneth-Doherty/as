@@ -546,3 +546,6 @@
 - ADR-0125 makes project-status source-status cross-links fail closed when
   `additional_source_statuses[].path` does not point to an existing file,
   preserving project status `schema_version: 8`.
+- ADR-0126 makes those project-status source-status cross-links fail closed
+  when the target file does not contain parseable top-level JSON object
+  content, preserving project status `schema_version: 8`.

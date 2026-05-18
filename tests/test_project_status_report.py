@@ -1330,6 +1330,86 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_invalid_json_additional_source_status_path_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "invalid_json_additional_source_status_path.json"
+            linked_source_status = Path(tmp) / "linked_status.json"
+            linked_source_status.write_text("{not-json", encoding="utf-8")
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "additional_source_statuses": [
+                        {
+                            "adr": "ADR-0000",
+                            "path": str(linked_source_status),
+                            "summary": "Other source status remains relevant.",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "JSON",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+        self.assertIn(
+            str(linked_source_status),
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_non_object_additional_source_status_path_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_object_additional_source_status_path.json"
+            linked_source_status = Path(tmp) / "linked_status.json"
+            linked_source_status.write_text("[]", encoding="utf-8")
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "additional_source_statuses": [
+                        {
+                            "adr": "ADR-0000",
+                            "path": str(linked_source_status),
+                            "summary": "Other source status remains relevant.",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "object",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+        self.assertIn(
+            str(linked_source_status),
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_frontier_failed_subjects_preserve_mixed_failure_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing_status = Path(tmp) / "missing_status.json"

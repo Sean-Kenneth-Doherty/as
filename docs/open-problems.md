@@ -214,6 +214,8 @@ ADR-0124 renders those source-status cross-links in default project-status text
 while preserving `schema_version: 8`.
 ADR-0125 requires those source-status cross-link paths to exist, so project
 status cannot accept or display dead source-review links.
+ADR-0126 requires those cross-link targets to contain top-level JSON objects,
+so existing junk files cannot pass as source-status trail artifacts.
 
 ## P3: Choose The First Proof Apparatus
 

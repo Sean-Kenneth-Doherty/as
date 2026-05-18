@@ -351,3 +351,6 @@
   too.
 - A diagnostic report should not render dead cross-links as accepted evidence.
   Once a path is part of the operator trail, validate that the target exists.
+- A live cross-link is still weak evidence if the target cannot be consumed as
+  the artifact type the report names. Check the target's basic data shape
+  before rendering it as an operator trail.
