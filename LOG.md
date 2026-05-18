@@ -3160,3 +3160,19 @@
   formatting, `py_compile`, and `git diff --check` passed; project status text
   and JSON were accepted at `schema_version: 14`; and
   `python -m unittest discover` passed 641 tests.
+
+## 2026-05-18 - Source-Status Frontier CLI
+
+- Added ADR-0145 to expose the blocked command-token source-status frontier as
+  a direct text/JSON CLI.
+- Updated source-status CLI tests before implementation. The red run failed
+  because `autarkic_systems.source_status` did not exist.
+- Added `autarkic_systems.source_status` as a focused wrapper around the same
+  source-status frontier validation used by project status.
+- Documented the new `python -m autarkic_systems.source_status` operator
+  command in README, project-status docs, and a dedicated frontier note.
+- Verification passed: focused source-status CLI tests ran 9 tests;
+  source-status text and JSON CLI output were accepted; project status text
+  and JSON remained accepted at `schema_version: 14`; `py_compile` and
+  `git diff --check` passed; and `python -m unittest discover` passed 650
+  tests.

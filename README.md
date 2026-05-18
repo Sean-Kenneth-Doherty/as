@@ -157,6 +157,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/project-status-report.md` records the operator-facing status report
   over transition evidence, chain evidence, and the blocked command-token
   frontier.
+- `docs/source-status-frontier.md` records the focused source-status frontier
+  command for inspecting blocked command-token semantics without the full
+  project status surface.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -332,6 +335,13 @@ proof certificates, object languages, evidence bundles, and status reports:
   Accepted source-status records must also provide non-empty top-level
   `as_boundary` text so the JSON frontier explains the AS boundary it is
   enforcing.
+- `python -m autarkic_systems.source_status --format json` emits a focused
+  source-status frontier report as schema-versioned machine-readable JSON:
+  accepted/rejected state, failed subjects, blocked command tokens,
+  per-source decisions, blocked runtime surfaces, AS boundaries, unresolved
+  questions, source evidence for those questions, resolved decisions,
+  source-status cross-links, missing/invalid source-status paths, and the safe
+  next slice. Text mode renders the same frontier for operator diagnosis.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

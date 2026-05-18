@@ -406,3 +406,6 @@
 - Unresolved blocker IDs need their evidence beside them. A first diagnostic
   report should say what source conflict keeps a question open, not merely
   name the open question.
+- When an aggregate diagnostic grows broad, add a focused first-run command for
+  the lower layer it depends on. Reuse the same validator so the focused and
+  aggregate commands cannot drift.

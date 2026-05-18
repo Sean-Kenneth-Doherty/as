@@ -250,6 +250,9 @@ longer reduced to a label.
 ADR-0144 adds source evidence for unresolved resolution questions to project
 status JSON/text, so the first diagnostic report shows the conflict or absence
 of authority behind the standard-signal and write-buffer blockers.
+ADR-0145 adds a focused source-status frontier CLI over those same
+command-token blocker records, letting agents inspect the semantic frontier
+without running the full project status report.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

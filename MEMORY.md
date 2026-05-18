@@ -610,3 +610,6 @@
 - ADR-0144 bumps `autarkic_systems.project_status` to `schema_version: 14` and
   exposes `resolution_question_evidence` for unresolved standard-signal and
   write-buffer blockers in JSON/text, with fail-closed schema validation.
+- ADR-0145 adds `python -m autarkic_systems.source_status` as a focused
+  text/JSON CLI over the same blocked command-token source-status frontier
+  consumed by project status, with JSON `schema_version: 1`.

@@ -22,6 +22,13 @@ python -m autarkic_systems.project_status
 python -m autarkic_systems.project_status --format json
 ```
 
+For the command-token source-status frontier alone, use:
+
+```sh
+python -m autarkic_systems.source_status
+python -m autarkic_systems.source_status --format json
+```
+
 The report validates:
 
 - `evidence/manifest.json`, the transition evidence registry;
@@ -150,6 +157,8 @@ resolved source-status detail while preserving project status
 ADR-0144 adds `resolution_question_evidence` to accepted source-status entries,
 renders that evidence in default text output, rejects malformed evidence
 metadata as `source-status-schema`, and bumps the schema version to `14`.
+ADR-0145 adds `python -m autarkic_systems.source_status` as a focused text/JSON
+CLI over the same source-status frontier payload.
 
 ## Boundary
 

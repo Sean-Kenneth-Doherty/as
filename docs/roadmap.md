@@ -2822,3 +2822,23 @@ Implemented in `autarkic_systems/project_status.py`,
 `sources/standard_signal_command_semantics_status.json`, and
 `sources/write_buffer_command_semantics_status.json`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0145: Source-Status Frontier CLI
+
+Goal: expose the blocked command-token source-status frontier directly without
+requiring the full project status report.
+
+Deliverables:
+
+- `python -m autarkic_systems.source_status` text output;
+- `python -m autarkic_systems.source_status --format json` with
+  `schema_version: 1`;
+- accepted/rejected status derived from missing or invalid source-status
+  paths;
+- reuse of the existing project-status frontier validation contract;
+- missing-path and schema-invalid fixture tests; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in `docs/adr/0145-source-status-frontier-cli.md`.
+Implemented in `autarkic_systems/source_status.py`, with tests in
+`tests/test_source_status_frontier_cli.py`.
