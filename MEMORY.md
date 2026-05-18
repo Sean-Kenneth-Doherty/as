@@ -865,3 +865,9 @@
 - ADR-0208 adds that sequence SVG as a checked `sequence_svg` artifact in the
   network-sequence evidence bundle and demo. Bundle validation now reports
   `sequence-svg` using the existing renderer-locked SVG validator.
+- ADR-0209 adds `sequence_evidence.bundle_failed_subjects` to project status,
+  preserving inner network-sequence evidence bundle failed subjects such as
+  `sequence-svg` when a registered sequence bundle rejects. Project status now
+  reports schema version `20`, keeps accepted-path bundle failures empty, and
+  renders `Network sequence evidence failures: ...` on rejected sequence-bundle
+  paths.

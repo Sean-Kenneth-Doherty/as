@@ -37,8 +37,10 @@ from autarkic_systems.evidence_bundle import (
     validate_evidence_bundle_registry,
 )
 from autarkic_systems.network_sequence_evidence_bundle import (
+    load_network_sequence_evidence_bundle,
     load_network_sequence_evidence_bundle_registry,
     network_sequence_registry_validation_report_payload,
+    validate_network_sequence_evidence_bundle,
     validate_network_sequence_evidence_bundle_registry,
 )
 from autarkic_systems.network_sequence_claims import (
@@ -79,7 +81,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 19
+PROJECT_STATUS_SCHEMA_VERSION = 20
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -226,6 +228,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
             f"Network sequence evidence: {sequence_status} "
             f"({_bundle_count_text(sequence['bundle_count'])})"
         ),
+        *_sequence_evidence_failure_text_lines(sequence),
         _transition_claim_text_line(transition_claims),
         _transition_proof_certificate_text_line(transition_proof_certificates),
         *_claim_proof_failure_text_lines(
@@ -447,11 +450,33 @@ def _sequence_registry_summary(registry_path: Path | str) -> dict[str, Any]:
     try:
         registry = load_network_sequence_evidence_bundle_registry(path)
     except Exception as exc:
-        return _registry_failure_summary(path, exc)
+        summary = _registry_failure_summary(path, exc)
+        summary["bundle_failed_subjects"] = []
+        return summary
 
     results = validate_network_sequence_evidence_bundle_registry(registry)
     payload = network_sequence_registry_validation_report_payload(registry, results)
-    return _registry_summary(payload, path)
+    summary = _registry_summary(payload, path)
+    summary["bundle_failed_subjects"] = _sequence_bundle_failed_subjects(registry)
+    return summary
+
+
+def _sequence_bundle_failed_subjects(registry: Any) -> list[str]:
+    failed_subjects: list[str] = []
+    for entry in registry.bundles:
+        try:
+            bundle = load_network_sequence_evidence_bundle(entry.path)
+            results = validate_network_sequence_evidence_bundle(bundle)
+        except FileNotFoundError:
+            failed_subjects.append("sequence-bundle-file")
+            continue
+        except Exception:
+            failed_subjects.append("sequence-bundle-json")
+            continue
+        failed_subjects.extend(
+            result.subject for result in results if not result.accepted
+        )
+    return _unique_texts(failed_subjects)
 
 
 def _transition_claim_summary(claims_path: Path | str) -> dict[str, Any]:
@@ -1351,6 +1376,13 @@ def _sequence_claim_failure_text_lines(summary: dict[str, Any]) -> list[str]:
     if not failed_subjects:
         return ["Sequence claim failures: none"]
     return [f"Sequence claim failures: {', '.join(failed_subjects)}"]
+
+
+def _sequence_evidence_failure_text_lines(summary: dict[str, Any]) -> list[str]:
+    failed_subjects = summary.get("bundle_failed_subjects", [])
+    if not failed_subjects:
+        return []
+    return [f"Network sequence evidence failures: {', '.join(failed_subjects)}"]
 
 
 def _proof_rule_audit_text_line(summary: dict[str, Any]) -> str:

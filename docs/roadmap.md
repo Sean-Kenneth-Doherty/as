@@ -4244,3 +4244,24 @@ Implemented in `autarkic_systems/network_sequence_evidence_bundle.py` and
 `autarkic_systems/network_sequence_demo.py`, with tests in
 `tests/test_network_sequence_evidence_bundle.py` and
 `tests/test_network_sequence_demo_report.py`.
+
+## ADR-0209: Project Status Sequence Evidence Failure Detail
+
+Goal: make aggregate project status preserve the inner failed subjects from
+registered network-sequence evidence bundles.
+
+Deliverables:
+
+- `sequence_evidence.bundle_failed_subjects` in project status JSON;
+- schema version bump to `20`;
+- text output that names inner sequence evidence failures such as
+  `sequence-svg` on rejected sequence-bundle paths;
+- focused coverage for a registry pointing at a drifted sequence SVG; and
+- no runtime behavior, claim, proof-rule, evidence-bundle validation
+  authority, trace/SVG rendering, source-status boundary, or compact-summary
+  changes.
+
+Status: accepted in
+`docs/adr/0209-project-status-sequence-evidence-failure-detail.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

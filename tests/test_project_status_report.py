@@ -18,6 +18,7 @@ from autarkic_systems.project_status import (
 TRANSITION_REGISTRY = Path("evidence/manifest.json")
 CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
 SEQUENCE_REGISTRY = Path("evidence/sequences/manifest.json")
+SEQUENCE_BUNDLE = Path("evidence/sequences/post_handoff_signal_bundle.json")
 SEQUENCE_LANGUAGE = Path("language/network_sequence_claim_language.json")
 SEQUENCE_CLAIMS = Path("claims/network_sequence_claims.json")
 SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
@@ -32,7 +33,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 19
+PROJECT_STATUS_SCHEMA_VERSION = 20
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -531,6 +532,22 @@ WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES = [
 ]
 
 
+def _write_sequence_registry_with_svg_text(directory: Path, svg_text: str) -> Path:
+    bundle_path = directory / "post_handoff_signal_bundle.json"
+    svg_path = directory / "drifted_post_handoff_sequence_trace.svg"
+    registry_path = directory / "manifest.json"
+    svg_path.write_text(svg_text, encoding="utf-8")
+
+    bundle_data = json.loads(SEQUENCE_BUNDLE.read_text(encoding="utf-8"))
+    bundle_data["artifacts"]["sequence_svg"] = str(svg_path)
+    bundle_path.write_text(json.dumps(bundle_data), encoding="utf-8")
+
+    registry_data = json.loads(SEQUENCE_REGISTRY.read_text(encoding="utf-8"))
+    registry_data["bundles"][0]["path"] = str(bundle_path)
+    registry_path.write_text(json.dumps(registry_data), encoding="utf-8")
+    return registry_path
+
+
 class ProjectStatusReportTests(unittest.TestCase):
     def test_status_payload_summarizes_evidence_registries_and_frontier(self):
         report = build_project_status_report()
@@ -561,6 +578,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(report["sequence_evidence"]["accepted"])
         self.assertEqual(report["sequence_evidence"]["bundle_count"], 1)
         self.assertEqual(report["sequence_evidence"]["bundles"], SEQUENCE_BUNDLES)
+        self.assertEqual(report["sequence_evidence"]["bundle_failed_subjects"], [])
         self.assertTrue(report["transition_claims"]["accepted"])
         for key, expected in TRANSITION_CLAIMS.items():
             self.assertEqual(report["transition_claims"][key], expected)
@@ -1595,6 +1613,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(payload["chain_evidence"]["bundles"], CHAIN_BUNDLES)
         self.assertEqual(payload["sequence_evidence"]["bundle_count"], 1)
         self.assertEqual(payload["sequence_evidence"]["bundles"], SEQUENCE_BUNDLES)
+        self.assertEqual(payload["sequence_evidence"]["bundle_failed_subjects"], [])
         self.assertTrue(payload["transition_claims"]["accepted"])
         for key, expected in TRANSITION_CLAIMS.items():
             self.assertEqual(payload["transition_claims"][key], expected)
@@ -1759,6 +1778,58 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(exit_code, 0, payload)
         self.assertTrue(payload["sequence_evidence"]["accepted"])
         self.assertEqual(payload["sequence_evidence"]["bundle_count"], 1)
+        self.assertEqual(payload["sequence_evidence"]["bundle_failed_subjects"], [])
+
+    def test_sequence_evidence_reports_inner_bundle_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_sequence_registry_with_svg_text(
+                Path(tmp),
+                '<svg xmlns="http://www.w3.org/2000/svg"><text>drifted</text></svg>',
+            )
+
+            report = build_project_status_report(
+                sequence_registry_path=registry_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["sequence_evidence"]["accepted"])
+        self.assertIn(
+            "registry-bundle-validation",
+            report["sequence_evidence"]["failed_subjects"],
+        )
+        self.assertEqual(
+            report["sequence_evidence"]["bundle_failed_subjects"],
+            ["sequence-svg"],
+        )
+        self.assertIn("Network sequence evidence: rejected (1 bundle)", text)
+        self.assertIn("Network sequence evidence failures: sequence-svg", text)
+
+    def test_json_cli_reports_sequence_bundle_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = _write_sequence_registry_with_svg_text(
+                Path(tmp),
+                '<svg xmlns="http://www.w3.org/2000/svg"><text>drifted</text></svg>',
+            )
+            stdout = io.StringIO()
+
+            with contextlib.redirect_stdout(stdout):
+                exit_code = run_project_status_cli(
+                    [
+                        "--sequence-registry",
+                        str(registry_path),
+                        "--format",
+                        "json",
+                    ]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 1, payload)
+        self.assertFalse(payload["sequence_evidence"]["accepted"])
+        self.assertEqual(
+            payload["sequence_evidence"]["bundle_failed_subjects"],
+            ["sequence-svg"],
+        )
 
     def test_cli_accepts_sequence_claim_overrides(self):
         stdout = io.StringIO()

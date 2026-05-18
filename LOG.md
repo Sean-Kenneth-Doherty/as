@@ -4454,3 +4454,26 @@
   `accepted_count: 1`, and no missing evidence paths. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 892 tests.
+
+## 2026-05-18 - Project Status Sequence Evidence Failure Detail
+
+- Added ADR-0209 to make aggregate project status preserve inner failed
+  subjects from registered network-sequence evidence bundles.
+- Added red project-status tests before implementation. The focused red run
+  failed because project status still reported `schema_version: 19`, direct and
+  CLI JSON lacked `sequence_evidence.bundle_failed_subjects`, and drifted
+  sequence SVG failures could not surface `sequence-svg` through project
+  status.
+- Updated `autarkic_systems/project_status.py` to revalidate registered
+  network-sequence evidence bundles for failed inner subjects, expose those as
+  `sequence_evidence.bundle_failed_subjects`, render
+  `Network sequence evidence failures: ...` on rejected sequence-bundle paths,
+  and bump project status to `schema_version: 20`.
+- Updated project-status documentation and roadmap notes for the schema bump
+  and failure-detail contract.
+- Focused project-status tests passed 85 tests. Live project-status JSON
+  reported `schema_version: 20` and accepted-path
+  `bundle_failed_subjects: []`; summary output remained the same six-line
+  digest; direct sequence registry validation remained accepted. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 894 tests.

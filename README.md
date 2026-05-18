@@ -408,7 +408,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   transition language accepted with 16 claims and 16 certificates, chain
   language accepted with 2 claims and 2 certificates, network-sequence language
   accepted with 1 claim and 1 certificate, concrete transition, chain, and
-  network-sequence registry bundle entries, and the current blocked
+  network-sequence registry bundle entries, sequence evidence bundle failed
+  subjects when present, and the current blocked
   `standard-signal`
   command-token frontier. The default text report also names the concrete
   transition, chain, and network-sequence evidence bundle IDs and paths,
@@ -461,7 +462,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   `--sequence-claims` / `--sequence-certificates`.
   Schema version `19` adds `sequence_language` from the network-sequence
   object-language surface, includes it in aggregate acceptance, renders it in
-  text output, and adds `--sequence-language`.
+  text output, and adds `--sequence-language`. Schema version `20` adds
+  `sequence_evidence.bundle_failed_subjects`, preserving inner
+  network-sequence evidence bundle failure subjects such as `sequence-trace`
+  or `sequence-svg` when a registry bundle rejects.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

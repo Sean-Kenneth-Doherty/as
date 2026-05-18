@@ -59,6 +59,8 @@ The text report names:
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
 - network-sequence evidence accepted or rejected state and bundle count;
+- inner network-sequence evidence bundle failed subjects when a registered
+  sequence bundle rejects;
 - transition claim accepted or rejected state, claim count, example count, and
   matched-example count;
 - transition proof-certificate accepted or rejected state and certificate
@@ -93,7 +95,7 @@ digest: accepted state, evidence counts, claim counts, proof-rule counts,
 blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 19`. If a registry file is missing, the corresponding registry
+`schema_version: 20`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -290,6 +292,10 @@ proof-rule audit, renders sequence claim counts in text and summary modes, adds
 ADR-0202 adds `sequence_language` from the network-sequence object-language
 surface, includes it in aggregate acceptance, renders it in text output, adds
 `--sequence-language`, and bumps project status to `schema_version: 19`.
+ADR-0209 adds `sequence_evidence.bundle_failed_subjects`, preserving rejected
+inner network-sequence evidence bundle subjects such as `sequence-trace` or
+`sequence-svg` when a registered bundle rejects, renders those subjects in text
+on the rejected path, and bumps project status to `schema_version: 20`.
 
 ## Boundary
 
