@@ -253,7 +253,8 @@ the project legible:
   project status as machine-readable JSON: transition evidence accepted with 8
   bundles, chain evidence accepted with 2 bundles, and the blocked
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
-  frontier.
+  frontier. Missing registry or source-status paths are reported as structured
+  rejected status output.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

@@ -1840,3 +1840,20 @@ Deliverables:
 Status: accepted in `docs/adr/0096-project-status-report.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0097: Project Status Registry Failures
+
+Goal: make project status registry path failures structured report output
+instead of tracebacks.
+
+Deliverables:
+
+- missing transition registry handling in `autarkic_systems.project_status`;
+- missing chain registry handling in `autarkic_systems.project_status`;
+- JSON and text output that names missing registry files;
+- focused tests for both missing registry paths and CLI failure exit;
+- documentation update for the status failure contract.
+
+Status: accepted in `docs/adr/0097-project-status-registry-failures.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

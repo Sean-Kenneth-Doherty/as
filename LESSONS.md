@@ -266,3 +266,6 @@
 - Once the evidence surface spans several commands, add a project-level status
   report that composes existing validators. A useful status command should
   reveal both what is accepted and which frontier remains blocked.
+- A top-level status command should degrade one section at a time. Missing
+  registries should reject their own summary while preserving other registry
+  and frontier evidence when possible.

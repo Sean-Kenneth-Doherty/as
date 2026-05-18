@@ -2166,3 +2166,27 @@
   the same blocked command list. `py_compile` passed for the touched module and
   focused test. `git diff --check` and `python -m unittest discover` passed,
   with the full suite running 541 tests.
+
+## 2026-05-17 - Project Status Registry Failures
+
+- Added ADR-0097 to make project-status registry path failures structured
+  report output instead of tracebacks.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed in four missing-registry cases with `FileNotFoundError` for the
+  transition and chain registry loaders.
+- Updated `autarkic_systems.project_status` so transition and chain registry
+  loading are summarized independently. Missing registries now report
+  `failed_subjects: ["registry-file"]`, `bundle_count: 0`, the requested path,
+  and a failed `registry-file` result while preserving the other readable
+  status sections.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the structured registry-failure contract.
+- Verified the focused project status test passed 9 tests; adjacent project
+  status, transition registry, and chain registry tests passed 34 tests. A
+  missing transition registry JSON run exited `1` and reported
+  `transition_evidence.failed_subjects: ["registry-file"]`; a missing chain
+  registry text run exited `1` and named the missing registry path. The
+  checked-in JSON status remained accepted with transition `bundle_count: 8`,
+  chain `bundle_count: 2`, and no missing source-status files. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 545 tests.

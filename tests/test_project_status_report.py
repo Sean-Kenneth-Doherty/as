@@ -99,6 +99,88 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(report["frontier"]["source_statuses"], [])
 
+    def test_missing_transition_registry_is_structured_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_registry = Path(tmp) / "missing_transition_manifest.json"
+
+            report = build_project_status_report(
+                transition_registry_path=missing_registry,
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["transition_evidence"]["accepted"])
+        self.assertEqual(report["transition_evidence"]["registry_id"], "")
+        self.assertEqual(report["transition_evidence"]["path"], str(missing_registry))
+        self.assertEqual(report["transition_evidence"]["bundle_count"], 0)
+        self.assertEqual(
+            report["transition_evidence"]["failed_subjects"],
+            ["registry-file"],
+        )
+        self.assertIn(
+            str(missing_registry),
+            report["transition_evidence"]["results"][0]["detail"],
+        )
+        self.assertTrue(report["chain_evidence"]["accepted"])
+
+    def test_missing_chain_registry_is_structured_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_registry = Path(tmp) / "missing_chain_manifest.json"
+
+            report = build_project_status_report(
+                chain_registry_path=missing_registry,
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertTrue(report["transition_evidence"]["accepted"])
+        self.assertFalse(report["chain_evidence"]["accepted"])
+        self.assertEqual(report["chain_evidence"]["registry_id"], "")
+        self.assertEqual(report["chain_evidence"]["path"], str(missing_registry))
+        self.assertEqual(report["chain_evidence"]["bundle_count"], 0)
+        self.assertEqual(
+            report["chain_evidence"]["failed_subjects"],
+            ["registry-file"],
+        )
+
+    def test_json_cli_reports_missing_registry_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_registry = Path(tmp) / "missing_transition_manifest.json"
+            stdout = io.StringIO()
+
+            with contextlib.redirect_stdout(stdout):
+                exit_code = run_project_status_cli(
+                    [
+                        "--transition-registry",
+                        str(missing_registry),
+                        "--format",
+                        "json",
+                    ]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(
+            payload["transition_evidence"]["failed_subjects"],
+            ["registry-file"],
+        )
+        self.assertEqual(
+            payload["transition_evidence"]["path"],
+            str(missing_registry),
+        )
+
+    def test_text_status_names_missing_registry_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_registry = Path(tmp) / "missing_chain_manifest.json"
+
+            report = build_project_status_report(
+                chain_registry_path=missing_registry,
+            )
+
+        text = format_project_status_report(report)
+        self.assertIn("Autarkic Systems project status: rejected", text)
+        self.assertIn("Chain evidence: rejected (0 bundles)", text)
+        self.assertIn(f"Missing registry files: {missing_registry}", text)
+
     def test_module_execution_runs_text_status_report(self):
         completed = subprocess.run(
             [sys.executable, "-m", "autarkic_systems.project_status"],

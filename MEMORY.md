@@ -457,3 +457,6 @@
   reports 8 transition bundles and 2 chain bundles on the checked-in path, and
   summarizes the blocked `standard-signal`, `write-buf-zero`, and
   `write-buf-one` command-token frontier from source-status JSON.
+- ADR-0097 hardens `autarkic_systems.project_status` so missing transition or
+  chain registry paths produce structured rejected text/JSON status output
+  with `failed_subjects: ["registry-file"]` instead of a traceback.

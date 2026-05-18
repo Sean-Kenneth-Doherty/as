@@ -147,6 +147,8 @@ both current composed paths can be inspected from one command.
 ADR-0096 adds a project status command that validates the transition and chain
 evidence registries and reports the blocked command-token frontier from the
 current source-status records.
+ADR-0097 hardens that status command so missing registry files are structured
+report failures rather than tracebacks.
 
 ## P3: Choose The First Proof Apparatus
 

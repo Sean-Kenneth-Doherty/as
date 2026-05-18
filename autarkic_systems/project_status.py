@@ -46,22 +46,8 @@ def build_project_status_report(
 ) -> dict[str, Any]:
     """Build a status report from registries and source-status records."""
 
-    transition_registry = load_evidence_bundle_registry(transition_registry_path)
-    transition_results = validate_evidence_bundle_registry(transition_registry)
-    transition_payload = registry_validation_report_payload(
-        transition_registry,
-        transition_results,
-    )
-    transition_summary = _registry_summary(transition_payload)
-
-    chain_registry = load_chain_evidence_bundle_registry(chain_registry_path)
-    chain_results = validate_chain_evidence_bundle_registry(chain_registry)
-    chain_payload = chain_registry_validation_report_payload(
-        chain_registry,
-        chain_results,
-    )
-    chain_summary = _registry_summary(chain_payload)
-
+    transition_summary = _transition_registry_summary(transition_registry_path)
+    chain_summary = _chain_registry_summary(chain_registry_path)
     frontier = _frontier_summary(source_status_paths)
     accepted = (
         transition_summary["accepted"]
@@ -87,6 +73,11 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     transition_status = "accepted" if transition["accepted"] else "rejected"
     chain_status = "accepted" if chain["accepted"] else "rejected"
     blocked_commands = frontier["blocked_commands"] or []
+    missing_registries = [
+        summary["path"]
+        for summary in (transition, chain)
+        if "registry-file" in summary["failed_subjects"]
+    ]
     missing = frontier["missing_source_statuses"] or []
     invalid = [
         f"{item['path']}: {item['error']}"
@@ -99,6 +90,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
+        "Missing registry files: "
+        + (", ".join(missing_registries) if missing_registries else "none"),
         "Missing source-status files: "
         + (", ".join(missing) if missing else "none"),
     ]
@@ -155,16 +148,61 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
     return 0 if report["accepted"] else 1
 
 
-def _registry_summary(payload: dict[str, Any]) -> dict[str, Any]:
+def _transition_registry_summary(registry_path: Path | str) -> dict[str, Any]:
+    path = Path(registry_path)
+    try:
+        registry = load_evidence_bundle_registry(path)
+    except Exception as exc:
+        return _registry_failure_summary(path, exc)
+
+    results = validate_evidence_bundle_registry(registry)
+    payload = registry_validation_report_payload(registry, results)
+    return _registry_summary(payload, path)
+
+
+def _chain_registry_summary(registry_path: Path | str) -> dict[str, Any]:
+    path = Path(registry_path)
+    try:
+        registry = load_chain_evidence_bundle_registry(path)
+    except Exception as exc:
+        return _registry_failure_summary(path, exc)
+
+    results = validate_chain_evidence_bundle_registry(registry)
+    payload = chain_registry_validation_report_payload(registry, results)
+    return _registry_summary(payload, path)
+
+
+def _registry_summary(payload: dict[str, Any], path: Path) -> dict[str, Any]:
     failed_subjects = [
         result["subject"] for result in payload["results"] if not result["accepted"]
     ]
     return {
         "registry_id": payload["registry_id"],
+        "path": str(path),
         "accepted": payload["accepted"],
         "bundle_count": payload["bundle_count"],
         "failed_subjects": failed_subjects,
         "result_count": payload["result_count"],
+        "results": payload["results"],
+    }
+
+
+def _registry_failure_summary(path: Path, exc: Exception) -> dict[str, Any]:
+    detail = f"{type(exc).__name__}: {exc}"
+    return {
+        "registry_id": "",
+        "path": str(path),
+        "accepted": False,
+        "bundle_count": 0,
+        "failed_subjects": ["registry-file"],
+        "result_count": 1,
+        "results": [
+            {
+                "subject": "registry-file",
+                "accepted": False,
+                "detail": detail,
+            }
+        ],
     }
 
 
