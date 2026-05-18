@@ -2586,3 +2586,22 @@ Implemented in `autarkic_systems/proof_certificates.py`,
 `autarkic_systems/object_language.py`, `claims/proof_certificates.json`, and
 `language/transition_claim_language.json`, with tests in
 `tests/test_proof_certificates.py` and `tests/test_object_language.py`.
+
+## ADR-0134: Proof Certificate CLI
+
+Goal: make the transition proof-certificate layer directly inspectable from
+the command line.
+
+Deliverables:
+
+- `python -m autarkic_systems.proof_certificates` text output;
+- `--format json` output with accepted state, claim count, certificate count,
+  result count, and per-claim verification results;
+- `--claims` and `--certificates` path overrides;
+- exit code `0` for accepted proof-certificate surfaces and `1` for rejected
+  surfaces; and
+- focused CLI tests covering successful and failing manifests.
+
+Status: accepted in `docs/adr/0134-proof-certificate-cli.md`. Implemented in
+`autarkic_systems/proof_certificates.py`, with tests in
+`tests/test_proof_certificates.py`.

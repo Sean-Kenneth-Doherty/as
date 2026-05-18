@@ -2952,3 +2952,21 @@
 - Verification passed: adjacent proof-certificate and object-language tests
   ran 16 tests; JSON formatting, `py_compile`, and `git diff --check` passed;
   and `python -m unittest discover` passed 603 tests.
+
+## 2026-05-18 - Proof Certificate CLI
+
+- Added ADR-0134 to expose transition proof-certificate validation through
+  `python -m autarkic_systems.proof_certificates`.
+- Updated proof-certificate tests before implementation. The red run executed
+  16 tests and failed because the report builder, CLI runner, and module
+  execution output did not exist.
+- Updated `autarkic_systems.proof_certificates` with a project report, text and
+  JSON formatting, `--claims` and `--certificates` path overrides, `--format`
+  selection, and accepted/rejected exit codes.
+- The default text command now reports 13 accepted transition proof
+  certificates; JSON mode reports `accepted: true`, `claim_count: 13`,
+  `certificate_count: 13`, and `result_count: 13`.
+- Verification passed: focused proof-certificate tests ran 16 tests; JSON
+  formatting, `py_compile`, and `git diff --check` passed; proof-certificate
+  text and JSON CLI output were accepted; and
+  `python -m unittest discover` passed 610 tests.

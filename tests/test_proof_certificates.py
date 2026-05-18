@@ -1,7 +1,14 @@
+import contextlib
+import io
+import json
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 from autarkic_systems.claim_manifest import load_transition_claims
+from autarkic_systems import proof_certificates
 from autarkic_systems.proof_certificates import (
     CertificateStep,
     ClaimCertificate,
@@ -33,6 +40,164 @@ class ProofCertificateTests(unittest.TestCase):
                 for step in certificate.steps
             )
         )
+
+    def test_report_formats_successful_proof_certificate_validation(self):
+        report = proof_certificates.validate_proof_certificate_project(
+            claims_path=MANIFEST,
+            certificates_path=CERTIFICATES,
+        )
+
+        text = proof_certificates.format_proof_certificate_report(report)
+
+        self.assertIn("Transition proof certificates:", text)
+        self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", text)
+        self.assertIn("predicate-result", text)
+        self.assertNotIn("FAIL", text)
+
+    def test_json_payload_records_successful_proof_certificate_validation(self):
+        report = proof_certificates.validate_proof_certificate_project(
+            claims_path=MANIFEST,
+            certificates_path=CERTIFICATES,
+        )
+
+        payload = proof_certificates.proof_certificate_report_payload(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["claim_count"], len(self.claims))
+        self.assertEqual(payload["certificate_count"], len(self.claims))
+        self.assertEqual(payload["result_count"], len(report.results))
+        self.assertTrue(
+            any(
+                result["claim_id"] == "UC-FIXED-OUTPUT-PRESERVED"
+                and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+
+    def test_cli_returns_zero_for_checked_in_proof_certificates(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = proof_certificates.run_proof_certificate_cli(
+                [
+                    "--claims",
+                    str(MANIFEST),
+                    "--certificates",
+                    str(CERTIFICATES),
+                ]
+            )
+
+        output = stdout.getvalue()
+        self.assertEqual(exit_code, 0, output)
+        self.assertIn("Transition proof certificates:", output)
+        self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", output)
+
+    def test_cli_returns_json_for_checked_in_proof_certificates(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = proof_certificates.run_proof_certificate_cli(
+                [
+                    "--claims",
+                    str(MANIFEST),
+                    "--certificates",
+                    str(CERTIFICATES),
+                    "--format",
+                    "json",
+                ]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["claim_count"], len(self.claims))
+        self.assertNotIn("OK ", stdout.getvalue())
+
+    def test_cli_returns_one_for_incomplete_certificate_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            certificate_path = Path(tmp) / "proof_certificates.json"
+            certificate_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "certificates": [
+                            {
+                                "claim_id": "UC-FIXED-OUTPUT-PRESERVED",
+                                "steps": [
+                                    {
+                                        "rule": "predicate-result",
+                                        "example": "blocked output preserved",
+                                        "expected": True,
+                                        "predicate": "output_not_overwritten",
+                                    }
+                                ],
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            stdout = io.StringIO()
+
+            with contextlib.redirect_stdout(stdout):
+                exit_code = proof_certificates.run_proof_certificate_cli(
+                    [
+                        "--claims",
+                        str(MANIFEST),
+                        "--certificates",
+                        str(certificate_path),
+                    ]
+                )
+
+        output = stdout.getvalue()
+        self.assertEqual(exit_code, 1, output)
+        self.assertIn("FAIL UC-FIXED-OUTPUT-PRESERVED:", output)
+        self.assertIn("missing examples", output)
+
+    def test_module_execution_runs_proof_certificate_validation(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.proof_certificates",
+                "--claims",
+                str(MANIFEST),
+                "--certificates",
+                str(CERTIFICATES),
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("Transition proof certificates:", completed.stdout)
+        self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", completed.stdout)
+
+    def test_module_execution_runs_json_proof_certificate_validation(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.proof_certificates",
+                "--claims",
+                str(MANIFEST),
+                "--certificates",
+                str(CERTIFICATES),
+                "--format",
+                "json",
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["claim_count"], len(self.claims))
 
     def test_predicate_result_rule_verifies_named_predicate(self):
         first_claim = self.claims[0]

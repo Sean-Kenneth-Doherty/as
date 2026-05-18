@@ -576,3 +576,6 @@
 - ADR-0133 adds the `predicate-result` proof-certificate rule for transition
   claims, migrates the fixed-output preservation certificate to that rule, and
   updates the transition object-language proof-object rules accordingly.
+- ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
+  validation of the transition proof-certificate surface and failing exit codes
+  for rejected certificate manifests.

@@ -253,6 +253,8 @@ long-term SJAS-aligned path once the active frontier is recovered or replaced.
 Status update: ADR-0011 added the first local proof-certificate checker for the
 current transition claims. ADR-0133 adds the first explicit `predicate-result`
 certificate rule while keeping AS below the bar for a general theorem prover.
+ADR-0134 exposes the transition proof-certificate surface through direct text
+and JSON CLI validation.
 
 ## P4: Define The First Object Language
 

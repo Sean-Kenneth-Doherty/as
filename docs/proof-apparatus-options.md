@@ -85,6 +85,10 @@ Implemented certificate clauses:
 - `manifest-example`: a claim example was evaluated by the manifest evaluator;
 - `predicate-result`: a named predicate returned the expected boolean result;
 
+The current transition proof-certificate surface can be inspected directly with
+`python -m autarkic_systems.proof_certificates` or with `--format json` for
+machine-readable output.
+
 Candidate future certificate clauses:
 
 - `transition-witness`: a before/after transition pair matches a concrete

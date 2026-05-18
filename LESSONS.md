@@ -374,3 +374,6 @@
 - Proof objects are stronger when they name the rule's semantic target, not
   only the manifest example being checked. Add explicit predicate metadata
   before building richer proof clauses on top of examples.
+- A proof surface that downstream validators depend on should also have its
+  own first-run CLI. Otherwise operators can inspect the evidence layer more
+  easily than the proof layer beneath it.
