@@ -60,6 +60,12 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "(sources/recipient_non_init_command_source_status.json)",
             text,
         )
+        self.assertIn(
+            "command-token-vs-binary-input: "
+            "do-not-replay-ordinary-binary-input-standard-signal "
+            "(sources/standard_signal_command_semantics_status.json)",
+            text,
+        )
         self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
         self.assertIn("Missing source-status files: none", text)
         self.assertIn("Invalid source-status files: none", text)

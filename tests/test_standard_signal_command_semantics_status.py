@@ -129,6 +129,27 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             "evidence/recipient_non_init_command_rejection_bundle.json",
         )
 
+    def test_command_token_binary_input_equivalence_is_resolved(self):
+        resolved = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+
+        binary_input = resolved["command-token-vs-binary-input"]
+        self.assertEqual(
+            binary_input["decision"],
+            "do-not-replay-ordinary-binary-input-standard-signal",
+        )
+        self.assertEqual(binary_input["source_status"], str(STATUS))
+        self.assertIn(
+            "separately names ordinary standard-signal processing",
+            binary_input["legacy_divergence"],
+        )
+        self.assertIn(
+            "exclude standard-signal from special-message dispatch",
+            binary_input["legacy_divergence"],
+        )
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness
@@ -161,7 +182,6 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(
             question_ids,
             {
-                "command-token-vs-binary-input",
                 "self-target-surface",
             },
         )

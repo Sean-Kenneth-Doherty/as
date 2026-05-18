@@ -57,6 +57,9 @@ messages to the existing non-init rejection boundary.
 ADR-0149 rejects any source-status record that lists the same question ID as
 both unresolved and resolved, so the focused frontier cannot present a blocker
 as live and settled at the same time.
+ADR-0150 moves the standard-signal `command-token-vs-binary-input` question
+from unresolved to resolved, recording that command tokens do not replay
+ordinary binary-input standard-signal behavior by default.
 
 ## Boundary
 

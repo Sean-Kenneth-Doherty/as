@@ -262,6 +262,10 @@ delivered recipient `standard-signal` command messages to the existing
 recipient non-init rejection claim and evidence bundle, leaving only the
 command-token/binary-input and self-target-surface standard-signal questions
 open.
+ADR-0150 resolves the standard-signal command-token/binary-input question as a
+negative equivalence decision: command tokens do not replay ordinary
+binary-input standard-signal behavior by default. The standard-signal frontier
+now leaves only the self-target-surface question open.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

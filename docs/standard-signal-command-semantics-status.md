@@ -13,8 +13,15 @@ AS already implements ordinary standard-signal behavior for binary input:
 fixed wire/proc routing and stem high-rail / command-buffer accumulation. That
 does not settle the separate command-token question. The formal model also
 names `standard-signal` at command offset 0 for each target range, but it does
-not define whether that token should replay ordinary binary-input behavior,
-execute from self-mailbox state, or remain unsupported.
+not define whether that token should execute from self-mailbox state or remain
+unsupported.
+
+ADR-0150 resolves the command-token/binary-input equivalence question:
+`standard-signal` command tokens do not automatically replay ordinary
+binary-input standard-signal behavior. The formal model separates ordinary
+standard-signal processing from the command-table `standard-signal` entry, and
+the reviewed legacy witnesses keep `standard-signal` outside special-message
+dispatch.
 
 The formal-model prose narrows one self-target case: it says wire, proc, and
 stem cells all perform productive behavior on standard signals "unless sent to
@@ -63,6 +70,10 @@ Recipient command-message input is no longer an unresolved
 `standard-signal` command messages through
 `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
+Command-token execution also no longer inherits ordinary binary-input
+standard-signal behavior by default. Future work must choose an explicit
+self-target command-token boundary.
+
 The current ordinary standard-signal behavior remains valid because it is
 binary-input behavior, not command-token execution. ADR-0059 selects
 reject-and-clear for multi-command recipient input conflicts, and ADR-0060
@@ -81,7 +92,9 @@ removes `command-table-offset` from the unresolved queue after resolving it in
 favor of the formal PRC command-buffer map. ADR-0143 exposes the self-mailbox
 exception as a resolved sub-decision while leaving `self-target-surface`
 unresolved. ADR-0148 moves `recipient-surface` into resolved questions through
-the existing recipient non-init rejection boundary.
+the existing recipient non-init rejection boundary. ADR-0150 moves
+`command-token-vs-binary-input` into resolved questions while leaving
+`self-target-surface` as the only standard-signal unresolved question.
 
 ## Verification
 
@@ -92,5 +105,6 @@ python -m unittest tests.test_standard_signal_command_semantics_status
 ```
 
 The tests check the decision, formal-model command/binary distinction, legacy
-witness divergence, resolved recipient-surface boundary, remaining required
-resolution questions, and source-status frontier updates.
+witness divergence, resolved recipient-surface and command-token/binary-input
+boundaries, remaining required resolution questions, and source-status
+frontier updates.

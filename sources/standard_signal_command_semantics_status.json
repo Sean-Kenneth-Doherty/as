@@ -16,7 +16,12 @@
     "command_table_locus": "lines 437-454, command order",
     "standard_process_locus": "lines 593-657, process-standard-signal and stem-process-standard-signal",
     "command_table_offset": 0,
-    "gap": "The formal model gives binary-input behavior for ordinary standard signals and also names standard-signal at command offset 0, but it does not define whether that command token should replay ordinary binary-input behavior, execute on recipient command-message inputs, execute from self mailbox state, or preserve the current command boundary."
+    "gap": "The formal model gives binary-input behavior for ordinary standard signals and also names standard-signal at command offset 0, but it does not define whether that command token should execute from self mailbox state or preserve the current command boundary."
+  },
+  "command_token_binary_input_resolution": {
+    "decision": "do-not-replay-ordinary-binary-input-standard-signal",
+    "source_status": "sources/standard_signal_command_semantics_status.json",
+    "summary": "The formal model separately names ordinary standard-signal processing and the command-table standard-signal entry, while the reviewed legacy witnesses exclude standard-signal from special-message dispatch and treat ordinary standard input separately."
   },
   "formal_model_self_mailbox_exception": {
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
@@ -51,6 +56,12 @@
       "decision": "reject-recipient-standard-signal-command-message-as-non-init",
       "source_status": "sources/recipient_non_init_command_source_status.json",
       "legacy_divergence": "The formal model provides no recipient execution rule for delivered standard-signal command messages; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message sets, and AS already claims UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED."
+    },
+    {
+      "question_id": "command-token-vs-binary-input",
+      "decision": "do-not-replay-ordinary-binary-input-standard-signal",
+      "source_status": "sources/standard_signal_command_semantics_status.json",
+      "legacy_divergence": "The formal model separately names ordinary standard-signal processing and the command-table standard-signal entry; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message dispatch and treat ordinary standard input separately."
     }
   ],
   "legacy_standard_signal_witnesses": [
@@ -83,19 +94,11 @@
   ],
   "required_resolution_questions": [
     {
-      "question_id": "command-token-vs-binary-input",
-      "summary": "Decide whether a standard-signal command token is supposed to reproduce ordinary binary-input standard-signal behavior or remain a separate unsupported command."
-    },
-    {
       "question_id": "self-target-surface",
       "summary": "Decide whether self-mailbox and self-target command-buffer standard-signal tokens should execute, be preserved, or be reported as unsupported."
     }
   ],
   "resolution_question_evidence": [
-    {
-      "question_id": "command-token-vs-binary-input",
-      "evidence": "The formal model names standard-signal at command offset 0 while also defining ordinary binary-input standard-signal behavior; RAA, SEMSIM, and FSMSIM exclude standard-signal from special-message dispatch and treat ordinary standard input separately."
-    },
     {
       "question_id": "self-target-surface",
       "evidence": "The formal model excludes standard signals sent to the self-mailbox of a stem cell from ordinary productive behavior, and no reviewed source selects preserve, clear/no-op, or execution behavior for self-target standard-signal command tokens."

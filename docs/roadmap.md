@@ -2932,3 +2932,28 @@ Status: accepted in `docs/adr/0149-resolution-question-disjointness.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0150: Standard-Signal Command Token Binary-Input Resolution
+
+Goal: resolve the standard-signal command-token/binary-input equivalence
+question without selecting self-target command-token behavior.
+
+Deliverables:
+
+- `command-token-vs-binary-input` removed from standard-signal unresolved
+  `required_resolution_questions`;
+- `command-token-vs-binary-input` added to standard-signal
+  `resolved_resolution_questions`;
+- standard-signal unresolved source evidence narrowed to `self-target-surface`;
+- project-status and source-status frontier text/JSON output showing the
+  settled negative equivalence decision;
+- focused standard-signal, project-status, and source-status frontier tests;
+  and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0150-standard-signal-command-token-binary-input-resolution.md`.
+Implemented in `sources/standard_signal_command_semantics_status.json`, with
+tests in `tests/test_standard_signal_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

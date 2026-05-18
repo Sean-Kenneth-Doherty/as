@@ -170,6 +170,9 @@ existing recipient non-init rejection boundary, preserving
 `schema_version: 14`.
 ADR-0149 rejects source-status records that list the same `question_id` as both
 unresolved and resolved, preserving `schema_version: 14`.
+ADR-0150 resolves the standard-signal `command-token-vs-binary-input` question
+as a negative equivalence decision while leaving project status
+`schema_version: 14`.
 
 ## Boundary
 

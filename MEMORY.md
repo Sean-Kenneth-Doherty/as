@@ -625,3 +625,6 @@
   standard-signal unresolved questions.
 - ADR-0149 makes unresolved and resolved source-status question IDs disjoint,
   so a source-status record cannot present a blocker as both live and settled.
+- ADR-0150 resolves standard-signal `command-token-vs-binary-input` as
+  `do-not-replay-ordinary-binary-input-standard-signal`, leaving only
+  `self-target-surface` unresolved for standard-signal command tokens.

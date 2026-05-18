@@ -3245,3 +3245,21 @@
   project-status JSON remained accepted at `schema_version: 14`; `py_compile`
   and `git diff --check` passed; and `python -m unittest discover` passed 658
   tests.
+
+## 2026-05-18 - Standard-Signal Command Token Binary-Input Resolution
+
+- Added ADR-0150 to resolve the standard-signal
+  `command-token-vs-binary-input` question as a negative equivalence decision.
+- Updated standard-signal, project-status, and source-status frontier tests
+  before implementation. The red run executed 86 tests and failed because
+  `command-token-vs-binary-input` was still unresolved and absent from
+  `resolved_resolution_questions`.
+- Updated `sources/standard_signal_command_semantics_status.json` so
+  command-token `standard-signal` no longer inherits ordinary binary-input
+  standard-signal behavior by default.
+- Verification passed: focused standard-signal, project-status, and
+  source-status frontier tests ran 86 tests; source-status JSON was accepted at
+  `schema_version: 1` with only `self-target-surface` unresolved for
+  standard-signal; project-status JSON remained accepted at
+  `schema_version: 14`; `py_compile` and `git diff --check` passed; and
+  `python -m unittest discover` passed 659 tests.

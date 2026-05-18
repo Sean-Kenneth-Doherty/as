@@ -178,7 +178,6 @@ CHAIN_CLAIMS = {
     "result_count": 4,
 }
 STANDARD_SIGNAL_QUESTIONS = [
-    "command-token-vs-binary-input",
     "self-target-surface",
 ]
 WRITE_BUFFER_QUESTIONS = [
@@ -187,14 +186,6 @@ WRITE_BUFFER_QUESTIONS = [
     "post-append-clearing",
 ]
 STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
-    {
-        "question_id": "command-token-vs-binary-input",
-        "summary": (
-            "Decide whether a standard-signal command token is supposed to "
-            "reproduce ordinary binary-input standard-signal behavior or "
-            "remain a separate unsupported command."
-        ),
-    },
     {
         "question_id": "self-target-surface",
         "summary": (
@@ -205,16 +196,6 @@ STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
     },
 ]
 STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = [
-    {
-        "question_id": "command-token-vs-binary-input",
-        "evidence": (
-            "The formal model names standard-signal at command offset 0 while "
-            "also defining ordinary binary-input standard-signal behavior; "
-            "RAA, SEMSIM, and FSMSIM exclude standard-signal from "
-            "special-message dispatch and treat ordinary standard input "
-            "separately."
-        ),
-    },
     {
         "question_id": "self-target-surface",
         "evidence": (
@@ -258,6 +239,17 @@ STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
             "delivered standard-signal command messages; RAA, SEMSIM, and "
             "FSMSIM exclude standard-signal from special-message sets, and "
             "AS already claims UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED."
+        ),
+    },
+    {
+        "question_id": "command-token-vs-binary-input",
+        "decision": "do-not-replay-ordinary-binary-input-standard-signal",
+        "source_status": "sources/standard_signal_command_semantics_status.json",
+        "legacy_divergence": (
+            "The formal model separately names ordinary standard-signal "
+            "processing and the command-table standard-signal entry; RAA, "
+            "SEMSIM, and FSMSIM exclude standard-signal from special-message "
+            "dispatch and treat ordinary standard input separately."
         ),
     },
 ]
@@ -834,10 +826,14 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertIn("Resolution questions:", text)
         self.assertIn("standard-signal:", text)
+        self.assertNotIn(
+            "command-token-vs-binary-input: Decide whether a standard-signal",
+            text,
+        )
         self.assertIn(
-            "command-token-vs-binary-input: Decide whether a standard-signal "
-            "command token is supposed to reproduce ordinary binary-input "
-            "standard-signal behavior or remain a separate unsupported command.",
+            "self-target-surface: Decide whether self-mailbox and self-target "
+            "command-buffer standard-signal tokens should execute, be "
+            "preserved, or be reported as unsupported.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
@@ -855,12 +851,16 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertIn("Resolution question evidence:", text)
         self.assertIn("standard-signal:", text)
+        self.assertNotIn(
+            "command-token-vs-binary-input: The formal model names",
+            text,
+        )
         self.assertIn(
-            "command-token-vs-binary-input: The formal model names "
-            "standard-signal at command offset 0 while also defining ordinary "
-            "binary-input standard-signal behavior; RAA, SEMSIM, and FSMSIM "
-            "exclude standard-signal from special-message dispatch and treat "
-            "ordinary standard input separately.",
+            "self-target-surface: The formal model excludes standard signals "
+            "sent to the self-mailbox of a stem cell from ordinary productive "
+            "behavior, and no reviewed source selects preserve, clear/no-op, "
+            "or execution behavior for self-target standard-signal command "
+            "tokens.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
@@ -903,6 +903,12 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
+            "command-token-vs-binary-input: "
+            "do-not-replay-ordinary-binary-input-standard-signal "
+            "(sources/standard_signal_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
             "legacy divergence: The formal model excludes standard signals "
             "sent to the self-mailbox of a stem cell from productive "
             "ordinary standard-signal behavior; legacy witnesses exclude "
@@ -916,6 +922,14 @@ class ProjectStatusReportTests(unittest.TestCase):
             "RAA, SEMSIM, and FSMSIM exclude standard-signal from "
             "special-message sets, and AS already claims "
             "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED.",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: The formal model separately names ordinary "
+            "standard-signal processing and the command-table standard-signal "
+            "entry; RAA, SEMSIM, and FSMSIM exclude standard-signal from "
+            "special-message dispatch and treat ordinary standard input "
+            "separately.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)

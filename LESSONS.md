@@ -418,3 +418,6 @@
   question instead of keeping the same surface artificially unresolved.
 - When moving a question from open to settled, add a validator guard that
   prevents the old unresolved entry and the new resolved entry from coexisting.
+- Negative equivalence decisions are useful source progress: recording that a
+  command token does not inherit an ordinary input path can narrow the frontier
+  without pretending to know the final command behavior.
