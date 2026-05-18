@@ -75,6 +75,8 @@ ADR-0154 adds an `execution_readiness` section to the focused report and
 shared validation, so write-buffer append execution is explicitly blocked by
 `buffer-full-boundary` and `post-append-clearing` until those questions are
 resolved.
+ADR-0155 tightens that shared validation: when readiness is `blocked`, its
+blocker list must cover every live unresolved resolution question.
 
 ## Boundary
 

@@ -3347,3 +3347,18 @@
   `post-append-clearing`; project-status JSON accepted schema 15 with the same
   readiness payload; `py_compile` and `git diff --check` passed; and
   `python -m unittest discover` passed 666 tests.
+
+## 2026-05-18 - Execution Readiness Coverage
+
+- Added ADR-0155 to require blocked execution-readiness gates to cover every
+  live unresolved `required_resolution_questions` ID.
+- Added the red project-status schema fixture before implementation. The red
+  run executed 81 focused tests and failed only that new fixture because the
+  validator accepted a blocked readiness gate that named only one of two live
+  blockers.
+- Tightened source-status schema validation so blocked readiness
+  `blocked_by_resolution_questions` must cover all live unresolved questions.
+- Focused verification passed 81 tests. Project-status remains schema 15 and
+  source-status frontier remains schema 2; this is a validation-only change.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 667 tests.

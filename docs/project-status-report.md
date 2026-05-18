@@ -189,6 +189,9 @@ project status `schema_version: 14`.
 ADR-0154 adds optional per-source `execution_readiness` objects to project
 status JSON/text, rejects malformed readiness metadata as
 `source-status-schema`, and bumps the schema version to `15`.
+ADR-0155 requires blocked `execution_readiness` blockers to cover every live
+unresolved `required_resolution_questions` ID while preserving project status
+`schema_version: 15`.
 
 ## Boundary
 

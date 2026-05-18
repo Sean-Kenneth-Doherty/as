@@ -342,6 +342,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `required_resolution_questions` IDs in the same source-status record.
   When a source-status record has unresolved `required_resolution_questions`,
   `resolution_question_evidence` must cover every unresolved question ID.
+  When a source-status record declares `execution_readiness.decision` as
+  `blocked`, its `blocked_by_resolution_questions` list must also cover every
+  unresolved question ID.
   Source-status cross-link paths and resolved question source paths must also
   point to existing files that contain JSON objects.
   Accepted source-status records must also provide non-empty top-level
@@ -356,8 +359,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   source-status paths, and the safe next slice. The shared validator rejects
   frontier records whose question IDs are simultaneously unresolved and
   resolved, and rejects execution-readiness blockers that do not match live
-  unresolved questions. Text mode renders the same frontier for operator
-  diagnosis.
+  unresolved questions or only partially cover them. Text mode renders the
+  same frontier for operator diagnosis.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

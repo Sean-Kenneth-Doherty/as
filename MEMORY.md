@@ -642,3 +642,7 @@
   reports schema 15, source-status frontier reports schema 2, and write-buffer
   append execution is explicitly blocked by `buffer-full-boundary` and
   `post-append-clearing`.
+- ADR-0155 tightens `execution_readiness`: when readiness is `blocked`,
+  `blocked_by_resolution_questions` must cover every live unresolved
+  `required_resolution_questions` ID. The JSON shapes stay at project status
+  schema 15 and source-status schema 2.

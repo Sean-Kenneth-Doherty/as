@@ -3064,3 +3064,21 @@ Status: accepted in
 `sources/write_buffer_command_semantics_status.json`, with tests in
 `tests/test_project_status_report.py` and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0155: Execution Readiness Coverage
+
+Goal: require blocked execution-readiness gates to name every live unresolved
+question that still blocks execution.
+
+Deliverables:
+
+- schema rejection for blocked readiness objects that omit one or more live
+  `required_resolution_questions` IDs from
+  `blocked_by_resolution_questions`;
+- unchanged project-status schema `15`;
+- unchanged source-status frontier schema `2`; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in `docs/adr/0155-execution-readiness-coverage.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

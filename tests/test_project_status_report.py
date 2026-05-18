@@ -2044,6 +2044,61 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_blocked_execution_readiness_must_cover_unresolved_questions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "partial_execution_readiness_blockers.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "write-buf-zero",
+                    "as_boundary": "Keep this command blocked here.",
+                    "required_resolution_questions": [
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "summary": "Decide buffer-full behavior.",
+                        },
+                        {
+                            "question_id": "post-append-clearing",
+                            "summary": "Decide post-append clearing.",
+                        },
+                    ],
+                    "resolution_question_evidence": [
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "evidence": "Sources diverge here.",
+                        },
+                        {
+                            "question_id": "post-append-clearing",
+                            "evidence": "Sources diverge here too.",
+                        },
+                    ],
+                    "execution_readiness": {
+                        "decision": "blocked",
+                        "execution_change_allowed": False,
+                        "blocked_by_resolution_questions": [
+                            "buffer-full-boundary",
+                        ],
+                        "summary": "Keep execution blocked.",
+                    },
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "cover required_resolution_questions",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_partial_resolution_question_evidence_coverage_is_structured_failure_subject(self):
         with tempfile.TemporaryDirectory() as tmp:
             invalid_status = Path(tmp) / "partial_resolution_question_evidence.json"

@@ -432,3 +432,6 @@
 - When an execution blocker is the live frontier, make it a structured gate in
   status output. Otherwise future code can mistake a settled surface boundary
   for implementation readiness.
+- A readiness gate that can omit one live blocker is not really a gate. Coverage
+  rules should mirror the unresolved-question list, just as evidence coverage
+  does.
