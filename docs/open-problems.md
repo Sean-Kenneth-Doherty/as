@@ -142,6 +142,8 @@ ADR-0093 adds the renderer-locked SVG for that rejection trace and makes the
 chain SVG renderer derive the handoff channel from the delivered tuple.
 ADR-0094 adds the integrated evidence bundle for that rejection path and
 registers it alongside the consumed chain bundle.
+ADR-0095 extends the vertical chain demo report to the whole chain registry, so
+both current composed paths can be inspected from one command.
 
 ## P3: Choose The First Proof Apparatus
 

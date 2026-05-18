@@ -448,3 +448,7 @@
   `evidence/chains/neighbor_delivery_rejection_chain_bundle.json` and registers
   it in `evidence/chains/manifest.json`, bringing the chain evidence registry
   to two bundles.
+- ADR-0095 adds `--registry` mode to `autarkic_systems.chain_demo`, so the
+  vertical demo report can summarize every registered transition-chain
+  evidence bundle, including accepted/failed counts, missing paths, and
+  structured failure output for missing registered bundle files.

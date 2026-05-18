@@ -259,3 +259,7 @@
 - Once a negative chain has claim, trace, and SVG layers, promote it into the
   chain evidence registry so it gets the same drift protection as the green
   path.
+- A registry-backed demo surface should fail as a report, not as a stack trace.
+  If a registered bundle path is missing, return structured failure output that
+  names the missing path and preserves the remaining registry validation
+  details.

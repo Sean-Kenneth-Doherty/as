@@ -2117,3 +2117,26 @@
   reported `accepted: true`, `bundle_count: 2`, and `failed_subjects: []`.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
   with the full suite running 530 tests.
+
+## 2026-05-17 - Chain Demo Registry Report
+
+- Added ADR-0095 to expose the whole transition-chain evidence registry through
+  the vertical chain demo report.
+- Updated `tests/test_chain_demo_report.py` before implementation. The first
+  red run failed because `build_chain_demo_registry_report` was missing. A
+  second red test then caught missing registered bundle paths raising
+  `FileNotFoundError` instead of returning a structured rejected report.
+- Extended `autarkic_systems.chain_demo` with `--registry` mode, registry
+  validation, per-bundle demo report summaries, accepted/failed bundle counts,
+  missing-path summaries, and argparse rejection for ambiguous `--bundle` plus
+  `--registry` target selection.
+- Updated README, chain registry docs, chain evidence bundle docs, open
+  problems, roadmap, memory, lessons, and the vertical demo report note with
+  the registry demo command and failure-reporting contract.
+- Verified the focused demo report test passed 13 tests; adjacent demo,
+  registry, consumed-bundle, and rejection-bundle tests passed 40 tests. Demo
+  registry JSON reported `accepted: true`, `bundle_count: 2`,
+  `accepted_count: 2`, `failed_count: 0`, and `missing_evidence_paths: []`.
+  Demo registry text named both registered chain bundles. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 536 tests.

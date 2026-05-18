@@ -141,8 +141,9 @@ the project legible:
   proof, language, underlying transition bundles, and source-status boundaries.
 - `docs/chain-evidence-bundle-registry.md` records the registry for
   discovering and batch-validating transition-chain evidence bundles.
-- `docs/vertical-chain-demo-report.md` records the first compact first-run
-  report over the checked transition-chain evidence path.
+- `docs/vertical-chain-demo-report.md` records the compact first-run report
+  over one checked transition-chain evidence path or the whole chain evidence
+  registry.
 - `docs/evidence-bundle-registry.md` records the registry for discovering and
   batch-validating transition evidence bundles.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json`
@@ -209,10 +210,11 @@ the project legible:
   transition-chain evidence bundle and exposes
   `python -m autarkic_systems.chain_evidence_bundle` for direct text/JSON
   validation of one bundle or a chain registry.
-- `autarkic_systems/chain_demo.py` renders the first vertical chain demo
-  report, reusing the chain evidence validator while summarizing the claim,
-  executable chain, trace, SVG, lower-level evidence bundles, source-status
-  boundaries, artifact-presence summary, and validation result in one command.
+- `autarkic_systems/chain_demo.py` renders vertical chain demo reports,
+  reusing the chain evidence validator while summarizing one bundle or every
+  registered chain bundle with its claim, executable chain, trace, SVG,
+  lower-level evidence bundles, source-status boundaries, artifact-presence
+  summary, and validation result.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -236,9 +238,11 @@ the project legible:
 - `python -m autarkic_systems.chain_evidence_bundle --registry evidence/chains/manifest.json --format json`
   emits the transition-chain evidence registry validation report as
   machine-readable JSON.
-- `python -m autarkic_systems.chain_demo` emits the current transition-chain
-  demo report in text form; `--format json` emits the same claim-to-evidence
-  surface for automation, including per-layer artifact presence.
+- `python -m autarkic_systems.chain_demo` emits the default transition-chain
+  demo report in text form; `--registry evidence/chains/manifest.json` emits
+  one report over every registered chain bundle, and `--format json` emits the
+  same claim-to-evidence surfaces for automation, including artifact presence
+  and missing-path summaries.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

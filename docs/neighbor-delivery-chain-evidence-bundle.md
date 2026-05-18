@@ -59,6 +59,7 @@ python -m autarkic_systems.chain_evidence_bundle --format json
 python -m autarkic_systems.chain_evidence_bundle --bundle evidence/chains/neighbor_delivery_rejection_chain_bundle.json --format json
 python -m autarkic_systems.chain_evidence_bundle --registry evidence/chains/manifest.json
 python -m autarkic_systems.chain_demo
+python -m autarkic_systems.chain_demo --registry evidence/chains/manifest.json
 ```
 
 The validator checks schema, executable chain example status, chain predicate
@@ -74,6 +75,8 @@ over the same validated bundle, claim, trace, SVG, transition-bundle, and
 source-status surface.
 ADR-0090 makes that report explicit about artifact presence with per-layer
 `exists` flags and a `missing_evidence_paths` summary.
+ADR-0095 adds chain demo registry mode, so the consumed and rejected composed
+paths can be inspected from one vertical report command.
 
 ADR-0084 adds the chain evidence registry so these bundles are discoverable and
 batch-validatable without merging them into the single-transition evidence

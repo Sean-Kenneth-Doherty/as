@@ -18,9 +18,11 @@ and presents the current chain as one claim-to-evidence path.
 ```sh
 python -m autarkic_systems.chain_demo
 python -m autarkic_systems.chain_demo --format json
+python -m autarkic_systems.chain_demo --registry evidence/chains/manifest.json
+python -m autarkic_systems.chain_demo --registry evidence/chains/manifest.json --format json
 ```
 
-The text report names:
+For one bundle, the text report names:
 
 - the chain evidence bundle;
 - the transition-chain claim;
@@ -35,6 +37,21 @@ The text report names:
 JSON mode emits the same surface for automation.
 ADR-0090 adds an `exists` flag to every JSON evidence layer and a
 `missing_evidence_paths` summary to both text and JSON output.
+
+ADR-0095 adds registry mode. A registry report validates
+`evidence/chains/manifest.json`, builds a demo report for every existing
+registered bundle, and summarizes:
+
+- registry ID;
+- bundle count;
+- accepted and failed counts;
+- missing registered bundle paths or missing evidence-layer paths; and
+- the per-bundle demo reports.
+
+The current checked-in registry reports the consumed init handoff bundle and
+the rejected non-init handoff bundle. If a registry entry points at a missing
+bundle, the registry demo report returns structured failure output instead of
+crashing.
 
 ## Boundary
 

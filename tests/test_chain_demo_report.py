@@ -9,13 +9,17 @@ from pathlib import Path
 
 from autarkic_systems.chain_demo import (
     build_chain_demo_report,
+    build_chain_demo_registry_report,
     format_chain_demo_report,
+    format_chain_demo_registry_report,
     run_chain_demo_cli,
 )
 
 
 BUNDLE = Path("evidence/chains/neighbor_delivery_chain_bundle.json")
+REGISTRY = Path("evidence/chains/manifest.json")
 BUNDLE_ID = "neighbor-delivery-recipient-chain-evidence-bundle"
+REJECTION_BUNDLE_ID = "neighbor-delivery-recipient-rejection-chain-evidence-bundle"
 CLAIM_ID = "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED"
 TRACE = "schematics/chains/neighbor_delivery_recipient_chain_trace.json"
 SVG = "schematics/chains/neighbor_delivery_recipient_chain_trace.svg"
@@ -132,6 +136,146 @@ class ChainDemoReportTests(unittest.TestCase):
                 for layer in payload["evidence_layers"]
             )
         )
+
+    def test_registry_payload_summarizes_all_chain_demo_reports(self):
+        report = build_chain_demo_registry_report(REGISTRY)
+
+        self.assertTrue(report["accepted"])
+        self.assertEqual(
+            report["registry_id"],
+            "transition-chain-evidence-bundle-registry",
+        )
+        self.assertEqual(report["bundle_count"], 2)
+        self.assertEqual(report["accepted_count"], 2)
+        self.assertEqual(report["failed_count"], 0)
+        self.assertEqual(report["missing_evidence_paths"], [])
+        self.assertEqual(report["validation"]["failed_subjects"], [])
+        self.assertEqual(
+            [item["bundle_id"] for item in report["bundle_reports"]],
+            [BUNDLE_ID, REJECTION_BUNDLE_ID],
+        )
+        self.assertTrue(
+            all(item["accepted"] for item in report["bundle_reports"]),
+            report["bundle_reports"],
+        )
+
+    def test_registry_text_report_names_both_chain_bundles(self):
+        report = build_chain_demo_registry_report(REGISTRY)
+
+        text = format_chain_demo_registry_report(report)
+
+        self.assertIn(
+            "Vertical chain demo registry: transition-chain-evidence-bundle-registry",
+            text,
+        )
+        self.assertIn("Bundles: 2", text)
+        self.assertIn("Accepted: 2", text)
+        self.assertIn("Failed: 0", text)
+        self.assertIn("Missing evidence paths: none", text)
+        self.assertIn(BUNDLE_ID, text)
+        self.assertIn(REJECTION_BUNDLE_ID, text)
+
+    def test_registry_json_mode_reports_all_registered_bundles(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_chain_demo_cli(
+                ["--registry", str(REGISTRY), "--format", "json"]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["bundle_count"], 2)
+        self.assertEqual(
+            [item["bundle_id"] for item in payload["bundle_reports"]],
+            [BUNDLE_ID, REJECTION_BUNDLE_ID],
+        )
+
+    def test_registry_json_mode_reports_missing_bundle_without_crashing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            registry_path = Path(tmp) / "manifest.json"
+            registry_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "registry_id": "drifted-chain-demo-registry",
+                        "reviewed_at": "2026-05-17",
+                        "purpose": "Exercise demo registry failure reporting.",
+                        "bundles": [
+                            {
+                                "bundle_id": BUNDLE_ID,
+                                "path": "evidence/chains/missing_bundle.json",
+                                "chain_claim_id": CLAIM_ID,
+                                "expected_status": "neighbor-delivery-consumed",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            stdout = io.StringIO()
+
+            with contextlib.redirect_stdout(stdout):
+                exit_code = run_chain_demo_cli(
+                    ["--registry", str(registry_path), "--format", "json"]
+                )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 1, payload)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["accepted_count"], 0)
+        self.assertEqual(payload["failed_count"], 1)
+        self.assertEqual(
+            payload["missing_evidence_paths"],
+            ["evidence/chains/missing_bundle.json"],
+        )
+        self.assertEqual(payload["bundle_reports"], [])
+        self.assertEqual(
+            payload["validation"]["failed_subjects"],
+            ["registry-bundle-paths", "registry-bundle-validation"],
+        )
+
+    def test_module_execution_runs_registry_text_demo_report(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.chain_demo",
+                "--registry",
+                str(REGISTRY),
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("Vertical chain demo registry:", completed.stdout)
+        self.assertIn(BUNDLE_ID, completed.stdout)
+        self.assertIn(REJECTION_BUNDLE_ID, completed.stdout)
+
+    def test_cli_rejects_ambiguous_bundle_and_registry_targets(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.chain_demo",
+                "--bundle",
+                str(BUNDLE),
+                "--registry",
+                str(REGISTRY),
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 2, completed)
+        self.assertIn("not allowed with argument", completed.stderr)
 
     def test_drifted_bundle_report_exposes_validation_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

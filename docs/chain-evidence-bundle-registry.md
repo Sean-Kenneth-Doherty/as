@@ -45,6 +45,17 @@ ADR-0088 adds the same `failed_subjects` contract to single-bundle chain
 evidence JSON output.
 ADR-0094 registers the rejection chain bundle, so the registry now validates
 two composed-chain evidence paths.
+ADR-0095 exposes the same two-bundle surface through the vertical chain demo:
+
+```sh
+python -m autarkic_systems.chain_demo --registry evidence/chains/manifest.json
+python -m autarkic_systems.chain_demo --registry evidence/chains/manifest.json --format json
+```
+
+The demo registry report includes accepted and failed bundle counts,
+missing-path summaries, and the per-bundle claim-to-evidence reports. Missing
+registered bundle files are reported as structured demo failures instead of
+crashing the command.
 
 ADR-0085 makes the target selection explicit: `--bundle` and `--registry` are
 mutually exclusive. Supplying both fails during argument parsing with exit code

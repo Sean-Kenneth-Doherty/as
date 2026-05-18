@@ -1798,3 +1798,23 @@ Status: accepted in
 Implemented in `evidence/chains/neighbor_delivery_rejection_chain_bundle.json`,
 with tests in
 `tests/test_neighbor_delivery_rejection_chain_evidence_bundle.py`.
+
+## ADR-0095: Chain Demo Registry Report
+
+Goal: expose the whole transition-chain evidence registry through the vertical
+chain demo report.
+
+Deliverables:
+
+- `--registry` mode in `autarkic_systems.chain_demo`;
+- registry payloads summarizing bundle count, accepted count, failed count,
+  missing paths, registry validation, and per-bundle demo reports;
+- argparse rejection for ambiguous `--bundle` plus `--registry` target
+  selection;
+- missing registered bundle handling that returns structured failure output
+  instead of crashing;
+- documentation update for the registry demo command.
+
+Status: accepted in `docs/adr/0095-chain-demo-registry-report.md`.
+Implemented in `autarkic_systems/chain_demo.py`, with tests in
+`tests/test_chain_demo_report.py`.
