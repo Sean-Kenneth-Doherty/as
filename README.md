@@ -54,6 +54,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/diagonal-construction.md` records the first checked syntactic diagonal
   seed built with `substitution_code`, while leaving representability and the
   diagonal lemma open.
+- `docs/substitution-representability.md` records the first checked
+  meta-level substitution graph witness for that diagonal seed, while leaving
+  the delta0 graph formula and representability proof open.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -394,6 +397,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   syntactic diagonal seed over `substitution_code(n,n)`, while leaving
   substitution representability, the diagonal lemma, and fixed-point equation
   proof open.
+- `autarkic_systems/substitution_representability.py` validates and runs the
+  first checked meta-level substitution graph witness for the diagonal seed,
+  while leaving the delta0 graph formula and substitution representability
+  proof open.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, substitution surface, and complement surface without
@@ -491,6 +498,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.diagonal_construction --format json` validates
   `claims/diagonal_construction_targets.json`, including the checked
   `substitution_code(n,n)` diagonal seed and closed quoted seed instance.
+- `python -m autarkic_systems.substitution_representability --format json`
+  validates `claims/substitution_representability_targets.json`, including the
+  checked self-application graph witness from the diagonal seed code to the
+  closed quoted seed instance.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct

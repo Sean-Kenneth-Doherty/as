@@ -146,6 +146,13 @@
   fail-closed dependency of `autarkic_systems.formal_confidence`; missing or
   invalid diagonal-construction references now reject formal-confidence
   validation as `target-diagonal-construction`.
+- ADR-0244 adds `claims/substitution_representability_targets.json` and
+  `autarkic_systems.substitution_representability`, checking the concrete
+  meta-level self-application graph point for the diagonal seed. The formula
+  and argument code are both `[41, 1, 22, 11, 1, 18, 11, 4, 11, 4]`, the
+  output is closed with code length `296`, and this still does not prove a
+  delta0 substitution graph formula, substitution representability, a diagonal
+  lemma, fixed-point equation, or self-consistency.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

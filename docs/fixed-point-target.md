@@ -12,8 +12,9 @@ formal codebook.
 AS now has a formal codebook, capture-avoiding substitution examples, token
 numeral quotation examples, token-numeral sequence examples, quotation term
 examples, a checked `substitution_code` term surface, a checked naive equation
-candidate, a checked diagonal seed surface, a Level-1 consistency target, and
-a selected deduction-apparatus target. Those are prerequisites for a
+candidate, a checked diagonal seed surface, a checked substitution graph
+witness for that seed, a Level-1 consistency target, and a selected
+deduction-apparatus target. Those are prerequisites for a
 SelfCons-style statement, but they still do not construct a diagonal fixed
 point.
 
@@ -45,7 +46,9 @@ records that it is not a fixed point. ADR-0241 adds the coding term needed to
 state a diagonal substitution route without repeating that direct
 self-embedding move. ADR-0242 adds the first checked seed and quoted seed
 instance for that route while leaving substitution representability and the
-diagonal lemma open.
+diagonal lemma open. ADR-0244 checks the corresponding meta-level
+self-application graph witness without claiming the delta0 graph formula or
+representability proof.
 
 ## Run
 
@@ -55,6 +58,7 @@ python -m autarkic_systems.fixed_point --format json
 python -m autarkic_systems.formal_quotation_sequence
 python -m autarkic_systems.formal_quotation_term
 python -m autarkic_systems.diagonal_construction
+python -m autarkic_systems.substitution_representability
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary

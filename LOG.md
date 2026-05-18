@@ -5260,3 +5260,25 @@
   formal-confidence text/JSON output reported the diagonal-construction
   dependency accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`.
+
+## 2026-05-18 - Substitution Representability Witness
+
+- Added ADR-0244 to record the first checked meta-level substitution graph
+  witness for the current diagonal seed without claiming representability.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_representability` and
+  `claims/substitution_representability_targets.json` did not exist.
+- Added `claims/substitution_representability_targets.json`, recording
+  `AS-SUBSTITUTION-REPRESENTABILITY-DIAGONAL-SEED-WITNESS` as
+  `representability-witness-not-proof`.
+- Added `autarkic_systems/substitution_representability.py` with helpers to
+  rebuild the diagonal seed, use the seed code as both formula and argument
+  code, quote the argument code as a term, and validate the closed output
+  graph point.
+- The checked formula and argument code are
+  `[41, 1, 22, 11, 1, 18, 11, 4, 11, 4]`; the checked output is closed and
+  has code length `296`.
+- Focused substitution-representability tests passed 12 tests. This preserves
+  the fixed-point blocker: no delta0 graph formula, substitution
+  representability proof, diagonal lemma, fixed-point equation proof, or
+  self-consistency theorem is claimed.

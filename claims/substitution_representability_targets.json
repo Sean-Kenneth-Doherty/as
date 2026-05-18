@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "witness_set_id": "as-substitution-representability-witness-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First checked meta-level substitution graph witness for the substitution_code diagonal route. This records the concrete graph point needed by a later representability proof without claiming that proof.",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "codebook_path": "language/formal_codebook.json",
+  "willard_anchor_ids": [
+    "W2011-D3.4-GENERIC-CONFIGURATION",
+    "W2011-D5.7-SELFCONSK",
+    "W2020-D3.2-SELF-JUSTIFYING-GENAC"
+  ],
+  "witnesses": [
+    {
+      "witness_id": "AS-SUBSTITUTION-REPRESENTABILITY-DIAGONAL-SEED-WITNESS",
+      "construction_id": "AS-FIXED-POINT-SELFCONS1-DIAGONAL-SEED",
+      "target_id": "AS-FIXED-POINT-SELFCONS1-TARGET",
+      "substitution_variable": "n",
+      "status": "representability-witness-not-proof",
+      "expected_formula_code": [41, 1, 22, 11, 1, 18, 11, 4, 11, 4],
+      "expected_argument_code": [41, 1, 22, 11, 1, 18, 11, 4, 11, 4],
+      "expected_output_code_length": 296,
+      "expected_output_code_prefix": [41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13],
+      "expected_output_free_variables": [],
+      "required_future_work": [
+        "delta0-graph-formula",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no delta0 substitution graph formula",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Turn this meta-level graph witness into a formal delta0 graph target for substitution_code before claiming diagonal representability."
+    }
+  ]
+}

@@ -7,7 +7,8 @@ ADR-0242 adds `claims/diagonal_construction_targets.json` and
 that uses the ADR-0241 `substitution_code(t,u)` term to build the diagonal
 route. ADR-0243 makes this seed a structured dependency of the aggregate
 formal-confidence target, so formal-confidence validation fails closed if this
-surface drifts.
+surface drifts. ADR-0244 adds the first checked substitution graph witness for
+this seed, while still leaving representability unproved.
 
 ## Purpose
 
@@ -63,4 +64,6 @@ The validator checks that:
 This is not a substitution representability proof, diagonal lemma, fixed-point
 equation proof, arithmetized proof predicate, or self-consistency theorem. It
 is the checked syntactic seed needed before those later claims can be pursued
-without returning to direct quotation self-embedding.
+without returning to direct quotation self-embedding. Use
+`python -m autarkic_systems.substitution_representability` for the next
+checked graph witness on top of this seed.

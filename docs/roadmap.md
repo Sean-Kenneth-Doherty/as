@@ -5080,3 +5080,28 @@ Status: accepted in
 `docs/adr/0243-formal-confidence-diagonal-dependency.md`. Implemented in
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0244: Substitution Representability Witness
+
+Goal: record the first checked meta-level substitution graph witness for the
+current diagonal seed without claiming representability.
+
+Deliverables:
+
+- `claims/substitution_representability_targets.json` with one checked witness
+  for `subst_code(seed, seed)`;
+- `autarkic_systems.substitution_representability` validation that rebuilds
+  the diagonal seed, uses the seed code as both formula and argument code, and
+  checks the closed output code length, prefix, and free-variable boundary;
+- text/JSON CLI validation for the witness surface;
+- fail-closed rejection for unknown diagonal construction IDs, stale output
+  facts, and proved-status overclaims; and
+- no delta0 substitution graph formula, substitution representability proof,
+  diagonal lemma, fixed-point equation proof, self-consistency theorem,
+  runtime behavior, command semantics, evidence bundle, or GitHub submission
+  logic changes.
+
+Status: accepted in
+`docs/adr/0244-substitution-representability-witness.md`. Implemented in
+`autarkic_systems/substitution_representability.py`, with tests in
+`tests/test_substitution_representability.py`.
