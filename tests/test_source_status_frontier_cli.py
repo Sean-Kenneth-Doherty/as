@@ -88,8 +88,7 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         self.assertIn("Execution readiness:", text)
         self.assertIn(
             "write-buf-zero, write-buf-one: blocked; execution changes "
-            "allowed: no; blockers: buffer-full-boundary, "
-            "post-append-clearing",
+            "allowed: no; blockers: post-append-clearing",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)

@@ -81,7 +81,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   append bits rather than high-rail-derived standard-signal values. It also
   records that recipient write-buffer command messages use the recipient
   non-init rejection boundary and that self-target write-buffer command tokens
-  use the unsupported preservation boundaries.
+  use the unsupported preservation boundaries. The remaining execution blocker
+  is post-append clearing after the full-buffer boundary resolution.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented, and records the
@@ -387,8 +388,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   command semantics source-status decision machine-checkable, including the
   literal command bit-source evidence and the resolved standard-signal
   interaction, recipient-surface, and self-target-surface questions, plus the
-  execution-readiness gate that blocks append execution on buffer-full and
-  post-append clearing source conflicts.
+  resolved full-buffer boundary and the execution-readiness gate that blocks
+  append execution on the remaining post-append clearing source conflict.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

@@ -3408,3 +3408,23 @@
   The source-status and project-status JSON CLIs accepted their current
   schemas. `py_compile`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 671 tests.
+
+## 2026-05-18 - Write-Buffer Full-Boundary Resolution
+
+- Added ADR-0159 to resolve the write-buffer `buffer-full-boundary` question
+  without widening runtime execution.
+- Added red write-buffer, project-status, and source-status frontier tests
+  before implementation. The focused red run executed 96 tests and failed
+  because `buffer-full-boundary` was still unresolved, absent from
+  `resolved_resolution_questions`, and still present in execution-readiness
+  blockers.
+- Updated `sources/write_buffer_command_semantics_status.json` with a
+  structured `buffer_full_boundary_resolution`, moved `buffer-full-boundary`
+  to resolved questions, and narrowed the live unresolved queue and readiness
+  blocker list to `post-append-clearing`.
+- Focused verification passed 97 tests. Project-status remains schema 15 and
+  source-status frontier remains schema 2; this is a source-status-only
+  narrowing with no Universal Cell runtime behavior change. The source-status
+  and project-status JSON CLIs accepted the narrowed write-buffer blocker list.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 674 tests.

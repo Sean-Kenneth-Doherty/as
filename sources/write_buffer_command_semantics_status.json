@@ -22,7 +22,7 @@
       "write-buf-zero",
       "write-buf-one"
     ],
-    "gap": "The formal model names write-buffer commands in the command table and generic special-message paths, but does not define an executable write-buffer primitive or its buffer-full and clearing boundaries."
+    "gap": "The formal model names write-buffer commands in the command table and generic special-message paths, but does not define a complete executable write-buffer primitive or its post-append clearing boundary."
   },
   "legacy_write_buffer_witnesses": [
     {
@@ -71,6 +71,13 @@
     "fsmsim_locus": "lines 262-267, write-buf-zero appends 0 and write-buf-one appends 1 while clearing self-mailbox and input channels",
     "summary": "The named write-buffer commands carry literal 0 and 1 append bits. The bit value is not derived from the ordinary standard-signal high-rail comparison path, though high-rail and post-append state clearing remain unresolved."
   },
+  "buffer_full_boundary_resolution": {
+    "decision": "preserve-existing-full-buffer-boundary-before-write-buffer-append",
+    "formal_model_locus": "lines 152-175, less-than-full write-to-buffer guard and full-buffer process state",
+    "raa_locus": "lines 204-205 and lines 280-282, buffer-full? guard and write-buf append only when not full",
+    "legacy_absence": "SEMSIM and FSMSIM define append functions without a matching named command-token full-buffer rule.",
+    "summary": "AS preserves the existing full-buffer boundary before write-buffer append. The formal model and RAA both gate writes on a less-than-full buffer; SEMSIM and FSMSIM omit a matching guard but provide no contrary full-buffer policy."
+  },
   "recipient_surface_resolution": {
     "decision": "reject-recipient-write-buffer-command-message-as-non-init",
     "source_status": "sources/recipient_non_init_command_source_status.json",
@@ -93,19 +100,11 @@
   },
   "required_resolution_questions": [
     {
-      "question_id": "buffer-full-boundary",
-      "summary": "Decide whether write-buffer commands are ignored, rejected, preserve state, or report a status when the command buffer is full."
-    },
-    {
       "question_id": "post-append-clearing",
       "summary": "Decide whether write-buffer execution preserves the appended buffer, clears it like SEMSIM's stem wrapper, or clears only input/mail state."
     }
   ],
   "resolution_question_evidence": [
-    {
-      "question_id": "buffer-full-boundary",
-      "evidence": "RAA guards write-buffer append with buffer-full? while SEMSIM and FSMSIM expose no matching buffer-full guard."
-    },
     {
       "question_id": "post-append-clearing",
       "evidence": "RAA preserves the appended buffer, SEMSIM's stem wrapper clears the buffer after append, and FSMSIM clears self-mailbox and input channels without a matching buffer clear."
@@ -115,10 +114,9 @@
     "decision": "blocked",
     "execution_change_allowed": false,
     "blocked_by_resolution_questions": [
-      "buffer-full-boundary",
       "post-append-clearing"
     ],
-    "summary": "Write-buffer append execution stays blocked until buffer-full and post-append clearing semantics are source-resolved."
+    "summary": "Write-buffer append execution stays blocked until post-append clearing semantics are source-resolved."
   },
   "resolved_resolution_questions": [
     {
@@ -138,6 +136,12 @@
       "decision": "preserve-self-target-write-buffer-as-unsupported",
       "source_status": "sources/write_buffer_command_semantics_status.json",
       "legacy_divergence": "AS already preserves direct self-mailbox write-buffer command tokens under UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and preserves completed self-target command-buffer write-buffer commands under UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED; executable write-buffer append semantics remain blocked by buffer-full and post-append clearing divergence."
+    },
+    {
+      "question_id": "buffer-full-boundary",
+      "decision": "preserve-existing-full-buffer-boundary-before-write-buffer-append",
+      "source_status": "sources/write_buffer_command_semantics_status.json",
+      "legacy_divergence": "The formal model gates writes to the stem buffer on less-than-full state and RAA write-buf appends only when buffer-full? is false; SEMSIM and FSMSIM omit a matching named command-token full-buffer rule but provide no contrary full-buffer policy."
     }
   ],
   "additional_source_statuses": [
@@ -157,5 +161,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Continue preserving write-buffer command tokens at the existing self-target unsupported boundaries until a later ADR selects source-backed buffer-full and post-append execution semantics."
+  "as_boundary": "Continue preserving write-buffer command tokens at the existing self-target unsupported boundaries until a later ADR selects source-backed post-append execution semantics."
 }

@@ -656,3 +656,8 @@
   resolved question list. Duplicate live blockers or duplicate settled
   decisions now fail as `source-status-schema`, while project status remains
   schema 15 and source-status remains schema 2.
+- ADR-0159 resolves write-buffer `buffer-full-boundary` as
+  `preserve-existing-full-buffer-boundary-before-write-buffer-append`, based
+  on the formal less-than-full write guard and RAA `buffer-full?` guard.
+  Write-buffer execution remains blocked only by `post-append-clearing`; the
+  JSON shapes stay at project status schema 15 and source-status schema 2.

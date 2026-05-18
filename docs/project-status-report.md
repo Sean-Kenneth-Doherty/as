@@ -201,6 +201,10 @@ command `blocked` while allowing execution changes, preserving project status
 ADR-0158 rejects duplicate unresolved and duplicate resolved source-status
 question IDs within a single record, preserving project status
 `schema_version: 15`.
+ADR-0159 resolves the write-buffer `buffer-full-boundary` question through the
+formal less-than-full write guard and RAA `buffer-full?` guard, leaving only
+`post-append-clearing` as a live write-buffer execution-readiness blocker while
+preserving project status `schema_version: 15`.
 
 ## Boundary
 

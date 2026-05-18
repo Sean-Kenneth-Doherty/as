@@ -45,7 +45,7 @@ STANDARD_SIGNAL_AS_BOUNDARY = (
 WRITE_BUFFER_AS_BOUNDARY = (
     "Continue preserving write-buffer command tokens at the existing "
     "self-target unsupported boundaries until a later ADR selects "
-    "source-backed buffer-full and post-append execution semantics."
+    "source-backed post-append execution semantics."
 )
 TRANSITION_BUNDLES = [
     {
@@ -178,7 +178,6 @@ CHAIN_CLAIMS = {
 }
 STANDARD_SIGNAL_QUESTIONS = []
 WRITE_BUFFER_QUESTIONS = [
-    "buffer-full-boundary",
     "post-append-clearing",
 ]
 STANDARD_SIGNAL_RESOLUTION_QUESTIONS = []
@@ -276,16 +275,19 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
             "buffer-full and post-append clearing divergence."
         ),
     },
-]
-WRITE_BUFFER_RESOLUTION_QUESTIONS = [
     {
         "question_id": "buffer-full-boundary",
-        "summary": (
-            "Decide whether write-buffer commands are ignored, rejected, "
-            "preserve state, or report a status when the command buffer is "
-            "full."
+        "decision": "preserve-existing-full-buffer-boundary-before-write-buffer-append",
+        "source_status": "sources/write_buffer_command_semantics_status.json",
+        "legacy_divergence": (
+            "The formal model gates writes to the stem buffer on less-than-full "
+            "state and RAA write-buf appends only when buffer-full? is false; "
+            "SEMSIM and FSMSIM omit a matching named command-token full-buffer "
+            "rule but provide no contrary full-buffer policy."
         ),
     },
+]
+WRITE_BUFFER_RESOLUTION_QUESTIONS = [
     {
         "question_id": "post-append-clearing",
         "summary": (
@@ -296,13 +298,6 @@ WRITE_BUFFER_RESOLUTION_QUESTIONS = [
     },
 ]
 WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = [
-    {
-        "question_id": "buffer-full-boundary",
-        "evidence": (
-            "RAA guards write-buffer append with buffer-full? while SEMSIM "
-            "and FSMSIM expose no matching buffer-full guard."
-        ),
-    },
     {
         "question_id": "post-append-clearing",
         "evidence": (
@@ -316,12 +311,11 @@ WRITE_BUFFER_EXECUTION_READINESS = {
     "decision": "blocked",
     "execution_change_allowed": False,
     "blocked_by_resolution_questions": [
-        "buffer-full-boundary",
         "post-append-clearing",
     ],
     "summary": (
-        "Write-buffer append execution stays blocked until buffer-full and "
-        "post-append clearing semantics are source-resolved."
+        "Write-buffer append execution stays blocked until post-append "
+        "clearing semantics are source-resolved."
     ),
 }
 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
@@ -851,10 +845,11 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertNotIn("buffer-full-boundary: Decide whether", text)
         self.assertIn(
-            "buffer-full-boundary: Decide whether write-buffer commands are "
-            "ignored, rejected, preserve state, or report a status when the "
-            "command buffer is full.",
+            "post-append-clearing: Decide whether write-buffer execution "
+            "preserves the appended buffer, clears it like SEMSIM's stem "
+            "wrapper, or clears only input/mail state.",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)
@@ -874,10 +869,12 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertNotIn("buffer-full-boundary: RAA guards", text)
         self.assertIn(
-            "buffer-full-boundary: RAA guards write-buffer append with "
-            "buffer-full? while SEMSIM and FSMSIM expose no matching "
-            "buffer-full guard.",
+            "post-append-clearing: RAA preserves the appended buffer, "
+            "SEMSIM's stem wrapper clears the buffer after append, and "
+            "FSMSIM clears self-mailbox and input channels without a "
+            "matching buffer clear.",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)
@@ -1001,6 +998,20 @@ class ProjectStatusReportTests(unittest.TestCase):
             "post-append clearing divergence.",
             text,
         )
+        self.assertIn(
+            "buffer-full-boundary: "
+            "preserve-existing-full-buffer-boundary-before-write-buffer-append "
+            "(sources/write_buffer_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: The formal model gates writes to the stem "
+            "buffer on less-than-full state and RAA write-buf appends only "
+            "when buffer-full? is false; SEMSIM and FSMSIM omit a matching "
+            "named command-token full-buffer rule but provide no contrary "
+            "full-buffer policy.",
+            text,
+        )
 
     def test_text_status_names_execution_readiness(self):
         report = build_project_status_report()
@@ -1010,14 +1021,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Execution readiness:", text)
         self.assertIn(
             "write-buf-zero, write-buf-one: blocked; execution changes "
-            "allowed: no; blockers: buffer-full-boundary, "
-            "post-append-clearing",
+            "allowed: no; blockers: post-append-clearing",
             text,
         )
         self.assertIn(
             "summary: Write-buffer append execution stays blocked until "
-            "buffer-full and post-append clearing semantics are "
-            "source-resolved.",
+            "post-append clearing semantics are source-resolved.",
             text,
         )
 

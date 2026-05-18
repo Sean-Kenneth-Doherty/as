@@ -3137,3 +3137,29 @@ Deliverables:
 Status: accepted in `docs/adr/0158-resolution-question-id-uniqueness.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0159: Write-Buffer Full-Boundary Resolution
+
+Goal: resolve the write-buffer full-buffer boundary without widening runtime
+execution.
+
+Deliverables:
+
+- `buffer-full-boundary` removed from write-buffer unresolved
+  `required_resolution_questions`;
+- `buffer-full-boundary` added to write-buffer `resolved_resolution_questions`;
+- structured source-status basis for the formal less-than-full write guard and
+  RAA `buffer-full?` guard;
+- write-buffer execution-readiness blockers narrowed to
+  `post-append-clearing`;
+- unchanged project-status schema `15`;
+- unchanged source-status frontier schema `2`; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0159-write-buffer-full-boundary-resolution.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json` and
+`docs/write-buffer-command-semantics-status.md`, with tests in
+`tests/test_write_buffer_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

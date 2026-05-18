@@ -113,7 +113,6 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(
             question_ids,
             {
-                "buffer-full-boundary",
                 "post-append-clearing",
             },
         )
@@ -194,6 +193,49 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertIn("literal 0 and 1 append bits", resolved["legacy_divergence"])
         self.assertIn("post-append clearing", resolved["legacy_divergence"])
+
+    def test_buffer_full_boundary_resolution_records_source_basis(self):
+        resolution = self.status["buffer_full_boundary_resolution"]
+
+        self.assertEqual(
+            resolution["decision"],
+            "preserve-existing-full-buffer-boundary-before-write-buffer-append",
+        )
+        self.assertIn("lines 152-175", resolution["formal_model_locus"])
+        self.assertIn("lines 204-205", resolution["raa_locus"])
+        self.assertIn("lines 280-282", resolution["raa_locus"])
+        self.assertIn("no contrary full-buffer policy", resolution["summary"])
+
+    def test_buffer_full_boundary_is_resolved_as_preservation_boundary(self):
+        resolved_questions = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+
+        resolved = resolved_questions["buffer-full-boundary"]
+        self.assertEqual(
+            resolved["decision"],
+            "preserve-existing-full-buffer-boundary-before-write-buffer-append",
+        )
+        self.assertEqual(
+            resolved["source_status"],
+            "sources/write_buffer_command_semantics_status.json",
+        )
+        self.assertIn("formal model gates writes", resolved["legacy_divergence"])
+        self.assertIn("RAA", resolved["legacy_divergence"])
+        self.assertIn("no contrary full-buffer policy", resolved["legacy_divergence"])
+
+    def test_execution_readiness_only_names_remaining_post_append_blocker(self):
+        readiness = self.status["execution_readiness"]
+
+        self.assertEqual(readiness["decision"], "blocked")
+        self.assertFalse(readiness["execution_change_allowed"])
+        self.assertEqual(
+            readiness["blocked_by_resolution_questions"],
+            ["post-append-clearing"],
+        )
+        self.assertIn("post-append clearing", readiness["summary"])
+        self.assertNotIn("buffer-full", readiness["summary"])
 
     def test_existing_source_status_frontiers_point_past_write_buffer(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))

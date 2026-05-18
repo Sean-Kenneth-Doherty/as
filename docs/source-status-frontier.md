@@ -84,6 +84,9 @@ while allowing execution changes.
 ADR-0158 rejects duplicate unresolved and duplicate resolved question IDs
 inside one source-status record, so the focused frontier cannot display the
 same blocker or settled decision twice.
+ADR-0159 moves write-buffer `buffer-full-boundary` from unresolved to resolved
+and narrows write-buffer execution-readiness blockers to
+`post-append-clearing`.
 
 ## Boundary
 

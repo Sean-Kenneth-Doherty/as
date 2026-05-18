@@ -442,3 +442,7 @@
 - Any source-status field that downstream checks treat as a set should still
   reject duplicates at the list boundary. Otherwise coverage and disjointness
   checks can pass while the human frontier shows ambiguous repeated work.
+- A source disagreement can sometimes be narrowed by separating an explicit
+  positive rule from mere absence. For write-buffer full buffers, the formal
+  model and RAA provide a guard, while SEMSIM/FSMSIM absence can keep execution
+  blocked without keeping the full-buffer question unresolved.
