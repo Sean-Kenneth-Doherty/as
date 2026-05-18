@@ -4716,3 +4716,22 @@
   GitHub-submission text/JSON and handoff commands reported accepted status
   and displayed the origin `main` web URL. `compileall`, `git diff --check`,
   and `python -m unittest discover` passed; the full suite ran 910 tests.
+
+## 2026-05-18 - Submission Compare URL
+
+- Added ADR-0222 to make the local GitHub submission report and inherited
+  handoff report include a fork-hosted compare URL from refreshed
+  `origin/main` to submitted `HEAD`.
+- Added red GitHub-submission and handoff tests before implementation. The red
+  run failed because JSON lacked `fork_main.compare_url` and text lacked
+  `Fork compare: ...`.
+- Updated `autarkic_systems/github_submission.py` with a derived
+  `fork_compare_url`, JSON `fork_main.compare_url`, and text `Fork compare:`
+  line using the normalized fork remote web URL plus inspected origin/head
+  commits.
+- Updated README, roadmap, and repo memory notes for the fork-hosted compare
+  URL.
+- Focused GitHub-submission and handoff tests passed 18 tests. Live
+  GitHub-submission text/JSON and handoff commands reported accepted status
+  and displayed the fork compare URL. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 910 tests.

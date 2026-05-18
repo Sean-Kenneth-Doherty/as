@@ -4525,3 +4525,25 @@ Deliverables:
 Status: accepted in `docs/adr/0221-origin-main-web-url.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0222: Submission Compare URL
+
+Goal: make the GitHub submission and handoff reports link directly to the
+submitted diff from refreshed `origin/main` to submitted `HEAD`.
+
+Deliverables:
+
+- `fork_compare_url` derived from the normalized fork remote URL,
+  `origin/main` commit, and `HEAD`;
+- JSON `fork_main.compare_url` in GitHub submission status;
+- text output rendering `Fork compare: ...`;
+- SSH-normalized fork remotes producing the same canonical compare URL;
+- handoff JSON/text inheriting the expanded submission surface; and
+- no GitHub API dependency, submission-acceptance change, remote-refresh
+  behavior change, handoff-readiness change, project-status change,
+  vertical-demo change, evidence/claim/proof/source-status change, or runtime
+  semantics change.
+
+Status: accepted in `docs/adr/0222-submission-compare-url.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

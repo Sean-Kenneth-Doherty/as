@@ -93,6 +93,12 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             payload["fork_main"]["web_url"],
             "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
         )
+        self.assertEqual(
+            payload["fork_main"]["compare_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/compare/"
+            "9c82f89b7f3e6c911ef3c2f2b5d12a716d22c091..."
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+        )
         self.assertFalse(payload["origin_main"]["matches_head"])
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
         self.assertEqual(payload["origin_main"]["head_behind_by"], 0)
@@ -152,6 +158,12 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             "Fork main: https://github.com/Sean-Kenneth-Doherty/as/tree/main",
             text,
         )
+        self.assertIn(
+            "Fork compare: https://github.com/Sean-Kenneth-Doherty/as/compare/"
+            "9c82f89b7f3e6c911ef3c2f2b5d12a716d22c091..."
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
+            text,
+        )
         self.assertIn("fork/main: matches HEAD (be59d20)", text)
         self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 190 commits, behind by 0 commits", text)
@@ -199,6 +211,12 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertEqual(
             payload["fork_main"]["web_url"],
             "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
+        )
+        self.assertEqual(
+            payload["fork_main"]["compare_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/compare/"
+            "9c82f89b7f3e6c911ef3c2f2b5d12a716d22c091..."
+            "be59d209ae3fe4deb8271c9ffd4aac83bd591e5f",
         )
         self.assertIn(
             "Fork commit: https://github.com/Sean-Kenneth-Doherty/as/commit/"

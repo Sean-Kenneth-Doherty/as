@@ -658,6 +658,9 @@
 - ADR-0221 adds `origin_main.web_url` / `Origin main: ...` to GitHub
   submission and handoff reports, pointing reviewers at upstream `main` using
   the same normalized GitHub remote web URL.
+- ADR-0222 adds `fork_main.compare_url` / `Fork compare: ...` to GitHub
+  submission and handoff reports, comparing refreshed `origin/main` to
+  submitted `HEAD` on the fork.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

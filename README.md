@@ -324,8 +324,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   current GitHub submission path: current branch, `HEAD`, origin/fork remote
   URLs, fork `main` match state, origin `main` divergence, and the upstream
   tracking issue. It also renders a direct fork commit URL for the submitted
-  `HEAD`, a fork `main` browser URL, and an origin `main` browser URL,
-  normalizing common HTTPS and SSH GitHub remotes to web URLs.
+  `HEAD`, a fork `main` browser URL, a fork-hosted compare URL from
+  `origin/main` to `HEAD`, and an origin `main` browser URL, normalizing common
+  HTTPS and SSH GitHub remotes to web URLs.
 - `autarkic_systems/handoff.py` composes the compact project status, vertical
   demo digest, and local GitHub submission status into one end-of-month
   handoff report.
@@ -402,10 +403,11 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.github_submission` emits a local text/JSON
   submission-status report showing whether the current `HEAD` is visible on
   fork `main`, the fork commit URL for that `HEAD`, the fork `main` browser
-  URL, the upstream origin `main` browser URL, how far local `HEAD` is ahead
-  of upstream `origin/main`, and where upstream submission notes are tracked.
-  The browser URLs are normalized from common GitHub HTTPS and SSH remote
-  forms. It also reports local
+  URL, the fork-hosted compare URL from `origin/main` to `HEAD`, the upstream
+  origin `main` browser URL, how far local `HEAD` is ahead of upstream
+  `origin/main`, and where upstream submission notes are tracked. The browser
+  URLs are normalized from common GitHub HTTPS and SSH remote forms. It also
+  reports local
   `fork/main` remote-tracking ref freshness from the git reflog so operators
   can see how recent the submission evidence is. `--refresh-remotes` fetches
   fork `main` and origin `main` into the inspected remote-tracking refs before

@@ -74,6 +74,15 @@ class GitHubSubmissionStatus:
         return f"{_github_remote_web_url(self.fork_url)}/tree/main"
 
     @property
+    def fork_compare_url(self) -> str:
+        """Return the GitHub web URL comparing origin main to submitted HEAD."""
+
+        return (
+            f"{_github_remote_web_url(self.fork_url)}/compare/"
+            f"{self.origin_main_commit}...{self.head_commit}"
+        )
+
+    @property
     def origin_main_url(self) -> str:
         """Return the GitHub web URL for origin main."""
 
@@ -166,6 +175,7 @@ def github_submission_status_payload(
             "short": report.fork_main_short,
             "matches_head": report.fork_main_matches_head,
             "web_url": report.fork_main_url,
+            "compare_url": report.fork_compare_url,
             "remote_ref_freshness": report.fork_main_ref_freshness,
         },
         "origin_main": {
@@ -201,6 +211,7 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
         f"HEAD: {report.head_short}",
         f"Fork commit: {report.fork_commit_url}",
         f"Fork main: {report.fork_main_url}",
+        f"Fork compare: {report.fork_compare_url}",
         f"fork/main: {fork_line}",
         _format_remote_ref_freshness(report.fork_main_ref_freshness),
         (

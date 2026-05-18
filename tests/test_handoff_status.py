@@ -266,6 +266,12 @@ class HandoffStatusTests(unittest.TestCase):
             "https://github.com/Sean-Kenneth-Doherty/as/tree/main",
         )
         self.assertEqual(
+            payload["github_submission"]["fork_main"]["compare_url"],
+            "https://github.com/Sean-Kenneth-Doherty/as/compare/"
+            "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0..."
+            "04158fc29229d091f616734725be3c8f54198200",
+        )
+        self.assertEqual(
             payload["github_submission"]["origin_main"]["web_url"],
             "https://github.com/jpt4/as/tree/main",
         )
@@ -306,6 +312,12 @@ class HandoffStatusTests(unittest.TestCase):
         )
         self.assertIn(
             "Fork main: https://github.com/Sean-Kenneth-Doherty/as/tree/main",
+            text,
+        )
+        self.assertIn(
+            "Fork compare: https://github.com/Sean-Kenneth-Doherty/as/compare/"
+            "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0..."
+            "04158fc29229d091f616734725be3c8f54198200",
             text,
         )
         self.assertIn("fork/main: matches HEAD (04158fc)", text)
