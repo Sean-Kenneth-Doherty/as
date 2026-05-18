@@ -16,6 +16,8 @@ or output-clearing semantics.
 python -m autarkic_systems.network_witness
 python -m autarkic_systems.network_witness --case write-buffer-one-consumed
 python -m autarkic_systems.network_witness --case standard-signal-rejected
+python -m autarkic_systems.network_witness --case recipient-not-ready
+python -m autarkic_systems.network_witness --case sender-not-delivered
 python -m autarkic_systems.network_witness --format json
 ```
 
@@ -28,6 +30,11 @@ The checked fixture cases are:
 - `standard-signal-rejected`: neighbor delivery of `standard-signal` is
   installed as recipient upstream and rejected by the existing recipient non-init
   boundary.
+- `recipient-not-ready`: neighbor delivery is produced by the sender, but the
+  recipient already has pending upstream state, so no delivery is installed and
+  no recipient step is run.
+- `sender-not-delivered`: the sender executes a stem buffer append rather than a
+  neighbor delivery, so no handoff or recipient step is run.
 
 ## Payload
 

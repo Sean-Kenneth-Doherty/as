@@ -232,6 +232,47 @@ class TwoCellNetworkWitnessTests(unittest.TestCase):
         self.assertIn("Two-cell network witness: recipient-not-consumed", output)
         self.assertIn("Accepted: no", output)
 
+    def test_cli_emits_json_for_recipient_not_ready_fixture(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.network_witness",
+                "--case",
+                "recipient-not-ready",
+                "--format",
+                "json",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 1, completed.stderr)
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(payload["status"], "recipient-not-ready")
+        self.assertIsNone(payload["delivered_tuple"])
+        self.assertIsNone(payload["recipient"]["before_step"])
+        self.assertEqual(
+            [event["phase"] for event in payload["events"]],
+            ["sender-step", "handoff-blocked"],
+        )
+
+    def test_cli_emits_text_for_sender_not_delivered_fixture(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_network_witness_cli(["--case", "sender-not-delivered"])
+
+        output = stdout.getvalue()
+        self.assertEqual(exit_code, 1, output)
+        self.assertIn("Two-cell network witness: sender-not-delivered", output)
+        self.assertIn("Accepted: no", output)
+        self.assertIn("Delivered tuple: none", output)
+        self.assertIn("sender-step sender: stem-buffer-appended", output)
+        self.assertNotIn("recipient-step recipient:", output)
+
 
 if __name__ == "__main__":
     unittest.main()

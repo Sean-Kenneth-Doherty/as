@@ -803,3 +803,8 @@
   write-buffer, rejected standard-signal, blocked recipient, and
   sender-not-delivered cases without adding scheduler, timing, topology, or new
   command semantics.
+- ADR-0195 exposes the blocked-recipient and sender-not-delivered witness
+  shapes as `python -m autarkic_systems.network_witness --case
+  recipient-not-ready` and `--case sender-not-delivered`, completing the
+  operator-visible fixture surface over the ADR-0194 witness without changing
+  transition behavior.

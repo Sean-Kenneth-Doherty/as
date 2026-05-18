@@ -3964,3 +3964,20 @@ Status: accepted in `docs/adr/0194-two-cell-network-witness.md`. Implemented
 in `autarkic_systems/network_witness.py`, with tests in
 `tests/test_two_cell_network_witness.py` and operator notes in
 `docs/two-cell-network-witness.md`.
+
+## ADR-0195: Complete Network Witness Fixture Surface
+
+Goal: expose every checked two-cell witness shape through the witness CLI.
+
+Deliverables:
+
+- `recipient-not-ready` CLI fixture case;
+- `sender-not-delivered` CLI fixture case;
+- JSON/text tests for those failure-shape fixtures;
+- operator note coverage for all five witness fixture cases; and
+- no new transition behavior.
+
+Status: accepted in
+`docs/adr/0195-complete-network-witness-fixtures.md`. Implemented in
+`autarkic_systems/network_witness.py`, with tests in
+`tests/test_two_cell_network_witness.py`.

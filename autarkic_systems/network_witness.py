@@ -361,10 +361,38 @@ def _standard_signal_rejected_fixture() -> tuple[Cell, Cell]:
     )
 
 
+def _recipient_not_ready_fixture() -> tuple[Cell, Cell]:
+    return (
+        Cell(
+            role="stem",
+            memory="right",
+            input=(1, 0, 0),
+            control=(1, 0, 0),
+            buffer=(1, 0, 1, 0),
+        ),
+        Cell(role="wire", memory="right", upstream=(0, "_", "_")),
+    )
+
+
+def _sender_not_delivered_fixture() -> tuple[Cell, Cell]:
+    return (
+        Cell(
+            role="stem",
+            memory="right",
+            input=(0, 1, 0),
+            control=(1, 0, 0),
+            buffer=(0, 0, 0, 0),
+        ),
+        Cell(role="wire", memory="right"),
+    )
+
+
 _FIXTURE_CASES = {
     "init-consumed": _init_consumed_fixture,
     "write-buffer-one-consumed": _write_buffer_one_consumed_fixture,
     "standard-signal-rejected": _standard_signal_rejected_fixture,
+    "recipient-not-ready": _recipient_not_ready_fixture,
+    "sender-not-delivered": _sender_not_delivered_fixture,
 }
 
 

@@ -4168,3 +4168,19 @@
   reported delivered `write-buf-one` and recipient buffer `[1]`. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 814 tests.
+
+## 2026-05-18 - Complete Network Witness Fixture Surface
+
+- Added ADR-0195 to expose the failure-shape witnesses through the same CLI as
+  the consumed/rejected delivery fixtures.
+- Added red witness tests first. The focused red run failed because
+  `recipient-not-ready` and `sender-not-delivered` were invalid `--case`
+  choices.
+- Added `recipient-not-ready` and `sender-not-delivered` fixture constructors
+  to `autarkic_systems/network_witness.py` and updated
+  `docs/two-cell-network-witness.md` so all five checked witness shapes are
+  listed for operators.
+- Focused green verification passed 11 tests. Live JSON/text runs for the two
+  new failure fixtures emitted the expected witness payloads with nonzero
+  rejected-witness exits. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 816 tests.
