@@ -290,3 +290,6 @@
 - Shape checks should reject blank strings in semantic token fields, not only
   missing fields. Empty text can satisfy a type check while erasing the meaning
   an operator report is supposed to expose.
+- Operator-facing status text is also part of the contract. If a field exists
+  to explain a decision or next step, whitespace-only content should fail the
+  same way missing content fails.

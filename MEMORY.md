@@ -484,3 +484,6 @@
 - ADR-0104 makes `autarkic_systems.project_status` reject blank command-token
   strings in source-status command fields as `source-status-schema`, preserving
   `schema_version: 2`.
+- ADR-0105 makes `autarkic_systems.project_status` reject whitespace-only
+  `decision` and `safe_next_slice` fields as `source-status-schema`, preserving
+  `schema_version: 2`.

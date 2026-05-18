@@ -299,9 +299,9 @@ def _blocked_commands_from_status(data: dict[str, Any]) -> set[str]:
 def _source_status_schema_error(data: Any) -> str:
     if not isinstance(data, dict):
         return "source-status JSON must be an object"
-    if not isinstance(data.get("decision"), str) or not data["decision"]:
+    if not _is_nonempty_text(data.get("decision")):
         return "source-status decision must be non-empty text"
-    if not isinstance(data.get("safe_next_slice"), str) or not data["safe_next_slice"]:
+    if not _is_nonempty_text(data.get("safe_next_slice")):
         return "source-status safe_next_slice must be non-empty text"
     command_error = _blank_command_token_error(data)
     if command_error:
@@ -309,6 +309,10 @@ def _source_status_schema_error(data: Any) -> str:
     if not _blocked_commands_from_status(data):
         return "source-status command fields must include at least one command token"
     return ""
+
+
+def _is_nonempty_text(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
 
 
 def _blank_command_token_error(data: dict[str, Any]) -> str:

@@ -2332,3 +2332,24 @@
   command attribution, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 554 tests.
+
+## 2026-05-18 - Project Status Nonempty Source Text
+
+- Added ADR-0105 to reject whitespace-only source-status `decision` and
+  `safe_next_slice` fields in the project status command.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because source-status records with blank decision text or blank
+  safe-next text were accepted as valid frontier contributors.
+- Updated `autarkic_systems.project_status` so `decision` and
+  `safe_next_slice` must be non-whitespace text, reporting
+  `source-status-schema` otherwise.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the nonempty source-status text contract.
+- Verified the focused project status test passed 20 tests; adjacent project
+  status, transition registry, and chain registry tests passed 45 tests. The
+  checked-in JSON status reported `schema_version: 2`, `accepted: true`,
+  transition `bundle_count: 8`, chain `bundle_count: 2`, aggregate blocked
+  commands `standard-signal`, `write-buf-zero`, and `write-buf-one`, per-source
+  command attribution, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 556 tests.

@@ -162,6 +162,8 @@ ADR-0103 attributes blocked commands to each source-status entry and bumps the
 project status schema version to `2`.
 ADR-0104 rejects blank command-token strings so the project status frontier
 cannot contain invisible command terms.
+ADR-0105 rejects whitespace-only source-status decision and safe-next text so
+accepted frontier entries keep meaningful operator wording.
 
 ## P3: Choose The First Proof Apparatus
 

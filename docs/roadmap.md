@@ -1981,3 +1981,21 @@ Status: accepted in
 `docs/adr/0104-project-status-nonempty-source-commands.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0105: Project Status Nonempty Source Text
+
+Goal: reject whitespace-only source-status `decision` and `safe_next_slice`
+fields in project status.
+
+Deliverables:
+
+- `source-status-schema` failure for blank source-status decision text;
+- `source-status-schema` failure for blank source-status safe-next text;
+- unchanged `schema_version: 2` project status JSON shape;
+- focused tests covering both blank text fields; and
+- documentation update for the nonempty source-status text contract.
+
+Status: accepted in
+`docs/adr/0105-project-status-nonempty-source-text.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

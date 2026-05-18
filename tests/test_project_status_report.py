@@ -248,6 +248,68 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_blank_source_status_decision_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_decision_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "   ",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+        self.assertIn(
+            "decision",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_source_status_safe_next_slice_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_safe_next_status.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "\t ",
+                    "command": "standard-signal",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+        self.assertIn(
+            "safe_next_slice",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_frontier_failed_subjects_preserve_mixed_failure_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing_status = Path(tmp) / "missing_status.json"
