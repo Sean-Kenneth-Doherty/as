@@ -377,3 +377,6 @@
 - A proof surface that downstream validators depend on should also have its
   own first-run CLI. Otherwise operators can inspect the evidence layer more
   easily than the proof layer beneath it.
+- When a lower layer already feeds several richer operator reports, give that
+  lower layer a direct report too. It shortens diagnosis when proof or evidence
+  validation fails above it.

@@ -2605,3 +2605,22 @@ Deliverables:
 Status: accepted in `docs/adr/0134-proof-certificate-cli.md`. Implemented in
 `autarkic_systems/proof_certificates.py`, with tests in
 `tests/test_proof_certificates.py`.
+
+## ADR-0135: Transition Claim CLI
+
+Goal: make the base single-transition claim manifest directly inspectable from
+the command line.
+
+Deliverables:
+
+- `python -m autarkic_systems.claim_manifest` text output;
+- `--format json` output with accepted state, claim count, example count,
+  matched count, result count, and per-example evaluation results;
+- `--claims` path override;
+- exit code `0` for accepted claim-example surfaces and `1` for mismatched
+  example expectations; and
+- focused CLI tests covering successful and failing manifests.
+
+Status: accepted in `docs/adr/0135-transition-claim-cli.md`. Implemented in
+`autarkic_systems/claim_manifest.py`, with tests in
+`tests/test_claim_manifest.py`.

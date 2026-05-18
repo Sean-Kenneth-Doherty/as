@@ -579,3 +579,6 @@
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.
+- ADR-0135 adds `python -m autarkic_systems.claim_manifest` with text/JSON
+  validation of the base transition claim examples and failing exit codes for
+  mismatched manifest expectations.

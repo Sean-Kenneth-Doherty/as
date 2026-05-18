@@ -56,11 +56,14 @@ ADR-0079 adds that first narrow chain object language in
 Fast validation is covered by:
 
 ```sh
+python -m autarkic_systems.claim_manifest
+python -m autarkic_systems.claim_manifest --format json
 python -m unittest tests.test_object_language
 ```
 
 The validator checks:
 
+- current transition claim examples match their predicate results;
 - the language manifest names all required syntax classes;
 - language term sets match the Universal Cell implementation vocabulary;
 - formula predicate symbols correspond to implemented predicate functions;

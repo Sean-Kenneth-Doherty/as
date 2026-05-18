@@ -241,6 +241,8 @@ the project legible:
   init dispatch, neighbor-target command-buffer delivery, recipient
   init-family command-message consumption, recipient non-init command-message
   rejection, and the self-target non-init completed-buffer append boundary.
+- `python -m autarkic_systems.claim_manifest` validates those transition claim
+  examples in text or JSON form.
 - `claims/proof_certificates.json` adds the first tiny proof certificates over
   those transition claims, including `manifest-example` steps and the first
   `predicate-result` steps that name the evaluated predicate directly.
