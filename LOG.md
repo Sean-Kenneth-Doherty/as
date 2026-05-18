@@ -4149,3 +4149,22 @@
   both reported `Remote refresh: accepted (fork/main, origin/main)` before this
   ADR was committed. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 805 tests.
+
+## 2026-05-18 - Two-Cell Network Witness
+
+- Added ADR-0194 to make the existing neighbor-delivery chain inspectable as a
+  bounded network-shaped execution witness rather than only as a predicate
+  helper.
+- Added red witness tests before implementation. The focused red run failed
+  because `autarkic_systems.network_witness` did not exist.
+- Added `autarkic_systems/network_witness.py`, which delegates execution to the
+  existing neighbor-delivery chain helper and records sender before/after
+  state, recipient before/before-step/after state, installed delivered tuple,
+  and ordered sender/handoff/recipient events.
+- Added text and JSON output plus named CLI fixture cases for consumed init
+  delivery, consumed write-buffer delivery, and rejected standard-signal
+  delivery.
+- Focused green verification passed 9 tests. The write-buffer JSON fixture
+  reported delivered `write-buf-one` and recipient buffer `[1]`. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 814 tests.

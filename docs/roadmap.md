@@ -3942,3 +3942,25 @@ Status: accepted in `docs/adr/0193-refresh-remotes-before-handoff.md`.
 Implemented in `autarkic_systems/github_submission.py` and
 `autarkic_systems/handoff.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0194: Two-Cell Network Witness
+
+Goal: make the existing neighbor-delivery chain inspectable as a bounded
+network-shaped execution witness.
+
+Deliverables:
+
+- `autarkic_systems/network_witness.py`;
+- structured witness payload with sender before/after state, recipient
+  before/before-step/after state, delivered tuple, and ordered events;
+- `python -m autarkic_systems.network_witness` text and JSON output over named
+  fixture cases;
+- consumed init delivery, consumed write-buffer delivery, rejected
+  standard-signal delivery, blocked recipient, and sender-not-delivered tests;
+  and
+- no scheduler, timing, topology, output-clearing, or new command semantics.
+
+Status: accepted in `docs/adr/0194-two-cell-network-witness.md`. Implemented
+in `autarkic_systems/network_witness.py`, with tests in
+`tests/test_two_cell_network_witness.py` and operator notes in
+`docs/two-cell-network-witness.md`.

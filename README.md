@@ -259,6 +259,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
+- `autarkic_systems/network_witness.py` records the same bounded two-cell
+  neighbor-delivery execution as an inspectable network-shaped witness with
+  sender state, recipient state, delivered tuple, event trail, and text/JSON
+  CLI output.
 - `autarkic_systems/chain_trace.py` validates the recorded transition-chain
   traces for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
@@ -335,6 +339,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   one report over every registered chain bundle, and `--format json` emits the
   same claim-to-evidence surfaces for automation, including artifact presence
   and missing-path summaries.
+- `python -m autarkic_systems.network_witness --format json` emits the bounded
+  two-cell neighbor-delivery witness as machine-readable JSON, including sender
+  and recipient before/after state, delivered tuple, and ordered events.
 - `python -m autarkic_systems.project_status --format summary` emits a compact
   six-line operator digest over the accepted state, evidence counts, claim
   counts, proof-rule audit, blocked commands, and safe next slice.

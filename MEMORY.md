@@ -796,3 +796,10 @@
   standard-signal command-token execution evidence was found, and the active
   aggregate safe-next now renders as none while `standard-signal` remains
   blocked behind a `no-` source-evidence guard.
+- ADR-0194 adds `autarkic_systems.network_witness`, a bounded two-cell
+  neighbor-delivery witness over existing chain semantics. It records sender
+  before/after state, recipient before/before-step/after state, delivered tuple,
+  and ordered sender/handoff/recipient events for consumed init, consumed
+  write-buffer, rejected standard-signal, blocked recipient, and
+  sender-not-delivered cases without adding scheduler, timing, topology, or new
+  command semantics.
