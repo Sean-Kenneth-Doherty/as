@@ -255,16 +255,18 @@ the project legible:
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
-  and the blocked `standard-signal`, `write-buf-zero`, and `write-buf-one`
-  command-token frontier. The default text report also names the
+  concrete transition and chain registry bundle entries, and the blocked
+  `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
+  frontier. The default text report also names the
   standard-signal and write-buffer blocked runtime surfaces plus the
   resolution-question IDs and summaries that define the next source-backed
   decision work. Schema version `2` attributes blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
   resolution-question IDs that still block command-token execution and rejects
   malformed resolution-question metadata, schema version `4` adds
-  summary-bearing `resolution_questions` objects, and schema version `5` adds
-  checked `blocked_runtime_surfaces` lists.
+  summary-bearing `resolution_questions` objects, schema version `5` adds
+  checked `blocked_runtime_surfaces` lists, and schema version `6` adds
+  registry `bundles` arrays to the transition and chain evidence summaries.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

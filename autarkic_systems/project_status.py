@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 5
+PROJECT_STATUS_SCHEMA_VERSION = 6
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -192,6 +192,7 @@ def _registry_summary(payload: dict[str, Any], path: Path) -> dict[str, Any]:
         "path": str(path),
         "accepted": payload["accepted"],
         "bundle_count": payload["bundle_count"],
+        "bundles": payload["bundles"],
         "failed_subjects": failed_subjects,
         "result_count": payload["result_count"],
         "results": payload["results"],
@@ -206,6 +207,7 @@ def _registry_failure_summary(path: Path, exc: Exception) -> dict[str, Any]:
         "path": str(path),
         "accepted": False,
         "bundle_count": 0,
+        "bundles": [],
         "failed_subjects": [subject],
         "result_count": 1,
         "results": [

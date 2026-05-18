@@ -2573,3 +2573,25 @@
   `py_compile` and `git diff --check` passed; transition registry JSON,
   chain registry JSON, and project status JSON were accepted with
   `failed_subjects: []`; and `python -m unittest discover` passed 573 tests.
+
+## 2026-05-18 - Project Status Registry Bundles
+
+- Added ADR-0115 to carry concrete transition and chain registry bundle
+  entries into project status JSON.
+- Updated `tests/test_project_status_report.py` before implementation. The
+  red run failed because project status remained `schema_version: 5`, and
+  registry summaries lacked `bundles` on both accepted and registry-load
+  failure paths.
+- Updated `autarkic_systems.project_status` so registry summaries include
+  `bundles` from the underlying registry payloads, registry load failures
+  report `bundles: []`, and project status JSON reports `schema_version: 6`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the project status registry-bundle contract.
+- Verification passed: focused project status tests ran 33 tests; adjacent
+  project-status/transition-registry/chain-registry tests ran 62 tests;
+  `py_compile` and `git diff --check` passed; project status JSON reported
+  `schema_version: 6`, accepted transition evidence with all eight transition
+  bundle entries, accepted chain evidence with both chain bundle entries, and
+  `frontier.failed_subjects: []`; transition and chain registry JSON remained
+  accepted with empty `failed_subjects`; and `python -m unittest discover`
+  passed 573 tests.

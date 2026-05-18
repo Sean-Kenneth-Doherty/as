@@ -41,7 +41,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 5`. If a registry file is missing, the corresponding registry
+`schema_version: 6`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -66,7 +66,9 @@ text report without changing the JSON shape. ADR-0111 adds per-source
 summaries in text, and bumps the schema version to `4`. ADR-0112 adds
 per-source `blocked_runtime_surfaces`, renders those surfaces in text, rejects
 malformed surface lists as source-status schema failures, and bumps the schema
-version to `5`.
+version to `5`. ADR-0115 adds registry `bundles` arrays to both
+`transition_evidence` and `chain_evidence`, reports `bundles: []` for registry
+load failures, and bumps the schema version to `6`.
 
 ## Boundary
 

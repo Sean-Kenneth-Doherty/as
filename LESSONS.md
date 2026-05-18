@@ -319,3 +319,6 @@
 - Keep parallel registry APIs parallel. Once chain registry JSON exposes a
   compact failure summary, transition registry JSON should expose the same
   shape unless there is a documented reason not to.
+- A first diagnostic command should expose concrete evidence entries, not only
+  counts. Once lower-level registry JSON is self-describing, project-level
+  status JSON should carry those entries forward for automation.

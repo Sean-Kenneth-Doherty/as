@@ -513,3 +513,6 @@
 - ADR-0114 adds `failed_subjects` to transition evidence registry JSON output,
   matching the compact failure-summary shape already used by chain registry
   JSON.
+- ADR-0115 bumps `autarkic_systems.project_status` to `schema_version: 6` and
+  adds transition and chain registry `bundles` arrays to the project status
+  JSON summaries.

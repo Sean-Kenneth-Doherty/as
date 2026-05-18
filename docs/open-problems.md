@@ -185,6 +185,9 @@ ADR-0113 makes transition evidence registry JSON list the concrete registered
 bundle entries, matching the self-describing chain registry payload pattern.
 ADR-0114 adds the corresponding transition registry JSON `failed_subjects`
 summary, matching the compact chain registry failure-summary contract.
+ADR-0115 adds those concrete registry bundle entries to project status JSON
+and bumps the schema version to `6`, so the first diagnostic command now names
+the transition and chain bundles it checked.
 
 ## P3: Choose The First Proof Apparatus
 

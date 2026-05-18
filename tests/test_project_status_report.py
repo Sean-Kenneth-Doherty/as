@@ -21,11 +21,75 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 5
+PROJECT_STATUS_SCHEMA_VERSION = 6
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
     "self-target-command-buffer",
+]
+TRANSITION_BUNDLES = [
+    {
+        "bundle_id": "recipient-init-command-message-transition-evidence-bundle",
+        "path": "evidence/recipient_init_command_message_bundle.json",
+        "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
+        "expected_status": "recipient-init-command-message-processed",
+    },
+    {
+        "bundle_id": "recipient-non-init-command-rejection-evidence-bundle",
+        "path": "evidence/recipient_non_init_command_rejection_bundle.json",
+        "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+        "expected_status": "rejected-input",
+    },
+    {
+        "bundle_id": "multi-command-recipient-rejection-evidence-bundle",
+        "path": "evidence/multi_command_recipient_rejection_bundle.json",
+        "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+        "expected_status": "rejected-input",
+    },
+    {
+        "bundle_id": "self-mailbox-init-evidence-bundle",
+        "path": "evidence/self_mailbox_init_bundle.json",
+        "claim_id": "UC-STEM-SELF-MAILBOX-INIT-COMMAND",
+        "expected_status": "self-mailbox-processed",
+    },
+    {
+        "bundle_id": "self-mailbox-unsupported-evidence-bundle",
+        "path": "evidence/self_mailbox_unsupported_bundle.json",
+        "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+        "expected_status": "self-mailbox-unsupported",
+    },
+    {
+        "bundle_id": "self-command-buffer-init-evidence-bundle",
+        "path": "evidence/self_command_buffer_init_bundle.json",
+        "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
+        "expected_status": "stem-command-buffer-self-processed",
+    },
+    {
+        "bundle_id": "command-buffer-unsupported-evidence-bundle",
+        "path": "evidence/command_buffer_unsupported_bundle.json",
+        "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+        "expected_status": "stem-buffer-appended",
+    },
+    {
+        "bundle_id": "neighbor-command-buffer-delivery-evidence-bundle",
+        "path": "evidence/neighbor_command_buffer_delivery_bundle.json",
+        "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+        "expected_status": "stem-command-buffer-neighbor-delivered",
+    },
+]
+CHAIN_BUNDLES = [
+    {
+        "bundle_id": "neighbor-delivery-recipient-chain-evidence-bundle",
+        "path": "evidence/chains/neighbor_delivery_chain_bundle.json",
+        "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED",
+        "expected_status": "neighbor-delivery-consumed",
+    },
+    {
+        "bundle_id": "neighbor-delivery-recipient-rejection-chain-evidence-bundle",
+        "path": "evidence/chains/neighbor_delivery_rejection_chain_bundle.json",
+        "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
+        "expected_status": "recipient-not-consumed",
+    },
 ]
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
@@ -121,11 +185,16 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(report["transition_evidence"]["accepted"])
         self.assertEqual(report["transition_evidence"]["bundle_count"], 8)
         self.assertEqual(
+            report["transition_evidence"]["bundles"],
+            TRANSITION_BUNDLES,
+        )
+        self.assertEqual(
             report["chain_evidence"]["registry_id"],
             "transition-chain-evidence-bundle-registry",
         )
         self.assertTrue(report["chain_evidence"]["accepted"])
         self.assertEqual(report["chain_evidence"]["bundle_count"], 2)
+        self.assertEqual(report["chain_evidence"]["bundles"], CHAIN_BUNDLES)
         self.assertEqual(report["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(report["frontier"]["failed_subjects"], [])
         self.assertEqual(report["frontier"]["safe_next_slice"], SAFE_NEXT_SLICE)
@@ -274,7 +343,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["schema_version"], PROJECT_STATUS_SCHEMA_VERSION)
         self.assertEqual(payload["transition_evidence"]["bundle_count"], 8)
+        self.assertEqual(
+            payload["transition_evidence"]["bundles"],
+            TRANSITION_BUNDLES,
+        )
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
+        self.assertEqual(payload["chain_evidence"]["bundles"], CHAIN_BUNDLES)
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
         self.assertEqual(payload["frontier"]["failed_subjects"], [])
         self.assertEqual(
@@ -837,6 +911,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(report["transition_evidence"]["registry_id"], "")
         self.assertEqual(report["transition_evidence"]["path"], str(missing_registry))
         self.assertEqual(report["transition_evidence"]["bundle_count"], 0)
+        self.assertEqual(report["transition_evidence"]["bundles"], [])
         self.assertEqual(
             report["transition_evidence"]["failed_subjects"],
             ["registry-file"],
@@ -861,6 +936,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(report["chain_evidence"]["registry_id"], "")
         self.assertEqual(report["chain_evidence"]["path"], str(missing_registry))
         self.assertEqual(report["chain_evidence"]["bundle_count"], 0)
+        self.assertEqual(report["chain_evidence"]["bundles"], [])
         self.assertEqual(
             report["chain_evidence"]["failed_subjects"],
             ["registry-file"],
@@ -892,6 +968,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             payload["transition_evidence"]["path"],
             str(missing_registry),
         )
+        self.assertEqual(payload["transition_evidence"]["bundles"], [])
 
     def test_invalid_transition_registry_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -906,6 +983,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertFalse(report["transition_evidence"]["accepted"])
         self.assertEqual(report["transition_evidence"]["path"], str(invalid_registry))
         self.assertEqual(report["transition_evidence"]["bundle_count"], 0)
+        self.assertEqual(report["transition_evidence"]["bundles"], [])
         self.assertEqual(
             report["transition_evidence"]["failed_subjects"],
             ["registry-json"],
@@ -925,6 +1003,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertFalse(report["chain_evidence"]["accepted"])
         self.assertEqual(report["chain_evidence"]["path"], str(invalid_registry))
         self.assertEqual(report["chain_evidence"]["bundle_count"], 0)
+        self.assertEqual(report["chain_evidence"]["bundles"], [])
         self.assertEqual(
             report["chain_evidence"]["failed_subjects"],
             ["registry-json"],

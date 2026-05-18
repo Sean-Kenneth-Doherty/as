@@ -2171,3 +2171,24 @@ Status: accepted in
 `docs/adr/0114-transition-registry-json-failure-summary.md`. Implemented in
 `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_evidence_bundle_registry.py`.
+
+## ADR-0115: Project Status Registry Bundles
+
+Goal: make project status JSON list the concrete transition and chain registry
+bundle entries checked by the first diagnostic command.
+
+Deliverables:
+
+- `bundles` array in `transition_evidence`;
+- `bundles` array in `chain_evidence`;
+- missing or malformed registry summaries report `bundles: []`;
+- schema bump from project status `schema_version: 5` to
+  `schema_version: 6`;
+- unchanged registry validation semantics, source-status validation
+  semantics, and default text status output; and
+- focused in-process and JSON CLI tests for the project status bundle arrays.
+
+Status: accepted in
+`docs/adr/0115-project-status-registry-bundles.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.
