@@ -34,7 +34,7 @@ COMMANDS_BY_OFFSET = (
     "write-buf-zero",
     "write-buf-one",
 )
-UNSUPPORTED_SELF_COMMANDS = {"standard-signal", "write-buf-zero", "write-buf-one"}
+UNSUPPORTED_SELF_COMMANDS = {"standard-signal"}
 
 
 class CommandBufferUnsupportedClaimTests(unittest.TestCase):
@@ -43,8 +43,8 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
             role="stem",
             memory="right",
             input=(0, 1, 0),
-            control=(0, 1, 0),
-            buffer=(0, 0, 1, 1),
+            control=(1, 0, 0),
+            buffer=(0, 0, 0, 0),
         )
         result = StepResult(
             status="stem-buffer-appended",
@@ -55,8 +55,8 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
                 output=EMPTY,
                 automail="_",
                 self_mailbox="_",
-                control=(0, 1, 0),
-                buffer=(0, 0, 1, 1, 1),
+                control=(1, 0, 0),
+                buffer=(0, 0, 0, 0, 0),
             ),
         )
 
@@ -106,8 +106,8 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
             role="stem",
             memory="right",
             input=(0, 1, 0),
-            control=(0, 1, 0),
-            buffer=(0, 0, 1, 1),
+            control=(1, 0, 0),
+            buffer=(0, 0, 0, 0),
         )
         processed = StepResult(
             status="stem-command-buffer-self-processed",
@@ -122,7 +122,7 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
                 output=EMPTY,
                 automail="_",
                 self_mailbox="_",
-                control=(0, 1, 0),
+                control=(1, 0, 0),
                 buffer=(),
             ),
         )
@@ -135,8 +135,8 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
                 output=(1, "_", "_"),
                 automail="_",
                 self_mailbox="_",
-                control=(0, 1, 0),
-                buffer=(0, 0, 1, 1, 1),
+                control=(1, 0, 0),
+                buffer=(0, 0, 0, 0, 0),
             ),
         )
 

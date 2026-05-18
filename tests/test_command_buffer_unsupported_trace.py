@@ -41,7 +41,7 @@ class CommandBufferUnsupportedTraceTests(unittest.TestCase):
         )
         self.assertEqual(len(self.trace.schematic.ports), 3)
 
-    def test_unsupported_command_buffer_trace_records_self_non_init_append_boundary(self):
+    def test_unsupported_command_buffer_trace_records_self_standard_signal_boundary(self):
         before = self.trace.trace.before_cell
         after = self.trace.trace.expected_after_cell
 
@@ -49,24 +49,24 @@ class CommandBufferUnsupportedTraceTests(unittest.TestCase):
         self.assertEqual(before["automail"], "_")
         self.assertEqual(before["self_mailbox"], "_")
         self.assertEqual(before["input"], [0, 1, 0])
-        self.assertEqual(before["control"], [0, 1, 0])
-        self.assertEqual(before["buffer"], [0, 0, 1, 1])
+        self.assertEqual(before["control"], [1, 0, 0])
+        self.assertEqual(before["buffer"], [0, 0, 0, 0])
         self.assertEqual(after["role"], "stem")
         self.assertEqual(after["memory"], "right")
         self.assertEqual(after["output"], ["_", "_", "_"])
-        self.assertEqual(after["control"], [0, 1, 0])
-        self.assertEqual(after["buffer"], [0, 0, 1, 1, 1])
+        self.assertEqual(after["control"], [1, 0, 0])
+        self.assertEqual(after["buffer"], [0, 0, 0, 0, 0])
         self.assertEqual(self.trace.trace.expected_status, "stem-buffer-appended")
 
     def test_unsupported_command_buffer_trace_records_decode_flow(self):
         self.assertEqual(
             self.trace.trace.routed_signal_flow,
             (
-                "control[0,1,0] active",
-                "input[0,1,0] matches control -> append 1",
-                "buffer[0,0,1,1] -> buffer[0,0,1,1,1]",
-                "decode value 7 -> self/write-buf-one",
-                "self command[write-buf-one] unsupported",
+                "control[1,0,0] active",
+                "input[0,1,0] differs from control -> append 0",
+                "buffer[0,0,0,0] -> buffer[0,0,0,0,0]",
+                "decode value 0 -> self/standard-signal",
+                "self command[standard-signal] unsupported",
                 "completed command buffer preserved at append boundary",
             ),
         )
@@ -110,7 +110,7 @@ class CommandBufferUnsupportedTraceTests(unittest.TestCase):
 
     def test_drifted_completed_buffer_is_rejected(self):
         drifted_after = dict(self.trace.trace.expected_after_cell)
-        drifted_after["buffer"] = [0, 0, 1, 1, 0]
+        drifted_after["buffer"] = [0, 0, 0, 0, 1]
         drifted = replace(
             self.trace,
             trace=replace(self.trace.trace, expected_after_cell=drifted_after),
@@ -135,7 +135,7 @@ class CommandBufferUnsupportedTraceTests(unittest.TestCase):
             self.trace,
             trace=replace(
                 self.trace.trace,
-                routed_signal_flow=("decode value 7 -> neighbor-a/write-buf-one",),
+                routed_signal_flow=("decode value 0 -> neighbor-a/standard-signal",),
             ),
         )
 

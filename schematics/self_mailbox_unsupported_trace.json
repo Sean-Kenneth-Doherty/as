@@ -2,7 +2,7 @@
   "schema_version": 1,
   "artifact_id": "self-mailbox-unsupported-schematic-and-uc-transition-trace",
   "reviewed_at": "2026-05-17",
-  "purpose": "Sixth AS-owned schematic-linked Universal Cell trace, covering the unsupported self-mailbox command boundary that preserves a write-buf-one command without execution.",
+  "purpose": "Sixth AS-owned schematic-linked Universal Cell trace, covering the unsupported self-mailbox command boundary that preserves a standard-signal command without execution.",
   "required_witness_ids": [
     "PRC-README-UC-CRITERIA",
     "PRC-GELC-GEOMETRY",
@@ -43,8 +43,8 @@
     "layers": [
       {
         "layer_id": "symbolic-rlem-behavior",
-        "summary": "A write-buf-one self-mailbox command is recognized as unsupported and leaves the stem node unchanged.",
-        "boundary": "This layer states preservation of an unresolved command only; it does not implement write-buffer semantics.",
+        "summary": "A standard-signal self-mailbox command is recognized as unsupported and leaves the stem node unchanged.",
+        "boundary": "This layer states preservation of an unresolved command only; it does not implement standard-signal command-token semantics.",
         "witness_ids": [
           "PRC-RLEM-LITERATURE",
           "PRC-UC-FORMAL-MODEL",
@@ -82,7 +82,7 @@
     ]
   },
   "trace": {
-    "trace_id": "AS-PRC-SELF-MAILBOX-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001",
+    "trace_id": "AS-PRC-SELF-MAILBOX-STANDARD-SIGNAL-UNSUPPORTED-TRACE-001",
     "transition_function": "step_stem_cell",
     "cell_fields": [
       "role",
@@ -114,15 +114,14 @@
         "_"
       ],
       "automail": "_",
-      "self_mailbox": "write-buf-one",
+      "self_mailbox": "standard-signal",
       "control": [
         1,
         0,
-        1
+        0
       ],
       "buffer": [
-        0,
-        1
+        0
       ]
     },
     "expected_status": "self-mailbox-unsupported",
@@ -145,21 +144,20 @@
         "_"
       ],
       "automail": "_",
-      "self_mailbox": "write-buf-one",
+      "self_mailbox": "standard-signal",
       "control": [
         1,
         0,
-        1
+        0
       ],
       "buffer": [
-        0,
-        1
+        0
       ]
     },
     "routed_signal_flow": [
-      "self_mailbox[write-buf-one] unsupported",
+      "self_mailbox[standard-signal] unsupported",
       "cell state preserved",
-      "write-buffer semantics unresolved"
+      "standard-signal command semantics unresolved"
     ]
   }
 }

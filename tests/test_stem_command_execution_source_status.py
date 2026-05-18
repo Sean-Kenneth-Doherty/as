@@ -32,9 +32,10 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
 
         execution_gap = self.status["formal_model_execution_anchor"]["as_gap"]
         self.assertIn("self-target init command-buffer dispatch", execution_gap)
+        self.assertIn("self-target write-buffer command-buffer execution", execution_gap)
         self.assertIn("neighbor-target command-buffer delivery", execution_gap)
         self.assertIn("recipient-side init-family command-message input consumption", execution_gap)
-        self.assertIn("unsupported self-target non-init append boundary", execution_gap)
+        self.assertIn("unsupported self-target standard-signal append boundary", execution_gap)
         self.assertIn("does not execute non-init command-message inputs", execution_gap)
 
     def test_formal_model_command_table_matches_adr_0026_map(self):
@@ -85,7 +86,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             bundle["positive_example"],
-            "write buffer one unsupported preserved",
+            "standard signal unsupported preserved",
         )
         self.assertIn("unsupported-command preservation", bundle["summary"])
 
@@ -118,7 +119,7 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             bundle["positive_example"],
-            "self write buffer command remains appended",
+            "self standard signal command remains appended",
         )
         self.assertIn("non-init command-buffer append boundary", bundle["summary"])
 

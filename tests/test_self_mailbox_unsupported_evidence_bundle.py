@@ -14,12 +14,10 @@ BUNDLE = Path("evidence/self_mailbox_unsupported_bundle.json")
 REGISTRY = Path("evidence/manifest.json")
 BUNDLE_ID = "self-mailbox-unsupported-evidence-bundle"
 CLAIM_ID = "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"
-EXAMPLE = "write buffer one unsupported preserved"
+EXAMPLE = "standard signal unsupported preserved"
 STATUS = "self-mailbox-unsupported"
 COVERED_EXAMPLES = (
     "standard signal unsupported preserved",
-    "write buffer zero unsupported preserved",
-    "write buffer one unsupported preserved",
 )
 
 
@@ -121,7 +119,6 @@ class SelfMailboxUnsupportedEvidenceBundleTests(unittest.TestCase):
             covered_positive_examples=(
                 "standard signal unsupported preserved",
                 "not a manifest example",
-                "write buffer one unsupported preserved",
             ),
         )
 

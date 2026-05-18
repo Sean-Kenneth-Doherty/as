@@ -22,7 +22,7 @@ WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = (
     "revisit-standard-signal-or-write-buffer-command-semantics, "
-    "implement-write-buffer-command-execution"
+    "add-write-buffer-command-execution-evidence-bundle"
 )
 PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
@@ -30,14 +30,16 @@ STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-target-command-buffer",
 ]
 WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES = [
-    "self-mailbox-command",
-    "self-target-command-buffer",
+    "recipient-command-message",
 ]
 RECIPIENT_NON_INIT_AS_BOUNDARY = (
-    "Continue rejecting recipient non-init command-message inputs while AS "
-    "keeps standard-signal and write-buffer command tokens source-blocked; "
-    "the accepted behavior is the ADR-0054 rejection boundary, with "
-    "multi-command conflicts assigned to ADR-0059 reject-and-clear."
+    "Continue rejecting recipient non-init command-message inputs for "
+    "standard-signal and write-buffer command tokens; standard-signal "
+    "self-target command execution remains source-blocked, while direct "
+    "self-mailbox and completed self-target write-buffer execution are "
+    "implemented by ADR-0161. The accepted recipient behavior is the "
+    "ADR-0054 rejection boundary, with multi-command conflicts assigned to "
+    "ADR-0059 reject-and-clear."
 )
 STANDARD_SIGNAL_AS_BOUNDARY = (
     "Continue rejecting or preserving standard-signal command tokens at the "
@@ -46,9 +48,10 @@ STANDARD_SIGNAL_AS_BOUNDARY = (
     "blocks only command-token execution."
 )
 WRITE_BUFFER_AS_BOUNDARY = (
-    "Write-buffer command execution is source-resolved; preserve current "
-    "unsupported runtime boundaries until a later ADR implements append "
-    "behavior."
+    "Direct self-mailbox and completed self-target command-buffer "
+    "write-buffer execution are implemented through ADR-0161 append behavior; "
+    "delivered recipient write-buffer command-message inputs remain rejected "
+    "by the recipient non-init boundary."
 )
 TRANSITION_BUNDLES = [
     {
@@ -88,11 +91,9 @@ TRANSITION_BUNDLES = [
         "path": "evidence/self_mailbox_unsupported_bundle.json",
         "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
         "expected_status": "self-mailbox-unsupported",
-        "positive_example": "write buffer one unsupported preserved",
+        "positive_example": "standard signal unsupported preserved",
         "covered_positive_examples": [
             "standard signal unsupported preserved",
-            "write buffer zero unsupported preserved",
-            "write buffer one unsupported preserved",
         ],
     },
     {
@@ -108,11 +109,9 @@ TRANSITION_BUNDLES = [
         "path": "evidence/command_buffer_unsupported_bundle.json",
         "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
         "expected_status": "stem-buffer-appended",
-        "positive_example": "self write buffer command remains appended",
+        "positive_example": "self standard signal command remains appended",
         "covered_positive_examples": [
             "self standard signal command remains appended",
-            "self write buffer zero command remains appended",
-            "self write buffer command remains appended",
         ],
     },
     {
@@ -143,9 +142,9 @@ TRANSITION_LANGUAGE = {
     "language_path": "language/transition_claim_language.json",
     "claims_path": "claims/transition_claims.json",
     "certificates_path": "claims/proof_certificates.json",
-    "claim_count": 13,
-    "certificate_count": 13,
-    "result_count": 63,
+    "claim_count": 15,
+    "certificate_count": 15,
+    "result_count": 69,
 }
 CHAIN_LANGUAGE = {
     "language_id": "as-transition-chain-claim-v1",
@@ -158,17 +157,17 @@ CHAIN_LANGUAGE = {
 }
 TRANSITION_CLAIMS = {
     "claims_path": "claims/transition_claims.json",
-    "claim_count": 13,
-    "example_count": 35,
-    "matched_count": 35,
-    "result_count": 35,
+    "claim_count": 15,
+    "example_count": 37,
+    "matched_count": 37,
+    "result_count": 37,
 }
 TRANSITION_PROOF_CERTIFICATES = {
     "claims_path": "claims/transition_claims.json",
     "certificates_path": "claims/proof_certificates.json",
-    "claim_count": 13,
-    "certificate_count": 13,
-    "result_count": 13,
+    "claim_count": 15,
+    "certificate_count": 15,
+    "result_count": 15,
 }
 CHAIN_CLAIMS = {
     "language_id": "as-transition-chain-claim-v1",
@@ -248,8 +247,8 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
         "legacy_divergence": (
             "The formal model, RAA, SEMSIM, and FSMSIM agree that "
             "write-buf-zero and write-buf-one carry literal 0 and 1 "
-            "append bits; remaining divergence concerns execution "
-            "surface, buffer-full handling, and post-append clearing."
+            "append bits; ADR-0161 implements the source-resolved "
+            "self-target append surfaces."
         ),
     },
     {
@@ -259,21 +258,21 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
         "legacy_divergence": (
             "AS already rejects delivered recipient write-buffer command "
             "messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; "
-            "self-target write-buffer command tokens remain unsupported-"
-            "preserved while executable append semantics remain unresolved."
+            "direct self-mailbox and self-target command-buffer write-buffer "
+            "command tokens execute under ADR-0161."
         ),
     },
     {
         "question_id": "self-target-surface",
-        "decision": "preserve-self-target-write-buffer-as-unsupported",
+        "decision": "execute-self-target-write-buffer-append",
         "source_status": "sources/write_buffer_command_semantics_status.json",
         "legacy_divergence": (
-            "AS already preserves direct self-mailbox write-buffer command "
-            "tokens under UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and "
-            "preserves completed self-target command-buffer write-buffer "
-            "commands under UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED; "
-            "executable write-buffer append semantics remain blocked by "
-            "buffer-full and post-append clearing divergence."
+            "AS now executes direct self-mailbox write-buffer command tokens "
+            "under UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED and completed "
+            "self-target command-buffer write-buffer commands under "
+            "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED; "
+            "standard-signal remains the preserved unsupported self-target "
+            "command."
         ),
     },
     {
@@ -302,12 +301,12 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
 WRITE_BUFFER_RESOLUTION_QUESTIONS = []
 WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = []
 WRITE_BUFFER_EXECUTION_READINESS = {
-    "decision": "ready",
+    "decision": "implemented",
     "execution_change_allowed": True,
     "blocked_by_resolution_questions": [],
     "summary": (
-        "Write-buffer append execution is source-resolved; implementation "
-        "may proceed in a later ADR."
+        "Write-buffer append execution is source-resolved and implemented for "
+        "direct self-mailbox and completed self-target command-buffer surfaces."
     ),
 }
 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
@@ -579,11 +578,11 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Transition evidence: accepted (8 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
         self.assertIn(
-            "Transition claims: accepted (13 claims, 35 examples, 35 matched)",
+            "Transition claims: accepted (15 claims, 37 examples, 37 matched)",
             text,
         )
         self.assertIn(
-            "Transition proof certificates: accepted (13 claims, 13 certificates)",
+            "Transition proof certificates: accepted (15 claims, 15 certificates)",
             text,
         )
         self.assertIn("Claim/proof failures: none", text)
@@ -592,7 +591,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("Chain claim failures: none", text)
-        self.assertIn("Transition language: accepted (13 claims, 13 certificates)", text)
+        self.assertIn("Transition language: accepted (15 claims, 15 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
         self.assertIn("Language failures: none", text)
         self.assertIn("Transition evidence bundles:", text)
@@ -607,23 +606,19 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "positive example: write buffer one unsupported preserved",
+            "positive example: standard signal unsupported preserved",
             text,
         )
         self.assertIn(
-            "covered examples: standard signal unsupported preserved; "
-            "write buffer zero unsupported preserved; "
-            "write buffer one unsupported preserved",
+            "covered examples: standard signal unsupported preserved",
             text,
         )
         self.assertIn(
-            "positive example: self write buffer command remains appended",
+            "positive example: self standard signal command remains appended",
             text,
         )
         self.assertIn(
-            "covered examples: self standard signal command remains appended; "
-            "self write buffer zero command remains appended; "
-            "self write buffer command remains appended",
+            "covered examples: self standard signal command remains appended",
             text,
         )
         self.assertIn("Chain evidence bundles:", text)
@@ -646,6 +641,10 @@ class ProjectStatusReportTests(unittest.TestCase):
             "standard-signal: self-mailbox-command, self-target-command-buffer",
             text,
         )
+        self.assertIn(
+            "write-buf-zero, write-buf-one: recipient-command-message",
+            text,
+        )
         self.assertIn("AS boundaries:", text)
         self.assertIn(
             "standard-signal, write-buf-zero, write-buf-one: "
@@ -664,6 +663,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             "Safe next slice: revisit-standard-signal-or-write-buffer-command-semantics",
             text,
         )
+        self.assertIn("add-write-buffer-command-execution-evidence-bundle", text)
         self.assertIn("Missing source-status files: none", text)
 
     def test_text_status_names_transition_language_failed_subjects(self):
@@ -951,32 +951,32 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn(
             "legacy divergence: The formal model, RAA, SEMSIM, and FSMSIM "
             "agree that write-buf-zero and write-buf-one carry literal 0 "
-            "and 1 append bits; remaining divergence concerns execution "
-            "surface, buffer-full handling, and post-append clearing.",
+            "and 1 append bits; ADR-0161 implements the source-resolved "
+            "self-target append surfaces.",
             text,
         )
         self.assertIn(
             "legacy divergence: AS already rejects delivered recipient "
             "write-buffer command messages under "
-            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; self-target "
-            "write-buffer command tokens remain unsupported-preserved while "
-            "executable append semantics remain unresolved.",
+            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; direct "
+            "self-mailbox and self-target command-buffer write-buffer command "
+            "tokens execute under ADR-0161.",
             text,
         )
         self.assertIn(
             "self-target-surface: "
-            "preserve-self-target-write-buffer-as-unsupported "
+            "execute-self-target-write-buffer-append "
             "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
         self.assertIn(
-            "legacy divergence: AS already preserves direct self-mailbox "
+            "legacy divergence: AS now executes direct self-mailbox "
             "write-buffer command tokens under "
-            "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and preserves "
-            "completed self-target command-buffer write-buffer commands under "
-            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED; executable "
-            "write-buffer append semantics remain blocked by buffer-full and "
-            "post-append clearing divergence.",
+            "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED and completed "
+            "self-target command-buffer write-buffer commands under "
+            "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED; "
+            "standard-signal remains the preserved unsupported self-target "
+            "command.",
             text,
         )
         self.assertIn(
@@ -1013,13 +1013,14 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertIn("Execution readiness:", text)
         self.assertIn(
-            "write-buf-zero, write-buf-one: ready; execution changes "
+            "write-buf-zero, write-buf-one: implemented; execution changes "
             "allowed: yes; blockers: none",
             text,
         )
         self.assertIn(
-            "summary: Write-buffer append execution is source-resolved; "
-            "implementation may proceed in a later ADR.",
+            "summary: Write-buffer append execution is source-resolved and "
+            "implemented for direct self-mailbox and completed self-target "
+            "command-buffer surfaces.",
             text,
         )
 

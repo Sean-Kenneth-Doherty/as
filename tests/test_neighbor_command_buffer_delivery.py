@@ -88,21 +88,21 @@ class NeighborCommandBufferDeliveryTests(unittest.TestCase):
         self.assertEqual(result.status, "blocked-output")
         self.assertEqual(result.cell, cell)
 
-    def test_self_non_init_command_still_remains_append_boundary(self):
+    def test_self_standard_signal_command_still_remains_append_boundary(self):
         cell = Cell(
             role="stem",
             memory="right",
             input=(0, 1, 0),
-            control=(0, 1, 0),
-            buffer=(0, 0, 1, 1),
+            control=(1, 0, 0),
+            buffer=(0, 0, 0, 0),
         )
 
         result = step_stem_cell(cell)
 
         self.assertEqual(result.status, "stem-buffer-appended")
         self.assertEqual(result.cell.output, EMPTY)
-        self.assertEqual(result.cell.control, (0, 1, 0))
-        self.assertEqual(result.cell.buffer, (0, 0, 1, 1, 1))
+        self.assertEqual(result.cell.control, (1, 0, 0))
+        self.assertEqual(result.cell.buffer, (0, 0, 0, 0, 0))
 
     def test_delivered_init_command_message_can_be_consumed_by_recipient(self):
         cell = Cell(role="stem", memory="right", input=("stem-init", "_", "_"))

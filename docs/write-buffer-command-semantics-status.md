@@ -7,8 +7,8 @@ The structured status lives in
 
 ## Decision
 
-Write-buffer command execution is source-resolved and ready for a later
-implementation ADR.
+Write-buffer command execution is source-resolved and implemented for direct
+stem `self_mailbox` commands plus completed self-target command buffers.
 
 The formal model names `write-buf-zero` and `write-buf-one` in the command
 table and routes special messages through generic special-message paths, but
@@ -39,16 +39,17 @@ ADR-0152 resolves the recipient-surface part of the older
 `write-buf-one` command messages are rejected as non-init command-message
 inputs under the existing recipient rejection claim.
 
-ADR-0153 resolves the self-target surface question through the existing
-unsupported self-mailbox and self-target command-buffer boundaries. Direct
-self-mailbox write-buffer command tokens are preserved as unsupported, and
-completed self-target command-buffer write-buffer command tokens remain at the
-append boundary. Executable write-buffer append semantics remain unresolved.
+ADR-0153 originally resolved the self-target surface question through the
+existing unsupported self-mailbox and self-target command-buffer boundaries.
+ADR-0161 supersedes that preservation boundary for write-buffer commands:
+direct self-mailbox write-buffer command tokens and completed self-target
+command-buffer write-buffer tokens now append the command's literal bit and
+clear the active command source.
 
-ADR-0154 records that unresolved execution state as an explicit
-`execution_readiness` gate: write-buffer append execution is `blocked`,
-execution changes are not allowed yet, and the live blockers are
-`buffer-full-boundary` and `post-append-clearing`.
+ADR-0154 initially recorded that unresolved execution state as an explicit
+`execution_readiness` gate. ADR-0159 and ADR-0160 later cleared the remaining
+blockers, and ADR-0161 updates the readiness state from source-ready to
+implemented for the self-target append surfaces.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -61,22 +62,19 @@ appended literal bit while clearing command-source/input state; SEMSIM's stem
 wrapper clears the buffer after append, so AS records SEMSIM as divergent
 legacy behavior instead of selecting the buffer-erasing wrapper.
 
-## AS Boundary
+ADR-0161 implements the source-resolved append behavior for:
 
-AS keeps the current unsupported runtime boundaries in place until a later ADR
-implements write-buffer command execution across these runtime surfaces:
+- direct self-mailbox command execution;
+- completed self-target command-buffer dispatch.
 
-- self-mailbox command;
-- self-target command-buffer dispatch.
+Recipient command-message input remains outside the implemented write-buffer
+surface. AS rejects delivered recipient write-buffer command messages through
+`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
-Recipient command-message input is no longer an unresolved write-buffer
-execution surface. AS rejects delivered recipient write-buffer command messages
-through `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
-
-The current rejection and preservation claims remain the correct executable
-boundary until a later ADR implements the source-resolved append behavior.
-ADR-0061
-completes the current multi-command rejection render frontier, so future
+The current recipient rejection claim remains the correct executable boundary
+until a later source-backed ADR moves recipient write-buffer command-message
+input out of the non-init rejection surface. ADR-0061 completes the current
+multi-command rejection render frontier, so future
 write-buffer work should start from source resolution rather than another
 rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
 `write-buf` and self-mailbox numeric append behavior but omits named
@@ -96,7 +94,9 @@ moves `buffer-full-boundary` into resolved questions and leaves
 `post-append-clearing` as the only live write-buffer blocker. ADR-0160 moves
 `post-append-clearing` into resolved questions, clears the live write-buffer
 question queue, and marks write-buffer append execution as source-ready for a
-later implementation ADR.
+later implementation ADR. ADR-0161 implements that self-target append slice,
+narrows the old unsupported boundaries to `standard-signal`, and leaves the
+next evidence task as a dedicated write-buffer execution evidence bundle.
 
 ## Verification
 
@@ -108,5 +108,5 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 
 The tests check the decision, formal-model gap, legacy witness divergence,
 resolved recipient, self-target, buffer-full, and post-append surfaces, empty
-required resolution questions, ready execution-readiness, and source-status
-frontier updates.
+required resolution questions, implemented execution-readiness, and
+source-status frontier updates.

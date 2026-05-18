@@ -76,14 +76,12 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/recipient-non-init-command-rejection-svg.md` records the rendered view
   of that recipient non-init command-message rejection trace.
 - `docs/write-buffer-command-semantics-status.md` records why write-buffer
-  command execution is now source-resolved and records the narrowed source
-  agreement that `write-buf-zero` / `write-buf-one` carry literal `0` / `1`
-  append bits rather than high-rail-derived standard-signal values. It also
-  records that recipient write-buffer command messages use the recipient
-  non-init rejection boundary and that self-target write-buffer command tokens
-  use the unsupported preservation boundaries. The next slice can implement
-  append execution from the resolved full-buffer and post-append clearing
-  source boundaries.
+  command execution is now source-resolved and implemented for direct
+  self-mailbox plus completed self-target command-buffer surfaces. It records
+  the narrowed source agreement that `write-buf-zero` / `write-buf-one` carry
+  literal `0` / `1` append bits rather than high-rail-derived standard-signal
+  values, and records that recipient write-buffer command messages still use
+  the recipient non-init rejection boundary.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented, and records the
@@ -288,10 +286,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
-  transition claim examples accepted with 13 claims and 35 matched examples,
-  transition proof certificates accepted with 13 claims and 13 certificates,
+  transition claim examples accepted with 15 claims and 37 matched examples,
+  transition proof certificates accepted with 15 claims and 15 certificates,
   transition-chain claims accepted with 2 claims and 2 certificates,
-  transition language accepted with 13 claims and 13 certificates, chain
+  transition language accepted with 15 claims and 15 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition and
   chain registry bundle entries, and the blocked
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
@@ -390,8 +388,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   literal command bit-source evidence and the resolved standard-signal
   interaction, recipient-surface, and self-target-surface questions, plus the
   resolved full-buffer and post-append clearing boundaries. Its
-  execution-readiness gate now marks append execution source-ready for a later
-  implementation ADR.
+  execution-readiness gate now marks direct self-mailbox and completed
+  self-target command-buffer append execution implemented while keeping
+  delivered recipient write-buffer command messages rejected.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

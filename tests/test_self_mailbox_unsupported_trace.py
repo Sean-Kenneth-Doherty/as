@@ -41,15 +41,15 @@ class SelfMailboxUnsupportedTraceTests(unittest.TestCase):
         )
         self.assertEqual(len(self.trace.schematic.ports), 3)
 
-    def test_unsupported_trace_records_write_buffer_preservation(self):
+    def test_unsupported_trace_records_standard_signal_preservation(self):
         before = self.trace.trace.before_cell
         after = self.trace.trace.expected_after_cell
 
         self.assertEqual(before["role"], "stem")
         self.assertEqual(before["automail"], "_")
-        self.assertEqual(before["self_mailbox"], "write-buf-one")
-        self.assertEqual(before["control"], [1, 0, 1])
-        self.assertEqual(before["buffer"], [0, 1])
+        self.assertEqual(before["self_mailbox"], "standard-signal")
+        self.assertEqual(before["control"], [1, 0, 0])
+        self.assertEqual(before["buffer"], [0])
         self.assertEqual(after, before)
         self.assertEqual(self.trace.trace.expected_status, "self-mailbox-unsupported")
 
@@ -57,9 +57,9 @@ class SelfMailboxUnsupportedTraceTests(unittest.TestCase):
         self.assertEqual(
             self.trace.trace.routed_signal_flow,
             (
-                "self_mailbox[write-buf-one] unsupported",
+                "self_mailbox[standard-signal] unsupported",
                 "cell state preserved",
-                "write-buffer semantics unresolved",
+                "standard-signal command semantics unresolved",
             ),
         )
 
@@ -127,7 +127,7 @@ class SelfMailboxUnsupportedTraceTests(unittest.TestCase):
             self.trace,
             trace=replace(
                 self.trace.trace,
-                routed_signal_flow=("self_mailbox[write-buf-one] executed",),
+                routed_signal_flow=("self_mailbox[standard-signal] executed",),
             ),
         )
 

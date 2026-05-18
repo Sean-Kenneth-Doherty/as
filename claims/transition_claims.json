@@ -365,7 +365,7 @@
     {
       "id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
       "predicate": "self_mailbox_preserves_unsupported_command",
-      "description": "A stem cell with an unsupported self-mailbox command reports the unsupported boundary and preserves the cell unchanged.",
+      "description": "A stem cell with an unsupported standard-signal self-mailbox command reports the unsupported boundary and preserves the cell unchanged.",
       "examples": [
         {
           "name": "standard signal unsupported preserved",
@@ -389,48 +389,6 @@
           }
         },
         {
-          "name": "write buffer zero unsupported preserved",
-          "expected": true,
-          "before": {
-            "role": "stem",
-            "memory": "right",
-            "self_mailbox": "write-buf-zero",
-            "control": [0, 1, 0],
-            "buffer": [1, 0]
-          },
-          "result": {
-            "status": "self-mailbox-unsupported",
-            "cell": {
-              "role": "stem",
-              "memory": "right",
-              "self_mailbox": "write-buf-zero",
-              "control": [0, 1, 0],
-              "buffer": [1, 0]
-            }
-          }
-        },
-        {
-          "name": "write buffer one unsupported preserved",
-          "expected": true,
-          "before": {
-            "role": "stem",
-            "memory": "right",
-            "self_mailbox": "write-buf-one",
-            "control": [1, 0, 1],
-            "buffer": [0, 1]
-          },
-          "result": {
-            "status": "self-mailbox-unsupported",
-            "cell": {
-              "role": "stem",
-              "memory": "right",
-              "self_mailbox": "write-buf-one",
-              "control": [1, 0, 1],
-              "buffer": [0, 1]
-            }
-          }
-        },
-        {
           "name": "unsupported command cleared",
           "expected": false,
           "before": {
@@ -444,6 +402,82 @@
               "role": "stem",
               "memory": "right",
               "self_mailbox": "_"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+      "predicate": "self_mailbox_write_buffer_appends_literal",
+      "description": "A stem cell with a direct self-mailbox write-buffer command appends the command's literal bit, clears the mailbox command source, and preserves the control rail.",
+      "examples": [
+        {
+          "name": "self mailbox write buffer zero appended",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "self_mailbox": "write-buf-zero",
+            "control": [0, 1, 0],
+            "buffer": [1, 0]
+          },
+          "result": {
+            "status": "self-mailbox-write-buffer-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [0, 1, 0],
+              "buffer": [1, 0, 0]
+            }
+          }
+        },
+        {
+          "name": "self mailbox write buffer one appended",
+          "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "left",
+            "self_mailbox": "write-buf-one",
+            "control": [1, 0, 0],
+            "buffer": [0]
+          },
+          "result": {
+            "status": "self-mailbox-write-buffer-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [1, 0, 0],
+              "buffer": [0, 1]
+            }
+          }
+        },
+        {
+          "name": "self mailbox write buffer wrong bit",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "self_mailbox": "write-buf-zero"
+          },
+          "result": {
+            "status": "self-mailbox-write-buffer-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "buffer": [1]
             }
           }
         }
@@ -507,7 +541,7 @@
     {
       "id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "predicate": "stem_command_buffer_preserves_unsupported_completion",
-      "description": "A stem cell that completes a self-target non-init command buffer remains at the append boundary without execution.",
+      "description": "A stem cell that completes a self-target standard-signal command buffer remains at the append boundary without execution.",
       "examples": [
         {
           "name": "self standard signal command remains appended",
@@ -534,7 +568,38 @@
           }
         },
         {
-          "name": "self write buffer zero command remains appended",
+          "name": "self standard signal command wrongfully processed",
+          "expected": false,
+          "before": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [1, 0, 0],
+            "buffer": [0, 0, 0, 0]
+          },
+          "result": {
+            "status": "stem-command-buffer-self-processed",
+            "cell": {
+              "role": "stem",
+              "memory": "right",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [],
+              "buffer": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+      "predicate": "stem_command_buffer_executes_self_write_buffer",
+      "description": "A stem cell that completes a self-target write-buffer command buffer clears the command source and appends the command's literal bit as the new buffer content.",
+      "examples": [
+        {
+          "name": "self command buffer write buffer zero appended",
           "expected": true,
           "before": {
             "role": "stem",
@@ -544,7 +609,7 @@
             "buffer": [0, 0, 1, 1]
           },
           "result": {
-            "status": "stem-buffer-appended",
+            "status": "stem-command-buffer-self-write-buffer-appended",
             "cell": {
               "role": "stem",
               "memory": "right",
@@ -553,13 +618,37 @@
               "automail": "_",
               "self_mailbox": "_",
               "control": [0, 1, 0],
-              "buffer": [0, 0, 1, 1, 0]
+              "buffer": [0]
             }
           }
         },
         {
-          "name": "self write buffer command remains appended",
+          "name": "self command buffer write buffer one appended",
           "expected": true,
+          "before": {
+            "role": "stem",
+            "memory": "left",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [0, 0, 1, 1]
+          },
+          "result": {
+            "status": "stem-command-buffer-self-write-buffer-appended",
+            "cell": {
+              "role": "stem",
+              "memory": "left",
+              "input": ["_", "_", "_"],
+              "output": ["_", "_", "_"],
+              "automail": "_",
+              "self_mailbox": "_",
+              "control": [0, 1, 0],
+              "buffer": [1]
+            }
+          }
+        },
+        {
+          "name": "self command buffer write buffer preserved command source",
+          "expected": false,
           "before": {
             "role": "stem",
             "memory": "right",
@@ -578,30 +667,6 @@
               "self_mailbox": "_",
               "control": [0, 1, 0],
               "buffer": [0, 0, 1, 1, 1]
-            }
-          }
-        },
-        {
-          "name": "self write buffer command wrongfully processed",
-          "expected": false,
-          "before": {
-            "role": "stem",
-            "memory": "right",
-            "input": [0, 1, 0],
-            "control": [0, 1, 0],
-            "buffer": [0, 0, 1, 1]
-          },
-          "result": {
-            "status": "stem-command-buffer-self-processed",
-            "cell": {
-              "role": "stem",
-              "memory": "right",
-              "input": ["_", "_", "_"],
-              "output": ["_", "_", "_"],
-              "automail": "_",
-              "self_mailbox": "_",
-              "control": [],
-              "buffer": []
             }
           }
         }

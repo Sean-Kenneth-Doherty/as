@@ -43,10 +43,12 @@
         "stem-control-selected",
         "stem-command-buffer-neighbor-delivered",
         "stem-command-buffer-self-processed",
+        "stem-command-buffer-self-write-buffer-appended",
         "recipient-init-command-message-processed",
         "stem-init",
         "self-mailbox-processed",
-        "self-mailbox-unsupported"
+        "self-mailbox-unsupported",
+        "self-mailbox-write-buffer-appended"
       ],
       "chain_statuses": [
         "neighbor-delivery-consumed",

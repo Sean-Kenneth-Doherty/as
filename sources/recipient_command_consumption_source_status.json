@@ -58,7 +58,7 @@
     {
       "adr": "ADR-0057",
       "path": "sources/write_buffer_command_semantics_status.json",
-      "summary": "AS now has a source-status decision keeping write-buffer command execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
+      "summary": "AS now has a source-status decision and ADR-0161 implementation for direct self-mailbox and completed self-target command-buffer write-buffer execution, while recipient write-buffer command-message inputs remain outside the init-family consumption slice."
     },
     {
       "adr": "ADR-0058",
@@ -150,7 +150,7 @@
     },
     {
       "blocker_id": "write-buffer-command-message-semantics",
-      "summary": "Legacy sources define write-buf-zero and write-buf-one primitive operations, but AS has not yet selected a source-backed write-buffer boundary for fixed cells, stem cells, and buffer-full behavior."
+      "summary": "ADR-0161 selects and implements the direct self-mailbox and completed self-target command-buffer write-buffer boundary, but recipient write-buffer command-message execution remains outside the init-family consumption slice and stays rejected by ADR-0054."
     },
     {
       "blocker_id": "multi-command-input-conflict-policy",
@@ -159,6 +159,6 @@
   ],
   "allowed_next_slices": [
     "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
-    "Revisit write-buffer command execution only if new source evidence resolves append, clearing, and buffer-full boundaries."
+    "Revisit recipient write-buffer command-message execution only if new source evidence justifies moving it out of the ADR-0054 non-init rejection boundary."
   ]
 }

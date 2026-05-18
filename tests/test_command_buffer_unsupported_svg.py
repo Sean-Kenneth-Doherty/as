@@ -51,11 +51,11 @@ class CommandBufferUnsupportedSvgTests(unittest.TestCase):
         self.assertIn("transition: step_stem_cell", self.svg_text)
         self.assertIn("self_mailbox before: _", self.svg_text)
         self.assertIn("self_mailbox after: _", self.svg_text)
-        self.assertIn("control before: [0, 1, 0]", self.svg_text)
-        self.assertIn("buffer before: [0, 0, 1, 1]", self.svg_text)
+        self.assertIn("control before: [1, 0, 0]", self.svg_text)
+        self.assertIn("buffer before: [0, 0, 0, 0]", self.svg_text)
         self.assertIn("input after: [_, _, _]", self.svg_text)
-        self.assertIn("control after: [0, 1, 0]", self.svg_text)
-        self.assertIn("buffer after: [0, 0, 1, 1, 1]", self.svg_text)
+        self.assertIn("control after: [1, 0, 0]", self.svg_text)
+        self.assertIn("buffer after: [0, 0, 0, 0, 0]", self.svg_text)
         root = ET.fromstring(self.svg_text)
         visible_text = "\n".join(root.itertext())
         for flow in self.trace.trace.routed_signal_flow:
@@ -91,8 +91,8 @@ class CommandBufferUnsupportedSvgTests(unittest.TestCase):
 
     def test_unsupported_command_buffer_svg_validator_rejects_drifted_buffer(self):
         drifted = self.svg_text.replace(
-            "buffer after: [0, 0, 1, 1, 1]",
-            "buffer after: [0, 0, 1, 1, 0]",
+            "buffer after: [0, 0, 0, 0, 0]",
+            "buffer after: [0, 0, 0, 0, 1]",
         )
 
         results = validate_schematic_svg(self.trace, svg_text=drifted)

@@ -128,17 +128,27 @@
         },
         {
           "rule": "manifest-example",
-          "example": "write buffer zero unsupported preserved",
-          "expected": true
-        },
-        {
-          "rule": "manifest-example",
-          "example": "write buffer one unsupported preserved",
-          "expected": true
-        },
-        {
-          "rule": "manifest-example",
           "example": "unsupported command cleared",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "claim_id": "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "self mailbox write buffer zero appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "self mailbox write buffer one appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "self mailbox write buffer wrong bit",
           "expected": false
         }
       ]
@@ -168,17 +178,27 @@
         },
         {
           "rule": "manifest-example",
-          "example": "self write buffer zero command remains appended",
+          "example": "self standard signal command wrongfully processed",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
+      "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "self command buffer write buffer zero appended",
           "expected": true
         },
         {
           "rule": "manifest-example",
-          "example": "self write buffer command remains appended",
+          "example": "self command buffer write buffer one appended",
           "expected": true
         },
         {
           "rule": "manifest-example",
-          "example": "self write buffer command wrongfully processed",
+          "example": "self command buffer write buffer preserved command source",
           "expected": false
         }
       ]

@@ -41,9 +41,11 @@ runtime slice in `docs/recipient-init-command-message-consumption.md`.
 includes it as command offset 0, while ordinary standard-signal behavior is
 binary-input behavior and the legacy special-message sets exclude it.
 
-`write-buf-zero` and `write-buf-one` remain blocked because AS has not yet
-selected a complete write-buffer boundary for fixed cells, stem cells, or
-buffer-full behavior.
+Delivered recipient `write-buf-zero` and `write-buf-one` command messages
+remain blocked by the ADR-0054 non-init rejection boundary. ADR-0161 selects
+and implements direct self-mailbox and completed self-target command-buffer
+write-buffer append behavior, but recipient write-buffer command-message
+execution remains outside the init-family consumption slice.
 
 Full recipient-side command-message consumption still excludes non-init
 command-token execution. ADR-0059 selects reject-and-clear as the policy for
@@ -88,8 +90,10 @@ ADR-0056 adds the rendered SVG view in
 `schematics/recipient_non_init_command_rejection_trace.svg`.
 
 ADR-0057 records the write-buffer command semantics source-status decision in
-`sources/write_buffer_command_semantics_status.json` and keeps write-buffer
-execution blocked.
+`sources/write_buffer_command_semantics_status.json`. ADR-0161 implements the
+direct self-mailbox and completed self-target command-buffer write-buffer
+surfaces while this recipient-consumption status keeps delivered recipient
+write-buffer command messages blocked.
 
 ADR-0058 records the `standard-signal` command-token semantics source-status
 decision in `sources/standard_signal_command_semantics_status.json` and keeps

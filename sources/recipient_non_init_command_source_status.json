@@ -5,7 +5,7 @@
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
   "safe_next_slice": "revisit-standard-signal-or-write-buffer-command-semantics",
-  "as_boundary": "Continue rejecting recipient non-init command-message inputs while AS keeps standard-signal and write-buffer command tokens source-blocked; the accepted behavior is the ADR-0054 rejection boundary, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
+  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal and write-buffer command tokens; standard-signal self-target command execution remains source-blocked, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161. The accepted recipient behavior is the ADR-0054 rejection boundary, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -53,7 +53,7 @@
     {
       "adr": "ADR-0057",
       "path": "sources/write_buffer_command_semantics_status.json",
-      "summary": "AS now has a source-status decision keeping write-buffer command execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
+      "summary": "AS now has a source-status decision and ADR-0161 implementation for direct self-mailbox and completed self-target command-buffer write-buffer execution, while recipient write-buffer command-message inputs remain rejected here."
     },
     {
       "adr": "ADR-0058",
@@ -105,7 +105,7 @@
     "as_boundary": "Continue rejecting standard-signal command-message input until AS decides whether standard-signal command tokens replay ordinary binary-input routing, remain unsupported, or have a different recipient/self-target surface."
   },
   "write_buffer_status": {
-    "decision": "blocked-by-source-divergence",
+    "decision": "recipient-non-init-rejection-preserved",
     "depends_on": "sources/write_buffer_command_semantics_status.json",
     "legacy_divergences": [
       {
@@ -127,7 +127,7 @@
         "summary": "FSMSIM dispatches write-buf-zero and write-buf-one through primitive-eval and appends to the buffer while clearing the self mailbox and input channels."
       }
     ],
-    "as_boundary": "Continue rejecting write-buffer command-message input under the ADR-0054 rejection claim until AS selects fixed-cell, stem-cell, input-clearing, buffer-clearing, and buffer-full behavior from source evidence."
+    "as_boundary": "Continue rejecting recipient write-buffer command-message input under the ADR-0054 rejection claim. Direct self-mailbox and completed self-target command-buffer write-buffer execution are outside this recipient non-init surface and are implemented by ADR-0161."
   },
   "multi_command_input_status": {
     "decision": "selected-reject-and-clear",
@@ -137,6 +137,6 @@
   },
   "allowed_next_slices": [
     "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
-    "Revisit write-buffer command execution only if new source evidence resolves append, clearing, and buffer-full boundaries."
+    "Revisit recipient write-buffer command-message execution only if new source evidence justifies moving it out of the ADR-0054 non-init rejection boundary."
   ]
 }

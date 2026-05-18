@@ -23,7 +23,7 @@ CLAIMS = Path("claims/transition_claims.json")
 CERTIFICATES = Path("claims/proof_certificates.json")
 LANGUAGE = Path("language/transition_claim_language.json")
 CLAIM_ID = "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"
-UNSUPPORTED_COMMANDS = {"standard-signal", "write-buf-zero", "write-buf-one"}
+UNSUPPORTED_COMMANDS = {"standard-signal"}
 
 
 class SelfMailboxUnsupportedClaimTests(unittest.TestCase):
@@ -31,9 +31,9 @@ class SelfMailboxUnsupportedClaimTests(unittest.TestCase):
         before = Cell(
             role="stem",
             memory="right",
-            self_mailbox="write-buf-one",
-            control=(1, 0, 1),
-            buffer=(0, 1),
+            self_mailbox="standard-signal",
+            control=(1, 0, 0),
+            buffer=(0,),
         )
         result = StepResult(status="self-mailbox-unsupported", cell=before)
 

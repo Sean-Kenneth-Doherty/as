@@ -20,7 +20,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 SAFE_NEXT_SLICE = (
     "revisit-standard-signal-or-write-buffer-command-semantics, "
-    "implement-write-buffer-command-execution"
+    "add-write-buffer-command-execution-evidence-bundle"
 )
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 
@@ -84,13 +84,13 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         )
         self.assertIn(
             "self-target-surface: "
-            "preserve-self-target-write-buffer-as-unsupported "
+            "execute-self-target-write-buffer-append "
             "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
         self.assertIn("Execution readiness:", text)
         self.assertIn(
-            "write-buf-zero, write-buf-one: ready; execution changes "
+            "write-buf-zero, write-buf-one: implemented; execution changes "
             "allowed: yes; blockers: none",
             text,
         )

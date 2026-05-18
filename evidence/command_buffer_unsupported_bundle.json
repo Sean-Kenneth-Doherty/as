@@ -2,14 +2,12 @@
   "schema_version": 1,
   "bundle_id": "command-buffer-unsupported-evidence-bundle",
   "reviewed_at": "2026-05-17",
-  "purpose": "Tie one completed self-target non-init command-buffer append boundary to its claim, proof certificate, schematic trace, rendered SVG, and source-status boundaries.",
+  "purpose": "Tie one completed self-target standard-signal command-buffer append boundary to its claim, proof certificate, schematic trace, rendered SVG, and source-status boundaries.",
   "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
   "predicate": "stem_command_buffer_preserves_unsupported_completion",
-  "positive_example": "self write buffer command remains appended",
+  "positive_example": "self standard signal command remains appended",
   "covered_positive_examples": [
-    "self standard signal command remains appended",
-    "self write buffer zero command remains appended",
-    "self write buffer command remains appended"
+    "self standard signal command remains appended"
   ],
   "transition_function": "step_stem_cell",
   "expected_status": "stem-buffer-appended",
@@ -27,8 +25,8 @@
     ]
   },
   "boundaries": [
-    "This bundle covers only the self-target non-init command-buffer append boundary.",
+    "This bundle covers only the self-target non-init standard-signal command-buffer append boundary.",
     "init-family self-target command buffers remain handled by the supported dispatch bundle.",
-    "standard-signal and write-buffer self-target command-buffer tokens are preserved at the append boundary; write-buffer append execution semantics remain source-blocked."
+    "standard-signal self-target command-buffer tokens are preserved at the append boundary; write-buffer self-target command-buffer tokens now execute through the ADR-0161 append boundary."
   ]
 }

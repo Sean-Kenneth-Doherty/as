@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox preservation, self-target init command-buffer dispatch, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, and the unsupported self-target non-init append boundary. It still does not execute non-init command-message inputs on recipient cells or execute self-target standard-signal/write-buffer commands."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox standard-signal preservation, direct self-mailbox write-buffer append execution, self-target init command-buffer dispatch, self-target write-buffer command-buffer execution, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, and the unsupported self-target standard-signal append boundary. It still does not execute non-init command-message inputs on recipient cells or execute self-target standard-signal commands."
   },
   "implemented_evidence_bundles": [
     {
@@ -44,7 +44,7 @@
       "adr": "ADR-0073",
       "path": "evidence/self_mailbox_unsupported_bundle.json",
       "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
-      "positive_example": "write buffer one unsupported preserved",
+      "positive_example": "standard signal unsupported preserved",
       "summary": "AS now has an integrated evidence bundle validating one direct self-mailbox unsupported-command preservation boundary across runtime, claim, proof, trace, render, and source-status boundaries."
     },
     {
@@ -58,7 +58,7 @@
       "adr": "ADR-0075",
       "path": "evidence/command_buffer_unsupported_bundle.json",
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
-      "positive_example": "self write buffer command remains appended",
+      "positive_example": "self standard signal command remains appended",
       "summary": "AS now has an integrated evidence bundle validating one completed self-target non-init command-buffer append boundary across runtime, claim, proof, trace, render, and source-status boundaries."
     },
     {
@@ -154,7 +154,7 @@
   "blockers": [
     {
       "blocker_id": "recipient-non-init-command-message-semantics",
-      "summary": "AS can consume delivered init-family command-message inputs, but recipient cells still reject non-init command messages until standard-signal and write-buffer semantics are decided."
+      "summary": "AS can consume delivered init-family command-message inputs, but recipient cells still reject non-init command messages while standard-signal command execution remains blocked and recipient write-buffer command-message execution stays under the ADR-0054 rejection boundary."
     },
     {
       "blocker_id": "standard-signal-command-semantics",
@@ -162,10 +162,11 @@
     },
     {
       "blocker_id": "write-buffer-command-semantics",
-      "summary": "ADR-0057 records write-buf-zero and write-buf-one as blocked by source divergence across formal, RAA, SEMSIM, and FSMSIM witnesses."
+      "summary": "ADR-0161 implements direct self-mailbox and completed self-target command-buffer write-buffer execution; recipient write-buffer command-message execution remains under the recipient non-init rejection boundary until a later source-backed ADR changes it."
     }
   ],
   "allowed_next_slices": [
-    "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or write-buffer divergence."
+    "Add a write-buffer execution evidence bundle for the ADR-0161 self-target append behavior.",
+    "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or recipient write-buffer command-message divergence."
   ]
 }

@@ -209,6 +209,11 @@ ADR-0160 resolves that final write-buffer `post-append-clearing` question as
 `preserve-appended-buffer-clear-command-source`, leaving no live write-buffer
 resolution questions and marking write-buffer append execution source-ready
 while preserving project status `schema_version: 15`.
+ADR-0161 implements direct self-mailbox and completed self-target
+command-buffer write-buffer append execution, adds two transition claims and
+certificates for those surfaces, narrows unsupported write-buffer examples out
+of the old preservation bundles, and keeps project status
+`schema_version: 15`.
 
 ## Boundary
 

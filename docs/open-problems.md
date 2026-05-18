@@ -84,7 +84,9 @@ ADR-0054 promotes that rejection boundary into the named claim/proof surface.
 ADR-0055 adds a schematic-linked trace for one fixed recipient upstream
 `standard-signal` rejection.
 ADR-0056 adds the rendered SVG view of that rejection trace.
-ADR-0057 records write-buffer command execution as still source-blocked.
+ADR-0057 records write-buffer command execution as a separate source-status
+frontier, and ADR-0161 implements its direct self-mailbox and completed
+self-target command-buffer append surfaces.
 ADR-0058 records `standard-signal` command-token execution as still
 source-blocked while preserving ordinary binary-input standard-signal behavior.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
@@ -293,9 +295,10 @@ less-than-full write guard and RAA `buffer-full?` guard, leaving
 `post-append-clearing` as the only live write-buffer execution question.
 ADR-0160 resolves that final `post-append-clearing` question by selecting the
 RAA/FSMSIM buffer-preservation behavior and recording SEMSIM's buffer-clearing
-wrapper as divergent legacy behavior. Write-buffer command execution is now
-source-ready for a later implementation ADR, while the current Universal Cell
-runtime boundaries remain unchanged.
+wrapper as divergent legacy behavior. ADR-0161 implements the source-ready
+write-buffer append slice for direct self-mailbox and completed self-target
+command-buffer surfaces, while delivered recipient write-buffer command
+messages remain under the recipient non-init rejection boundary.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

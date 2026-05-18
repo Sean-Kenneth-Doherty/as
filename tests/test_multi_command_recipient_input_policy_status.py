@@ -122,7 +122,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
-            "implement-write-buffer-command-execution",
+            "add-write-buffer-command-execution-evidence-bundle",
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],

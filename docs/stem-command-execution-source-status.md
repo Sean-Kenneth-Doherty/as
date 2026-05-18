@@ -36,7 +36,9 @@ recipient non-init command-message inputs as a source-status blocking decision
 and ADR-0054 promotes that rejection boundary into the named claim/proof
 surface. ADR-0055 adds a schematic-linked trace for one fixed-recipient
 upstream `standard-signal` rejection, and ADR-0056 adds the rendered SVG view.
-ADR-0057 records write-buffer command semantics as still source-blocked.
+ADR-0057 records write-buffer command semantics as a separate source-status
+surface, and ADR-0161 implements its direct self-mailbox and completed
+self-target command-buffer append behavior.
 ADR-0058 records `standard-signal` command-token semantics as still
 source-blocked while preserving ordinary binary-input standard-signal
 behavior. ADR-0059 selects reject-and-clear for multiple simultaneous
@@ -57,8 +59,9 @@ ADR-0076 registers the completed neighbor-target command-buffer delivery path
 as an integrated evidence bundle. ADR-0077 composes that delivery output into
 recipient init-family consumption without widening stem command execution.
 Legacy simulator sketches still diverge from the formal table in ways that
-should be resolved before AS treats them as executable authority, and AS still
-does not execute non-init command-message inputs on recipient cells.
+should be resolved before AS treats them as executable authority for the
+remaining standard-signal and recipient non-init surfaces, and AS still does
+not execute non-init command-message inputs on recipient cells.
 
 ## Evidence
 
@@ -96,12 +99,12 @@ ADR-0026 remains correct as a command-buffer decoder because it uses the formal
 model's explicit command table. Execution is a different claim. To execute full
 command behavior honestly, AS still needs to choose:
 
-- how `standard-signal`, `write-buf-zero`, and `write-buf-one` behave when
-  selected as self-mailbox or self-target command-buffer commands;
+- how `standard-signal` behaves when selected as a self-mailbox or self-target
+  command-buffer command;
 - how write-buffer and standard-signal command-message inputs behave on
-  recipient cells after the implemented init-family recipient slice.
-- a rendered SVG for multiple simultaneous recipient command-message rejection
-  before later work depends on that selected policy visually.
+  recipient cells after the implemented init-family recipient slice;
+- an integrated evidence bundle for the ADR-0161 write-buffer execution
+  surface.
 
 ## Verification
 

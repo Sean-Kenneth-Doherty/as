@@ -55,9 +55,11 @@ Status = Literal[
     "stem-control-selected",
     "stem-command-buffer-neighbor-delivered",
     "stem-command-buffer-self-processed",
+    "stem-command-buffer-self-write-buffer-appended",
     "recipient-init-command-message-processed",
     "self-mailbox-processed",
     "self-mailbox-unsupported",
+    "self-mailbox-write-buffer-appended",
 ]
 
 EMPTY: tuple[Signal, Signal, Signal] = ("_", "_", "_")
@@ -103,6 +105,10 @@ SELF_MAILBOX_INIT_TARGETS: dict[CommandMessage, tuple[Role, Memory]] = {
     "wire-l-init": ("wire", "left"),
     "proc-r-init": ("proc", "right"),
     "proc-l-init": ("proc", "left"),
+}
+WRITE_BUFFER_COMMAND_BITS: dict[CommandMessage, int] = {
+    "write-buf-zero": 0,
+    "write-buf-one": 1,
 }
 NEIGHBOR_OUTPUT_INDEX = {
     "neighbor-a": 0,
@@ -193,8 +199,8 @@ def step_stem_cell(cell: Cell) -> StepResult:
     Full PRC stem behavior includes complete command decoding, target routing,
     and buffer execution. This probe covers explicit automail reconfiguration,
     standard-signal buffer accumulation, direct self-mailbox handling, and the
-    narrow self-target init command-buffer dispatch slice, and neighbor-target
-    command-buffer delivery onto output channels.
+    narrow self-target init and write-buffer command-buffer dispatch slices,
+    and neighbor-target command-buffer delivery onto output channels.
     """
 
     if cell.role != "stem":
@@ -258,6 +264,10 @@ def step_stem_cell(cell: Cell) -> StepResult:
 def _process_self_mailbox(cell: Cell) -> StepResult:
     """Process the source-stable self-mailbox init-command subset."""
 
+    write_buffer_result = _process_self_mailbox_write_buffer(cell)
+    if write_buffer_result is not None:
+        return write_buffer_result
+
     target = SELF_MAILBOX_INIT_TARGETS.get(cell.self_mailbox)
     if target is None:
         return StepResult("self-mailbox-unsupported", cell)
@@ -275,6 +285,29 @@ def _process_self_mailbox(cell: Cell) -> StepResult:
             self_mailbox="_",
             control=(),
             buffer=(),
+        ),
+    )
+
+
+def _process_self_mailbox_write_buffer(cell: Cell) -> StepResult | None:
+    """Append the literal bit carried by a direct self-mailbox write-buffer command."""
+
+    bit = WRITE_BUFFER_COMMAND_BITS.get(cell.self_mailbox)
+    if bit is None:
+        return None
+
+    if len(cell.buffer) >= MAX_STEM_BUFFER_SIZE:
+        return StepResult("stem-buffer-full", cell)
+
+    return StepResult(
+        "self-mailbox-write-buffer-appended",
+        _replace(
+            cell,
+            input=EMPTY,
+            output=EMPTY,
+            automail="_",
+            self_mailbox="_",
+            buffer=cell.buffer + (bit,),
         ),
     )
 
@@ -316,6 +349,9 @@ def _process_completed_command_buffer(cell: Cell) -> StepResult | None:
 
     target_id, command_id = decoded
     if target_id == "self":
+        if command_id in WRITE_BUFFER_COMMAND_BITS:
+            return _process_self_command_buffer_write_buffer(cell, command_id)
+
         if command_id not in SELF_MAILBOX_INIT_TARGETS:
             return None
 
@@ -347,6 +383,26 @@ def _process_completed_command_buffer(cell: Cell) -> StepResult | None:
             self_mailbox="_",
             control=(),
             buffer=(),
+        ),
+    )
+
+
+def _process_self_command_buffer_write_buffer(
+    cell: Cell,
+    command_id: str,
+) -> StepResult:
+    """Execute a completed self-target write-buffer command buffer."""
+
+    bit = WRITE_BUFFER_COMMAND_BITS[command_id]  # type: ignore[index]
+    return StepResult(
+        "stem-command-buffer-self-write-buffer-appended",
+        _replace(
+            cell,
+            input=EMPTY,
+            output=EMPTY,
+            automail="_",
+            self_mailbox="_",
+            buffer=(bit,),
         ),
     )
 

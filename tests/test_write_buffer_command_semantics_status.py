@@ -25,19 +25,16 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["schema_version"], 1)
         self.assertEqual(
             self.status["decision"],
-            "write-buffer-command-execution-source-resolved",
+            "write-buffer-self-target-execution-implemented",
         )
-        self.assertEqual(self.status["runtime_change"], "none-source-status-only")
+        self.assertEqual(self.status["runtime_change"], "implemented-by-adr-0161")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "implement-write-buffer-command-execution",
+            "add-write-buffer-command-execution-evidence-bundle",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
-            [
-                "self-mailbox-command",
-                "self-target-command-buffer",
-            ],
+            ["recipient-command-message"],
         )
         self.assertEqual(
             self.status["commands"],
@@ -136,7 +133,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
             recipient_non_init["blocked_runtime_commands"],
         )
 
-    def test_self_target_surface_is_resolved_to_unsupported_boundaries(self):
+    def test_self_target_surface_is_resolved_to_execution_claims(self):
         resolved_questions = {
             question["question_id"]: question
             for question in self.status["resolved_resolution_questions"]
@@ -151,23 +148,31 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         resolved = resolved_questions["self-target-surface"]
         self.assertEqual(
             resolved["decision"],
-            "preserve-self-target-write-buffer-as-unsupported",
+            "execute-self-target-write-buffer-append",
         )
         self.assertEqual(resolved["source_status"], str(STATUS))
         self.assertIn(
-            "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+            "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
             resolved["legacy_divergence"],
         )
         self.assertIn(
-            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+            "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
             resolved["legacy_divergence"],
         )
-        self.assertIn(
+        self.assertNotIn(
             "write buffer zero unsupported preserved",
             self_mailbox_bundle["covered_positive_examples"],
         )
         self.assertIn(
+            "standard signal unsupported preserved",
+            self_mailbox_bundle["covered_positive_examples"],
+        )
+        self.assertNotIn(
             "self write buffer zero command remains appended",
+            command_buffer_bundle["covered_positive_examples"],
+        )
+        self.assertIn(
+            "self standard signal command remains appended",
             command_buffer_bundle["covered_positive_examples"],
         )
 
@@ -187,7 +192,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
             "sources/write_buffer_command_semantics_status.json",
         )
         self.assertIn("literal 0 and 1 append bits", resolved["legacy_divergence"])
-        self.assertIn("post-append clearing", resolved["legacy_divergence"])
+        self.assertIn("ADR-0161", resolved["legacy_divergence"])
 
     def test_buffer_full_boundary_resolution_records_source_basis(self):
         resolution = self.status["buffer_full_boundary_resolution"]
@@ -254,14 +259,14 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
     def test_execution_readiness_allows_write_buffer_implementation(self):
         readiness = self.status["execution_readiness"]
 
-        self.assertEqual(readiness["decision"], "ready")
+        self.assertEqual(readiness["decision"], "implemented")
         self.assertTrue(readiness["execution_change_allowed"])
         self.assertEqual(
             readiness["blocked_by_resolution_questions"],
             [],
         )
         self.assertIn("source-resolved", readiness["summary"])
-        self.assertIn("implementation may proceed", readiness["summary"])
+        self.assertIn("implemented", readiness["summary"])
 
     def test_existing_source_status_frontiers_point_past_write_buffer(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))

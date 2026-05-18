@@ -4,15 +4,14 @@ ADR-0073 adds `evidence/self_mailbox_unsupported_bundle.json`, the fifth AS
 transition evidence bundle.
 
 The bundle's trace-aligned primary example is
-`write buffer one unsupported preserved`, where a stem-right cell with
-`self_mailbox` set to `write-buf-one` reports `self-mailbox-unsupported` and
+`standard signal unsupported preserved`, where a stem-right cell with
+`self_mailbox` set to `standard-signal` reports `self-mailbox-unsupported` and
 preserves the cell unchanged.
 
-ADR-0120 also records broader `covered_positive_examples` for the same claim:
+ADR-0161 narrows the `covered_positive_examples` for the same claim after
+moving write-buffer commands into explicit append execution claims:
 
-- `standard signal unsupported preserved`;
-- `write buffer zero unsupported preserved`; and
-- `write buffer one unsupported preserved`.
+- `standard signal unsupported preserved`.
 
 ## Evidence Path
 
@@ -42,9 +41,9 @@ write-buffer command-token execution, `standard-signal` command-token
 execution, recipient non-init command execution, priority, or sequencing.
 ADR-0151 reuses this existing preservation boundary to resolve the
 standard-signal self-mailbox surface as unsupported-preserved.
-ADR-0153 reuses the same preservation boundary to resolve the write-buffer
-self-mailbox surface as unsupported-preserved while leaving append execution
-semantics blocked.
+ADR-0161 removes write-buffer commands from this unsupported boundary and
+implements direct self-mailbox write-buffer append behavior in
+`UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED`.
 
 ## Verification
 

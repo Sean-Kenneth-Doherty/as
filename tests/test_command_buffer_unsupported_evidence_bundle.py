@@ -14,12 +14,10 @@ BUNDLE = Path("evidence/command_buffer_unsupported_bundle.json")
 REGISTRY = Path("evidence/manifest.json")
 BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
 CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
-EXAMPLE = "self write buffer command remains appended"
+EXAMPLE = "self standard signal command remains appended"
 STATUS = "stem-buffer-appended"
 COVERED_EXAMPLES = (
     "self standard signal command remains appended",
-    "self write buffer zero command remains appended",
-    "self write buffer command remains appended",
 )
 
 
@@ -124,7 +122,6 @@ class CommandBufferUnsupportedEvidenceBundleTests(unittest.TestCase):
             covered_positive_examples=(
                 "self standard signal command remains appended",
                 "not a manifest example",
-                "self write buffer command remains appended",
             ),
         )
 

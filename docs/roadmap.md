@@ -3190,3 +3190,33 @@ Status: accepted in
 `tests/test_write_buffer_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0161: Write-Buffer Command Execution
+
+Goal: implement the source-ready write-buffer append slice for direct
+self-mailbox and completed self-target command-buffer commands.
+
+Deliverables:
+
+- direct `self_mailbox` `write-buf-zero` / `write-buf-one` commands append
+  literal `0` / `1`, clear the mailbox source, and preserve the control rail;
+- completed self-target command buffers decoding to `write-buf-zero` /
+  `write-buf-one` append the literal command bit as the new buffer content and
+  clear the command-buffer source;
+- unsupported self-mailbox and self-target command-buffer claims narrow to
+  `standard-signal`;
+- new write-buffer transition claims, proof certificates, and object-language
+  vocabulary cover the append behavior;
+- transition-chain language admits the new sender result statuses while
+  preserving the non-neighbor-delivery chain boundaries;
+- source-status and project-status reports mark write-buffer self-target
+  execution implemented while recipient write-buffer command-message input
+  remains rejected; and
+- unchanged project-status schema `15` and source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0161-write-buffer-command-execution.md`. Implemented in
+`autarkic_systems/universal_cell.py`,
+`autarkic_systems/transition_predicates.py`, the transition claim/proof
+manifests, the transition object languages, write-buffer source-status
+artifacts, and focused runtime/claim/status tests.

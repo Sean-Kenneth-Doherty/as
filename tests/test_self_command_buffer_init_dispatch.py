@@ -73,13 +73,13 @@ class SelfCommandBufferInitDispatchTests(unittest.TestCase):
         self.assertEqual(result.cell.control, ())
         self.assertEqual(result.cell.buffer, ())
 
-    def test_completed_self_non_init_buffer_remains_append_boundary(self):
+    def test_completed_self_standard_signal_buffer_remains_append_boundary(self):
         cell = Cell(
             role="stem",
             memory="right",
             input=(0, 1, 0),
-            control=(0, 1, 0),
-            buffer=(0, 0, 1, 1),
+            control=(1, 0, 0),
+            buffer=(0, 0, 0, 0),
         )
 
         result = step_stem_cell(cell)
@@ -87,8 +87,8 @@ class SelfCommandBufferInitDispatchTests(unittest.TestCase):
         self.assertEqual(result.status, "stem-buffer-appended")
         self.assertEqual(result.cell.role, "stem")
         self.assertEqual(result.cell.self_mailbox, "_")
-        self.assertEqual(result.cell.control, (0, 1, 0))
-        self.assertEqual(result.cell.buffer, (0, 0, 1, 1, 1))
+        self.assertEqual(result.cell.control, (1, 0, 0))
+        self.assertEqual(result.cell.buffer, (0, 0, 0, 0, 0))
 
     def test_transition_language_names_command_buffer_self_processed_status(self):
         language = load_transition_claim_language(LANGUAGE)

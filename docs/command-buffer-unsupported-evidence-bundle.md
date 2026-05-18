@@ -4,15 +4,15 @@ ADR-0075 adds `evidence/command_buffer_unsupported_bundle.json`, the seventh
 AS transition evidence bundle.
 
 The bundle's trace-aligned primary example is
-`self write buffer command remains appended`, where a matching standard input
-completes buffer `00111`, decodes it as `self/write-buf-one`, and preserves
+`self standard signal command remains appended`, where a matching standard input
+completes buffer `00000`, decodes it as `self/standard-signal`, and preserves
 the completed command buffer at the append boundary.
 
-ADR-0120 also records broader `covered_positive_examples` for the same claim:
+ADR-0161 narrows the `covered_positive_examples` for the same claim after
+moving self-target write-buffer commands into explicit append execution
+claims:
 
-- `self standard signal command remains appended`;
-- `self write buffer zero command remains appended`; and
-- `self write buffer command remains appended`.
+- `self standard signal command remains appended`.
 
 ## Evidence Path
 
@@ -43,9 +43,10 @@ only. It does not add write-buffer command-token execution,
 execution, priority, or sequencing.
 ADR-0151 reuses this existing append boundary to resolve the standard-signal
 self-target command-buffer surface as unsupported-preserved.
-ADR-0153 reuses the same append boundary to resolve the write-buffer
-self-target command-buffer surface as unsupported-preserved while leaving
-append execution semantics blocked.
+ADR-0161 removes self-target write-buffer commands from this unsupported
+boundary and implements completed self-target write-buffer command-buffer
+append behavior in
+`UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED`.
 
 ## Verification
 

@@ -37,11 +37,9 @@ UNSUPPORTED_MAILBOX_BUNDLE = Path("evidence/self_mailbox_unsupported_bundle.json
 UNSUPPORTED_MAILBOX_BUNDLE_ID = "self-mailbox-unsupported-evidence-bundle"
 UNSUPPORTED_MAILBOX_CLAIM_ID = "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"
 UNSUPPORTED_MAILBOX_STATUS = "self-mailbox-unsupported"
-UNSUPPORTED_MAILBOX_EXAMPLE = "write buffer one unsupported preserved"
+UNSUPPORTED_MAILBOX_EXAMPLE = "standard signal unsupported preserved"
 UNSUPPORTED_MAILBOX_COVERED_EXAMPLES = [
     "standard signal unsupported preserved",
-    "write buffer zero unsupported preserved",
-    "write buffer one unsupported preserved",
 ]
 SELF_COMMAND_BUFFER_BUNDLE = Path("evidence/self_command_buffer_init_bundle.json")
 SELF_COMMAND_BUFFER_BUNDLE_ID = "self-command-buffer-init-evidence-bundle"
@@ -52,11 +50,9 @@ UNSUPPORTED_COMMAND_BUFFER_BUNDLE = Path("evidence/command_buffer_unsupported_bu
 UNSUPPORTED_COMMAND_BUFFER_BUNDLE_ID = "command-buffer-unsupported-evidence-bundle"
 UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
 UNSUPPORTED_COMMAND_BUFFER_STATUS = "stem-buffer-appended"
-UNSUPPORTED_COMMAND_BUFFER_EXAMPLE = "self write buffer command remains appended"
+UNSUPPORTED_COMMAND_BUFFER_EXAMPLE = "self standard signal command remains appended"
 UNSUPPORTED_COMMAND_BUFFER_COVERED_EXAMPLES = [
     "self standard signal command remains appended",
-    "self write buffer zero command remains appended",
-    "self write buffer command remains appended",
 ]
 NEIGHBOR_COMMAND_BUFFER_BUNDLE = Path("evidence/neighbor_command_buffer_delivery_bundle.json")
 NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID = "neighbor-command-buffer-delivery-evidence-bundle"

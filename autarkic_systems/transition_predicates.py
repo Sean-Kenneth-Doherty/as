@@ -33,8 +33,15 @@ SELF_MAILBOX_INIT_TARGETS = {
 }
 SELF_MAILBOX_UNSUPPORTED_COMMANDS = {
     "standard-signal",
+}
+RECIPIENT_NON_INIT_COMMANDS = {
+    "standard-signal",
     "write-buf-zero",
     "write-buf-one",
+}
+WRITE_BUFFER_COMMAND_BITS = {
+    "write-buf-zero": 0,
+    "write-buf-one": 1,
 }
 NEIGHBOR_OUTPUT_INDEX = {
     "neighbor-a": 0,
@@ -276,6 +283,55 @@ def self_mailbox_preserves_unsupported_command(
     return PredicateResult(name, True, "unsupported self mailbox command preserved")
 
 
+def self_mailbox_write_buffer_appends_literal(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check direct self-mailbox write-buffer command execution."""
+
+    name = "self_mailbox_write_buffer_appends_literal"
+    bit = WRITE_BUFFER_COMMAND_BITS.get(before.self_mailbox)
+    if (
+        before.role != "stem"
+        or before.automail != "_"
+        or before.input != EMPTY
+        or before.output != EMPTY
+        or bit is None
+        or len(before.buffer) >= COMMAND_BUFFER_WIDTH
+    ):
+        return PredicateResult(name, True, "precondition not active")
+
+    if result.status != "self-mailbox-write-buffer-appended":
+        return PredicateResult(
+            name,
+            False,
+            f"expected self-mailbox-write-buffer-appended, got {result.status}",
+        )
+    if result.cell.role != before.role or result.cell.memory != before.memory:
+        return PredicateResult(name, False, "write-buffer changed role or memory")
+    if result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "write-buffer changed upstream")
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    if result.cell.automail != "_" or result.cell.self_mailbox != "_":
+        return PredicateResult(name, False, "command source was not cleared")
+    if result.cell.control != before.control:
+        return PredicateResult(name, False, "control rail changed")
+
+    expected_buffer = before.buffer + (bit,)
+    if result.cell.buffer != expected_buffer:
+        return PredicateResult(
+            name,
+            False,
+            f"expected buffer {expected_buffer}, got {result.cell.buffer}",
+        )
+    return PredicateResult(
+        name,
+        True,
+        f"self-mailbox {before.self_mailbox} appended literal {bit}",
+    )
+
+
 def stem_command_buffer_executes_self_init(
     before: Cell,
     result: StepResult,
@@ -336,6 +392,12 @@ def stem_command_buffer_preserves_unsupported_completion(
             True,
             "precondition not active: supported self init",
         )
+    if target_id == "self" and command_id in WRITE_BUFFER_COMMAND_BITS:
+        return PredicateResult(
+            name,
+            True,
+            "precondition not active: supported self write-buffer",
+        )
 
     if result.status != "stem-buffer-appended":
         return PredicateResult(
@@ -381,6 +443,52 @@ def stem_command_buffer_preserves_unsupported_completion(
         name,
         True,
         f"unsupported {target_id}/{command_id} completion stayed at append boundary",
+    )
+
+
+def stem_command_buffer_executes_self_write_buffer(
+    before: Cell,
+    result: StepResult,
+) -> PredicateResult:
+    """Check completed self-target write-buffer command-buffer execution."""
+
+    name = "stem_command_buffer_executes_self_write_buffer"
+    decoded = _completed_command_buffer(before)
+    if decoded is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    target_id, command_id, _completed_buffer = decoded
+    bit = WRITE_BUFFER_COMMAND_BITS.get(command_id)
+    if target_id != "self" or bit is None:
+        return PredicateResult(name, True, "precondition not active")
+
+    if result.status != "stem-command-buffer-self-write-buffer-appended":
+        return PredicateResult(
+            name,
+            False,
+            "expected stem-command-buffer-self-write-buffer-appended, "
+            f"got {result.status}",
+        )
+    if result.cell.role != before.role or result.cell.memory != before.memory:
+        return PredicateResult(name, False, "write-buffer changed role or memory")
+    if result.cell.upstream != before.upstream:
+        return PredicateResult(name, False, "write-buffer changed upstream")
+    if result.cell.input != EMPTY or result.cell.output != EMPTY:
+        return PredicateResult(name, False, "input or output was not cleared")
+    if result.cell.automail != "_" or result.cell.self_mailbox != "_":
+        return PredicateResult(name, False, "command source was not cleared")
+    if result.cell.control != before.control:
+        return PredicateResult(name, False, "control rail changed")
+    if result.cell.buffer != (bit,):
+        return PredicateResult(
+            name,
+            False,
+            f"expected buffer {(bit,)}, got {result.cell.buffer}",
+        )
+    return PredicateResult(
+        name,
+        True,
+        f"self command-buffer {command_id} appended literal {bit}",
     )
 
 
@@ -646,14 +754,14 @@ def _is_non_init_or_conflict_command_input(
         and channel != "_"
         and (
             channel in SELF_MAILBOX_INIT_TARGETS
-            or channel in SELF_MAILBOX_UNSUPPORTED_COMMANDS
+            or channel in RECIPIENT_NON_INIT_COMMANDS
         )
     ]
     if not command_tokens:
         return False
     if len(command_tokens) >= 2:
         return True
-    return command_tokens[0] in SELF_MAILBOX_UNSUPPORTED_COMMANDS
+    return command_tokens[0] in RECIPIENT_NON_INIT_COMMANDS
 
 
 def _is_one_hot_standard_signal(signal: tuple[object, object, object]) -> bool:

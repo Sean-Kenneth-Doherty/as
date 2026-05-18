@@ -45,12 +45,12 @@ class SelfMailboxUnsupportedSvgTests(unittest.TestCase):
     def test_svg_records_unsupported_mailbox_preservation_and_flow(self):
         self.assertIn("role: stem", self.svg_text)
         self.assertIn("status: self-mailbox-unsupported", self.svg_text)
-        self.assertIn("self_mailbox before: write-buf-one", self.svg_text)
-        self.assertIn("self_mailbox after: write-buf-one", self.svg_text)
-        self.assertIn("control before: [1, 0, 1]", self.svg_text)
-        self.assertIn("control after: [1, 0, 1]", self.svg_text)
-        self.assertIn("buffer before: [0, 1]", self.svg_text)
-        self.assertIn("buffer after: [0, 1]", self.svg_text)
+        self.assertIn("self_mailbox before: standard-signal", self.svg_text)
+        self.assertIn("self_mailbox after: standard-signal", self.svg_text)
+        self.assertIn("control before: [1, 0, 0]", self.svg_text)
+        self.assertIn("control after: [1, 0, 0]", self.svg_text)
+        self.assertIn("buffer before: [0]", self.svg_text)
+        self.assertIn("buffer after: [0]", self.svg_text)
         self.assertIn("transition: step_stem_cell", self.svg_text)
         root = ET.fromstring(self.svg_text)
         visible_text = "\n".join(root.itertext())
@@ -83,7 +83,7 @@ class SelfMailboxUnsupportedSvgTests(unittest.TestCase):
 
     def test_unsupported_svg_validator_rejects_drifted_mailbox(self):
         drifted = self.svg_text.replace(
-            "self_mailbox after: write-buf-one",
+            "self_mailbox after: standard-signal",
             "self_mailbox after: _",
         )
 

@@ -2,14 +2,12 @@
   "schema_version": 1,
   "bundle_id": "self-mailbox-unsupported-evidence-bundle",
   "reviewed_at": "2026-05-17",
-  "purpose": "Tie one direct self-mailbox unsupported-command preservation transition to its claim, proof certificate, schematic trace, rendered SVG, and source-status boundaries.",
+  "purpose": "Tie one direct self-mailbox standard-signal unsupported-command preservation transition to its claim, proof certificate, schematic trace, rendered SVG, and source-status boundaries.",
   "claim_id": "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
   "predicate": "self_mailbox_preserves_unsupported_command",
-  "positive_example": "write buffer one unsupported preserved",
+  "positive_example": "standard signal unsupported preserved",
   "covered_positive_examples": [
-    "standard signal unsupported preserved",
-    "write buffer zero unsupported preserved",
-    "write buffer one unsupported preserved"
+    "standard signal unsupported preserved"
   ],
   "transition_function": "step_stem_cell",
   "expected_status": "self-mailbox-unsupported",
@@ -29,6 +27,6 @@
   "boundaries": [
     "This bundle preserves the self-mailbox non-init command boundary.",
     "It does not change init-family self-mailbox execution.",
-    "standard-signal and write-buffer self-mailbox command tokens are preserved as unsupported; write-buffer append execution semantics remain source-blocked."
+    "standard-signal self-mailbox command tokens are preserved as unsupported; write-buffer self-mailbox commands now execute through the ADR-0161 append boundary."
   ]
 }

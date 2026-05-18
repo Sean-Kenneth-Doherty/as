@@ -46,8 +46,8 @@ class NeighborDeliveryRecipientChainTests(unittest.TestCase):
             role="stem",
             memory="right",
             input=(0, 1, 0),
-            control=(0, 1, 0),
-            buffer=(0, 0, 1, 1),
+            control=(1, 0, 0),
+            buffer=(0, 0, 0, 0),
         )
         recipient = Cell(role="wire", memory="right")
 

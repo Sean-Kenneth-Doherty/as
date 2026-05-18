@@ -61,8 +61,8 @@ class SelfMailboxInitCommandTests(unittest.TestCase):
         self.assertEqual(result.cell.control, ())
         self.assertEqual(result.cell.buffer, ())
 
-    def test_unsupported_self_mailbox_commands_are_explicit_boundaries(self):
-        for command in ("standard-signal", "write-buf-zero", "write-buf-one"):
+    def test_standard_signal_self_mailbox_command_remains_unsupported_boundary(self):
+        for command in ("standard-signal",):
             with self.subTest(command=command):
                 cell = Cell(
                     role="stem",

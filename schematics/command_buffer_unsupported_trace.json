@@ -2,7 +2,7 @@
   "schema_version": 1,
   "artifact_id": "command-buffer-unsupported-schematic-and-uc-transition-trace",
   "reviewed_at": "2026-05-17",
-  "purpose": "Eighth AS-owned schematic-linked Universal Cell trace, covering a completed self-target non-init command buffer that remains at the append boundary.",
+  "purpose": "Eighth AS-owned schematic-linked Universal Cell trace, covering a completed self-target standard-signal command buffer that remains at the append boundary.",
   "required_witness_ids": [
     "PRC-README-UC-CRITERIA",
     "PRC-GELC-GEOMETRY",
@@ -43,8 +43,8 @@
     "layers": [
       {
         "layer_id": "symbolic-rlem-behavior",
-        "summary": "A matching one-hot standard input completes buffer 00111, decodes it as self/write-buf-one, and preserves it at the append boundary.",
-        "boundary": "This layer states only the unsupported self-target non-init command-buffer boundary; it does not execute write-buffer commands.",
+        "summary": "A non-matching one-hot standard input completes buffer 00000, decodes it as self/standard-signal, and preserves it at the append boundary.",
+        "boundary": "This layer states only the unsupported self-target standard-signal command-buffer boundary; it does not execute standard-signal command tokens.",
         "witness_ids": [
           "PRC-RLEM-LITERATURE",
           "PRC-UC-FORMAL-MODEL",
@@ -62,8 +62,8 @@
       },
       {
         "layer_id": "uc-state",
-        "summary": "The trace records every current AS Cell field before and after one unsupported self-target non-init command-buffer append.",
-        "boundary": "This layer is limited to the ADR-0041 append-boundary claim and adds no write-buffer execution.",
+        "summary": "The trace records every current AS Cell field before and after one unsupported self-target standard-signal command-buffer append.",
+        "boundary": "This layer is limited to the narrowed ADR-0041 append-boundary claim and adds no standard-signal command execution.",
         "witness_ids": [
           "PRC-README-UC-CRITERIA",
           "PRC-UC-FORMAL-MODEL",
@@ -82,7 +82,7 @@
     ]
   },
   "trace": {
-    "trace_id": "AS-PRC-COMMAND-BUFFER-SELF-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001",
+    "trace_id": "AS-PRC-COMMAND-BUFFER-SELF-STANDARD-SIGNAL-UNSUPPORTED-TRACE-001",
     "transition_function": "step_stem_cell",
     "cell_fields": [
       "role",
@@ -116,15 +116,15 @@
       "automail": "_",
       "self_mailbox": "_",
       "control": [
-        0,
         1,
+        0,
         0
       ],
       "buffer": [
         0,
         0,
-        1,
-        1
+        0,
+        0
       ]
     },
     "expected_status": "stem-buffer-appended",
@@ -149,24 +149,24 @@
       "automail": "_",
       "self_mailbox": "_",
       "control": [
-        0,
         1,
+        0,
         0
       ],
       "buffer": [
         0,
         0,
-        1,
-        1,
-        1
+        0,
+        0,
+        0
       ]
     },
     "routed_signal_flow": [
-      "control[0,1,0] active",
-      "input[0,1,0] matches control -> append 1",
-      "buffer[0,0,1,1] -> buffer[0,0,1,1,1]",
-      "decode value 7 -> self/write-buf-one",
-      "self command[write-buf-one] unsupported",
+      "control[1,0,0] active",
+      "input[0,1,0] differs from control -> append 0",
+      "buffer[0,0,0,0] -> buffer[0,0,0,0,0]",
+      "decode value 0 -> self/standard-signal",
+      "self command[standard-signal] unsupported",
       "completed command buffer preserved at append boundary"
     ]
   }

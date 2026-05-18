@@ -449,3 +449,7 @@
 - When the final source blocker resolves, flip readiness before runtime code.
   Marking write-buffer append execution source-ready creates a clean boundary
   for the next ADR without silently changing Universal Cell behavior.
+- When a supported command moves out of an unsupported boundary, narrow the
+  negative evidence bundles in the same slice. Otherwise the runtime can be
+  correct while status reports still teach future work to preserve behavior
+  that has become executable.

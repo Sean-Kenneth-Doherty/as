@@ -667,3 +667,10 @@
   legacy behavior. Write-buffer append execution is source-ready for a later
   implementation ADR; project status remains schema 15 and source-status
   remains schema 2.
+- ADR-0161 implements direct self-mailbox and completed self-target
+  command-buffer write-buffer append execution. The old unsupported
+  self-mailbox and command-buffer boundaries now cover `standard-signal` only;
+  write-buffer has explicit transition claims and proof certificates, project
+  status reports 15 transition claims / 37 matched examples / 15 certificates,
+  and recipient write-buffer command-message input remains rejected by the
+  recipient non-init boundary.

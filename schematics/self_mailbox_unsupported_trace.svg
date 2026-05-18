@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc" data-artifact-id="self-mailbox-unsupported-schematic-and-uc-transition-trace" data-trace-id="AS-PRC-SELF-MAILBOX-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc" data-artifact-id="self-mailbox-unsupported-schematic-and-uc-transition-trace" data-trace-id="AS-PRC-SELF-MAILBOX-STANDARD-SIGNAL-UNSUPPORTED-TRACE-001">
   <title id="title">AS-PRC-SELF-MAILBOX-UNSUPPORTED-TRIANGULAR-RLEM-001</title>
-  <desc id="desc">Generated from self-mailbox-unsupported-schematic-and-uc-transition-trace; trace AS-PRC-SELF-MAILBOX-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001.</desc>
+  <desc id="desc">Generated from self-mailbox-unsupported-schematic-and-uc-transition-trace; trace AS-PRC-SELF-MAILBOX-STANDARD-SIGNAL-UNSUPPORTED-TRACE-001.</desc>
   <style>
     .node { fill: #f7f4ea; stroke: #1e3a3a; stroke-width: 4; }
     .port-dot { fill: #f06449; stroke: #1e3a3a; stroke-width: 3; }
@@ -42,29 +42,29 @@
       <title>Third signal channel on the triangular unsupported mailbox node.</title>
     </g>
   </g>
-  <g class="trace-summary" data-trace-id="AS-PRC-SELF-MAILBOX-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001">
-    <text class="label" x="52" y="72">trace: AS-PRC-SELF-MAILBOX-WRITE-BUF-ONE-UNSUPPORTED-TRACE-001</text>
+  <g class="trace-summary" data-trace-id="AS-PRC-SELF-MAILBOX-STANDARD-SIGNAL-UNSUPPORTED-TRACE-001">
+    <text class="label" x="52" y="72">trace: AS-PRC-SELF-MAILBOX-STANDARD-SIGNAL-UNSUPPORTED-TRACE-001</text>
     <text class="small" x="52" y="100">status: self-mailbox-unsupported</text>
     <text class="small" x="52" y="124">input: [_, _, _]</text>
     <text class="small" x="52" y="148">output: [_, _, _]</text>
     <text class="small" x="52" y="172">memory before: right</text>
     <text class="small" x="52" y="196">memory after: right</text>
-    <text class="small" x="52" y="220">self_mailbox before: write-buf-one</text>
-    <text class="small" x="52" y="244">self_mailbox after: write-buf-one</text>
-    <text class="small" x="52" y="268">control before: [1, 0, 1]</text>
-    <text class="small" x="52" y="292">control after: [1, 0, 1]</text>
-    <text class="small" x="52" y="316">buffer before: [0, 1]</text>
-    <text class="small" x="52" y="340">buffer after: [0, 1]</text>
+    <text class="small" x="52" y="220">self_mailbox before: standard-signal</text>
+    <text class="small" x="52" y="244">self_mailbox after: standard-signal</text>
+    <text class="small" x="52" y="268">control before: [1, 0, 0]</text>
+    <text class="small" x="52" y="292">control after: [1, 0, 0]</text>
+    <text class="small" x="52" y="316">buffer before: [0]</text>
+    <text class="small" x="52" y="340">buffer after: [0]</text>
     <text class="small" x="52" y="376">routed signal flow</text>
-    <text class="small" x="72" y="402">self_mailbox[write-buf-one] unsupported</text>
+    <text class="small" x="72" y="402">self_mailbox[standard-signal] unsupported</text>
     <text class="small" x="72" y="426">cell state preserved</text>
-    <text class="small" x="72" y="450">write-buffer semantics unresolved</text>
+    <text class="small" x="72" y="450">standard-signal command semantics unresolved</text>
   </g>
   <g class="interpretive-layers">
     <g class="interpretive-layer" data-layer-id="symbolic-rlem-behavior">
       <rect class="layer" x="560" y="72" width="348" height="68" rx="6" />
       <text class="layer-title" x="576" y="96">symbolic-rlem-behavior</text>
-      <text class="layer-body" x="576" y="120">A write-buf-one self-mailbox command is recognized ...</text>
+      <text class="layer-body" x="576" y="120">A standard-signal self-mailbox command is recognize...</text>
     </g>
     <g class="interpretive-layer" data-layer-id="gelc-geometry">
       <rect class="layer" x="560" y="160" width="348" height="68" rx="6" />

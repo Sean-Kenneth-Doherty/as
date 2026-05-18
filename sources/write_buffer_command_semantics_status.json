@@ -1,16 +1,15 @@
 {
   "schema_version": 1,
   "reviewed_at": "2026-05-17",
-  "decision": "write-buffer-command-execution-source-resolved",
-  "runtime_change": "none-source-status-only",
-  "safe_next_slice": "implement-write-buffer-command-execution",
+  "decision": "write-buffer-self-target-execution-implemented",
+  "runtime_change": "implemented-by-adr-0161",
+  "safe_next_slice": "add-write-buffer-command-execution-evidence-bundle",
   "commands": [
     "write-buf-zero",
     "write-buf-one"
   ],
   "blocked_runtime_surfaces": [
-    "self-mailbox-command",
-    "self-target-command-buffer"
+    "recipient-command-message"
   ],
   "formal_model_status": {
     "decision": "insufficient",
@@ -92,47 +91,47 @@
     "source_status": "sources/recipient_non_init_command_source_status.json",
     "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
     "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
-    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. Self-target write-buffer command tokens remain unsupported-preserved while executable append semantics remain unresolved."
+    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. Direct self-mailbox and completed self-target command-buffer write-buffer tokens now execute under ADR-0161."
   },
   "self_target_surface_resolution": {
-    "decision": "preserve-self-target-write-buffer-as-unsupported",
+    "decision": "execute-self-target-write-buffer-append",
     "source_status": "sources/write_buffer_command_semantics_status.json",
     "claim_ids": [
-      "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
-      "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
+      "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
+      "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED"
     ],
     "evidence_bundles": [
-      "evidence/self_mailbox_unsupported_bundle.json",
-      "evidence/command_buffer_unsupported_bundle.json"
+      "claims/transition_claims.json",
+      "claims/proof_certificates.json"
     ],
-    "summary": "AS preserves direct self-mailbox write-buffer command tokens as unsupported and preserves completed self-target command-buffer write-buffer tokens at the append boundary."
+    "summary": "AS executes direct self-mailbox write-buffer commands and completed self-target command-buffer write-buffer commands by appending the command's literal bit and clearing the active command source."
   },
   "required_resolution_questions": [],
   "resolution_question_evidence": [],
   "execution_readiness": {
-    "decision": "ready",
+    "decision": "implemented",
     "execution_change_allowed": true,
     "blocked_by_resolution_questions": [],
-    "summary": "Write-buffer append execution is source-resolved; implementation may proceed in a later ADR."
+    "summary": "Write-buffer append execution is source-resolved and implemented for direct self-mailbox and completed self-target command-buffer surfaces."
   },
   "resolved_resolution_questions": [
     {
       "question_id": "standard-signal-interaction",
       "decision": "write-buffer-command-bits-are-literal-not-high-rail-derived",
       "source_status": "sources/write_buffer_command_semantics_status.json",
-      "legacy_divergence": "The formal model, RAA, SEMSIM, and FSMSIM agree that write-buf-zero and write-buf-one carry literal 0 and 1 append bits; remaining divergence concerns execution surface, buffer-full handling, and post-append clearing."
+      "legacy_divergence": "The formal model, RAA, SEMSIM, and FSMSIM agree that write-buf-zero and write-buf-one carry literal 0 and 1 append bits; ADR-0161 implements the source-resolved self-target append surfaces."
     },
     {
       "question_id": "recipient-surface",
       "decision": "reject-recipient-write-buffer-command-message-as-non-init",
       "source_status": "sources/recipient_non_init_command_source_status.json",
-      "legacy_divergence": "AS already rejects delivered recipient write-buffer command messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; self-target write-buffer command tokens remain unsupported-preserved while executable append semantics remain unresolved."
+      "legacy_divergence": "AS already rejects delivered recipient write-buffer command messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; direct self-mailbox and self-target command-buffer write-buffer command tokens execute under ADR-0161."
     },
     {
       "question_id": "self-target-surface",
-      "decision": "preserve-self-target-write-buffer-as-unsupported",
+      "decision": "execute-self-target-write-buffer-append",
       "source_status": "sources/write_buffer_command_semantics_status.json",
-      "legacy_divergence": "AS already preserves direct self-mailbox write-buffer command tokens under UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and preserves completed self-target command-buffer write-buffer commands under UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED; executable write-buffer append semantics remain blocked by buffer-full and post-append clearing divergence."
+      "legacy_divergence": "AS now executes direct self-mailbox write-buffer command tokens under UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED and completed self-target command-buffer write-buffer commands under UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED; standard-signal remains the preserved unsupported self-target command."
     },
     {
       "question_id": "buffer-full-boundary",
@@ -164,5 +163,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Write-buffer command execution is source-resolved; preserve current unsupported runtime boundaries until a later ADR implements append behavior."
+  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary."
 }

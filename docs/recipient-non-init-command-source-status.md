@@ -21,9 +21,11 @@ Do not implement recipient-side non-init command-message execution yet.
 includes it as a command, while ordinary standard-signal behavior is
 binary-input behavior and the legacy special-message sets exclude it.
 
-`write-buf-zero` and `write-buf-one` remain blocked because the legacy sketches
-do not yet give AS a single stable boundary for fixed cells, stem cells, input
-clearing, buffer clearing, and buffer-full behavior.
+Delivered recipient `write-buf-zero` and `write-buf-one` command messages
+remain blocked by the ADR-0054 non-init rejection boundary. ADR-0161 now
+implements direct self-mailbox and completed self-target command-buffer
+write-buffer append execution, but it does not move delivered recipient
+write-buffer command messages out of this rejection surface.
 
 Multiple simultaneous command-message inputs also remain blocked because AS has
 selected reject-and-clear as the conflict policy, not priority or sequencing.
@@ -44,9 +46,10 @@ the rendered SVG view in
 
 The rejection evidence ladder is now complete. ADR-0057 records the
 write-buffer command semantics source-status decision in
-`sources/write_buffer_command_semantics_status.json` and keeps write-buffer
-execution blocked across recipient, self-mailbox, and self-target
-command-buffer surfaces.
+`sources/write_buffer_command_semantics_status.json`. ADR-0161 implements the
+direct self-mailbox and completed self-target command-buffer write-buffer
+surfaces; this recipient non-init source status keeps only delivered recipient
+write-buffer command-message inputs rejected.
 
 ADR-0058 records the matching `standard-signal` command-token semantics
 source-status decision in
@@ -80,9 +83,10 @@ ADR-0152 reuses the same rejection evidence ladder to resolve the write-buffer
 `write-buf-one` command messages are rejected as non-init command-message
 inputs rather than executed.
 
-The rejection evidence ladder is complete again. `standard-signal` and
-write-buffer command execution should be revisited only if later source
-evidence resolves their runtime surfaces.
+The rejection evidence ladder is complete again. `standard-signal` command
+execution and recipient write-buffer command-message execution should be
+revisited only if later source evidence resolves those remaining runtime
+surfaces.
 
 ADR-0117 keeps this boundary visible to project-status automation: accepted
 source-status records must now carry non-empty top-level `as_boundary` text.

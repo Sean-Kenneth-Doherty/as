@@ -134,7 +134,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertIn("append", divergences["LEGACY-FSMSIM-WRITE-BUFFER"]["summary"])
         self.assertEqual(
             self.status["write_buffer_status"]["decision"],
-            "blocked-by-source-divergence",
+            "recipient-non-init-rejection-preserved",
         )
         self.assertEqual(
             self.status["write_buffer_status"]["depends_on"],

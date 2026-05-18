@@ -3448,3 +3448,33 @@
   JSON accepted schema 15 with the same readiness. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 676 tests.
+
+## 2026-05-18 - Write-Buffer Command Execution
+
+- Added ADR-0161 to implement the source-ready write-buffer append slice for
+  direct stem `self_mailbox` commands and completed self-target command
+  buffers.
+- Added red runtime and claim tests before implementation. The focused red run
+  failed because write-buffer commands still reported the old unsupported
+  boundaries, the new predicates/statuses were absent, and the unsupported
+  evidence bundles still covered write-buffer examples.
+- Implemented `write-buf-zero` / `write-buf-one` append behavior in
+  `step_stem_cell`: direct self-mailbox commands append literal bits and clear
+  `self_mailbox`; completed self-target command buffers append the decoded
+  literal as the new buffer content and clear the command source. Recipient
+  write-buffer command-message inputs remain rejected by the recipient non-init
+  boundary.
+- Added explicit write-buffer transition predicates, transition claims, proof
+  certificates, language terms, and status vocabulary. Narrowed the old
+  self-mailbox and command-buffer unsupported examples, traces, SVGs, and
+  evidence bundles to `standard-signal`.
+- Updated source-status, project-status, roadmap, and evidence documentation
+  so write-buffer self-target execution is marked implemented while delivered
+  recipient write-buffer command messages remain blocked.
+- Focused verification passed for the write-buffer runtime/claim/status and
+  evidence/source-status suites. Project status reports schema 15 accepted
+  with 15 transition claims, 37 matched examples, 15 proof certificates, and
+  write-buffer readiness `implemented`. The transition/chain evidence
+  registries, source-status and project-status CLIs, `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 687 tests.

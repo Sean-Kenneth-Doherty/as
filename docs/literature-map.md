@@ -233,15 +233,17 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   ADR-0055 adds a schematic-linked trace for one fixed recipient rejecting an
   upstream `standard-signal` command-message token. ADR-0056 adds the rendered
   SVG view for that rejection trace. ADR-0057 records write-buffer command
-  execution as still source-blocked across recipient, self-mailbox, and
-  self-target command-buffer surfaces. ADR-0058 records `standard-signal`
+  execution as a separate source-status frontier, and ADR-0161 implements its
+  direct self-mailbox and completed self-target command-buffer append
+  surfaces. ADR-0058 records `standard-signal`
   command-token execution as still source-blocked across the same surfaces
   while preserving ordinary binary-input standard-signal behavior. ADR-0059
   selects reject-and-clear for multiple recipient command-message inputs and
   moves the next visible slice to a multi-command rejection trace. ADR-0060
   adds that trace, and ADR-0061 adds the generated SVG render. The current
-  rejection evidence ladder is complete again; standard-signal and write-buffer
-  command execution remain source-blocked. ADR-0062 reviews
+  rejection evidence ladder is complete again; standard-signal command
+  execution and delivered recipient write-buffer command-message execution
+  remain blocked. ADR-0062 reviews
   `guile-asmsim.scm` and records it as blocker-strengthening evidence rather
   than executable authority. ADR-0063 does the same for `practice/asmsim.scm`,
   whose process-buffer branch explicitly lacks documentation and confirmed

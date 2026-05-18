@@ -775,7 +775,7 @@ def _validate_self_mailbox_unsupported_trace_alignment(
 
     before = schematic_trace.trace.before_cell
     after = schematic_trace.trace.expected_after_cell
-    unsupported_commands = {"standard-signal", "write-buf-zero", "write-buf-one"}
+    unsupported_commands = {"standard-signal"}
     command = before.get("self_mailbox")
 
     if command not in unsupported_commands:
@@ -797,7 +797,7 @@ def _validate_self_mailbox_unsupported_trace_alignment(
     expected_flow = (
         f"self_mailbox[{command}] unsupported",
         "cell state preserved",
-        "write-buffer semantics unresolved",
+        "standard-signal command semantics unresolved",
     )
     if schematic_trace.trace.routed_signal_flow != expected_flow:
         results.append(_rejected("routed_signal_flow", "unsupported mailbox flow mismatch"))
@@ -957,11 +957,20 @@ def _validate_command_buffer_unsupported_trace_alignment(
         "proc-r-init",
         "proc-l-init",
     }
+    self_write_buffer_commands = {"write-buf-zero", "write-buf-one"}
     if target_id == "self" and command_id in self_init_commands:
         results.append(
             _rejected(
                 "command-buffer-unsupported",
                 "trace is a supported self-target init command",
+            )
+        )
+        return results
+    if target_id == "self" and command_id in self_write_buffer_commands:
+        results.append(
+            _rejected(
+                "command-buffer-unsupported",
+                "trace is a supported self-target write-buffer command",
             )
         )
         return results
