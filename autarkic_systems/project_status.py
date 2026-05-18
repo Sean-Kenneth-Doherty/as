@@ -216,6 +216,36 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def format_project_status_summary(report: dict[str, Any]) -> str:
+    """Format the compact operator summary for the current status payload."""
+
+    status = "accepted" if report["accepted"] else "rejected"
+    transition = report["transition_evidence"]
+    chain = report["chain_evidence"]
+    transition_claims = report["transition_claims"]
+    chain_claims = report["chain_claims"]
+    proof_rule_audit = report["proof_rule_audit"]
+    frontier = report["frontier"]
+    blocked_commands = frontier["blocked_commands"] or []
+    return "\n".join([
+        f"Autarkic Systems summary: {status}",
+        (
+            f"Evidence: {transition['bundle_count']} transition bundles; "
+            f"{chain['bundle_count']} chain bundles"
+        ),
+        (
+            f"Claims: {transition_claims['claim_count']} transition claims/"
+            f"{transition_claims['matched_count']} matched examples; "
+            f"{chain_claims['claim_count']} chain claims/"
+            f"{chain_claims['certificate_count']} certificates"
+        ),
+        f"Proof rules: {_proof_rule_counts_text(proof_rule_audit)}",
+        "Blocked commands: "
+        + (", ".join(blocked_commands) if blocked_commands else "none"),
+        f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
+    ])
+
+
 def run_project_status_cli(argv: list[str] | None = None) -> int:
     """Run the project status report CLI."""
 
@@ -271,7 +301,7 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--format",
-        choices=("text", "json"),
+        choices=("text", "json", "summary"),
         default="text",
         help="Output format for the status report.",
     )
@@ -295,6 +325,8 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
     )
     if args.format == "json":
         print(json.dumps(report, sort_keys=True))
+    elif args.format == "summary":
+        print(format_project_status_summary(report))
     else:
         print(format_project_status_report(report))
     return 0 if report["accepted"] else 1
@@ -1084,11 +1116,14 @@ def _proof_rule_audit_text_line(summary: dict[str, Any]) -> str:
         subjects = ", ".join(failed_subjects) if failed_subjects else "unknown"
         return f"Proof rule audit: rejected ({subjects})"
 
+    return f"Proof rule audit: {_proof_rule_counts_text(summary)}"
+
+
+def _proof_rule_counts_text(summary: dict[str, Any]) -> str:
     rule_counts = summary["combined"]["rule_counts"]
-    rendered_counts = ", ".join(
+    return ", ".join(
         f"{rule}={rule_counts.get(rule, 0)}" for rule in PROOF_RULE_TEXT_ORDER
     )
-    return f"Proof rule audit: {rendered_counts}"
 
 
 def _language_failure_text_lines(

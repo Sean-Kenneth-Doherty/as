@@ -3850,3 +3850,23 @@ Status: accepted in `docs/adr/0188-proof-rule-status-summary.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and summary docs in
 `docs/project-status-report.md`.
+
+## ADR-0189: Compact Project Status Summary
+
+Goal: add a short operator-facing status digest without weakening the full
+audit report.
+
+Deliverables:
+
+- `format_project_status_summary` over the existing project-status payload;
+- `python -m autarkic_systems.project_status --format summary`;
+- six-line summary output covering accepted state, evidence counts, claim
+  counts, proof-rule audit, blocked commands, and safe next slice;
+- summary output omits full evidence bundle listings and source-status boundary
+  paragraphs; and
+- project-status JSON schema and validation semantics remain unchanged.
+
+Status: accepted in `docs/adr/0189-compact-project-status-summary.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and summary docs in
+`docs/project-status-report.md`.

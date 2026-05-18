@@ -19,6 +19,7 @@ source-status records.
 
 ```sh
 python -m autarkic_systems.project_status
+python -m autarkic_systems.project_status --format summary
 python -m autarkic_systems.project_status --format json
 ```
 
@@ -74,6 +75,10 @@ The text report names:
 - resolved blocker question IDs, decisions, and optional detail fields;
 - source-status cross-links behind the current blocker trail; and
 - the safe next slice from the source-status records.
+
+Summary mode renders the same project-status payload as a six-line operator
+digest: accepted state, evidence counts, claim counts, proof-rule counts,
+blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
 `schema_version: 16`. If a registry file is missing, the corresponding registry
@@ -260,6 +265,8 @@ renders as `none` while preserving project status `schema_version: 15`.
 ADR-0188 adds a `proof_rule_audit` JSON summary and `Proof rule audit:` text
 line over the checked transition and transition-chain proof-certificate
 manifests, bumping project status to `schema_version: 16`.
+ADR-0189 adds `--format summary`, a compact text mode over the same payload,
+while preserving project status `schema_version: 16`.
 
 ## Boundary
 

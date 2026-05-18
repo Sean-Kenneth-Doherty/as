@@ -631,6 +631,9 @@
   adds `proof_rule_audit`, showing that the checked transition and
   transition-chain proof-certificate manifests now contain 49
   `predicate-result` steps and 0 `manifest-example` steps.
+- ADR-0189 adds `python -m autarkic_systems.project_status --format summary`, a
+  compact six-line operator digest over the same status payload without
+  changing project-status JSON schema 16.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

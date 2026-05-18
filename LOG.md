@@ -4065,3 +4065,21 @@
   commands accepted the updated surface. JSON parsing for both checked
   proof-certificate manifests, `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 789 tests.
+
+## 2026-05-18 - Compact Project Status Summary
+
+- Added ADR-0189 to add a compact operator-facing status digest over the
+  existing project-status payload.
+- Added red project-status tests before implementation. The focused red run
+  executed 76 tests and failed because `format_project_status_summary` did not
+  exist and `--format summary` was rejected by the CLI parser.
+- Updated `autarkic_systems/project_status.py` with
+  `format_project_status_summary` and `--format summary`, preserving the JSON
+  schema and full text report while rendering accepted state, evidence counts,
+  claim counts, proof-rule counts, blocked commands, and safe next slice in six
+  lines.
+- Focused green verification passed 76 tests. The summary CLI printed the
+  compact digest and omitted evidence bundle listings and source-status
+  boundary paragraphs. Summary and JSON project-status commands, `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 791 tests.

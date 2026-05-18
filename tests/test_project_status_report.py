@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from autarkic_systems import project_status as project_status_module
 from autarkic_systems.project_status import (
     build_project_status_report,
     format_project_status_report,
@@ -250,6 +251,19 @@ PROOF_RULE_AUDIT = {
         "failed_subjects": [],
     },
 }
+PROJECT_STATUS_SUMMARY = "\n".join(
+    [
+        "Autarkic Systems summary: accepted",
+        "Evidence: 11 transition bundles; 2 chain bundles",
+        (
+            "Claims: 16 transition claims/40 matched examples; "
+            "2 chain claims/2 certificates"
+        ),
+        "Proof rules: predicate-result=49, manifest-example=0",
+        "Blocked commands: standard-signal",
+        "Safe next slice: none",
+    ]
+)
 STANDARD_SIGNAL_QUESTIONS = []
 STANDARD_SIGNAL_RESOLUTION_QUESTIONS = []
 STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = []
@@ -900,6 +914,15 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertNotIn("add-write-buffer-command-execution-evidence-bundle", text)
         self.assertIn("Missing source-status files: none", text)
 
+    def test_summary_status_formats_operator_digest(self):
+        report = build_project_status_report()
+
+        summary = project_status_module.format_project_status_summary(report)
+
+        self.assertEqual(summary, PROJECT_STATUS_SUMMARY)
+        self.assertNotIn("Transition evidence bundles:", summary)
+        self.assertNotIn("AS boundaries:", summary)
+
     def test_text_status_names_transition_language_failed_subjects(self):
         with tempfile.TemporaryDirectory() as tmp:
             language_path = Path(tmp) / "transition_claim_language.json"
@@ -1547,6 +1570,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES,
             ],
         )
+
+    def test_summary_cli_reports_compact_project_status(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_project_status_cli(["--format", "summary"])
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stdout.getvalue().strip(), PROJECT_STATUS_SUMMARY)
+        self.assertNotIn("Transition evidence bundles:", stdout.getvalue())
+        self.assertNotIn("AS boundaries:", stdout.getvalue())
 
     def test_missing_source_status_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

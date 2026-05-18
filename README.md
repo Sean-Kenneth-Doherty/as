@@ -329,6 +329,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   one report over every registered chain bundle, and `--format json` emits the
   same claim-to-evidence surfaces for automation, including artifact presence
   and missing-path summaries.
+- `python -m autarkic_systems.project_status --format summary` emits a compact
+  six-line operator digest over the accepted state, evidence counts, claim
+  counts, proof-rule audit, blocked commands, and safe next slice.
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 11 bundles, chain evidence accepted with 2 bundles,
@@ -380,7 +383,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   active aggregate next slices, so the current report renders `Safe next
   slice: none` while `standard-signal` remains blocked. Schema version `16`
   adds the proof-rule audit to JSON/text so the checked transition and chain
-  proof-certificate rule mix is visible from project status.
+  proof-certificate rule mix is visible from project status. The summary output
+  format preserves schema version `16` while rendering the same payload as a
+  compact operator digest.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
