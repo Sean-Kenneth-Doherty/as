@@ -270,6 +270,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/network_sequence_trace.py` validates the checked
   post-handoff sequence trace artifact, replaying the accepted delivery and
   follow-up path through the existing sequence helper.
+- `autarkic_systems/network_sequence_svg.py` validates the rendered SVG view
+  of that post-handoff sequence trace against the deterministic renderer.
 - `autarkic_systems/network_sequence_claims.py` validates the first named claim
   and predicate-result proof certificate over that post-handoff signal witness.
 - `autarkic_systems/network_sequence_object_language.py` validates the first

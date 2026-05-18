@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc" data-artifact-id="post-handoff-signal-sequence-trace" data-sequence-claim-id="UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED" data-sequence-helper="execute_post_handoff_signal_witness">
+  <title id="title">post-handoff-signal-sequence-trace</title>
+  <desc id="desc">Generated from the network-sequence trace for UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED.</desc>
+  <style>
+    .canvas { fill: #fbfaf5; stroke: #d0d5dd; stroke-width: 1.5; }
+    .cell { fill: #f7f4ea; stroke: #1e3a3a; stroke-width: 3; }
+    .sender { fill: #eef7f5; }
+    .recipient { fill: #fff7ea; }
+    .followup { fill: #eef2ff; }
+    .arrow { fill: none; stroke: #2f80ed; stroke-width: 5; marker-end: url(#arrow); }
+    .label { fill: #162020; font: 700 18px sans-serif; }
+    .small { fill: #162020; font: 14px monospace; }
+    .flow-title { fill: #162020; font: 700 15px sans-serif; }
+    .flow { fill: #384444; font: 13px monospace; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f80ed" />
+    </marker>
+  </defs>
+  <rect class="canvas" x="24" y="24" width="1152" height="712" rx="10" />
+  <g class="sequence-summary">
+    <text class="label" x="56" y="70">claim: UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED</text>
+    <text class="small" x="56" y="98">status: post-handoff-signal-routed</text>
+    <text class="small" x="56" y="122">helper: execute_post_handoff_signal_witness</text>
+  </g>
+  <g class="cell sender-cell">
+    <rect class="cell sender" x="64" y="170" width="320" height="220" rx="8" />
+    <text class="label" x="88" y="208">sender initial</text>
+    <text class="small" x="88" y="238">role: stem</text>
+    <text class="small" x="88" y="262">memory: right</text>
+    <text class="small" x="88" y="286">input: [1, 0, 0]</text>
+    <text class="small" x="88" y="310">control: [1, 0, 0]</text>
+    <text class="small" x="88" y="334">buffer: [1, 0, 1, 0]</text>
+    <text class="small" x="88" y="358">delivery status: neighbor-delivery-consumed</text>
+  </g>
+  <g class="cell recipient-initial-cell">
+    <rect class="cell recipient" x="440" y="170" width="320" height="220" rx="8" />
+    <text class="label" x="464" y="208">recipient initial</text>
+    <text class="small" x="464" y="238">role: wire</text>
+    <text class="small" x="464" y="262">memory: right</text>
+    <text class="small" x="464" y="286">upstream: [_, _, _]</text>
+    <text class="small" x="464" y="310">delivered tuple: [_, proc-l-init, _]</text>
+    <text class="small" x="464" y="334">follow-up input: [1, 0, 0]</text>
+    <text class="small" x="464" y="358">follow-up status: routed</text>
+  </g>
+  <g class="cell followup-cell">
+    <rect class="cell followup" x="816" y="170" width="320" height="220" rx="8" />
+    <text class="label" x="840" y="208">recipient follow-up</text>
+    <text class="small" x="840" y="238">before follow-up role: proc</text>
+    <text class="small" x="840" y="262">before follow-up memory: left</text>
+    <text class="small" x="840" y="286">before follow-up input: [1, 0, 0]</text>
+    <text class="small" x="840" y="310">after follow-up memory: right</text>
+    <text class="small" x="840" y="334">after follow-up output: [0, 0, 1]</text>
+    <text class="small" x="840" y="358">after follow-up input: [_, _, _]</text>
+  </g>
+  <g class="handoff-flow">
+    <path class="arrow" d="M 384 280 C 405 250 421 250 440 280" />
+    <path class="arrow" d="M 760 280 C 781 250 797 250 816 280" />
+  </g>
+  <g class="flow-summary">
+    <text class="flow-title" x="64" y="460">sequence flow</text>
+    <text class="flow" x="64" y="488">proc-l-init handoff -&gt; recipient proc/left</text>
+    <text class="flow" x="64" y="512">follow-up input[1,0,0] routes through proc/left</text>
+    <text class="flow" x="64" y="536">recipient output[2] set to 1</text>
+    <text class="flow" x="64" y="560">processor memory toggles left -&gt; right</text>
+    <text class="flow" x="64" y="584">recipient input cleared</text>
+  </g>
+</svg>

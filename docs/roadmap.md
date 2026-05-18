@@ -4203,3 +4203,22 @@ Implemented in `autarkic_systems/network_sequence_evidence_bundle.py` and
 `autarkic_systems/network_sequence_demo.py`, with tests in
 `tests/test_network_sequence_evidence_bundle.py` and
 `tests/test_network_sequence_demo_report.py`.
+
+## ADR-0207: Post-Handoff Sequence SVG
+
+Goal: render the checked post-handoff sequence trace as a deterministic SVG.
+
+Deliverables:
+
+- `autarkic_systems/network_sequence_svg.py`;
+- `schematics/sequences/post_handoff_signal_sequence_trace.svg`;
+- SVG validation for XML, metadata, exact renderer output, visible sequence
+  labels, and follow-up flow text;
+- tests for committed SVG equality and drift rejection; and
+- no runtime behavior, claim, proof-rule, evidence-bundle field,
+  project-status, scheduler, topology, timing, or command-semantics changes.
+
+Status: accepted in `docs/adr/0207-post-handoff-sequence-svg.md`.
+Implemented in `autarkic_systems/network_sequence_svg.py`, with tests in
+`tests/test_post_handoff_sequence_svg.py` and operator notes in
+`docs/post-handoff-sequence-svg.md`.

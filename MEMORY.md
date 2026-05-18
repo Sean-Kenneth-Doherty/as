@@ -859,3 +859,6 @@
   `sequence_trace` artifact in the network-sequence evidence bundle and demo.
   Bundle validation now reports `sequence-trace` and checks trace agreement
   with the bundle claim ID, helper, and expected status.
+- ADR-0207 adds `autarkic_systems.network_sequence_svg` and
+  `schematics/sequences/post_handoff_signal_sequence_trace.svg`, a
+  renderer-locked SVG view of the checked post-handoff sequence trace.

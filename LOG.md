@@ -4411,3 +4411,21 @@
   `accepted_count: 1`, and no missing evidence paths. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 885 tests.
+
+## 2026-05-18 - Post-Handoff Sequence SVG
+
+- Added ADR-0207 to render the checked post-handoff sequence trace as a
+  deterministic SVG artifact.
+- Added red SVG tests before implementation. The focused red run failed
+  because `autarkic_systems.network_sequence_svg` did not exist.
+- Added `autarkic_systems/network_sequence_svg.py`, validating SVG XML,
+  trace metadata, exact renderer output, visible sequence labels, and routed
+  follow-up flow text.
+- Added `schematics/sequences/post_handoff_signal_sequence_trace.svg`,
+  generated from the checked sequence trace and renderer.
+- Focused green verification passed 6 post-handoff sequence SVG tests.
+  Adjacent sequence SVG/trace/witness/demo/evidence tests passed 46 tests.
+  Direct SVG validation accepted 5 subjects: XML, metadata, renderer output,
+  sequence labels, and follow-up flow. The committed SVG is nonblank at 4206
+  bytes. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 891 tests.
