@@ -444,3 +444,7 @@
   `schematics/chains/neighbor_delivery_rejection_chain_trace.svg` and updates
   chain SVG rendering/validation to derive the visible handoff channel from
   the delivered tuple.
+- ADR-0094 adds
+  `evidence/chains/neighbor_delivery_rejection_chain_bundle.json` and registers
+  it in `evidence/chains/manifest.json`, bringing the chain evidence registry
+  to two bundles.

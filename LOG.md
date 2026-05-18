@@ -2093,3 +2093,27 @@
   tests. Chain evidence JSON remained accepted with `result_count: 9` and
   `failed_subjects: []`. `py_compile`, `git diff --check`, and
   `python -m unittest discover` passed, with the full suite running 525 tests.
+
+## 2026-05-17 - Neighbor Delivery Rejection Chain Evidence Bundle
+
+- Added ADR-0094 to give the delivered non-init recipient rejection chain an
+  integrated evidence bundle and registry coverage.
+- Added `tests/test_neighbor_delivery_rejection_chain_evidence_bundle.py` and
+  updated `tests/test_chain_evidence_bundle_registry.py` before
+  implementation. The red run failed because the rejection bundle file and
+  registry entry were missing.
+- Added `evidence/chains/neighbor_delivery_rejection_chain_bundle.json`,
+  linking the rejection chain claim, proof certificate, language, trace, SVG,
+  neighbor-delivery transition bundle, recipient non-init rejection transition
+  bundle, and source-status records.
+- Registered the rejection bundle in `evidence/chains/manifest.json`, bringing
+  the chain evidence registry to two bundles.
+- Updated README, chain evidence bundle docs, chain registry docs, open
+  problems, roadmap, memory, and lessons with the rejection bundle.
+- Verified focused rejection bundle and registry tests passed 17 tests; the
+  adjacent chain evidence bundle, rejection bundle, registry, and CLI
+  target-selection tests passed 29 tests. Rejection bundle JSON reported
+  `accepted: true`, `result_count: 9`, and `failed_subjects: []`; registry JSON
+  reported `accepted: true`, `bundle_count: 2`, and `failed_subjects: []`.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
+  with the full suite running 530 tests.

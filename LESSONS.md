@@ -256,3 +256,6 @@
   valid artifacts when the expected rejection is exact.
 - Renderers should derive visible routing labels from trace data instead of
   hard-coding a happy-path channel; the rejection chain uses channel 2.
+- Once a negative chain has claim, trace, and SVG layers, promote it into the
+  chain evidence registry so it gets the same drift protection as the green
+  path.

@@ -19,9 +19,13 @@ from autarkic_systems.chain_evidence_bundle import (
 
 REGISTRY = Path("evidence/chains/manifest.json")
 BUNDLE = Path("evidence/chains/neighbor_delivery_chain_bundle.json")
+REJECTION_BUNDLE = Path("evidence/chains/neighbor_delivery_rejection_chain_bundle.json")
 BUNDLE_ID = "neighbor-delivery-recipient-chain-evidence-bundle"
+REJECTION_BUNDLE_ID = "neighbor-delivery-recipient-rejection-chain-evidence-bundle"
 CLAIM_ID = "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED"
+REJECTION_CLAIM_ID = "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED"
 STATUS = "neighbor-delivery-consumed"
+REJECTION_STATUS = "recipient-not-consumed"
 
 
 class ChainEvidenceBundleRegistryTests(unittest.TestCase):
@@ -40,11 +44,15 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
     def test_registry_records_neighbor_delivery_chain_bundle(self):
         entries = {entry.bundle_id: entry for entry in self.registry.bundles}
         entry = entries[BUNDLE_ID]
+        rejection_entry = entries[REJECTION_BUNDLE_ID]
 
-        self.assertEqual(len(entries), 1)
+        self.assertEqual(len(entries), 2)
         self.assertEqual(entry.path, BUNDLE)
         self.assertEqual(entry.chain_claim_id, CLAIM_ID)
         self.assertEqual(entry.expected_status, STATUS)
+        self.assertEqual(rejection_entry.path, REJECTION_BUNDLE)
+        self.assertEqual(rejection_entry.chain_claim_id, REJECTION_CLAIM_ID)
+        self.assertEqual(rejection_entry.expected_status, REJECTION_STATUS)
 
     def test_registry_validates_registered_chain_bundles(self):
         results = validate_chain_evidence_bundle_registry(self.registry)
@@ -153,7 +161,7 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
             report,
         )
         self.assertIn("OK registry-schema: registry schema accepted", report)
-        self.assertIn("OK registry-bundle-validation: validated 1 bundles", report)
+        self.assertIn("OK registry-bundle-validation: validated 2 bundles", report)
         self.assertNotIn("FAIL", report)
 
     def test_json_payload_records_successful_registry_validation(self):
@@ -166,7 +174,7 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
             payload["registry_id"],
             "transition-chain-evidence-bundle-registry",
         )
-        self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["bundle_count"], 2)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["result_count"], len(results))
         self.assertEqual(
@@ -177,6 +185,12 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
                     "path": str(BUNDLE),
                     "chain_claim_id": CLAIM_ID,
                     "expected_status": STATUS,
+                },
+                {
+                    "bundle_id": REJECTION_BUNDLE_ID,
+                    "path": str(REJECTION_BUNDLE),
+                    "chain_claim_id": REJECTION_CLAIM_ID,
+                    "expected_status": REJECTION_STATUS,
                 }
             ],
         )
@@ -214,10 +228,12 @@ class ChainEvidenceBundleRegistryTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertTrue(payload["accepted"])
-        self.assertEqual(payload["bundle_count"], 1)
+        self.assertEqual(payload["bundle_count"], 2)
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
         self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
+        self.assertEqual(payload["bundles"][1]["bundle_id"], REJECTION_BUNDLE_ID)
+        self.assertEqual(payload["bundles"][1]["path"], str(REJECTION_BUNDLE))
 
     def test_json_payload_summarizes_failed_subjects(self):
         entry = self.registry.bundles[0]

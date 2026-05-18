@@ -292,6 +292,9 @@ the project legible:
   neighbor-delivery recipient-consumption chain inspectable across its claim,
   proof, language, chain trace, chain SVG, underlying transition bundles, and
   source-status layers.
+- `evidence/chains/neighbor_delivery_rejection_chain_bundle.json` makes the
+  delivered non-init recipient rejection chain inspectable across the same
+  layers.
 - `evidence/chains/manifest.json` indexes transition-chain evidence bundles
   for batch-validation.
 - `evidence/manifest.json` indexes transition evidence bundles for

@@ -9,6 +9,12 @@
       "path": "evidence/chains/neighbor_delivery_chain_bundle.json",
       "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-CONSUMED",
       "expected_status": "neighbor-delivery-consumed"
+    },
+    {
+      "bundle_id": "neighbor-delivery-recipient-rejection-chain-evidence-bundle",
+      "path": "evidence/chains/neighbor_delivery_rejection_chain_bundle.json",
+      "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
+      "expected_status": "recipient-not-consumed"
     }
   ]
 }

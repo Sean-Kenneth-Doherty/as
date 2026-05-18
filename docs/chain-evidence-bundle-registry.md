@@ -7,6 +7,8 @@ The registry currently lists:
 
 - `evidence/chains/neighbor_delivery_chain_bundle.json`, the ADR-0081 bundle
   for the positive neighbor delivery recipient-consumption chain.
+- `evidence/chains/neighbor_delivery_rejection_chain_bundle.json`, the
+  ADR-0094 bundle for the delivered non-init recipient rejection chain.
 
 ## Validation
 
@@ -41,6 +43,8 @@ ADR-0087 adds `failed_subjects`, an ordered list of rejected validation
 subjects for failed registry runs.
 ADR-0088 adds the same `failed_subjects` contract to single-bundle chain
 evidence JSON output.
+ADR-0094 registers the rejection chain bundle, so the registry now validates
+two composed-chain evidence paths.
 
 ADR-0085 makes the target selection explicit: `--bundle` and `--registry` are
 mutually exclusive. Supplying both fails during argument parsing with exit code

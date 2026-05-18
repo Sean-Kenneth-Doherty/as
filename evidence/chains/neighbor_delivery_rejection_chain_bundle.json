@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "bundle_id": "neighbor-delivery-recipient-rejection-chain-evidence-bundle",
+  "reviewed_at": "2026-05-17",
+  "purpose": "Tie the executable neighbor delivery recipient-rejection chain to its chain claim, proof certificate, object language, underlying transition bundles, and source-status boundaries.",
+  "chain_claim_id": "UC-CHAIN-NEIGHBOR-DELIVERY-RECIPIENT-REJECTED",
+  "predicate": "neighbor_delivery_rejected_by_recipient",
+  "positive_example": "neighbor c write buffer delivery rejected by recipient",
+  "transition_chain_function": "execute_neighbor_delivery_recipient_chain",
+  "expected_status": "recipient-not-consumed",
+  "artifacts": {
+    "chain_claims": "claims/transition_chain_claims.json",
+    "chain_proof_certificates": "claims/transition_chain_proof_certificates.json",
+    "chain_language": "language/transition_chain_claim_language.json",
+    "chain_claim_validator": "autarkic_systems/chain_claims.py",
+    "chain_trace": "schematics/chains/neighbor_delivery_rejection_chain_trace.json",
+    "chain_svg": "schematics/chains/neighbor_delivery_rejection_chain_trace.svg",
+    "transition_bundles": [
+      "evidence/neighbor_command_buffer_delivery_bundle.json",
+      "evidence/recipient_non_init_command_rejection_bundle.json"
+    ],
+    "source_statuses": [
+      "sources/stem_command_execution_source_status.json",
+      "sources/recipient_command_consumption_source_status.json",
+      "sources/recipient_non_init_command_source_status.json",
+      "sources/standard_signal_command_semantics_status.json",
+      "sources/write_buffer_command_semantics_status.json",
+      "sources/multi_command_recipient_input_policy_status.json"
+    ]
+  },
+  "boundaries": [
+    "This bundle covers only the non-init neighbor delivery recipient rejection chain, while the init-family consumption chain remains separate.",
+    "Recipient non-init command messages are rejected rather than executed.",
+    "standard-signal command-token execution and write-buffer command-token execution remain source-blocked.",
+    "No scheduler, topology, or multi-cell timing model is claimed."
+  ]
+}

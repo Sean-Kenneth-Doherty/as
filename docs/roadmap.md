@@ -1779,3 +1779,22 @@ Status: accepted in
 `docs/adr/0093-neighbor-delivery-rejection-chain-svg.md`. Implemented in
 `autarkic_systems/chain_svg.py`, with tests in
 `tests/test_neighbor_delivery_chain_svg.py`.
+
+## ADR-0094: Neighbor Delivery Rejection Chain Evidence Bundle
+
+Goal: give the delivered non-init recipient rejection chain integrated
+evidence-bundle and registry coverage.
+
+Deliverables:
+
+- `evidence/chains/neighbor_delivery_rejection_chain_bundle.json`;
+- registration in `evidence/chains/manifest.json`;
+- focused rejection-bundle tests;
+- registry tests updated for two chain bundles;
+- chain evidence documentation and project navigation updates.
+
+Status: accepted in
+`docs/adr/0094-neighbor-delivery-rejection-chain-evidence-bundle.md`.
+Implemented in `evidence/chains/neighbor_delivery_rejection_chain_bundle.json`,
+with tests in
+`tests/test_neighbor_delivery_rejection_chain_evidence_bundle.py`.
