@@ -87,6 +87,7 @@ The text report names:
 - blocker resolution question IDs and summaries;
 - source evidence explaining why unresolved blocker questions remain open;
 - resolved blocker question IDs, decisions, and optional detail fields;
+- latest source-review gates for source-status records that name one;
 - source-status cross-links behind the current blocker trail; and
 - the safe next slice from the source-status records.
 
@@ -95,7 +96,7 @@ digest: accepted state, evidence counts, claim counts, proof-rule counts,
 blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 20`. If a registry file is missing, the corresponding registry
+`schema_version: 21`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -296,6 +297,9 @@ ADR-0209 adds `sequence_evidence.bundle_failed_subjects`, preserving rejected
 inner network-sequence evidence bundle subjects such as `sequence-trace` or
 `sequence-svg` when a registered bundle rejects, renders those subjects in text
 on the rejected path, and bumps project status to `schema_version: 20`.
+ADR-0223 adds `latest_source_review` to accepted source-status frontier
+entries, validates the linked review artifact, renders `Latest source
+reviews:` in text output, and bumps project status to `schema_version: 21`.
 
 ## Boundary
 

@@ -14,13 +14,14 @@ from autarkic_systems.project_status import (
     _blocked_runtime_surface_text_lines,
     _execution_readiness_text_lines,
     _frontier_summary,
+    _latest_source_review_text_lines,
     _resolution_question_evidence_text_lines,
     _resolution_question_text_lines,
     _resolved_resolution_question_text_lines,
 )
 
 
-SOURCE_STATUS_SCHEMA_VERSION = 2
+SOURCE_STATUS_SCHEMA_VERSION = 3
 
 
 def build_source_status_frontier_report(
@@ -67,6 +68,7 @@ def format_source_status_frontier_report(report: dict[str, Any]) -> str:
         *_resolution_question_text_lines(frontier),
         *_resolution_question_evidence_text_lines(frontier),
         *_resolved_resolution_question_text_lines(frontier),
+        *_latest_source_review_text_lines(frontier),
         *_additional_source_status_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing source-status files: "

@@ -919,3 +919,7 @@
   `reproduction_commands`, listing exact rerun commands for the vertical demo,
   focused network-sequence JSON, project-status summary, and refreshed
   handoff; `autarkic_systems.handoff` inherits the list.
+- ADR-0223 adds first-class `latest_source_review` metadata to accepted
+  source-status frontier entries, validates the linked review artifact, bumps
+  project status to schema version `21`, and bumps the focused source-status
+  frontier to schema version `3`.

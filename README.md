@@ -443,8 +443,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   execution-readiness gates, the resolution-question IDs and
   summaries that define the next source-backed decision work, the source
   evidence explaining why unresolved questions remain blocked, resolved
-  question decisions that should not be reopened without new evidence, and the
-  source-status cross-links behind the blocked frontier. Schema version `2`
+  question decisions that should not be reopened without new evidence, latest
+  source-review gates for records that name one, and the source-status
+  cross-links behind the blocked frontier. Schema version `2`
   attributes
   blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
@@ -489,7 +490,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   text output, and adds `--sequence-language`. Schema version `20` adds
   `sequence_evidence.bundle_failed_subjects`, preserving inner
   network-sequence evidence bundle failure subjects such as `sequence-trace`
-  or `sequence-svg` when a registry bundle rejects.
+  or `sequence-svg` when a registry bundle rejects. Schema version `21` adds
+  `latest_source_review` to accepted source-status frontier entries, validates
+  the linked review artifact, and renders a `Latest source reviews:` text
+  section.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
@@ -523,14 +527,17 @@ proof certificates, object languages, evidence bundles, and status reports:
   accepted/rejected state, failed subjects, blocked command tokens,
   per-source decisions, blocked runtime surfaces, AS boundaries, unresolved
   questions, source evidence for those questions, resolved decisions,
-  execution-readiness gates, source-status cross-links, missing/invalid
-  source-status paths, and the safe next slice. The shared validator rejects
+  execution-readiness gates, latest source-review gates, source-status
+  cross-links, missing/invalid source-status paths, and the safe next slice.
+  The shared validator rejects
   frontier records whose question IDs are simultaneously unresolved and
   resolved, and rejects execution-readiness blockers that do not match live
   unresolved questions or only partially cover them. It also rejects readiness
   records that allow execution changes while unresolved questions remain or
-  while the readiness decision is `blocked`. Text mode renders the same
-  frontier for operator diagnosis.
+  while the readiness decision is `blocked`, and rejects
+  `latest_source_review` links that are missing, malformed, or disagree with
+  their linked review artifact. Text mode renders the same frontier for
+  operator diagnosis.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

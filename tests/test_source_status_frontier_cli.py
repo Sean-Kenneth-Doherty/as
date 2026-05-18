@@ -18,6 +18,7 @@ from autarkic_systems.source_status import (
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
+STANDARD_SIGNAL_SOURCE_REVIEW = Path("sources/standard_signal_source_review_status.json")
 STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "no-standard-signal-command-token-execution-change-without-new-source-evidence"
 )
@@ -26,13 +27,20 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
 )
 SAFE_NEXT_SLICE = ""
 BLOCKED_COMMANDS = ["standard-signal"]
+STANDARD_SIGNAL_LATEST_SOURCE_REVIEW = {
+    "path": str(STANDARD_SIGNAL_SOURCE_REVIEW),
+    "reviewed_at": "2026-05-18",
+    "review_id": "standard-signal-command-token-source-review-2026-05-18",
+    "decision": "no-new-standard-signal-command-token-execution-evidence",
+    "execution_change_allowed": False,
+}
 
 
 class SourceStatusFrontierCliTests(unittest.TestCase):
     def test_default_report_accepts_checked_in_source_status_frontier(self):
         report = build_source_status_frontier_report()
 
-        self.assertEqual(SOURCE_STATUS_SCHEMA_VERSION, 2)
+        self.assertEqual(SOURCE_STATUS_SCHEMA_VERSION, 3)
         self.assertEqual(report["schema_version"], SOURCE_STATUS_SCHEMA_VERSION)
         self.assertTrue(report["accepted"])
         frontier = report["frontier"]
@@ -45,6 +53,17 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
                 str(RECIPIENT_STATUS),
                 str(STANDARD_SIGNAL_STATUS),
                 str(WRITE_BUFFER_STATUS),
+            ],
+        )
+        self.assertEqual(
+            [
+                source_status["latest_source_review"]
+                for source_status in frontier["source_statuses"]
+            ],
+            [
+                {},
+                STANDARD_SIGNAL_LATEST_SOURCE_REVIEW,
+                {},
             ],
         )
 
@@ -61,6 +80,15 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         self.assertIn("Resolution questions:", text)
         self.assertIn("Resolution question evidence:", text)
         self.assertIn("Resolved resolution questions:", text)
+        self.assertIn("Latest source reviews:", text)
+        self.assertIn(
+            "standard-signal: 2026-05-18 "
+            "standard-signal-command-token-source-review-2026-05-18: "
+            "no-new-standard-signal-command-token-execution-evidence; "
+            "execution changes allowed: no "
+            "(sources/standard_signal_source_review_status.json)",
+            text,
+        )
         self.assertIn(
             "recipient-surface: "
             "reject-recipient-standard-signal-command-message-as-non-init "
@@ -158,6 +186,37 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         )
         self.assertIn(
             "command fields must include at least one command token",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_report_rejects_missing_latest_source_review_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid = Path(tmp) / "missing-latest-review.json"
+            missing_review = Path(tmp) / "missing-review.json"
+            invalid.write_text(
+                json.dumps(
+                    {
+                        "decision": "do-not-implement-command-yet",
+                        "safe_next_slice": "no-command-change-without-review",
+                        "command": "standard-signal",
+                        "as_boundary": "Keep this command blocked here.",
+                        "latest_source_review": {
+                            "path": str(missing_review),
+                            "review_id": "missing-review",
+                            "decision": "no-new-evidence",
+                            "execution_change_allowed": False,
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            report = build_source_status_frontier_report([invalid])
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["failed_subjects"], ["source-status-schema"])
+        self.assertIn(
+            "latest_source_review path must exist",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
@@ -291,6 +350,10 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         self.assertEqual(payload["schema_version"], SOURCE_STATUS_SCHEMA_VERSION)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
+        self.assertEqual(
+            payload["frontier"]["source_statuses"][1]["latest_source_review"],
+            STANDARD_SIGNAL_LATEST_SOURCE_REVIEW,
+        )
 
     def test_cli_returns_one_for_missing_source_status_path(self):
         with tempfile.TemporaryDirectory() as tmp:

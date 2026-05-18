@@ -4735,3 +4735,24 @@
   GitHub-submission text/JSON and handoff commands reported accepted status
   and displayed the fork compare URL. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 910 tests.
+
+## 2026-05-18 - Source Review Frontier Summary
+
+- Added ADR-0223 to make the focused source-status frontier and aggregate
+  project status expose `latest_source_review` as a first-class checked field.
+- Added red source-status and project-status tests before implementation. The
+  red run failed because the focused schema was still `2`, project status was
+  still schema `20`, JSON lacked `latest_source_review`, text lacked
+  `Latest source reviews:`, and a missing linked review path did not reject.
+- Updated `autarkic_systems/project_status.py` to validate optional latest
+  source-review metadata, read the linked review date, carry the compact review
+  object in frontier JSON, render a `Latest source reviews:` section, and bump
+  project status to schema version `21`.
+- Updated `autarkic_systems/source_status.py` to inherit that text section and
+  bump the focused source-status schema to version `3`.
+- Focused source-status and project-status tests passed 98 tests. Live
+  source-status text/JSON rendered the dated standard-signal source review,
+  live project-status summary/JSON reported accepted status and schema version
+  `21`, and live handoff with refreshed remotes remained ready. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 911 tests.

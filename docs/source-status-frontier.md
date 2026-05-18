@@ -40,11 +40,12 @@ The report names:
 - unresolved resolution questions and summaries;
 - source evidence explaining why unresolved questions remain open;
 - resolved resolution questions and details;
+- latest source-review gates for source-status records that name one;
 - source-status cross-links behind the blocker trail;
 - the safe next slice; and
 - missing or invalid source-status paths.
 
-JSON mode emits the same surface with top-level `schema_version: 2`.
+JSON mode emits the same surface with top-level `schema_version: 3`.
 
 ADR-0146 tightens the shared validation contract: source evidence question IDs
 must match unresolved question IDs in the same source-status record. A typo or
@@ -133,6 +134,11 @@ remaining standard-signal safe-next fields to a `no-` prefixed guard. The
 focused frontier still reports `standard-signal` as blocked, but the aggregate
 safe next slice now renders as `none`. The focused frontier schema remains
 `2`.
+ADR-0223 exposes optional `latest_source_review` metadata as a first-class
+frontier field, validates that the linked review JSON exists and agrees with
+the source-status review ID, decision, and execution-change flag, renders a
+`Latest source reviews:` text section, and bumps the focused frontier schema
+to `3`.
 
 ## Boundary
 

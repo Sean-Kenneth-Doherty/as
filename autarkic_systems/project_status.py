@@ -79,7 +79,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 20
+PROJECT_STATUS_SCHEMA_VERSION = 21
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -257,6 +257,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         *_resolution_question_text_lines(frontier),
         *_resolution_question_evidence_text_lines(frontier),
         *_resolved_resolution_question_text_lines(frontier),
+        *_latest_source_review_text_lines(frontier),
         *_additional_source_status_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
@@ -1061,6 +1062,7 @@ def _frontier_summary(
                 "resolution_question_evidence": _resolution_question_evidence(data),
                 "resolved_resolution_questions": _resolved_resolution_questions(data),
                 "execution_readiness": _execution_readiness(data),
+                "latest_source_review": _latest_source_review(data),
                 "additional_source_statuses": _additional_source_statuses(data),
             }
         )
@@ -1202,6 +1204,21 @@ def _resolution_question_evidence(data: dict[str, Any]) -> list[dict[str, str]]:
             "evidence": evidence,
         })
     return resolution_evidence
+
+
+def _latest_source_review(data: dict[str, Any]) -> dict[str, Any]:
+    review = data.get("latest_source_review")
+    if not isinstance(review, dict):
+        return {}
+    review_path = Path(review["path"])
+    linked_review = json.loads(review_path.read_text(encoding="utf-8"))
+    return {
+        "path": str(review_path),
+        "reviewed_at": linked_review["reviewed_at"],
+        "review_id": review["review_id"],
+        "decision": review["decision"],
+        "execution_change_allowed": review["execution_change_allowed"],
+    }
 
 
 def _additional_source_statuses(data: dict[str, Any]) -> list[dict[str, str]]:
@@ -1505,6 +1522,24 @@ def _resolution_question_evidence_text_lines(frontier: dict[str, Any]) -> list[s
     return lines
 
 
+def _latest_source_review_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Latest source reviews:"]
+    for source_status in frontier["source_statuses"]:
+        review = source_status["latest_source_review"]
+        if not review:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        allowed = "yes" if review["execution_change_allowed"] else "no"
+        lines.append(
+            f"  {command_label}: {review['reviewed_at']} "
+            f"{review['review_id']}: {review['decision']}; "
+            f"execution changes allowed: {allowed} ({review['path']})"
+        )
+    if len(lines) == 1:
+        return ["Latest source reviews: none"]
+    return lines
+
+
 def _additional_source_status_text_lines(frontier: dict[str, Any]) -> list[str]:
     lines = ["Additional source statuses:"]
     for source_status in frontier["source_statuses"]:
@@ -1568,6 +1603,9 @@ def _source_status_schema_error(data: Any) -> str:
     execution_readiness_error = _execution_readiness_shape_error(data)
     if execution_readiness_error:
         return execution_readiness_error
+    latest_source_review_error = _latest_source_review_shape_error(data)
+    if latest_source_review_error:
+        return latest_source_review_error
     additional_source_status_error = _additional_source_status_shape_error(data)
     if additional_source_status_error:
         return additional_source_status_error
@@ -1858,6 +1896,62 @@ def _execution_readiness_shape_error(data: dict[str, Any]) -> str:
         )
     if not _is_nonempty_text(readiness.get("summary")):
         return "source-status execution_readiness summary must be non-empty text"
+    return ""
+
+
+def _latest_source_review_shape_error(data: dict[str, Any]) -> str:
+    if "latest_source_review" not in data:
+        return ""
+    review = data.get("latest_source_review")
+    if not isinstance(review, dict):
+        return "source-status latest_source_review field must be an object"
+    for key in ("path", "review_id", "decision"):
+        if not _is_nonempty_text(review.get(key)):
+            return f"source-status latest_source_review {key} must be non-empty text"
+    allowed = review.get("execution_change_allowed")
+    if not isinstance(allowed, bool):
+        return (
+            "source-status latest_source_review execution_change_allowed "
+            "must be a boolean"
+        )
+    review_path = Path(review["path"])
+    if not review_path.is_file():
+        return (
+            "source-status latest_source_review "
+            f"path must exist: {review_path}"
+        )
+    try:
+        linked_review = json.loads(review_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return (
+            "source-status latest_source_review "
+            f"path must contain JSON: {review_path}"
+        )
+    if not isinstance(linked_review, dict):
+        return (
+            "source-status latest_source_review "
+            f"path must contain a review object: {review_path}"
+        )
+    if not _is_nonempty_text(linked_review.get("reviewed_at")):
+        return (
+            "source-status latest_source_review "
+            f"path must contain reviewed_at: {review_path}"
+        )
+    for key in ("review_id", "decision"):
+        linked_value = linked_review.get(key)
+        if _is_nonempty_text(linked_value) and linked_value != review[key]:
+            return (
+                "source-status latest_source_review "
+                f"{key} must match linked review"
+            )
+    boundary = linked_review.get("execution_boundary")
+    if isinstance(boundary, dict):
+        linked_allowed = boundary.get("standard_signal_execution_change_allowed")
+        if isinstance(linked_allowed, bool) and linked_allowed != allowed:
+            return (
+                "source-status latest_source_review execution_change_allowed "
+                "must match linked review"
+            )
     return ""
 
 

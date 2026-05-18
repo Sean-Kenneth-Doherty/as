@@ -4547,3 +4547,28 @@ Deliverables:
 Status: accepted in `docs/adr/0222-submission-compare-url.md`.
 Implemented in `autarkic_systems/github_submission.py`, with tests in
 `tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
+
+## ADR-0223: Source Review Frontier Summary
+
+Goal: make the source-status frontier expose the dated source-review gate that
+keeps standard-signal command-token execution blocked without new evidence.
+
+Deliverables:
+
+- optional `latest_source_review` metadata in accepted source-status frontier
+  entries;
+- schema validation that the linked review JSON exists and agrees with the
+  source-status review ID, decision, and execution-change flag;
+- focused source-status schema version `3`;
+- project-status schema version `21`;
+- `Latest source reviews:` text output in both focused and aggregate reports;
+  and
+- no runtime behavior, command-semantics, claim/proof/evidence, GitHub
+  submission, or handoff-readiness changes.
+
+Status: accepted in
+`docs/adr/0223-source-review-frontier-summary.md`. Implemented in
+`autarkic_systems/project_status.py` and
+`autarkic_systems/source_status.py`, with tests in
+`tests/test_source_status_frontier_cli.py` and
+`tests/test_project_status_report.py`.

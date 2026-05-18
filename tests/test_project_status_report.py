@@ -25,6 +25,7 @@ SEQUENCE_CERTIFICATES = Path("claims/network_sequence_proof_certificates.json")
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
+STANDARD_SIGNAL_SOURCE_REVIEW = Path("sources/standard_signal_source_review_status.json")
 BLOCKED_COMMANDS = ["standard-signal"]
 STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "no-standard-signal-command-token-execution-change-without-new-source-evidence"
@@ -33,7 +34,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 20
+PROJECT_STATUS_SCHEMA_VERSION = 21
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -501,6 +502,13 @@ STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
         ),
     },
 ]
+STANDARD_SIGNAL_LATEST_SOURCE_REVIEW = {
+    "path": str(STANDARD_SIGNAL_SOURCE_REVIEW),
+    "reviewed_at": "2026-05-18",
+    "review_id": "standard-signal-command-token-source-review-2026-05-18",
+    "decision": "no-new-standard-signal-command-token-execution-evidence",
+    "execution_change_allowed": False,
+}
 WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES = [
     {
         "adr": "ADR-0062",
@@ -900,6 +908,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES,
                 WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["latest_source_review"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                {},
+                STANDARD_SIGNAL_LATEST_SOURCE_REVIEW,
+                {},
             ],
         )
 
@@ -1537,6 +1556,15 @@ class ProjectStatusReportTests(unittest.TestCase):
             "execution changes disallowed without new source evidence.",
             text,
         )
+        self.assertIn("Latest source reviews:", text)
+        self.assertIn(
+            "standard-signal: 2026-05-18 "
+            "standard-signal-command-token-source-review-2026-05-18: "
+            "no-new-standard-signal-command-token-execution-evidence; "
+            "execution changes allowed: no "
+            "(sources/standard_signal_source_review_status.json)",
+            text,
+        )
         self.assertIn("write-buf-zero, write-buf-one:", text)
         self.assertIn(
             "ADR-0062 -> sources/guile_asmsim_command_semantics_status.json: "
@@ -1747,6 +1775,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES,
                 WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["latest_source_review"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                {},
+                STANDARD_SIGNAL_LATEST_SOURCE_REVIEW,
+                {},
             ],
         )
 
