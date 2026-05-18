@@ -646,3 +646,6 @@
   `blocked_by_resolution_questions` must cover every live unresolved
   `required_resolution_questions` ID. The JSON shapes stay at project status
   schema 15 and source-status schema 2.
+- ADR-0156 adds the inverse execution-readiness guard: execution changes cannot
+  be allowed while any unresolved `required_resolution_questions` remain. The
+  JSON shapes stay at project status schema 15 and source-status schema 2.

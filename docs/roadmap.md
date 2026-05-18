@@ -3082,3 +3082,21 @@ Deliverables:
 Status: accepted in `docs/adr/0155-execution-readiness-coverage.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0156: Execution Readiness Allowed-Question Guard
+
+Goal: prevent a source-status record from allowing execution changes while it
+still has live unresolved questions.
+
+Deliverables:
+
+- schema rejection for `execution_readiness.execution_change_allowed: true`
+  when `required_resolution_questions` is non-empty;
+- unchanged project-status schema `15`;
+- unchanged source-status frontier schema `2`; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0156-execution-readiness-allowed-question-guard.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

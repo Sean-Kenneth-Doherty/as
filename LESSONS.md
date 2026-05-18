@@ -435,3 +435,5 @@
 - A readiness gate that can omit one live blocker is not really a gate. Coverage
   rules should mirror the unresolved-question list, just as evidence coverage
   does.
+- Readiness should be bidirectional: if unresolved questions exist, execution
+  cannot be marked allowed, even when the blocker list is empty.

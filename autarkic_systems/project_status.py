@@ -1359,6 +1359,11 @@ def _execution_readiness_shape_error(data: dict[str, Any]) -> str:
             "source-status execution_readiness cannot allow execution changes "
             "while blocked_by_resolution_questions is non-empty"
         )
+    if allowed and required_question_ids:
+        return (
+            "source-status execution_readiness cannot allow execution changes "
+            "while unresolved required_resolution_questions remain"
+        )
     if readiness["decision"] == "blocked" and required_question_ids - set(blockers):
         return (
             "source-status execution_readiness "

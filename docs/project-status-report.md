@@ -192,6 +192,9 @@ status JSON/text, rejects malformed readiness metadata as
 ADR-0155 requires blocked `execution_readiness` blockers to cover every live
 unresolved `required_resolution_questions` ID while preserving project status
 `schema_version: 15`.
+ADR-0156 rejects `execution_readiness` records that allow execution changes
+while unresolved `required_resolution_questions` remain, preserving project
+status `schema_version: 15`.
 
 ## Boundary
 

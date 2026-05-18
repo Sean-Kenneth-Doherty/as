@@ -280,6 +280,9 @@ post-append clearing as the live write-buffer source-status questions.
 ADR-0154 turns those remaining write-buffer blockers into an explicit
 execution-readiness gate, so append execution cannot be treated as
 implementation-ready until both source questions are resolved.
+ADR-0155 and ADR-0156 make that gate fail closed: blocked readiness must name
+all live blockers, and allowed readiness is rejected while unresolved
+questions remain.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

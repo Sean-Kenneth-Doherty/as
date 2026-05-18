@@ -77,6 +77,8 @@ shared validation, so write-buffer append execution is explicitly blocked by
 resolved.
 ADR-0155 tightens that shared validation: when readiness is `blocked`, its
 blocker list must cover every live unresolved resolution question.
+ADR-0156 adds the inverse guard: readiness cannot allow execution changes
+while live unresolved resolution questions remain.
 
 ## Boundary
 

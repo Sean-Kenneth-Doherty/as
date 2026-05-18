@@ -3362,3 +3362,17 @@
   source-status frontier remains schema 2; this is a validation-only change.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 667 tests.
+
+## 2026-05-18 - Execution Readiness Allowed-Question Guard
+
+- Added ADR-0156 to reject execution-readiness records that allow execution
+  changes while unresolved `required_resolution_questions` remain.
+- Added the red project-status schema fixture before implementation. The red
+  run executed 82 focused tests and failed only that new fixture because the
+  validator accepted `execution_change_allowed: true` beside a live blocker.
+- Tightened source-status schema validation so readiness cannot allow
+  execution changes until the unresolved question list is empty.
+- Focused verification passed 82 tests. Project-status remains schema 15 and
+  source-status frontier remains schema 2; this is a validation-only change.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 668 tests.
