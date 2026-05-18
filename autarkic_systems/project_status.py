@@ -553,6 +553,12 @@ def _additional_source_status_shape_error(data: dict[str, Any]) -> str:
                     "source-status additional source-status "
                     f"{key} must be non-empty text"
                 )
+        source_status_path = Path(source_status["path"])
+        if not source_status_path.is_file():
+            return (
+                "source-status additional source-status "
+                f"path must exist: {source_status_path}"
+            )
     return ""
 
 

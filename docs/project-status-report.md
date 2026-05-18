@@ -89,6 +89,9 @@ status JSON, rejects malformed cross-link metadata, and bumps the schema
 version to `8`.
 ADR-0124 renders those source-status cross-links in the default text report
 while preserving `schema_version: 8`.
+ADR-0125 requires each source-status cross-link path to exist, reporting
+missing cross-link targets as `source-status-schema` while preserving
+`schema_version: 8`.
 
 ## Boundary
 

@@ -349,3 +349,5 @@
 - Source-review trails are operator-critical once they explain why a blocker
   remains. If JSON exposes them, the default text report should expose them
   too.
+- A diagnostic report should not render dead cross-links as accepted evidence.
+  Once a path is part of the operator trail, validate that the target exists.

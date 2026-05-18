@@ -212,6 +212,8 @@ project-status JSON and bumps the schema version to `8`, preserving the
 source-review trail behind the blocked command-token frontier.
 ADR-0124 renders those source-status cross-links in default project-status text
 while preserving `schema_version: 8`.
+ADR-0125 requires those source-status cross-link paths to exist, so project
+status cannot accept or display dead source-review links.
 
 ## P3: Choose The First Proof Apparatus
 

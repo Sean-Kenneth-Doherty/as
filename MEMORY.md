@@ -543,3 +543,6 @@
 - ADR-0124 renders source-status `additional_source_statuses` cross-links in
   default project-status text while preserving project status
   `schema_version: 8`.
+- ADR-0125 makes project-status source-status cross-links fail closed when
+  `additional_source_statuses[].path` does not point to an existing file,
+  preserving project status `schema_version: 8`.
