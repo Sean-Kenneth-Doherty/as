@@ -3176,3 +3176,19 @@
   and JSON remained accepted at `schema_version: 14`; `py_compile` and
   `git diff --check` passed; and `python -m unittest discover` passed 650
   tests.
+
+## 2026-05-18 - Resolution Evidence Question Matching
+
+- Added ADR-0146 to require `resolution_question_evidence` IDs to match live
+  unresolved question IDs in the same source-status record.
+- Updated project-status and source-status frontier tests before
+  implementation. The red run executed 71 tests and failed because scratch
+  records with a misspelled evidence question ID were still accepted.
+- Updated the shared source-status frontier validator in
+  `autarkic_systems.project_status` so unmatched evidence IDs reject the owning
+  source-status record as `source-status-schema`.
+- Verification passed: focused project-status and source-status frontier tests
+  ran 71 tests; source-status JSON was accepted at `schema_version: 1`;
+  project status JSON remained accepted at `schema_version: 14`; `py_compile`
+  and `git diff --check` passed; and `python -m unittest discover` passed 652
+  tests.

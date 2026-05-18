@@ -409,3 +409,5 @@
 - When an aggregate diagnostic grows broad, add a focused first-run command for
   the lower layer it depends on. Reuse the same validator so the focused and
   aggregate commands cannot drift.
+- Evidence attached to named open questions should validate against the live
+  question list, not just have a plausible-looking string ID.

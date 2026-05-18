@@ -45,6 +45,10 @@ The report names:
 
 JSON mode emits the same surface with top-level `schema_version: 1`.
 
+ADR-0146 tightens the shared validation contract: source evidence question IDs
+must match unresolved question IDs in the same source-status record. A typo or
+stale evidence ID rejects the source-status record as `source-status-schema`.
+
 ## Boundary
 
 This is not a separate source-status authority. It reuses the same frontier

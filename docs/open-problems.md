@@ -253,6 +253,8 @@ of authority behind the standard-signal and write-buffer blockers.
 ADR-0145 adds a focused source-status frontier CLI over those same
 command-token blocker records, letting agents inspect the semantic frontier
 without running the full project status report.
+ADR-0146 hardens that evidence trail by requiring evidence question IDs to
+match live unresolved question IDs in the same source-status record.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

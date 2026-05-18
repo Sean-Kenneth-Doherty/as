@@ -1211,6 +1211,7 @@ def _resolution_question_evidence_shape_error(data: dict[str, Any]) -> str:
     evidence_entries = data.get("resolution_question_evidence")
     if not isinstance(evidence_entries, list):
         return "source-status resolution_question_evidence field must be a list"
+    required_question_ids = set(_resolution_question_ids(data))
     for evidence_entry in evidence_entries:
         if not isinstance(evidence_entry, dict):
             return "source-status resolution question evidence entries must be objects"
@@ -1218,6 +1219,11 @@ def _resolution_question_evidence_shape_error(data: dict[str, Any]) -> str:
             return (
                 "source-status resolution question evidence question_id must "
                 "be non-empty text"
+            )
+        if evidence_entry["question_id"] not in required_question_ids:
+            return (
+                "source-status resolution question evidence question_id must "
+                "match required_resolution_questions"
             )
         if not _is_nonempty_text(evidence_entry.get("evidence")):
             return (

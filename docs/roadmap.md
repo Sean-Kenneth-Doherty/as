@@ -2842,3 +2842,24 @@ Deliverables:
 Status: accepted in `docs/adr/0145-source-status-frontier-cli.md`.
 Implemented in `autarkic_systems/source_status.py`, with tests in
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0146: Resolution Evidence Question Matching
+
+Goal: prevent source-status evidence from attaching to misspelled or stale
+unresolved question IDs.
+
+Deliverables:
+
+- fail-closed validation for
+  `resolution_question_evidence[].question_id` values that do not match a
+  `required_resolution_questions[].question_id` in the same source-status
+  record;
+- unchanged project status `schema_version: 14`;
+- unchanged source-status frontier `schema_version: 1`;
+- project-status and source-status frontier tests covering the mismatch; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in `docs/adr/0146-resolution-evidence-question-match.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and
+`tests/test_source_status_frontier_cli.py`.

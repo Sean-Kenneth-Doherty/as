@@ -613,3 +613,6 @@
 - ADR-0145 adds `python -m autarkic_systems.source_status` as a focused
   text/JSON CLI over the same blocked command-token source-status frontier
   consumed by project status, with JSON `schema_version: 1`.
+- ADR-0146 makes source-status `resolution_question_evidence[].question_id`
+  values fail closed unless they match unresolved
+  `required_resolution_questions[].question_id` values in the same record.

@@ -330,6 +330,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   `decision` and `safe_next_slice` text must also be non-whitespace, and
   recognized command-token fields, source-status cross-links, and resolved
   question source paths must have the expected text/list/object shapes.
+  Source-status `resolution_question_evidence` IDs must match unresolved
+  `required_resolution_questions` IDs in the same source-status record.
   Source-status cross-link paths and resolved question source paths must also
   point to existing files that contain JSON objects.
   Accepted source-status records must also provide non-empty top-level

@@ -1753,6 +1753,46 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_unmatched_resolution_question_evidence_id_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "unmatched_resolution_question_evidence.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "required_resolution_questions": [
+                        {
+                            "question_id": "recipient-surface",
+                            "summary": "Decide the recipient surface.",
+                        }
+                    ],
+                    "resolution_question_evidence": [
+                        {
+                            "question_id": "recipent-surface",
+                            "evidence": "Typo should not attach evidence.",
+                        }
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "match required_resolution_questions",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_scalar_resolved_resolution_questions_is_structured_failure_subject(self):
         with tempfile.TemporaryDirectory() as tmp:
             invalid_status = Path(tmp) / "scalar_resolved_resolution_questions.json"

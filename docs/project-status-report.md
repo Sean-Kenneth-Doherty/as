@@ -159,6 +159,9 @@ renders that evidence in default text output, rejects malformed evidence
 metadata as `source-status-schema`, and bumps the schema version to `14`.
 ADR-0145 adds `python -m autarkic_systems.source_status` as a focused text/JSON
 CLI over the same source-status frontier payload.
+ADR-0146 makes `resolution_question_evidence[].question_id` fail closed unless
+it matches an unresolved `required_resolution_questions[].question_id` in the
+same source-status record, preserving `schema_version: 14`.
 
 ## Boundary
 
