@@ -257,6 +257,28 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Autarkic Systems project status: accepted", text)
         self.assertIn("Transition evidence: accepted (8 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
+        self.assertIn("Transition evidence bundles:", text)
+        self.assertIn(
+            "recipient-init-command-message-transition-evidence-bundle -> "
+            "evidence/recipient_init_command_message_bundle.json",
+            text,
+        )
+        self.assertIn(
+            "neighbor-command-buffer-delivery-evidence-bundle -> "
+            "evidence/neighbor_command_buffer_delivery_bundle.json",
+            text,
+        )
+        self.assertIn("Chain evidence bundles:", text)
+        self.assertIn(
+            "neighbor-delivery-recipient-chain-evidence-bundle -> "
+            "evidence/chains/neighbor_delivery_chain_bundle.json",
+            text,
+        )
+        self.assertIn(
+            "neighbor-delivery-recipient-rejection-chain-evidence-bundle -> "
+            "evidence/chains/neighbor_delivery_rejection_chain_bundle.json",
+            text,
+        )
         self.assertIn(
             "Blocked commands: standard-signal, write-buf-zero, write-buf-one",
             text,
@@ -1020,6 +1042,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
         self.assertIn("Autarkic Systems project status: rejected", text)
         self.assertIn("Chain evidence: rejected (0 bundles)", text)
+        self.assertIn("Chain evidence bundles: none", text)
         self.assertIn(f"Missing registry files: {missing_registry}", text)
 
     def test_text_status_names_invalid_registry_failure(self):
@@ -1034,6 +1057,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
         self.assertIn("Autarkic Systems project status: rejected", text)
         self.assertIn("Chain evidence: rejected (0 bundles)", text)
+        self.assertIn("Chain evidence bundles: none", text)
         self.assertIn(f"Invalid registry files: {invalid_registry}", text)
 
     def test_module_execution_runs_text_status_report(self):

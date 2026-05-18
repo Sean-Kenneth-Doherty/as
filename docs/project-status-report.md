@@ -35,6 +35,7 @@ The text report names:
 - overall accepted or rejected status;
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
+- transition and chain evidence bundle IDs and paths;
 - blocked command tokens;
 - blocked runtime surfaces;
 - blocker resolution question IDs and summaries; and
@@ -69,6 +70,8 @@ malformed surface lists as source-status schema failures, and bumps the schema
 version to `5`. ADR-0115 adds registry `bundles` arrays to both
 `transition_evidence` and `chain_evidence`, reports `bundles: []` for registry
 load failures, and bumps the schema version to `6`.
+ADR-0116 renders the accepted registry bundle IDs and paths in the default text
+report without changing the JSON schema.
 
 ## Boundary
 

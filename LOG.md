@@ -2595,3 +2595,23 @@
   `frontier.failed_subjects: []`; transition and chain registry JSON remained
   accepted with empty `failed_subjects`; and `python -m unittest discover`
   passed 573 tests.
+
+## 2026-05-18 - Project Status Text Registry Bundles
+
+- Added ADR-0116 to render concrete transition and chain evidence bundle IDs
+  and paths in the default project status text report.
+- Updated `tests/test_project_status_report.py` before implementation. The
+  red run failed because the text report omitted `Transition evidence bundles:`
+  and `Chain evidence bundles:` sections, including the `none` fallback for
+  failed registry summaries.
+- Updated `autarkic_systems.project_status.format_project_status_report` with
+  registry bundle text lines while preserving project status JSON
+  `schema_version: 6`.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the text registry-bundle contract.
+- Verification passed: focused project status tests ran 33 tests; adjacent
+  project-status/transition-registry/chain-registry tests ran 62 tests;
+  `py_compile` and `git diff --check` passed; default project status text
+  reported all eight transition bundle IDs and both chain bundle IDs with
+  paths; project status JSON remained accepted at `schema_version: 6`; and
+  `python -m unittest discover` passed 573 tests.

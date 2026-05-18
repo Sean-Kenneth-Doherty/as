@@ -322,3 +322,6 @@
 - A first diagnostic command should expose concrete evidence entries, not only
   counts. Once lower-level registry JSON is self-describing, project-level
   status JSON should carry those entries forward for automation.
+- When the JSON first-run surface gains concrete operator evidence, decide
+  whether the text first-run surface should gain the same evidence too. Humans
+  should not have to switch formats just to see which artifacts were checked.

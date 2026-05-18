@@ -188,6 +188,8 @@ summary, matching the compact chain registry failure-summary contract.
 ADR-0115 adds those concrete registry bundle entries to project status JSON
 and bumps the schema version to `6`, so the first diagnostic command now names
 the transition and chain bundles it checked.
+ADR-0116 renders those checked bundle IDs and paths in the default text status
+report without changing the JSON schema.
 
 ## P3: Choose The First Proof Apparatus
 

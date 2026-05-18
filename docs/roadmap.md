@@ -2192,3 +2192,24 @@ Status: accepted in
 `docs/adr/0115-project-status-registry-bundles.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0116: Project Status Text Registry Bundles
+
+Goal: render concrete transition and chain registry bundle IDs in the default
+project status text report.
+
+Deliverables:
+
+- `Transition evidence bundles:` section in `format_project_status_report`;
+- transition bundle IDs and paths visible in text status output;
+- `Chain evidence bundles:` section in `format_project_status_report`;
+- chain bundle IDs and paths visible in text status output;
+- missing or malformed registry summaries render `none` for the affected
+  bundle section;
+- unchanged project status JSON shape at `schema_version: 6`; and
+- focused tests covering green and failed registry text output.
+
+Status: accepted in
+`docs/adr/0116-project-status-text-registry-bundles.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

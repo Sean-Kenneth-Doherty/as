@@ -94,6 +94,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Autarkic Systems project status: {status}",
         f"Transition evidence: {transition_status} ({transition['bundle_count']} bundles)",
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
+        *_registry_bundle_text_lines("Transition evidence", transition),
+        *_registry_bundle_text_lines("Chain evidence", chain),
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         *_blocked_runtime_surface_text_lines(frontier),
@@ -351,6 +353,16 @@ def _blocked_runtime_surface_text_lines(frontier: dict[str, Any]) -> list[str]:
         lines.append(f"  {command_label}: {', '.join(surfaces)}")
     if len(lines) == 1:
         return ["Blocked runtime surfaces: none"]
+    return lines
+
+
+def _registry_bundle_text_lines(label: str, summary: dict[str, Any]) -> list[str]:
+    bundles = summary["bundles"]
+    if not bundles:
+        return [f"{label} bundles: none"]
+    lines = [f"{label} bundles:"]
+    for bundle in bundles:
+        lines.append(f"  {bundle['bundle_id']} -> {bundle['path']}")
     return lines
 
 

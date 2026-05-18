@@ -516,3 +516,6 @@
 - ADR-0115 bumps `autarkic_systems.project_status` to `schema_version: 6` and
   adds transition and chain registry `bundles` arrays to the project status
   JSON summaries.
+- ADR-0116 makes the default `autarkic_systems.project_status` text report
+  render transition and chain registry bundle IDs and paths while preserving
+  `schema_version: 6`.
