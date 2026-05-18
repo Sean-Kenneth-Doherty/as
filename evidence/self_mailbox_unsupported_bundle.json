@@ -29,6 +29,6 @@
   "boundaries": [
     "This bundle preserves the self-mailbox non-init command boundary.",
     "It does not change init-family self-mailbox execution.",
-    "standard-signal self-mailbox command tokens are preserved as unsupported; write-buffer command-token execution remains source-blocked."
+    "standard-signal and write-buffer self-mailbox command tokens are preserved as unsupported; write-buffer append execution semantics remain source-blocked."
   ]
 }

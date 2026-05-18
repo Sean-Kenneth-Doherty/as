@@ -7,6 +7,10 @@ STATUS = Path("sources/write_buffer_command_semantics_status.json")
 RECIPIENT_NON_INIT = Path("sources/recipient_non_init_command_source_status.json")
 RECIPIENT_STATUS = Path("sources/recipient_command_consumption_source_status.json")
 STEM_STATUS = Path("sources/stem_command_execution_source_status.json")
+SELF_MAILBOX_UNSUPPORTED_BUNDLE = Path("evidence/self_mailbox_unsupported_bundle.json")
+COMMAND_BUFFER_UNSUPPORTED_BUNDLE = Path(
+    "evidence/command_buffer_unsupported_bundle.json"
+)
 FORMAL_MODEL = Path("/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt")
 LEGACY_RAA = Path("/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm")
 LEGACY_SEMSIM = Path("/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm")
@@ -109,7 +113,6 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(
             question_ids,
             {
-                "self-target-surface",
                 "buffer-full-boundary",
                 "post-append-clearing",
             },
@@ -137,6 +140,41 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn(
             "write-buf-zero",
             recipient_non_init["blocked_runtime_commands"],
+        )
+
+    def test_self_target_surface_is_resolved_to_unsupported_boundaries(self):
+        resolved_questions = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+        self_mailbox_bundle = json.loads(
+            SELF_MAILBOX_UNSUPPORTED_BUNDLE.read_text(encoding="utf-8")
+        )
+        command_buffer_bundle = json.loads(
+            COMMAND_BUFFER_UNSUPPORTED_BUNDLE.read_text(encoding="utf-8")
+        )
+
+        resolved = resolved_questions["self-target-surface"]
+        self.assertEqual(
+            resolved["decision"],
+            "preserve-self-target-write-buffer-as-unsupported",
+        )
+        self.assertEqual(resolved["source_status"], str(STATUS))
+        self.assertIn(
+            "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+            resolved["legacy_divergence"],
+        )
+        self.assertIn(
+            "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
+            resolved["legacy_divergence"],
+        )
+        self.assertIn(
+            "write buffer zero unsupported preserved",
+            self_mailbox_bundle["covered_positive_examples"],
+        )
+        self.assertIn(
+            "self write buffer zero command remains appended",
+            command_buffer_bundle["covered_positive_examples"],
         )
 
     def test_standard_signal_interaction_is_resolved_as_literal_bits(self):

@@ -274,6 +274,9 @@ frontier.
 ADR-0152 resolves the write-buffer recipient surface through the existing
 recipient non-init rejection boundary and narrows the remaining write-buffer
 surface question to self-mailbox / self-target command-buffer behavior.
+ADR-0153 resolves that write-buffer self-target surface through the existing
+unsupported preservation boundaries, leaving buffer-full behavior and
+post-append clearing as the live write-buffer source-status questions.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

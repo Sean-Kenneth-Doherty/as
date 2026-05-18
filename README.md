@@ -80,7 +80,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   agreement that `write-buf-zero` / `write-buf-one` carry literal `0` / `1`
   append bits rather than high-rail-derived standard-signal values. It also
   records that recipient write-buffer command messages use the recipient
-  non-init rejection boundary.
+  non-init rejection boundary and that self-target write-buffer command tokens
+  use the unsupported preservation boundaries.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented, and records the
@@ -369,7 +370,7 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `sources/write_buffer_command_semantics_status.json` makes the write-buffer
   command semantics source-status decision machine-checkable, including the
   literal command bit-source evidence and the resolved standard-signal
-  interaction and recipient-surface questions.
+  interaction, recipient-surface, and self-target-surface questions.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

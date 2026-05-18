@@ -29,6 +29,6 @@
   "boundaries": [
     "This bundle covers only the self-target non-init command-buffer append boundary.",
     "init-family self-target command buffers remain handled by the supported dispatch bundle.",
-    "standard-signal self-target command-buffer tokens are preserved at the append boundary; write-buffer command-token execution remains source-blocked."
+    "standard-signal and write-buffer self-target command-buffer tokens are preserved at the append boundary; write-buffer append execution semantics remain source-blocked."
   ]
 }

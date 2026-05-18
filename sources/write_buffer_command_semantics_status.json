@@ -76,13 +76,22 @@
     "source_status": "sources/recipient_non_init_command_source_status.json",
     "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
     "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
-    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. Self-target write-buffer execution remains unresolved."
+    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. Self-target write-buffer command tokens remain unsupported-preserved while executable append semantics remain unresolved."
+  },
+  "self_target_surface_resolution": {
+    "decision": "preserve-self-target-write-buffer-as-unsupported",
+    "source_status": "sources/write_buffer_command_semantics_status.json",
+    "claim_ids": [
+      "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED",
+      "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
+    ],
+    "evidence_bundles": [
+      "evidence/self_mailbox_unsupported_bundle.json",
+      "evidence/command_buffer_unsupported_bundle.json"
+    ],
+    "summary": "AS preserves direct self-mailbox write-buffer command tokens as unsupported and preserves completed self-target command-buffer write-buffer tokens at the append boundary."
   },
   "required_resolution_questions": [
-    {
-      "question_id": "self-target-surface",
-      "summary": "Decide whether write-buffer command messages execute from self-mailbox or self-target command-buffer surfaces, or remain unsupported there."
-    },
     {
       "question_id": "buffer-full-boundary",
       "summary": "Decide whether write-buffer commands are ignored, rejected, preserve state, or report a status when the command buffer is full."
@@ -93,10 +102,6 @@
     }
   ],
   "resolution_question_evidence": [
-    {
-      "question_id": "self-target-surface",
-      "evidence": "The formal model names write-buffer commands in generic special-message and stem loci, while the legacy witnesses expose different self-target write-buffer surfaces; no reviewed source selects one AS self-target execution boundary."
-    },
     {
       "question_id": "buffer-full-boundary",
       "evidence": "RAA guards write-buffer append with buffer-full? while SEMSIM and FSMSIM expose no matching buffer-full guard."
@@ -117,7 +122,13 @@
       "question_id": "recipient-surface",
       "decision": "reject-recipient-write-buffer-command-message-as-non-init",
       "source_status": "sources/recipient_non_init_command_source_status.json",
-      "legacy_divergence": "AS already rejects delivered recipient write-buffer command messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; self-target write-buffer execution remains unresolved."
+      "legacy_divergence": "AS already rejects delivered recipient write-buffer command messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; self-target write-buffer command tokens remain unsupported-preserved while executable append semantics remain unresolved."
+    },
+    {
+      "question_id": "self-target-surface",
+      "decision": "preserve-self-target-write-buffer-as-unsupported",
+      "source_status": "sources/write_buffer_command_semantics_status.json",
+      "legacy_divergence": "AS already preserves direct self-mailbox write-buffer command tokens under UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED and preserves completed self-target command-buffer write-buffer commands under UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED; executable write-buffer append semantics remain blocked by buffer-full and post-append clearing divergence."
     }
   ],
   "additional_source_statuses": [
@@ -137,5 +148,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Continue preserving or rejecting write-buffer commands at the existing self-target boundaries until a later ADR selects source-backed buffer-full and post-append semantics."
+  "as_boundary": "Continue preserving write-buffer command tokens at the existing self-target unsupported boundaries until a later ADR selects source-backed buffer-full and post-append execution semantics."
 }

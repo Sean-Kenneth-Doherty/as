@@ -180,6 +180,10 @@ ADR-0152 resolves the write-buffer `recipient-surface` question through the
 existing recipient non-init rejection boundary and replaces the old
 `recipient-vs-stem-surface` unresolved question with `self-target-surface`,
 preserving project status `schema_version: 14`.
+ADR-0153 resolves that write-buffer `self-target-surface` question through the
+existing unsupported preservation boundaries, leaving only
+`buffer-full-boundary` and `post-append-clearing` unresolved while preserving
+project status `schema_version: 14`.
 
 ## Boundary
 

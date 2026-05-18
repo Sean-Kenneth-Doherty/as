@@ -426,3 +426,6 @@
 - When an unresolved question bundles multiple runtime surfaces, split off the
   surface already covered by a checked boundary instead of leaving the whole
   bundle open.
+- A command can remain blocked even after its runtime surface question is
+  resolved. For write-buffer, self-target tokens are now unsupported-preserved,
+  while buffer-full and post-append clearing still block execution semantics.

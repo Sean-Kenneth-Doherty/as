@@ -66,6 +66,10 @@ has live resolution questions.
 ADR-0152 moves the write-buffer recipient command-message surface from
 unresolved to resolved and narrows the remaining write-buffer surface question
 to self-mailbox and self-target command-buffer behavior.
+ADR-0153 moves that write-buffer `self-target-surface` question from
+unresolved to resolved through the existing unsupported boundaries, so the
+remaining write-buffer frontier is buffer-full behavior and post-append
+clearing.
 
 ## Boundary
 

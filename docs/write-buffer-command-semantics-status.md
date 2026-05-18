@@ -38,8 +38,13 @@ and the post-append clearing disagreement between RAA, SEMSIM, and FSMSIM.
 ADR-0152 resolves the recipient-surface part of the older
 `recipient-vs-stem-surface` question: delivered recipient `write-buf-zero` and
 `write-buf-one` command messages are rejected as non-init command-message
-inputs under the existing recipient rejection claim. Self-target write-buffer
-execution remains unresolved.
+inputs under the existing recipient rejection claim.
+
+ADR-0153 resolves the self-target surface question through the existing
+unsupported self-mailbox and self-target command-buffer boundaries. Direct
+self-mailbox write-buffer command tokens are preserved as unsupported, and
+completed self-target command-buffer write-buffer command tokens remain at the
+append boundary. Executable write-buffer append semantics remain unresolved.
 
 ## AS Boundary
 
@@ -67,8 +72,9 @@ write-buffer command-token semantics. ADR-0129 records the literal command
 bit-source evidence without changing runtime behavior. ADR-0142 moves the
 standard-signal interaction blocker out of the unresolved queue because the bit
 source is literal rather than high-rail derived. ADR-0152 moves
-`recipient-surface` into resolved questions and leaves `self-target-surface`,
-`buffer-full-boundary`, and `post-append-clearing` unresolved.
+`recipient-surface` into resolved questions. ADR-0153 moves
+`self-target-surface` into resolved questions and leaves
+`buffer-full-boundary` and `post-append-clearing` unresolved.
 
 ## Verification
 
@@ -79,5 +85,5 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 ```
 
 The tests check the decision, formal-model gap, legacy witness divergence,
-resolved recipient surface, remaining required resolution questions, and
-source-status frontier updates.
+resolved recipient and self-target surfaces, remaining required resolution
+questions, and source-status frontier updates.

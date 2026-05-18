@@ -634,3 +634,7 @@
 - ADR-0152 resolves write-buffer `recipient-surface` through the existing
   recipient non-init rejection boundary, replacing the old unresolved
   `recipient-vs-stem-surface` question with `self-target-surface`.
+- ADR-0153 resolves write-buffer `self-target-surface` through the existing
+  unsupported self-mailbox and self-target command-buffer boundaries, leaving
+  only `buffer-full-boundary` and `post-append-clearing` unresolved for
+  write-buffer command-token execution.

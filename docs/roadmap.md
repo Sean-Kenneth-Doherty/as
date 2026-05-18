@@ -3009,3 +3009,31 @@ Status: accepted in
 `tests/test_write_buffer_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0153: Write-Buffer Self-Target Surface Resolution
+
+Goal: resolve self-target write-buffer command tokens through the existing
+unsupported preservation boundaries while keeping append execution semantics
+open.
+
+Deliverables:
+
+- `self-target-surface` removed from write-buffer unresolved
+  `required_resolution_questions`;
+- `self-target-surface` added to write-buffer `resolved_resolution_questions`;
+- write-buffer unresolved source evidence narrowed to `buffer-full-boundary`
+  and `post-append-clearing`;
+- existing self-mailbox unsupported and command-buffer unsupported evidence
+  bundles updated to name the write-buffer settled boundary;
+- project-status and source-status frontier text/JSON output showing only
+  buffer-full and post-append clearing as live write-buffer questions; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0153-write-buffer-self-target-surface-resolution.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json`,
+`evidence/self_mailbox_unsupported_bundle.json`, and
+`evidence/command_buffer_unsupported_bundle.json`, with tests in
+`tests/test_write_buffer_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

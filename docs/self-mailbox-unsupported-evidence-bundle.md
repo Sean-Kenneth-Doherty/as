@@ -42,6 +42,9 @@ write-buffer command-token execution, `standard-signal` command-token
 execution, recipient non-init command execution, priority, or sequencing.
 ADR-0151 reuses this existing preservation boundary to resolve the
 standard-signal self-mailbox surface as unsupported-preserved.
+ADR-0153 reuses the same preservation boundary to resolve the write-buffer
+self-mailbox surface as unsupported-preserved while leaving append execution
+semantics blocked.
 
 ## Verification
 

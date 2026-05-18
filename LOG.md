@@ -3304,3 +3304,25 @@
   write-buffer blocked runtime surfaces narrowed to `self-mailbox-command` and
   `self-target-command-buffer`. `py_compile`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 661 tests.
+
+## 2026-05-18 - Write-Buffer Self-Target Surface Resolution
+
+- Added ADR-0153 to resolve write-buffer self-target surface handling through
+  the existing unsupported self-mailbox and self-target command-buffer
+  boundaries.
+- Updated write-buffer, project-status, and source-status frontier tests before
+  implementation. The red run executed 85 tests and failed because
+  `self-target-surface` was still unresolved and absent from write-buffer
+  `resolved_resolution_questions`.
+- Updated `sources/write_buffer_command_semantics_status.json` so
+  `self-target-surface` is resolved as
+  `preserve-self-target-write-buffer-as-unsupported`, leaving only
+  `buffer-full-boundary` and `post-append-clearing` unresolved.
+- Updated the self-mailbox unsupported and command-buffer unsupported evidence
+  bundle boundary text to record that write-buffer self-target surfaces are
+  unsupported-preserved while append execution semantics remain source-blocked.
+- Focused verification passed 97 tests. The evidence bundle registry accepted
+  all 8 bundles. Source-status JSON accepted schema 1 and project-status JSON
+  accepted schema 14 with the narrowed write-buffer frontier. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 662 tests.

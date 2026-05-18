@@ -78,6 +78,12 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "(sources/recipient_non_init_command_source_status.json)",
             text,
         )
+        self.assertIn(
+            "self-target-surface: "
+            "preserve-self-target-write-buffer-as-unsupported "
+            "(sources/write_buffer_command_semantics_status.json)",
+            text,
+        )
         self.assertNotIn("recipient-vs-stem-surface", text)
         self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
         self.assertIn("Missing source-status files: none", text)

@@ -43,6 +43,9 @@ only. It does not add write-buffer command-token execution,
 execution, priority, or sequencing.
 ADR-0151 reuses this existing append boundary to resolve the standard-signal
 self-target command-buffer surface as unsupported-preserved.
+ADR-0153 reuses the same append boundary to resolve the write-buffer
+self-target command-buffer surface as unsupported-preserved while leaving
+append execution semantics blocked.
 
 ## Verification
 
