@@ -4605,3 +4605,25 @@
   status, accepted vertical demo, accepted remote refresh, and
   submitted-to-fork GitHub status. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 907 tests.
+
+## 2026-05-18 - Vertical Demo Evidence Trail
+
+- Added ADR-0216 to make the top-level vertical demo digest point to the
+  concrete evidence artifacts behind the current checked demonstration.
+- Added red vertical-demo tests before implementation. The focused red run
+  failed because JSON/text output lacked `evidence_trail`,
+  `missing_evidence_paths`, and `validation_subjects`.
+- Updated `autarkic_systems/vertical_demo.py` to reuse
+  `build_network_sequence_demo_report`, require that demo report to be
+  accepted, expose its evidence layers and validation subjects, and render an
+  `Evidence trail:` section in text output.
+- Updated handoff test fixtures so `python -m autarkic_systems.handoff`
+  continues to carry the expanded vertical demo digest.
+- Updated README, roadmap, vertical-demo docs, and repo memory notes for the
+  new evidence-trail fields.
+- Focused vertical-demo tests passed 4 tests. Adjacent handoff,
+  vertical-demo, and network-sequence demo tests passed 25 tests. Live
+  vertical-demo JSON and handoff text reported accepted status, no missing
+  evidence paths, and the expanded evidence trail. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full
+  suite ran 907 tests.

@@ -315,7 +315,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/vertical_demo.py` renders a first-run vertical demo digest
   over the accepted stack: current demonstration, evidence counts,
   claim/proof counts, proof-rule mix, blocked command frontier, canonical
-  registries, and the checked network-sequence evidence bundle.
+  registries, the checked network-sequence evidence bundle, and the concrete
+  evidence trail from claim/proof/language artifacts through witness, trace,
+  SVG, underlying chain bundle, and source-status records.
 - `autarkic_systems/github_submission.py` renders local git evidence for the
   current GitHub submission path: current branch, `HEAD`, origin/fork remote
   URLs, fork `main` match state, origin `main` divergence, and the upstream

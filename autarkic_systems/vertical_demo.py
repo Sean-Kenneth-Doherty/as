@@ -6,6 +6,7 @@ import argparse
 import json
 from typing import Any
 
+from autarkic_systems.network_sequence_demo import build_network_sequence_demo_report
 from autarkic_systems.project_status import build_project_status_report
 
 
@@ -19,6 +20,7 @@ def build_vertical_demo_digest() -> dict[str, Any]:
     """Build a first-run digest from the accepted project-status surface."""
 
     status = build_project_status_report()
+    sequence_demo = build_network_sequence_demo_report()
     transition = status["transition_evidence"]
     chain = status["chain_evidence"]
     sequence = status["sequence_evidence"]
@@ -29,7 +31,7 @@ def build_vertical_demo_digest() -> dict[str, Any]:
     sequence_bundle = sequence["bundles"][0] if sequence["bundles"] else {}
     frontier = status["frontier"]
     return {
-        "accepted": status["accepted"],
+        "accepted": status["accepted"] and sequence_demo["accepted"],
         "demonstration": DEMONSTRATION,
         "evidence_counts": {
             "transition_bundles": transition["bundle_count"],
@@ -54,6 +56,12 @@ def build_vertical_demo_digest() -> dict[str, Any]:
             "sequence": sequence["path"],
         },
         "sequence_evidence_bundle": sequence_bundle,
+        "evidence_trail": sequence_demo["evidence_layers"],
+        "missing_evidence_paths": sequence_demo["missing_evidence_paths"],
+        "validation_subjects": [
+            result["subject"]
+            for result in sequence_demo["validation"]["results"]
+        ],
         "boundary": STANDARD_SIGNAL_BOUNDARY,
     }
 
@@ -68,6 +76,8 @@ def format_vertical_demo_digest(digest: dict[str, Any]) -> str:
     blocked = digest["blocked_commands"] or []
     registries = digest["registries"]
     sequence_bundle = digest["sequence_evidence_bundle"]
+    missing_paths = digest["missing_evidence_paths"] or []
+    evidence_trail = digest["evidence_trail"]
     return "\n".join([
         f"Autarkic Systems vertical demo: {status}",
         f"Current demonstration: {digest['demonstration']}",
@@ -97,6 +107,14 @@ def format_vertical_demo_digest(digest: dict[str, Any]) -> str:
         f"Transition registry: {registries['transition']}",
         f"Chain registry: {registries['chain']}",
         f"Sequence registry: {registries['sequence']}",
+        "Missing evidence paths: "
+        + (", ".join(missing_paths) if missing_paths else "none"),
+        "Evidence trail:",
+        *[
+            f"- {layer['role']}: {layer['path']}"
+            + ("" if layer["exists"] else " (missing)")
+            for layer in evidence_trail
+        ],
         f"Boundary: {digest['boundary']}",
     ])
 

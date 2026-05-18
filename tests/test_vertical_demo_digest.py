@@ -17,6 +17,33 @@ SEQUENCE_BUNDLE = "evidence/sequences/post_handoff_signal_bundle.json"
 TRANSITION_REGISTRY = "evidence/manifest.json"
 CHAIN_REGISTRY = "evidence/chains/manifest.json"
 SEQUENCE_REGISTRY = "evidence/sequences/manifest.json"
+EVIDENCE_TRAIL_ROLES = [
+    "sequence-claim-manifest",
+    "sequence-proof-certificates",
+    "sequence-language",
+    "sequence-claim-validator",
+    "sequence-witness",
+    "sequence-trace",
+    "sequence-svg",
+    "chain-bundle",
+    "source-status",
+    "source-status",
+    "source-status",
+    "source-status",
+    "source-status",
+]
+VALIDATION_SUBJECTS = [
+    "schema",
+    "sequence-claim-example",
+    "sequence-proof-certificate",
+    "sequence-language",
+    "sequence-witness",
+    "sequence-trace",
+    "sequence-svg",
+    "underlying-chain-bundles",
+    "source-statuses",
+    "boundary",
+]
 
 
 class VerticalDemoDigestTests(unittest.TestCase):
@@ -68,6 +95,29 @@ class VerticalDemoDigestTests(unittest.TestCase):
                 "expected_status": "post-handoff-signal-routed",
             },
         )
+        self.assertEqual(digest["missing_evidence_paths"], [])
+        self.assertEqual(digest["validation_subjects"], VALIDATION_SUBJECTS)
+        self.assertEqual(
+            [layer["role"] for layer in digest["evidence_trail"]],
+            EVIDENCE_TRAIL_ROLES,
+        )
+        self.assertTrue(all(layer["exists"] for layer in digest["evidence_trail"]))
+        self.assertIn(
+            {
+                "role": "sequence-trace",
+                "path": "schematics/sequences/post_handoff_signal_sequence_trace.json",
+                "exists": True,
+            },
+            digest["evidence_trail"],
+        )
+        self.assertIn(
+            {
+                "role": "sequence-svg",
+                "path": "schematics/sequences/post_handoff_signal_sequence_trace.svg",
+                "exists": True,
+            },
+            digest["evidence_trail"],
+        )
 
     def test_text_output_names_artifacts_and_closed_boundary(self):
         text = format_vertical_demo_digest(build_vertical_demo_digest())
@@ -84,6 +134,20 @@ class VerticalDemoDigestTests(unittest.TestCase):
         self.assertIn(f"Transition registry: {TRANSITION_REGISTRY}", text)
         self.assertIn(f"Chain registry: {CHAIN_REGISTRY}", text)
         self.assertIn(f"Sequence registry: {SEQUENCE_REGISTRY}", text)
+        self.assertIn("Missing evidence paths: none", text)
+        self.assertIn("Evidence trail:", text)
+        self.assertIn(
+            "- sequence-trace: schematics/sequences/post_handoff_signal_sequence_trace.json",
+            text,
+        )
+        self.assertIn(
+            "- sequence-svg: schematics/sequences/post_handoff_signal_sequence_trace.svg",
+            text,
+        )
+        self.assertIn(
+            "- source-status: sources/standard_signal_command_semantics_status.json",
+            text,
+        )
         self.assertIn(
             "Boundary: no standard-signal command-token execution change "
             "without new source evidence",
@@ -102,6 +166,12 @@ class VerticalDemoDigestTests(unittest.TestCase):
         self.assertEqual(payload["demonstration"], DEMONSTRATION)
         self.assertEqual(payload["proof_rules"]["predicate-result"], 52)
         self.assertEqual(payload["sequence_evidence_bundle"]["path"], SEQUENCE_BUNDLE)
+        self.assertEqual(payload["missing_evidence_paths"], [])
+        self.assertEqual(payload["validation_subjects"], VALIDATION_SUBJECTS)
+        self.assertEqual(
+            payload["evidence_trail"][0]["path"],
+            "claims/network_sequence_claims.json",
+        )
 
     def test_module_execution_runs_json_digest(self):
         completed = subprocess.run(

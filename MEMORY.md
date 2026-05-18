@@ -896,3 +896,7 @@
 - ADR-0215 carries that vertical demo digest into `autarkic_systems.handoff`:
   handoff readiness now requires project status, vertical demo, and fork
   submission acceptance, and handoff JSON/text includes the demo summary.
+- ADR-0216 extends `autarkic_systems.vertical_demo` with the concrete
+  network-sequence evidence trail: claim/proof/language files, witness, trace,
+  SVG, chain bundle, and source-status records, plus missing-path and
+  validation-subject summaries inherited by handoff.

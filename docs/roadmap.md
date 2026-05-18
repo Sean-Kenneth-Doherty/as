@@ -4395,3 +4395,25 @@ Deliverables:
 Status: accepted in `docs/adr/0215-handoff-demo-digest.md`.
 Implemented in `autarkic_systems/handoff.py`, with tests in
 `tests/test_handoff_status.py`.
+
+## ADR-0216: Vertical Demo Evidence Trail
+
+Goal: make the top-level vertical demo digest point to the concrete artifacts
+behind the current checked demonstration.
+
+Deliverables:
+
+- `evidence_trail` in `build_vertical_demo_digest`;
+- `missing_evidence_paths` in the digest, empty on the accepted path;
+- `validation_subjects` copied from the network-sequence demo validation
+  results;
+- text output with an `Evidence trail:` section listing claim/proof/language,
+  witness, trace, SVG, chain bundle, and source-status paths;
+- handoff output inheriting the expanded digest; and
+- no runtime behavior, claim, proof-rule, validation-authority,
+  project-status schema, source-status decision, registry schema, trace/SVG
+  rendering, scheduler, topology, timing, or command-semantics changes.
+
+Status: accepted in `docs/adr/0216-vertical-demo-evidence-trail.md`.
+Implemented in `autarkic_systems/vertical_demo.py`, with tests in
+`tests/test_vertical_demo_digest.py` and `tests/test_handoff_status.py`.

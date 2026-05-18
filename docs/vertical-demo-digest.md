@@ -18,6 +18,10 @@ frontier, canonical registries, and sequence evidence bundle behind that path.
 ADR-0215 also carries this digest into `python -m autarkic_systems.handoff` so
 the end-of-month submission report includes the reader-facing demonstration
 summary alongside project-status and GitHub submission evidence.
+ADR-0216 extends the digest with the concrete evidence trail from
+`autarkic_systems.network_sequence_demo`: sequence claim/proof/language
+artifacts, witness implementation, trace, SVG, underlying chain bundle, and
+source-status records, each with an existence flag in JSON.
 
 The accepted current text output reports:
 
@@ -30,6 +34,18 @@ The accepted current text output reports:
 - the remaining `standard-signal` command-token frontier; and
 - `evidence/sequences/post_handoff_signal_bundle.json` as the sequence bundle
   tying the currently checked end-to-end path together.
+
+The evidence trail currently includes:
+
+- `claims/network_sequence_claims.json`;
+- `claims/network_sequence_proof_certificates.json`;
+- `language/network_sequence_claim_language.json`;
+- `autarkic_systems/network_sequence_claims.py`;
+- `autarkic_systems/network_sequence.py`;
+- `schematics/sequences/post_handoff_signal_sequence_trace.json`;
+- `schematics/sequences/post_handoff_signal_sequence_trace.svg`;
+- `evidence/chains/neighbor_delivery_chain_bundle.json`; and
+- the source-status records that constrain command execution boundaries.
 
 ## Boundary
 

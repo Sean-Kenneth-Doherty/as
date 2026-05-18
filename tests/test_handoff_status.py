@@ -83,6 +83,61 @@ VERTICAL_DEMO_DIGEST = {
         "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
         "expected_status": "post-handoff-signal-routed",
     },
+    "evidence_trail": [
+        {
+            "role": "sequence-claim-manifest",
+            "path": "claims/network_sequence_claims.json",
+            "exists": True,
+        },
+        {
+            "role": "sequence-proof-certificates",
+            "path": "claims/network_sequence_proof_certificates.json",
+            "exists": True,
+        },
+        {
+            "role": "sequence-language",
+            "path": "language/network_sequence_claim_language.json",
+            "exists": True,
+        },
+        {
+            "role": "sequence-claim-validator",
+            "path": "autarkic_systems/network_sequence_claims.py",
+            "exists": True,
+        },
+        {
+            "role": "sequence-witness",
+            "path": "autarkic_systems/network_sequence.py",
+            "exists": True,
+        },
+        {
+            "role": "sequence-trace",
+            "path": "schematics/sequences/post_handoff_signal_sequence_trace.json",
+            "exists": True,
+        },
+        {
+            "role": "sequence-svg",
+            "path": "schematics/sequences/post_handoff_signal_sequence_trace.svg",
+            "exists": True,
+        },
+        {
+            "role": "chain-bundle",
+            "path": "evidence/chains/neighbor_delivery_chain_bundle.json",
+            "exists": True,
+        },
+    ],
+    "missing_evidence_paths": [],
+    "validation_subjects": [
+        "schema",
+        "sequence-claim-example",
+        "sequence-proof-certificate",
+        "sequence-language",
+        "sequence-witness",
+        "sequence-trace",
+        "sequence-svg",
+        "underlying-chain-bundles",
+        "source-statuses",
+        "boundary",
+    ],
     "boundary": "no standard-signal command-token execution change without new source evidence",
 }
 
