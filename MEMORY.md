@@ -109,6 +109,12 @@
   the current fixed-point target's expected instance token sequence, but does
   not implement sequence coding, a full quotation term, a diagonal lemma, or
   self-consistency.
+- ADR-0233 adds `language/formal_quotation_sequence_examples.json` and
+  `autarkic_systems/formal_quotation_sequence.py` as the first checked
+  sequence layer over quoted token numerals. It validates non-empty
+  `token-numeral-sequence` objects, including the current fixed-point target's
+  expected instance code, but does not implement pair/list term coding, a full
+  arithmetic-language quotation term, a diagonal lemma, or self-consistency.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

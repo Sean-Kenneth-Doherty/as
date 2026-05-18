@@ -6,6 +6,7 @@
   "codebook_path": "language/formal_codebook.json",
   "substitution_examples_path": "language/formal_substitution_examples.json",
   "quotation_examples_path": "language/formal_quotation_examples.json",
+  "quotation_sequence_examples_path": "language/formal_quotation_sequence_examples.json",
   "consistency_level_targets_path": "claims/consistency_level_targets.json",
   "deduction_apparatus_targets_path": "claims/deduction_apparatus_targets.json",
   "willard_anchor_ids": [
@@ -60,7 +61,7 @@
       "expected_instance_code": [41, 1, 22, 11, 1, 13, 12],
       "status": "target-selected-not-constructed",
       "required_future_work": [
-        "quotation-sequence-construction",
+        "quotation-term-construction",
         "diagonal-lemma-proof",
         "fixed-point-equation-proof",
         "self-consistency-theorem"
@@ -68,12 +69,13 @@
       "non_claims": [
         "no diagonal lemma proof",
         "no full quotation-term construction",
-        "no quotation sequence coding",
+        "no arithmetic-language quotation term",
+        "no pair/list term coding",
         "no fixed-point equation proof",
         "no arithmetized proof predicate",
         "no self-consistency theorem"
       ],
-      "next_as_action": "Construct a sequence-level quotation term and prove a fixed-point equation before claiming SelfCons_1."
+      "next_as_action": "Construct a formal quotation term over the checked sequence object and prove a fixed-point equation before claiming SelfCons_1."
     }
   ]
 }

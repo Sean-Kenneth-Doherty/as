@@ -42,6 +42,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution surface over formal codebook nodes.
 - `docs/formal-quotation.md` records the first checked code-token numeral
   quotation surface for later fixed-point construction.
+- `docs/formal-quotation-sequence.md` records the first checked
+  token-numeral sequence surface over those quotation examples, while leaving
+  arithmetic-language quotation terms open.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -363,14 +366,17 @@ proof certificates, object languages, evidence bundles, and status reports:
   capture-avoiding free-variable substitution surface over the formal codebook
   nodes, including binder-respecting and capture-rejection examples.
 - `autarkic_systems/formal_quotation.py` validates and runs the first
-  code-token numeral quotation surface over the formal codebook, while leaving
-  sequence quotation and diagonalization open.
+  code-token numeral quotation surface over the formal codebook.
+- `autarkic_systems/formal_quotation_sequence.py` validates and runs the first
+  token-numeral sequence surface over quoted code tokens, while leaving full
+  arithmetic-language quotation terms and diagonalization open.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, and substitution surface without claiming a proof.
 - `autarkic_systems/fixed_point.py` validates the first fixed-point target
-  template over the checked codebook and substitution surface without claiming
-  a diagonal lemma, quotation-term construction, or self-consistency theorem.
+  template over the checked codebook, substitution, quotation, and quotation
+  sequence surfaces without claiming a diagonal lemma, quotation-term
+  construction, or self-consistency theorem.
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
@@ -418,6 +424,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   `language/formal_quotation_examples.json`, including unary successor
   numerals for code tokens and the current fixed-point target instance token
   sequence.
+- `python -m autarkic_systems.formal_quotation_sequence --format json`
+  validates `language/formal_quotation_sequence_examples.json`, including the
+  checked `token-numeral-sequence` wrapper for the current fixed-point target
+  instance code.
 - `python -m autarkic_systems.consistency_level --format json` validates
   `claims/consistency_level_targets.json`, including the Level-1 target,
   `pi1`/`sigma1` sentence classes, and non-claim status.
@@ -428,8 +438,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   network-sequence surfaces.
 - `python -m autarkic_systems.fixed_point --format json` validates
   `claims/fixed_point_targets.json`, including the selected `pi1` target
-  template, free code variable, checked substitution instance, and
-  non-constructed status.
+  template, free code variable, checked substitution instance, quotation
+  sequence dependency, and non-constructed status.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, explicit blockers, and the

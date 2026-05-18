@@ -4804,3 +4804,28 @@ Deliverables:
 Status: accepted in `docs/adr/0232-formal-quotation-surface.md`. Implemented
 in `autarkic_systems/formal_quotation.py`, with tests in
 `tests/test_formal_quotation.py`.
+
+## ADR-0233: Quotation Sequence Surface
+
+Goal: add the first checked sequence object over quoted formal code tokens
+without claiming arithmetic-language quotation terms or diagonalization.
+
+Deliverables:
+
+- `language/formal_quotation_sequence_examples.json` with checked
+  token-numeral sequence examples;
+- `quote_token_sequence` helper over ADR-0232 token numerals;
+- validation against the token quotation examples and Willard anchors;
+- rejection for empty token sequences, endpoint-depth mismatches, and unknown
+  sequence kind/status values;
+- fixed-point target narrowed to depend on the quotation sequence examples
+  while still blocked on quotation-term construction, diagonal-lemma proof,
+  and fixed-point equation proof;
+- `autarkic_systems.formal_quotation_sequence` text/JSON CLI validation; and
+- no pair/list term coding, full quotation term, diagonal lemma,
+  fixed-point equation proof, theorem prover, runtime behavior, command
+  semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0233-quotation-sequence-surface.md`.
+Implemented in `autarkic_systems/formal_quotation_sequence.py`, with tests in
+`tests/test_formal_quotation_sequence.py`.

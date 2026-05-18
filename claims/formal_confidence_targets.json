@@ -6,7 +6,7 @@
     {
       "target_id": "AS-FORMAL-CONFIDENCE-TARGET-001",
       "status": "blocked",
-      "summary": "Current AS validates Universal Cell transition, transition-chain, and network-sequence evidence through local predicate-result proof certificates, names a syntax-only Type-NS bounded arithmetic language, round-trips first proof-code shells, validates capture-avoiding substitution examples, selects Level-1 consistency as the first target notion, selects the AS-local predicate-result proof-certificate checker as the current deduction-apparatus target, and selects a fixed-point self-reference target template, but it does not yet construct the fixed point or claim self-consistency.",
+      "summary": "Current AS validates Universal Cell transition, transition-chain, and network-sequence evidence through local predicate-result proof certificates, names a syntax-only Type-NS bounded arithmetic language, round-trips first proof-code shells, validates capture-avoiding substitution examples, selects Level-1 consistency as the first target notion, selects the AS-local predicate-result proof-certificate checker as the current deduction-apparatus target, selects a fixed-point self-reference target template, and checks a token-numeral quotation sequence dependency, but it does not yet construct the fixed point or claim self-consistency.",
       "willard_anchor_ids": [
         "W2011-D3.4-GENERIC-CONFIGURATION",
         "W2011-D5.6-LEVEL-K-CONSISTENCY",
@@ -22,7 +22,7 @@
         "deduction_method": "claims/deduction_apparatus_targets.json selects the AS-local predicate-result proof-certificate checker over transition, transition-chain, and network-sequence certificate surfaces as target-selected-not-self-justifying; no Hilbert completeness, tableau proof search, arithmetized proof predicate, or self-justification theorem is claimed",
         "proof_code_encoding": "language/formal_codebook.json via autarkic_systems.formal_code; tagged-prefix natural sequences round-trip terms, formulae, pi1/sigma1 sentence wrappers, and placeholder proof-line shells, but not substitution or deduction",
         "consistency_notion": "claims/consistency_level_targets.json selects Level-1 consistency over pi1/sigma1 sentence classes as target-selected-not-claimed; no consistency theorem is claimed",
-        "self_reference": "claims/fixed_point_targets.json via autarkic_systems.fixed_point; a pi1 fixed-point target template and checked substitution instance exist over language/formal_substitution_examples.json, but no quotation-term construction, diagonal lemma proof, fixed-point equation proof, or self-consistency theorem is claimed",
+        "self_reference": "claims/fixed_point_targets.json via autarkic_systems.fixed_point; a pi1 fixed-point target template and checked substitution instance exist over language/formal_substitution_examples.json and language/formal_quotation_sequence_examples.json, but no arithmetic-language quotation-term construction, diagonal lemma proof, fixed-point equation proof, or self-consistency theorem is claimed",
         "substrate_bridge": "transition, chain, and network-sequence evidence bundles over Universal Cell witnesses"
       },
       "blocked_by": [

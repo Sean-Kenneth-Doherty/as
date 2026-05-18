@@ -10,9 +10,10 @@ formal codebook.
 ## Purpose
 
 AS now has a formal codebook, capture-avoiding substitution examples, token
-numeral quotation examples, a Level-1 consistency target, and a selected
-deduction-apparatus target. Those are prerequisites for a SelfCons-style
-statement, but they still do not construct a diagonal fixed point.
+numeral quotation examples, token-numeral sequence examples, a Level-1
+consistency target, and a selected deduction-apparatus target. Those are
+prerequisites for a SelfCons-style statement, but they still do not construct a
+diagonal fixed point.
 
 The fixed-point target records the next precise obligation:
 
@@ -34,15 +35,16 @@ It names these Willard anchors as constraints:
 - `W2011-D5.7-SELFCONSK`; and
 - `W2020-D3.2-SELF-JUSTIFYING-GENAC`.
 
-The checked instance proves only that the current substitution and codebook
-surfaces can substitute a placeholder quote term into the template and
-round-trip the expected encoded instance.
+The checked instance proves only that the current substitution, codebook,
+token quotation, and token-numeral sequence surfaces can preserve the selected
+template boundary and round-trip the expected encoded instance.
 
 ## Run
 
 ```sh
 python -m autarkic_systems.fixed_point
 python -m autarkic_systems.fixed_point --format json
+python -m autarkic_systems.formal_quotation_sequence
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary
 ```
@@ -50,7 +52,8 @@ python -m autarkic_systems.project_status --format summary
 The validator checks that:
 
 - required Willard anchors are present and known;
-- the codebook, substitution examples, consistency-level target, and
+- the codebook, substitution examples, token quotation examples,
+  token-numeral sequence examples, consistency-level target, and
   deduction-apparatus target remain accepted;
 - the template is a `pi1` target with the target variable free;
 - the substitution instance matches the expected node and code; and
@@ -58,7 +61,7 @@ The validator checks that:
 
 ## Boundary
 
-This is not a diagonal lemma, not a quotation-term construction, not a
-sequence-level quotation construction, not a fixed-point equation proof, and
-not a self-consistency theorem. The formal-confidence target remains blocked on
-`fixed-point-construction`.
+This is not a diagonal lemma, not a quotation-term construction inside the
+arithmetic object language, not pair/list term coding, not a fixed-point
+equation proof, and not a self-consistency theorem. The formal-confidence
+target remains blocked on `fixed-point-construction`.

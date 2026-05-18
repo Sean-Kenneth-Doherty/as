@@ -19,6 +19,7 @@ TARGETS = Path("claims/fixed_point_targets.json")
 CODEBOOK = Path("language/formal_codebook.json")
 SUBSTITUTION = Path("language/formal_substitution_examples.json")
 QUOTATION = Path("language/formal_quotation_examples.json")
+QUOTATION_SEQUENCE = Path("language/formal_quotation_sequence_examples.json")
 CONSISTENCY = Path("claims/consistency_level_targets.json")
 DEDUCTION = Path("claims/deduction_apparatus_targets.json")
 WILLARD_MAP = Path("sources/willard_definition_map.json")
@@ -36,6 +37,7 @@ class FixedPointTargetTests(unittest.TestCase):
         self.assertEqual(self.manifest.codebook_path, str(CODEBOOK))
         self.assertEqual(self.manifest.substitution_examples_path, str(SUBSTITUTION))
         self.assertEqual(self.manifest.quotation_examples_path, str(QUOTATION))
+        self.assertEqual(self.manifest.quotation_sequence_examples_path, str(QUOTATION_SEQUENCE))
         self.assertEqual(self.manifest.consistency_level_targets_path, str(CONSISTENCY))
         self.assertEqual(self.manifest.deduction_apparatus_targets_path, str(DEDUCTION))
         self.assertEqual(
@@ -51,8 +53,8 @@ class FixedPointTargetTests(unittest.TestCase):
         self.assertEqual(target.template_variable, "n")
         self.assertEqual(target.sentence_class, "pi1")
         self.assertEqual(target.status, "target-selected-not-constructed")
-        self.assertIn("quotation-sequence-construction", target.required_future_work)
-        self.assertNotIn("quotation-term-construction", target.required_future_work)
+        self.assertIn("quotation-term-construction", target.required_future_work)
+        self.assertNotIn("quotation-sequence-construction", target.required_future_work)
         self.assertIn("no diagonal lemma proof", target.non_claims)
 
     def test_checked_in_manifest_validates_dependencies_and_substitution(self):
