@@ -30,9 +30,10 @@ The bundle points to:
 
 The evidence bundle validator checks that the rejection claim example
 evaluates true, every covered positive example evaluates true, the proof
-certificate is accepted, the schematic trace executes and validates against
-the PRC hardware witness map, the committed SVG matches renderer output, and
-the source-status boundary files remain present and parseable.
+certificate is accepted through predicate-result steps, the schematic trace
+executes and validates against the PRC hardware witness map, the committed SVG
+matches renderer output, and the source-status boundary files remain present and
+parseable.
 
 ## Boundary
 

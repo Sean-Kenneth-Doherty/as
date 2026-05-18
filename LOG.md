@@ -3994,3 +3994,25 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 783 tests.
+
+## 2026-05-18 - Recipient Non-Init Command-Message Predicate Result Certificates
+
+- Added ADR-0186 to migrate
+  `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED` from `manifest-example`
+  proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 104 tests and failed because the recipient
+  non-init command-message certificate still used `manifest-example`, because
+  proof/project-status reports still described it as four `manifest-example`
+  steps, and because the report still contained `manifest-example`.
+- Updated `claims/proof_certificates.json` so all four recipient non-init
+  command-message certificate steps use `predicate-result` and name
+  `recipient_non_init_command_message_rejected` directly.
+- Updated the recipient non-init claim/evidence notes and summary docs so they
+  describe the new predicate-result proof surface.
+- Focused green verification passed 104 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. A direct `rg` check confirmed the transition
+  proof-certificate manifest no longer contains `manifest-example` rules. JSON
+  parsing for the touched certificate manifest, `compileall`, `git diff --check`,
+  and `python -m unittest discover` passed; the full suite ran 784 tests.

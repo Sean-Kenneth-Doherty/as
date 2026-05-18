@@ -296,24 +296,28 @@
       "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "fixed upstream standard-signal command rejected",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_non_init_command_message_rejected"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "stem multi command conflict rejected",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_non_init_command_message_rejected"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "fixed all-init command conflict rejected",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_non_init_command_message_rejected"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "recipient non-init rejection changed role",
-          "expected": false
+          "expected": false,
+          "predicate": "recipient_non_init_command_message_rejected"
         }
       ]
     }

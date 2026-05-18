@@ -36,10 +36,12 @@ ADR-0182 extends it to the completed self-target command-buffer write-buffer
 append claim. ADR-0183 extends it to the completed neighbor-target
 command-buffer delivery claim. ADR-0184 extends it to the recipient init
 command-message processing claim. ADR-0185 extends it to the recipient
-write-buffer command-message processing claim. ADR-0135 exposes the base
-transition claim examples through direct text and JSON CLI validation. ADR-0140
-carries the base claim-example and proof-certificate validator summaries into
-the aggregate project status report.
+write-buffer command-message processing claim. ADR-0186 extends it to the
+recipient non-init command-message rejection claim and removes the last
+`manifest-example` rule from the transition proof-certificate manifest.
+ADR-0135 exposes the base transition claim examples through direct text and JSON
+CLI validation. ADR-0140 carries the base claim-example and proof-certificate
+validator summaries into the aggregate project status report.
 
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
@@ -395,8 +397,11 @@ completed self-target command-buffer write-buffer append execution to
 predicate-result. ADR-0183 migrates completed neighbor-target command-buffer
 delivery to predicate-result. ADR-0184 migrates recipient init command-message
 processing to predicate-result. ADR-0185 migrates recipient write-buffer
-command-message processing to predicate-result. ADR-0134 exposes the transition
-proof-certificate surface through direct text and JSON CLI validation.
+command-message processing to predicate-result. ADR-0186 migrates recipient
+non-init command-message rejection to predicate-result, completing the checked
+transition proof-certificate manifest's migration away from `manifest-example`.
+ADR-0134 exposes the transition proof-certificate surface through direct text
+and JSON CLI validation.
 
 ## P4: Define The First Object Language
 

@@ -283,6 +283,23 @@ class ProofCertificateTests(unittest.TestCase):
             {"recipient_write_buffer_command_message_appends_literal"},
         )
 
+    def test_recipient_non_init_command_message_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates["UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"]
+
+        self.assertEqual(len(certificate.steps), 4)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"recipient_non_init_command_message_rejected"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -313,7 +330,9 @@ class ProofCertificateTests(unittest.TestCase):
             "OK UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED:",
             text,
         )
+        self.assertIn("OK UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED:", text)
         self.assertIn("predicate-result", text)
+        self.assertNotIn("manifest-example", text)
         self.assertNotIn("FAIL", text)
 
     def test_json_payload_records_successful_proof_certificate_validation(self):
@@ -476,6 +495,16 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertEqual(
             recipient_write_buffer_command_message["detail"],
             "verified 3 certificate steps: 3 predicate-result steps",
+        )
+        recipient_non_init_command_message = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"] == "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
+        )
+        self.assertTrue(recipient_non_init_command_message["accepted"])
+        self.assertEqual(
+            recipient_non_init_command_message["detail"],
+            "verified 4 certificate steps: 4 predicate-result steps",
         )
 
     def test_cli_returns_zero_for_checked_in_proof_certificates(self):

@@ -301,7 +301,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   write-buffer append execution, plus completed self-target command-buffer init
   dispatch, unsupported-preservation, write-buffer append, and neighbor-target
   delivery boundaries, plus recipient init and write-buffer command-message
-  processing, that name the evaluated predicates directly.
+  processing and recipient non-init rejection, that name the evaluated
+  predicates directly. The transition proof-certificate manifest no longer uses
+  `manifest-example` rules.
 - `python -m autarkic_systems.proof_certificates` validates the transition
   proof-certificate surface in text or JSON form.
 - `python -m autarkic_systems.object_language` validates the transition claim
