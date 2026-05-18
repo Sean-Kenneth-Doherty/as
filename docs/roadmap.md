@@ -3616,3 +3616,25 @@ Status: accepted in
 `docs/adr/0178-self-mailbox-unsupported-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest, focused proof/project-status
 tests, and the self-mailbox unsupported claim note.
+
+## ADR-0179: Self-Mailbox Write-Buffer Predicate Result Certificates
+
+Goal: make the direct self-mailbox write-buffer append proof certificate name
+the predicate it evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED` proof-certificate steps use
+  `predicate-result`;
+- all three self-mailbox write-buffer certificate steps name
+  `self_mailbox_write_buffer_appends_literal`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  self-mailbox write-buffer certificate as three predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0179-self-mailbox-write-buffer-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest and focused proof/project-status
+tests.

@@ -153,19 +153,22 @@
       "claim_id": "UC-STEM-SELF-MAILBOX-WRITE-BUFFER-APPENDED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self mailbox write buffer zero appended",
-          "expected": true
+          "expected": true,
+          "predicate": "self_mailbox_write_buffer_appends_literal"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self mailbox write buffer one appended",
-          "expected": true
+          "expected": true,
+          "predicate": "self_mailbox_write_buffer_appends_literal"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self mailbox write buffer wrong bit",
-          "expected": false
+          "expected": false,
+          "predicate": "self_mailbox_write_buffer_appends_literal"
         }
       ]
     },

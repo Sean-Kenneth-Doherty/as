@@ -28,7 +28,8 @@ ADR-0175 extends the same shape to the first stem reconfiguration claim,
 automail reconfiguration. ADR-0176 extends it to the first standard-signal
 stem buffer accumulation claim. ADR-0177 extends it to the first self-mailbox
 command-execution claim. ADR-0178 extends it to the unresolved self-mailbox
-unsupported-command preservation claim. ADR-0135 exposes the base transition
+unsupported-command preservation claim. ADR-0179 extends it to the direct
+self-mailbox write-buffer append claim. ADR-0135 exposes the base transition
 claim examples through direct text and JSON CLI validation. ADR-0140 carries
 the base claim-example and proof-certificate validator summaries into the
 aggregate project status report.
@@ -379,8 +380,9 @@ reconfiguration claim, automail reconfiguration, to predicate-result. ADR-0176
 migrates stem buffer accumulation to predicate-result. ADR-0177 migrates
 self-mailbox init command execution to predicate-result. ADR-0178 migrates the
 self-mailbox unsupported-command preservation boundary to predicate-result.
-ADR-0134 exposes the transition proof-certificate surface through direct text
-and JSON CLI validation.
+ADR-0179 migrates the direct self-mailbox write-buffer append claim to
+predicate-result. ADR-0134 exposes the transition proof-certificate surface
+through direct text and JSON CLI validation.
 
 ## P4: Define The First Object Language
 

@@ -597,6 +597,10 @@
 - ADR-0178 migrates the self-mailbox unsupported-command preservation proof
   certificate to `predicate-result`, extending explicit predicate-named proof
   steps to the unresolved direct self-mailbox preservation boundary.
+- ADR-0179 migrates the direct self-mailbox write-buffer append proof
+  certificate to `predicate-result`, extending explicit predicate-named proof
+  steps to the first implemented direct self-mailbox write-buffer command
+  claim.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.
