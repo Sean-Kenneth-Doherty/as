@@ -195,6 +195,10 @@ records consumed by project status, and adds that boundary to the recipient
 non-init command-message source-status artifact.
 ADR-0118 renders those source-status AS boundaries in the default text status
 report without changing the JSON schema.
+ADR-0119 expands the existing self-mailbox unsupported and self-target
+command-buffer unsupported claim/proof surfaces so each blocked self-command
+token, `standard-signal`, `write-buf-zero`, and `write-buf-one`, has its own
+positive manifest example.
 
 ## P3: Choose The First Proof Apparatus
 

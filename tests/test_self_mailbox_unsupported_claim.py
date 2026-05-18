@@ -23,6 +23,7 @@ CLAIMS = Path("claims/transition_claims.json")
 CERTIFICATES = Path("claims/proof_certificates.json")
 LANGUAGE = Path("language/transition_claim_language.json")
 CLAIM_ID = "UC-STEM-SELF-MAILBOX-UNSUPPORTED-PRESERVED"
+UNSUPPORTED_COMMANDS = {"standard-signal", "write-buf-zero", "write-buf-one"}
 
 
 class SelfMailboxUnsupportedClaimTests(unittest.TestCase):
@@ -73,6 +74,18 @@ class SelfMailboxUnsupportedClaimTests(unittest.TestCase):
         self.assertEqual({example.expected for example in claim.examples}, {True, False})
         self.assertTrue(evaluations)
         self.assertTrue(all(evaluation.matched for evaluation in evaluations), evaluations)
+
+    def test_manifest_positive_examples_cover_each_unsupported_mailbox_command(self):
+        claims = load_transition_claims(CLAIMS)
+        claim = next(claim for claim in claims if claim.claim_id == CLAIM_ID)
+
+        positive_commands = {
+            example.before.self_mailbox
+            for example in claim.examples
+            if example.expected
+        }
+
+        self.assertEqual(positive_commands, UNSUPPORTED_COMMANDS)
 
     def test_proof_certificates_cover_unsupported_mailbox_claim(self):
         claims = load_transition_claims(CLAIMS)

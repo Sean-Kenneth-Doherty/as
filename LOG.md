@@ -2658,3 +2658,25 @@
   project status text reported all three source-status AS boundaries; project
   status JSON remained accepted at `schema_version: 6`; and
   `python -m unittest discover` passed 575 tests.
+
+## 2026-05-18 - Self Non-Init Boundary Coverage
+
+- Added ADR-0119 to make the existing unsupported self-command claim/proof
+  surfaces explicit for all three blocked non-init command tokens.
+- Updated the self-mailbox unsupported and command-buffer unsupported claim
+  tests before implementation. The red run failed because both manifest
+  surfaces only had a positive `write-buf-one` example and lacked positive
+  `standard-signal` and `write-buf-zero` examples.
+- Updated `claims/transition_claims.json` with positive examples for
+  self-mailbox `standard-signal`, `write-buf-zero`, and `write-buf-one`
+  preservation, plus self-target command-buffer `standard-signal`,
+  `write-buf-zero`, and `write-buf-one` append-boundary preservation.
+- Updated `claims/proof_certificates.json` with matching `manifest-example`
+  proof steps for every new example. Runtime behavior stayed unchanged.
+- Updated README, open problems, roadmap, memory, lessons, and the affected
+  claim docs to state the expanded explicit boundary coverage.
+- Verification passed: focused unsupported-claim and proof-certificate tests
+  ran 19 tests; adjacent evidence-bundle, evidence-registry, and project-status
+  regression tests ran 62 tests; JSON parsing, `py_compile`,
+  `git diff --check`, project status text/JSON, and transition evidence
+  registry JSON passed; and `python -m unittest discover` passed 577 tests.

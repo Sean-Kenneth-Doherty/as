@@ -26,8 +26,13 @@ that AS currently refuses to execute them until the source boundary is resolved.
 
 ## Proof Surface
 
-`claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for the positive and negative manifest examples.
+`claims/transition_claims.json` now has positive manifest examples for all
+three unsupported self-mailbox commands: `standard-signal`, `write-buf-zero`,
+and `write-buf-one`. It also keeps a negative example proving that clearing an
+unsupported mailbox command would violate the boundary.
+
+`claims/proof_certificates.json` covers every manifest example with
+`manifest-example` steps.
 
 ## Verification
 

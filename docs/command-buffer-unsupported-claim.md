@@ -32,9 +32,14 @@ longer part of this boundary after ADR-0044.
 
 ## Proof Surface
 
-`claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for a positive self non-init example plus a negative wrongly processed
-self non-init example.
+`claims/transition_claims.json` now has positive manifest examples for all
+three unsupported self-target command-buffer completions: self
+`standard-signal`, self `write-buf-zero`, and self `write-buf-one`. It also
+keeps a negative example proving that processing the completed buffer would
+violate the append boundary.
+
+`claims/proof_certificates.json` covers every manifest example with
+`manifest-example` steps.
 
 ## Verification
 

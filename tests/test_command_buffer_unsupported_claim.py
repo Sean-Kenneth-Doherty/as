@@ -24,6 +24,17 @@ CERTIFICATES = Path("claims/proof_certificates.json")
 LANGUAGE = Path("language/transition_claim_language.json")
 CLAIM_ID = "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED"
 EMPTY = ("_", "_", "_")
+COMMANDS_BY_OFFSET = (
+    "standard-signal",
+    "stem-init",
+    "wire-r-init",
+    "wire-l-init",
+    "proc-r-init",
+    "proc-l-init",
+    "write-buf-zero",
+    "write-buf-one",
+)
+UNSUPPORTED_SELF_COMMANDS = {"standard-signal", "write-buf-zero", "write-buf-one"}
 
 
 class CommandBufferUnsupportedClaimTests(unittest.TestCase):
@@ -163,6 +174,18 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
         self.assertTrue(evaluations)
         self.assertTrue(all(evaluation.matched for evaluation in evaluations), evaluations)
 
+    def test_manifest_positive_examples_cover_each_self_non_init_command(self):
+        claims = load_transition_claims(CLAIMS)
+        claim = next(claim for claim in claims if claim.claim_id == CLAIM_ID)
+
+        positive_commands = {
+            _decoded_command(example.result.cell.buffer)
+            for example in claim.examples
+            if example.expected
+        }
+
+        self.assertEqual(positive_commands, UNSUPPORTED_SELF_COMMANDS)
+
     def test_proof_certificates_cover_unsupported_command_buffer_claim(self):
         claims = load_transition_claims(CLAIMS)
         certificates = load_proof_certificates(CERTIFICATES)
@@ -186,6 +209,13 @@ class CommandBufferUnsupportedClaimTests(unittest.TestCase):
             predicates,
         )
         self.assertTrue(all(result.accepted for result in results), results)
+
+
+def _decoded_command(buffer):
+    value = 0
+    for bit in buffer:
+        value = (value << 1) | bit
+    return COMMANDS_BY_OFFSET[value % len(COMMANDS_BY_OFFSET)]
 
 
 if __name__ == "__main__":

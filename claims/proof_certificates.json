@@ -121,6 +121,16 @@
       "steps": [
         {
           "rule": "manifest-example",
+          "example": "standard signal unsupported preserved",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "write buffer zero unsupported preserved",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
           "example": "write buffer one unsupported preserved",
           "expected": true
         },
@@ -149,6 +159,16 @@
     {
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "steps": [
+        {
+          "rule": "manifest-example",
+          "example": "self standard signal command remains appended",
+          "expected": true
+        },
+        {
+          "rule": "manifest-example",
+          "example": "self write buffer zero command remains appended",
+          "expected": true
+        },
         {
           "rule": "manifest-example",
           "example": "self write buffer command remains appended",

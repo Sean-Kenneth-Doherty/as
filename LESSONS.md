@@ -331,3 +331,6 @@
 - If a boundary explanation is required in project status JSON, render it in
   text status too. Boundary text is operator-critical, not just automation
   metadata.
+- When prose says a boundary covers a finite command set, the manifest/proof
+  surface should name each command in that set. A representative example is
+  weaker evidence than explicit coverage for every blocked token.

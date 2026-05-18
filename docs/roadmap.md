@@ -2255,3 +2255,25 @@ Status: accepted in
 `docs/adr/0118-project-status-text-as-boundaries.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0119: Self Non-Init Boundary Coverage
+
+Goal: make the existing unsupported self-command claim/proof boundary explicit
+for every blocked non-init command token.
+
+Deliverables:
+
+- positive self-mailbox unsupported manifest examples for `standard-signal`,
+  `write-buf-zero`, and `write-buf-one`;
+- positive self-target command-buffer append-boundary manifest examples for
+  self `standard-signal`, self `write-buf-zero`, and self `write-buf-one`;
+- proof-certificate steps for every new manifest example;
+- unchanged Universal Cell runtime behavior; and
+- focused tests proving the manifest/proof surface covers all three blocked
+  self-command tokens.
+
+Status: accepted in
+`docs/adr/0119-self-non-init-boundary-coverage.md`. Implemented in
+`claims/transition_claims.json` and `claims/proof_certificates.json`, with
+tests in `tests/test_self_mailbox_unsupported_claim.py` and
+`tests/test_command_buffer_unsupported_claim.py`.

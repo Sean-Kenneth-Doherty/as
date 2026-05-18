@@ -159,7 +159,8 @@ the project legible:
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation
-  claim for unresolved self-mailbox commands.
+  claim for unresolved self-mailbox commands, with positive claim/proof
+  examples for `standard-signal`, `write-buf-zero`, and `write-buf-one`.
 - `docs/self-mailbox-init-trace.md` records the schematic-linked trace for one
   self-mailbox init command.
 - `docs/self-mailbox-unsupported-trace.md` records the schematic-linked trace
@@ -173,7 +174,9 @@ the project legible:
 - `docs/self-command-buffer-init-claim.md` records the named claim and
   proof-certificate surface for that command-buffer slice.
 - `docs/command-buffer-unsupported-claim.md` records the named append-boundary
-  claim for unsupported completed command buffers.
+  claim for unsupported completed command buffers, with positive claim/proof
+  examples for self `standard-signal`, self `write-buf-zero`, and self
+  `write-buf-one`.
 - `docs/neighbor-command-buffer-delivery-claim.md` records the named claim and
   proof-certificate surface for neighbor command-buffer delivery.
 - `docs/self-command-buffer-init-trace.md` records the schematic-linked trace

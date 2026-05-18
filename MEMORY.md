@@ -524,3 +524,6 @@
   non-init command-message source-status artifact.
 - ADR-0118 makes the default `autarkic_systems.project_status` text report
   render source-status AS boundaries while preserving `schema_version: 6`.
+- ADR-0119 expands the unsupported self-mailbox and self-target command-buffer
+  claim/proof surfaces so `standard-signal`, `write-buf-zero`, and
+  `write-buf-one` each have explicit positive self-command boundary examples.
