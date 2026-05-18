@@ -5389,3 +5389,23 @@
   formal-confidence text/JSON output reported the substitution graph formula
   dependency accepted, while the formal-confidence target remained blocked on
   `fixed-point-construction`.
+
+## 2026-05-18 - Substitution Graph Witness Evaluator
+
+- Added ADR-0250 to evaluate the concrete checked substitution graph formula
+  witness without claiming formula correctness.
+- Added red tests before implementation. The red run failed because the
+  formula candidate did not expose witness-relation truth, evaluated output
+  code length, evaluated output prefix, or stale-evaluation rejection.
+- Added expected witness-evaluation facts to
+  `claims/substitution_graph_formula_candidates.json`.
+- Updated `autarkic_systems.substitution_graph_formula` to decode the quoted
+  formula and argument codes in the closed witness instance, substitute the
+  quoted argument into the decoded formula at the witness variable, encode the
+  result, and compare it with the quoted output side.
+- The checked witness relation evaluates true; the evaluated output code has
+  length `296` and prefix `[41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13]`.
+- Focused substitution-graph formula tests passed 15 tests. This preserves the
+  fixed-point blocker: no formula correctness proof, substitution
+  representability proof, diagonal lemma, fixed-point equation proof, or
+  self-consistency theorem is claimed.

@@ -179,6 +179,11 @@
   structured fail-closed dependency of `autarkic_systems.formal_confidence`;
   missing or invalid substitution graph formula references now reject
   formal-confidence validation as `target-substitution-graph-formula`.
+- ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
+  concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
+  checked witness relation evaluates true, with evaluated output code length
+  `296` and prefix `[41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13]`; this is
+  still not a formula correctness proof or substitution representability proof.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

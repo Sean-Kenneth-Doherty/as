@@ -7,7 +7,8 @@ ADR-0248 adds `claims/substitution_graph_formula_candidates.json` and
 syntactic formula candidate for the ADR-0246 substitution graph target:
 `substitution_code(x,y) = z`. ADR-0249 makes this candidate a structured
 dependency of the aggregate formal-confidence target, so formal-confidence
-validation fails closed if this surface drifts.
+validation fails closed if this surface drifts. ADR-0250 adds a concrete
+witness evaluator for the checked formula instance.
 
 ## Purpose
 
@@ -24,7 +25,8 @@ The schema records:
 - formula node `substitution_code(x,y) = z`;
 - code for that formula node; and
 - one closed witness instance formed by substituting the checked witness codes
-  into the formula.
+  into the formula; and
+- one concrete evaluation of that witness relation.
 
 ## Current Candidate
 
@@ -57,6 +59,16 @@ instance is closed, has code length `4815`, and begins:
 [21, 18, 17, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13]
 ```
 
+The concrete witness evaluator decodes the quoted formula and argument codes,
+substitutes the quoted argument into the decoded formula at the witness
+variable, and compares the encoded output to the quoted right-hand side. For
+this witness, the relation evaluates true. The evaluated output has code
+length `296` and begins:
+
+```text
+[41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13]
+```
+
 ## Run
 
 ```sh
@@ -75,12 +87,14 @@ The validator checks that:
 - the formula node is exactly `substitution_code(x,y) = z`;
 - the formula code and free variables match the manifest; and
 - the checked witness instance length, prefix, and free-variable boundary
-  match the manifest.
+  match the manifest; and
+- the concrete witness relation evaluates true with the expected output code
+  facts.
 
 ## Boundary
 
 This is not a formula correctness proof, not a substitution representability
 proof, not a diagonal lemma, not a fixed-point equation proof, and not a
-self-consistency theorem. The next AS step is to prove that this formula
-schema correctly represents the checked `substitution_code` graph before using
-it in the diagonal lemma route.
+self-consistency theorem. It evaluates one checked graph point only. The next
+AS step is to prove that this formula schema correctly represents the checked
+`substitution_code` graph before using it in the diagonal lemma route.

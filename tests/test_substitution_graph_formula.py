@@ -123,6 +123,12 @@ class SubstitutionGraphFormulaTests(unittest.TestCase):
             ),
         )
         self.assertEqual(candidate.expected_witness_instance_free_variables, ())
+        self.assertTrue(candidate.expected_witness_relation_holds)
+        self.assertEqual(candidate.expected_evaluated_output_code_length, 296)
+        self.assertEqual(
+            candidate.expected_evaluated_output_code_prefix,
+            (41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13),
+        )
 
     def test_checked_in_manifest_validates_formula_schema(self):
         report = validate_substitution_graph_formula_candidates(
@@ -155,6 +161,12 @@ class SubstitutionGraphFormulaTests(unittest.TestCase):
         self.assertEqual(payload["candidates"][0]["observed_formula_code"], [21, 18, 11, 1, 11, 2, 11, 3])
         self.assertEqual(payload["candidates"][0]["observed_witness_instance_code_length"], 4815)
         self.assertEqual(payload["candidates"][0]["observed_witness_instance_free_variables"], [])
+        self.assertTrue(payload["candidates"][0]["observed_witness_relation_holds"])
+        self.assertEqual(payload["candidates"][0]["observed_evaluated_output_code_length"], 296)
+        self.assertEqual(
+            payload["candidates"][0]["observed_evaluated_output_code_prefix"],
+            [41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13],
+        )
 
     def test_text_report_exposes_formula_schema_boundary(self):
         report = validate_substitution_graph_formula_candidates(
@@ -168,6 +180,8 @@ class SubstitutionGraphFormulaTests(unittest.TestCase):
         self.assertIn("AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA", text)
         self.assertIn("Formula code length: 8", text)
         self.assertIn("Witness instance code length: 4815", text)
+        self.assertIn("Witness relation holds: true", text)
+        self.assertIn("Evaluated output code length: 296", text)
         self.assertIn("Status: formula-schema-not-proved", text)
         self.assertNotIn("FAIL", text)
 
@@ -217,6 +231,38 @@ class SubstitutionGraphFormulaTests(unittest.TestCase):
         self.assertIn("substitution-graph-formula-witness-instance", report.failed_subjects)
         self.assertTrue(
             any("witness instance code length mismatch" in result.detail for result in report.results)
+        )
+
+    def test_stale_evaluated_output_length_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "candidates.json"
+            data = json.loads(CANDIDATES.read_text(encoding="utf-8"))
+            data["candidates"][0]["expected_evaluated_output_code_length"] = 10
+            path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_substitution_graph_formula_candidates(path)
+
+            report = validate_substitution_graph_formula_candidates(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("substitution-graph-formula-witness-evaluation", report.failed_subjects)
+        self.assertTrue(
+            any("evaluated output code length mismatch" in result.detail for result in report.results)
+        )
+
+    def test_false_witness_relation_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "candidates.json"
+            data = json.loads(CANDIDATES.read_text(encoding="utf-8"))
+            data["candidates"][0]["expected_witness_relation_holds"] = False
+            path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_substitution_graph_formula_candidates(path)
+
+            report = validate_substitution_graph_formula_candidates(manifest, WILLARD_MAP)
+
+        self.assertFalse(report.accepted)
+        self.assertIn("substitution-graph-formula-witness-evaluation", report.failed_subjects)
+        self.assertTrue(
+            any("witness relation truth mismatch" in result.detail for result in report.results)
         )
 
     def test_proved_status_is_rejected(self):

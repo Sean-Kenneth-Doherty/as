@@ -5231,3 +5231,28 @@ Status: accepted in
 `docs/adr/0249-formal-confidence-substitution-graph-formula-dependency.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0250: Substitution Graph Witness Evaluator
+
+Goal: evaluate the concrete checked substitution graph formula witness without
+claiming general formula correctness.
+
+Deliverables:
+
+- expected witness-relation truth and evaluated output facts in
+  `claims/substitution_graph_formula_candidates.json`;
+- `autarkic_systems.substitution_graph_formula` evaluation that decodes the
+  quoted formula and argument codes, substitutes the quoted argument into the
+  decoded formula at the witness variable, encodes the result, and compares it
+  with the quoted output side;
+- text/JSON report output for relation truth and evaluated output length;
+- fail-closed rejection for stale evaluated output facts or false expected
+  relation truth; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, arithmetized proof predicate, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in `docs/adr/0250-substitution-graph-witness-evaluator.md`.
+Implemented in `autarkic_systems/substitution_graph_formula.py`, with tests in
+`tests/test_substitution_graph_formula.py`.

@@ -34,6 +34,9 @@
       "expected_witness_instance_code_length": 4815,
       "expected_witness_instance_code_prefix": [21, 18, 17, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13],
       "expected_witness_instance_free_variables": [],
+      "expected_witness_relation_holds": true,
+      "expected_evaluated_output_code_length": 296,
+      "expected_evaluated_output_code_prefix": [41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13],
       "required_future_work": [
         "formula-correctness-proof",
         "substitution-representability-proof",

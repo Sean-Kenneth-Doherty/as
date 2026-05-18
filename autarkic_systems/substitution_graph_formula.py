@@ -21,10 +21,12 @@ from autarkic_systems.formal_arithmetic import (
 )
 from autarkic_systems.formal_code import (
     FormalCodebook,
+    decode_code,
     encode_node,
     load_formal_codebook,
     validate_formal_codebook,
 )
+from autarkic_systems.formal_quotation import numeral_to_natural
 from autarkic_systems.formal_quotation_term import quote_tokens_as_term
 from autarkic_systems.formal_substitution import free_variables, substitute_node
 from autarkic_systems.substitution_graph_target import (
@@ -34,6 +36,7 @@ from autarkic_systems.substitution_graph_target import (
 )
 from autarkic_systems.substitution_representability import (
     SubstitutionRepresentabilityObservation,
+    SubstitutionRepresentabilityWitness,
     build_substitution_witness_output_code,
     load_substitution_representability_targets,
     validate_substitution_representability_targets,
@@ -79,6 +82,9 @@ class SubstitutionGraphFormulaCandidate:
     expected_witness_instance_code_length: int
     expected_witness_instance_code_prefix: tuple[int, ...]
     expected_witness_instance_free_variables: tuple[str, ...]
+    expected_witness_relation_holds: bool
+    expected_evaluated_output_code_length: int
+    expected_evaluated_output_code_prefix: tuple[int, ...]
     required_future_work: tuple[str, ...]
     non_claims: tuple[str, ...]
     next_as_action: str
@@ -122,6 +128,9 @@ class SubstitutionGraphFormulaObservation:
     witness_instance_code_length: int
     witness_instance_code_prefix: tuple[int, ...]
     witness_instance_free_variables: tuple[str, ...]
+    witness_relation_holds: bool
+    evaluated_output_code_length: int
+    evaluated_output_code_prefix: tuple[int, ...]
 
 
 @dataclass(frozen=True)
@@ -244,6 +253,7 @@ def validate_substitution_graph_formula_candidates(
         manifest.candidates,
         codebook,
         graph_report.observations,
+        witness_manifest.witnesses,
         witness_report.observations,
         checked_witness_path,
     )
@@ -325,6 +335,11 @@ def format_substitution_graph_formula_report(
         if observation is not None:
             formula_length = str(len(observation.formula_code))
             instance_length = str(observation.witness_instance_code_length)
+            relation_holds = str(observation.witness_relation_holds).lower()
+            evaluated_length = str(observation.evaluated_output_code_length)
+        else:
+            relation_holds = "unknown"
+            evaluated_length = "unknown"
         lines.extend([
             f"- {candidate.candidate_id}",
             f"  Target: {candidate.target_id}",
@@ -333,6 +348,8 @@ def format_substitution_graph_formula_report(
             f"  Status: {candidate.status}",
             f"  Formula code length: {formula_length}",
             f"  Witness instance code length: {instance_length}",
+            f"  Witness relation holds: {relation_holds}",
+            f"  Evaluated output code length: {evaluated_length}",
             "  Future work: " + _joined_or_none(candidate.required_future_work),
         ])
     lines.append("Validation:")
@@ -405,6 +422,13 @@ def _candidate_payload(
         "expected_witness_instance_free_variables": list(
             candidate.expected_witness_instance_free_variables
         ),
+        "expected_witness_relation_holds": candidate.expected_witness_relation_holds,
+        "expected_evaluated_output_code_length": (
+            candidate.expected_evaluated_output_code_length
+        ),
+        "expected_evaluated_output_code_prefix": list(
+            candidate.expected_evaluated_output_code_prefix
+        ),
         "required_future_work": list(candidate.required_future_work),
         "non_claims": list(candidate.non_claims),
         "next_as_action": candidate.next_as_action,
@@ -416,6 +440,9 @@ def _candidate_payload(
             "observed_witness_instance_code_length": None,
             "observed_witness_instance_code_prefix": None,
             "observed_witness_instance_free_variables": None,
+            "observed_witness_relation_holds": None,
+            "observed_evaluated_output_code_length": None,
+            "observed_evaluated_output_code_prefix": None,
         })
     else:
         payload.update({
@@ -431,6 +458,13 @@ def _candidate_payload(
             ),
             "observed_witness_instance_free_variables": list(
                 observation.witness_instance_free_variables
+            ),
+            "observed_witness_relation_holds": observation.witness_relation_holds,
+            "observed_evaluated_output_code_length": (
+                observation.evaluated_output_code_length
+            ),
+            "observed_evaluated_output_code_prefix": list(
+                observation.evaluated_output_code_prefix
             ),
         })
     return payload
@@ -502,6 +536,7 @@ def _validate_candidates(
     candidates: tuple[SubstitutionGraphFormulaCandidate, ...],
     codebook: FormalCodebook,
     graph_observations: tuple[SubstitutionGraphObservation, ...],
+    witnesses: tuple[SubstitutionRepresentabilityWitness, ...],
     witness_observations: tuple[SubstitutionRepresentabilityObservation, ...],
     witness_targets_path: Path,
 ) -> tuple[
@@ -530,6 +565,7 @@ def _validate_candidates(
             candidate,
             codebook,
             graph_observations,
+            witnesses,
             witness_observations,
             witness_targets_path,
         )
@@ -544,6 +580,7 @@ def _validate_candidate(
     candidate: SubstitutionGraphFormulaCandidate,
     codebook: FormalCodebook,
     graph_observations: tuple[SubstitutionGraphObservation, ...],
+    witnesses: tuple[SubstitutionRepresentabilityWitness, ...],
     witness_observations: tuple[SubstitutionRepresentabilityObservation, ...],
     witness_targets_path: Path,
 ) -> tuple[
@@ -586,6 +623,10 @@ def _validate_candidate(
         graph_observation = _find_graph_observation(
             graph_observations,
             candidate.target_id,
+        )
+        witness_target = _find_witness(
+            witnesses,
+            candidate.witness_id,
         )
         witness_observation = _find_witness_observation(
             witness_observations,
@@ -641,6 +682,7 @@ def _validate_candidate(
         observation = _observe_candidate_instance(
             candidate,
             codebook,
+            witness_target,
             witness_observation,
             witness_targets_path,
         )
@@ -649,6 +691,7 @@ def _validate_candidate(
         return results, None
 
     results.extend(_validate_witness_instance(candidate, observation))
+    results.extend(_validate_witness_evaluation(candidate, observation))
     return results, observation
 
 
@@ -693,6 +736,7 @@ def _validate_formula_schema(
 def _observe_candidate_instance(
     candidate: SubstitutionGraphFormulaCandidate,
     codebook: FormalCodebook,
+    witness_target: SubstitutionRepresentabilityWitness,
     witness: SubstitutionRepresentabilityObservation,
     witness_targets_path: Path,
 ) -> SubstitutionGraphFormulaObservation:
@@ -709,6 +753,11 @@ def _observe_candidate_instance(
     for variable, code in substitutions:
         instance = substitute_node(instance, variable, quote_tokens_as_term(code))
     instance_code = encode_node(instance, codebook)
+    relation_holds, evaluated_output_code = _evaluate_witness_relation(
+        instance,
+        witness_target.variable,
+        codebook,
+    )
     return SubstitutionGraphFormulaObservation(
         candidate_id=candidate.candidate_id,
         target_id=candidate.target_id,
@@ -721,6 +770,11 @@ def _observe_candidate_instance(
             : len(candidate.expected_witness_instance_code_prefix)
         ],
         witness_instance_free_variables=tuple(sorted(free_variables(instance))),
+        witness_relation_holds=relation_holds,
+        evaluated_output_code_length=len(evaluated_output_code),
+        evaluated_output_code_prefix=evaluated_output_code[
+            : len(candidate.expected_evaluated_output_code_prefix)
+        ],
     )
 
 
@@ -760,6 +814,78 @@ def _validate_witness_instance(
             )
         ]
     return [_accepted(subject, "closed witness instance accepted")]
+
+
+def _validate_witness_evaluation(
+    candidate: SubstitutionGraphFormulaCandidate,
+    observation: SubstitutionGraphFormulaObservation,
+) -> list[SubstitutionGraphFormulaValidation]:
+    subject = f"{candidate.candidate_id}.witness_evaluation"
+    if observation.witness_relation_holds != candidate.expected_witness_relation_holds:
+        return [
+            _rejected(
+                subject,
+                "witness relation truth mismatch: expected "
+                + str(candidate.expected_witness_relation_holds).lower()
+                + " got "
+                + str(observation.witness_relation_holds).lower(),
+            )
+        ]
+    if observation.evaluated_output_code_length != candidate.expected_evaluated_output_code_length:
+        return [
+            _rejected(
+                subject,
+                "evaluated output code length mismatch: expected "
+                + str(candidate.expected_evaluated_output_code_length)
+                + " got "
+                + str(observation.evaluated_output_code_length),
+            )
+        ]
+    if observation.evaluated_output_code_prefix != candidate.expected_evaluated_output_code_prefix:
+        return [
+            _rejected(
+                subject,
+                "evaluated output code prefix mismatch: expected "
+                + _format_code(candidate.expected_evaluated_output_code_prefix)
+                + " got "
+                + _format_code(observation.evaluated_output_code_prefix),
+            )
+        ]
+    return [_accepted(subject, "concrete witness relation evaluated true")]
+
+
+def _evaluate_witness_relation(
+    instance: dict[str, Any],
+    variable: str,
+    codebook: FormalCodebook,
+) -> tuple[bool, tuple[int, ...]]:
+    if _node_kind(instance) != "equals":
+        raise ValueError("witness instance must be an equality formula")
+    left = _required_node(instance, "left")
+    right = _required_node(instance, "right")
+    if _node_kind(left) != "substitution_code":
+        raise ValueError("witness instance left side must be substitution_code")
+    formula_code = _tokens_from_quotation_term(_required_node(left, "left"))
+    argument_code = _tokens_from_quotation_term(_required_node(left, "right"))
+    expected_output_code = _tokens_from_quotation_term(right)
+    formula_node = decode_code(formula_code, codebook)
+    output_node = substitute_node(
+        formula_node,
+        variable,
+        quote_tokens_as_term(argument_code),
+    )
+    evaluated_output_code = encode_node(output_node, codebook)
+    return evaluated_output_code == expected_output_code, evaluated_output_code
+
+
+def _tokens_from_quotation_term(term: dict[str, Any]) -> tuple[int, ...]:
+    kind = _node_kind(term)
+    if kind == "sequence_nil":
+        return ()
+    if kind == "sequence_cons":
+        head = numeral_to_natural(_required_node(term, "head"))
+        return (head, *_tokens_from_quotation_term(_required_node(term, "tail")))
+    raise ValueError(f"expected quotation sequence term, got {kind}")
 
 
 def _schema_node(graph_variables: dict[str, str]) -> dict[str, Any]:
@@ -803,6 +929,16 @@ def _find_witness_observation(
     raise ValueError(f"unknown substitution witness: {witness_id}")
 
 
+def _find_witness(
+    witnesses: tuple[SubstitutionRepresentabilityWitness, ...],
+    witness_id: str,
+) -> SubstitutionRepresentabilityWitness:
+    for witness in witnesses:
+        if witness.witness_id == witness_id:
+            return witness
+    raise ValueError(f"unknown substitution witness: {witness_id}")
+
+
 def _parse_candidate(item: dict[str, Any]) -> SubstitutionGraphFormulaCandidate:
     return SubstitutionGraphFormulaCandidate(
         candidate_id=_required_text(item, "candidate_id"),
@@ -831,6 +967,17 @@ def _parse_candidate(item: dict[str, Any]) -> SubstitutionGraphFormulaCandidate:
                 allow_empty=True,
             )
         ),
+        expected_witness_relation_holds=_required_bool(
+            item,
+            "expected_witness_relation_holds",
+        ),
+        expected_evaluated_output_code_length=_required_int(
+            item,
+            "expected_evaluated_output_code_length",
+        ),
+        expected_evaluated_output_code_prefix=tuple(
+            _required_int_list(item, "expected_evaluated_output_code_prefix")
+        ),
         required_future_work=tuple(_required_text_list(item, "required_future_work")),
         non_claims=tuple(_required_text_list(item, "non_claims")),
         next_as_action=_required_text(item, "next_as_action"),
@@ -850,6 +997,8 @@ def _failed_subject_for_result(subject: str) -> str:
         return "substitution-graph-formula-schema"
     if subject.endswith(".witness_instance"):
         return "substitution-graph-formula-witness-instance"
+    if subject.endswith(".witness_evaluation"):
+        return "substitution-graph-formula-witness-evaluation"
     if subject.endswith(".required_future_work"):
         return "substitution-graph-formula-future-work"
     if subject.endswith(".non_claims"):
@@ -879,6 +1028,13 @@ def _required_int(item: dict[str, Any], key: str) -> int:
     value = item.get(key)
     if not isinstance(value, int) or isinstance(value, bool):
         raise ValueError(f"required integer field missing: {key}")
+    return value
+
+
+def _required_bool(item: dict[str, Any], key: str) -> bool:
+    value = item.get(key)
+    if not isinstance(value, bool):
+        raise ValueError(f"required boolean field missing: {key}")
     return value
 
 
@@ -971,6 +1127,20 @@ def _format_code(values: tuple[int, ...]) -> str:
 
 def _joined_or_none(values: tuple[str, ...]) -> str:
     return ", ".join(values) if values else "none"
+
+
+def _node_kind(node: dict[str, Any]) -> str:
+    kind = node.get("kind")
+    if not isinstance(kind, str) or not kind.strip():
+        raise ValueError("node is missing kind")
+    return kind
+
+
+def _required_node(node: dict[str, Any], key: str) -> dict[str, Any]:
+    value = node.get(key)
+    if not isinstance(value, dict):
+        raise ValueError(f"node is missing child: {key}")
+    return value
 
 
 if __name__ == "__main__":
