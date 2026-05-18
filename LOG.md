@@ -3043,3 +3043,19 @@
   object-language JSON commands were accepted; `py_compile` and
   `git diff --check` passed; and `python -m unittest discover` passed 631
   tests.
+
+## 2026-05-18 - Project Status Language Failure Text
+
+- Added ADR-0139 to render language failed-subject summaries in default
+  project-status text while preserving project status JSON
+  `schema_version: 11`.
+- Updated project-status tests before implementation. The red run executed 54
+  tests and failed because accepted text omitted `Language failures: none` and
+  malformed base/chain language surfaces did not expose failed subjects in
+  text.
+- Updated `autarkic_systems.project_status` with compact language failure text
+  lines for accepted and rejected language summaries.
+- Verification passed: focused project-status tests ran 54 tests; project
+  status text rendered `Language failures: none`; project status JSON remained
+  accepted at `schema_version: 11`; `py_compile` and `git diff --check`
+  passed; and `python -m unittest discover` passed 633 tests.

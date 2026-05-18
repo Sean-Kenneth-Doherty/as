@@ -41,6 +41,7 @@ The text report names:
 - chain evidence accepted or rejected state and bundle count;
 - transition language accepted or rejected state and claim/certificate counts;
 - chain language accepted or rejected state and claim/certificate counts;
+- language failed subjects when a language summary is rejected;
 - transition and chain evidence bundle IDs and paths;
 - transition bundle primary positive examples and covered examples;
 - blocked command tokens;
@@ -119,6 +120,8 @@ schema version to `10`.
 ADR-0138 adds `transition_language` and `chain_language` summaries to project
 status JSON/text, includes failed-subject lists for rejected language results,
 and bumps the schema version to `11`.
+ADR-0139 renders those language failed-subject lists in the default text report
+as a compact `Language failures:` section while preserving `schema_version: 11`.
 
 ## Boundary
 

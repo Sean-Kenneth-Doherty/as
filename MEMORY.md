@@ -591,3 +591,5 @@
 - ADR-0138 bumps `autarkic_systems.project_status` to `schema_version: 11` and
   adds `transition_language` and `chain_language` summaries for the base and
   chain object-language surfaces.
+- ADR-0139 adds a default project-status text `Language failures:` section,
+  while preserving project status `schema_version: 11`.

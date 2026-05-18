@@ -2682,3 +2682,23 @@ Deliverables:
 Status: accepted in `docs/adr/0138-project-status-language-surfaces.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0139: Project Status Language Failure Text
+
+Goal: make rejected language summaries diagnosable from the default project
+status text report.
+
+Deliverables:
+
+- `Language failures: none` when transition and chain language summaries are
+  accepted;
+- compact transition language failed-subject text when the base language
+  summary is rejected;
+- compact chain language failed-subject text when the chain language summary
+  is rejected;
+- unchanged project status JSON at `schema_version: 11`; and
+- focused project-status tests for accepted and rejected language text.
+
+Status: accepted in `docs/adr/0139-project-status-language-failure-text.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

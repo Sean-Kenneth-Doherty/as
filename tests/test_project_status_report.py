@@ -421,6 +421,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
         self.assertIn("Transition language: accepted (13 claims, 13 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
+        self.assertIn("Language failures: none", text)
         self.assertIn("Transition evidence bundles:", text)
         self.assertIn(
             "recipient-init-command-message-transition-evidence-bundle -> "
@@ -492,6 +493,48 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("Missing source-status files: none", text)
+
+    def test_text_status_names_transition_language_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            language_path = Path(tmp) / "transition_claim_language.json"
+            data = json.loads(
+                Path("language/transition_claim_language.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            del data["syntax_classes"]["formulae"]
+            language_path.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_project_status_report(
+                transition_language_path=language_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertIn("Transition language: rejected", text)
+        self.assertIn("Language failures:", text)
+        self.assertIn("Transition language failures: formulae", text)
+
+    def test_text_status_names_chain_language_failed_subjects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            language_path = Path(tmp) / "transition_chain_claim_language.json"
+            data = json.loads(
+                Path("language/transition_chain_claim_language.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            del data["syntax_classes"]["chain_formulae"]
+            language_path.write_text(json.dumps(data), encoding="utf-8")
+
+            report = build_project_status_report(
+                chain_language_path=language_path,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertIn("Chain language: rejected", text)
+        self.assertIn("Language failures:", text)
+        self.assertIn("Chain language failures: chain_formulae", text)
 
     def test_text_status_names_no_blocked_runtime_surfaces_when_absent(self):
         with tempfile.TemporaryDirectory() as tmp:

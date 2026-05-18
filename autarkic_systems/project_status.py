@@ -132,6 +132,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
         _language_text_line("Transition language", transition_language),
         _language_text_line("Chain language", chain_language),
+        *_language_failure_text_lines(transition_language, chain_language),
         *_registry_bundle_text_lines("Transition evidence", transition),
         *_registry_bundle_text_lines("Chain evidence", chain),
         "Blocked commands: "
@@ -590,6 +591,23 @@ def _language_text_line(label: str, summary: dict[str, Any]) -> str:
         f"({summary['claim_count']} claims, "
         f"{summary['certificate_count']} certificates)"
     )
+
+
+def _language_failure_text_lines(
+    transition_language: dict[str, Any],
+    chain_language: dict[str, Any],
+) -> list[str]:
+    lines = ["Language failures:"]
+    for label, summary in (
+        ("Transition language", transition_language),
+        ("Chain language", chain_language),
+    ):
+        failed_subjects = summary["failed_subjects"]
+        if failed_subjects:
+            lines.append(f"  {label} failures: {', '.join(failed_subjects)}")
+    if len(lines) == 1:
+        return ["Language failures: none"]
+    return lines
 
 
 def _as_boundary_text_lines(frontier: dict[str, Any]) -> list[str]:

@@ -388,3 +388,5 @@
 - A first diagnostic command should summarize lower language surfaces once
   those surfaces have direct validators, while leaving detailed clause output
   in the specialized commands.
+- If JSON exposes failed subjects for an operator-critical layer, the default
+  text report should give humans a compact pointer to those subjects too.
