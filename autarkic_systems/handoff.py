@@ -27,9 +27,14 @@ from autarkic_systems.project_status import (
     build_project_status_report,
     format_project_status_summary,
 )
+from autarkic_systems.vertical_demo import (
+    build_vertical_demo_digest,
+    format_vertical_demo_digest,
+)
 
 
 ProjectBuilder = Callable[[], dict[str, Any]]
+VerticalDemoBuilder = Callable[[], dict[str, Any]]
 SubmissionBuilder = Callable[[], GitHubSubmissionStatus]
 
 
@@ -38,14 +43,20 @@ class HandoffStatus:
     """Combined project and GitHub submission status."""
 
     project_status: dict[str, Any]
+    vertical_demo: dict[str, Any]
     github_submission: GitHubSubmissionStatus
     project_summary: str
+    vertical_demo_summary: str
 
     @property
     def accepted(self) -> bool:
         """Return whether both project evidence and fork submission are green."""
 
-        return bool(self.project_status["accepted"]) and self.github_submission.accepted
+        return (
+            bool(self.project_status["accepted"])
+            and bool(self.vertical_demo["accepted"])
+            and self.github_submission.accepted
+        )
 
     @property
     def handoff_state(self) -> str:
@@ -58,15 +69,19 @@ class HandoffStatus:
 
 def build_handoff_status(
     project_builder: ProjectBuilder = build_project_status_report,
+    vertical_demo_builder: VerticalDemoBuilder = build_vertical_demo_digest,
     submission_builder: SubmissionBuilder = build_github_submission_status,
 ) -> HandoffStatus:
     """Build a handoff report from project and submission status builders."""
 
     project_status = project_builder()
+    vertical_demo = vertical_demo_builder()
     return HandoffStatus(
         project_status=project_status,
+        vertical_demo=vertical_demo,
         github_submission=submission_builder(),
         project_summary=format_project_status_summary(project_status),
+        vertical_demo_summary=format_vertical_demo_digest(vertical_demo),
     )
 
 
@@ -77,7 +92,9 @@ def handoff_status_payload(report: HandoffStatus) -> dict[str, Any]:
         "accepted": report.accepted,
         "handoff_state": report.handoff_state,
         "project_summary": report.project_summary,
+        "vertical_demo_summary": report.vertical_demo_summary,
         "project_status": report.project_status,
+        "vertical_demo": report.vertical_demo,
         "github_submission": github_submission_status_payload(
             report.github_submission
         ),
@@ -93,6 +110,9 @@ def format_handoff_status(report: HandoffStatus) -> str:
         "Project status:",
         report.project_summary,
         "",
+        "Vertical demo:",
+        report.vertical_demo_summary,
+        "",
         "GitHub submission:",
         format_github_submission_status(report.github_submission),
     ])
@@ -101,6 +121,7 @@ def format_handoff_status(report: HandoffStatus) -> str:
 def run_handoff_cli(
     argv: list[str] | None = None,
     project_builder: ProjectBuilder = build_project_status_report,
+    vertical_demo_builder: VerticalDemoBuilder = build_vertical_demo_digest,
     submission_builder: SubmissionBuilder | None = None,
     submission_runner: GitRunner | None = None,
     clock: Clock = time.time,
@@ -139,6 +160,7 @@ def run_handoff_cli(
 
     report = build_handoff_status(
         project_builder=project_builder,
+        vertical_demo_builder=vertical_demo_builder,
         submission_builder=submission_builder,
     )
     if args.format == "json":

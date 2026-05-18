@@ -320,8 +320,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   current GitHub submission path: current branch, `HEAD`, origin/fork remote
   URLs, fork `main` match state, origin `main` divergence, and the upstream
   tracking issue.
-- `autarkic_systems/handoff.py` composes the compact project status and local
-  GitHub submission status into one end-of-month handoff report.
+- `autarkic_systems/handoff.py` composes the compact project status, vertical
+  demo digest, and local GitHub submission status into one end-of-month
+  handoff report.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -401,8 +402,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   fork `main` and origin `main` into the inspected remote-tracking refs before
   reporting.
 - `python -m autarkic_systems.handoff` emits a local text/JSON handoff report
-  that combines accepted project status with GitHub submission evidence; it
-  also accepts `--refresh-remotes` for a refreshed pre-handoff check.
+  that combines accepted project status, the vertical demo digest, and GitHub
+  submission evidence; it also accepts `--refresh-remotes` for a refreshed
+  pre-handoff check.
 - `python -m autarkic_systems.vertical_demo` emits a compact first-run digest
   for the current accepted demonstration; `--format json` emits the same
   digest for automation.

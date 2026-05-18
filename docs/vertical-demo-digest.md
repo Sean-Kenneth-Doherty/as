@@ -15,6 +15,9 @@ not introduce independent validation authority. It summarizes the current
 demonstration as post-handoff signal routing through checked evidence, then
 names the evidence counts, claim counts, proof-rule mix, blocked command
 frontier, canonical registries, and sequence evidence bundle behind that path.
+ADR-0215 also carries this digest into `python -m autarkic_systems.handoff` so
+the end-of-month submission report includes the reader-facing demonstration
+summary alongside project-status and GitHub submission evidence.
 
 The accepted current text output reports:
 

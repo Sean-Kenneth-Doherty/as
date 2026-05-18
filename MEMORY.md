@@ -893,3 +893,6 @@
   routing demonstration, evidence counts, proof-rule mix, blocked
   `standard-signal` frontier, registries, and sequence evidence bundle without
   introducing new validation authority.
+- ADR-0215 carries that vertical demo digest into `autarkic_systems.handoff`:
+  handoff readiness now requires project status, vertical demo, and fork
+  submission acceptance, and handoff JSON/text includes the demo summary.

@@ -4372,3 +4372,26 @@ Deliverables:
 Status: accepted in `docs/adr/0214-vertical-demo-digest.md`.
 Implemented in `autarkic_systems/vertical_demo.py`, with tests in
 `tests/test_vertical_demo_digest.py`.
+
+## ADR-0215: Handoff Demo Digest
+
+Goal: carry the first-run vertical demo digest into the end-of-month handoff
+surface.
+
+Deliverables:
+
+- injectable vertical-demo builder for `build_handoff_status` and
+  `run_handoff_cli`;
+- handoff readiness that requires project status, vertical demo digest, and
+  GitHub submission to be accepted;
+- `vertical_demo_summary` and `vertical_demo` in handoff JSON;
+- `Vertical demo:` section in handoff text;
+- unchanged refresh-remotes behavior; and
+- no runtime behavior, claim, proof-rule, validation-authority,
+  source-status decision, registry schema, project-status schema, demo digest
+  schema, trace/SVG rendering, scheduler, topology, timing, or
+  command-semantics changes.
+
+Status: accepted in `docs/adr/0215-handoff-demo-digest.md`.
+Implemented in `autarkic_systems/handoff.py`, with tests in
+`tests/test_handoff_status.py`.

@@ -4584,3 +4584,24 @@
   2 chain bundles, 1 sequence bundle, 52 `predicate-result` proof steps, and
   the remaining `standard-signal` frontier. `compileall`, `git diff --check`,
   and `python -m unittest discover` passed; the full suite ran 906 tests.
+
+## 2026-05-18 - Handoff Demo Digest
+
+- Added ADR-0215 to carry the vertical demo digest into the end-of-month
+  handoff report.
+- Added red handoff tests before implementation. The focused red run failed
+  because `build_handoff_status` and `run_handoff_cli` did not accept an
+  injectable vertical-demo builder, and handoff payload/text lacked vertical
+  demo fields.
+- Updated `autarkic_systems/handoff.py` so handoff readiness requires accepted
+  project status, accepted vertical demo digest, and accepted GitHub
+  submission. Handoff JSON now includes `vertical_demo_summary` and
+  `vertical_demo`; handoff text now includes a `Vertical demo:` section.
+- Updated README, roadmap, vertical-demo docs, and repo memory notes for the
+  handoff composition change.
+- Focused handoff tests passed 7 tests. Adjacent handoff, vertical-demo, and
+  GitHub-submission tests passed 19 tests. Live text and JSON handoff runs
+  with `--refresh-remotes` reported ready handoff state, accepted project
+  status, accepted vertical demo, accepted remote refresh, and
+  submitted-to-fork GitHub status. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 907 tests.

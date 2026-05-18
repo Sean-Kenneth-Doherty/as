@@ -52,6 +52,41 @@ PROJECT_REPORT = {
 }
 
 
+VERTICAL_DEMO_DIGEST = {
+    "accepted": True,
+    "demonstration": "post-handoff signal routing through checked evidence",
+    "evidence_counts": {
+        "transition_bundles": 11,
+        "chain_bundles": 2,
+        "sequence_bundles": 1,
+    },
+    "claim_counts": {
+        "transition_claims": 16,
+        "transition_matched_examples": 40,
+        "chain_claims": 2,
+        "sequence_claims": 1,
+    },
+    "proof_rules": {
+        "predicate-result": 52,
+        "manifest-example": 0,
+    },
+    "blocked_commands": ["standard-signal"],
+    "safe_next_slice": "",
+    "registries": {
+        "transition": "evidence/manifest.json",
+        "chain": "evidence/chains/manifest.json",
+        "sequence": "evidence/sequences/manifest.json",
+    },
+    "sequence_evidence_bundle": {
+        "bundle_id": "post-handoff-signal-sequence-evidence-bundle",
+        "path": "evidence/sequences/post_handoff_signal_bundle.json",
+        "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+        "expected_status": "post-handoff-signal-routed",
+    },
+    "boundary": "no standard-signal command-token execution change without new source evidence",
+}
+
+
 GIT_OUTPUTS = {
     ("fetch", "fork", "main:refs/remotes/fork/main"): "",
     ("fetch", "origin", "main:refs/remotes/origin/main"): "",
@@ -107,10 +142,15 @@ def build_submission_report():
     return SUBMISSION_REPORT
 
 
+def build_vertical_demo_digest():
+    return VERTICAL_DEMO_DIGEST
+
+
 class HandoffStatusTests(unittest.TestCase):
     def test_handoff_payload_combines_project_and_submission_status(self):
         report = build_handoff_status(
             project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
             submission_builder=build_submission_report,
         )
         payload = handoff_status_payload(report)
@@ -118,6 +158,15 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["handoff_state"], "ready")
         self.assertIn("Autarkic Systems summary: accepted", payload["project_summary"])
+        self.assertIn(
+            "Autarkic Systems vertical demo: accepted",
+            payload["vertical_demo_summary"],
+        )
+        self.assertEqual(payload["vertical_demo"], VERTICAL_DEMO_DIGEST)
+        self.assertEqual(
+            payload["vertical_demo"]["sequence_evidence_bundle"]["path"],
+            "evidence/sequences/post_handoff_signal_bundle.json",
+        )
         self.assertIn(
             "Evidence: 11 transition bundles; 2 chain bundles; 1 sequence bundle",
             payload["project_summary"],
@@ -138,6 +187,7 @@ class HandoffStatusTests(unittest.TestCase):
     def test_handoff_text_renders_project_and_submission_sections(self):
         report = build_handoff_status(
             project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
             submission_builder=build_submission_report,
         )
 
@@ -146,6 +196,12 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn("Autarkic Systems handoff: ready", text)
         self.assertIn("Project status:", text)
         self.assertIn("Autarkic Systems summary: accepted", text)
+        self.assertIn("Vertical demo:", text)
+        self.assertIn("Autarkic Systems vertical demo: accepted", text)
+        self.assertIn(
+            "Current demonstration: post-handoff signal routing through checked evidence",
+            text,
+        )
         self.assertIn("GitHub submission:", text)
         self.assertIn("GitHub submission status: submitted-to-fork", text)
         self.assertIn("fork/main: matches HEAD (04158fc)", text)
@@ -170,12 +226,32 @@ class HandoffStatusTests(unittest.TestCase):
 
         report = build_handoff_status(
             project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
             submission_builder=lambda: not_submitted,
         )
 
         self.assertFalse(report.accepted)
         self.assertEqual(report.handoff_state, "not-ready")
         self.assertIn("Autarkic Systems handoff: not-ready", format_handoff_status(report))
+
+    def test_handoff_rejects_when_vertical_demo_is_rejected(self):
+        rejected_demo = {
+            **VERTICAL_DEMO_DIGEST,
+            "accepted": False,
+        }
+
+        report = build_handoff_status(
+            project_builder=build_project_report,
+            vertical_demo_builder=lambda: rejected_demo,
+            submission_builder=build_submission_report,
+        )
+
+        self.assertFalse(report.accepted)
+        self.assertEqual(report.handoff_state, "not-ready")
+        self.assertIn(
+            "Autarkic Systems vertical demo: rejected",
+            format_handoff_status(report),
+        )
 
     def test_json_cli_reports_handoff_status(self):
         stdout = io.StringIO()
@@ -184,6 +260,7 @@ class HandoffStatusTests(unittest.TestCase):
             exit_code = run_handoff_cli(
                 ["--format", "json"],
                 project_builder=build_project_report,
+                vertical_demo_builder=build_vertical_demo_digest,
                 submission_builder=build_submission_report,
             )
 
@@ -192,6 +269,7 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["handoff_state"], "ready")
         self.assertEqual(payload["github_submission"]["head"]["short"], "04158fc")
+        self.assertEqual(payload["vertical_demo"], VERTICAL_DEMO_DIGEST)
 
     def test_refresh_remotes_cli_passes_refresh_to_submission_status(self):
         stdout = io.StringIO()
@@ -201,6 +279,7 @@ class HandoffStatusTests(unittest.TestCase):
             exit_code = run_handoff_cli(
                 ["--format", "json", "--refresh-remotes"],
                 project_builder=build_project_report,
+                vertical_demo_builder=build_vertical_demo_digest,
                 submission_runner=runner,
                 clock=lambda: 1779110300,
             )
