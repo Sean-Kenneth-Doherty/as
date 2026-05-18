@@ -3952,3 +3952,24 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 781 tests.
+
+## 2026-05-18 - Recipient Init Command-Message Predicate Result Certificates
+
+- Added ADR-0184 to migrate
+  `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` from `manifest-example` proof
+  steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 102 tests and failed because the recipient init
+  command-message certificate still used `manifest-example`, and
+  proof/project-status reports still described it as three `manifest-example`
+  steps.
+- Updated `claims/proof_certificates.json` so all three recipient init
+  command-message certificate steps use `predicate-result` and name
+  `recipient_init_command_message_processed` directly.
+- Updated the recipient init command-message claim note and summary docs so
+  they describe the new predicate-result proof surface.
+- Focused green verification passed 102 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 782 tests.

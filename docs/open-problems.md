@@ -34,7 +34,8 @@ self-target command-buffer init dispatch claim. ADR-0181 extends it to the
 completed self-target command-buffer unsupported-preservation boundary.
 ADR-0182 extends it to the completed self-target command-buffer write-buffer
 append claim. ADR-0183 extends it to the completed neighbor-target
-command-buffer delivery claim. ADR-0135 exposes the base transition claim
+command-buffer delivery claim. ADR-0184 extends it to the recipient init
+command-message processing claim. ADR-0135 exposes the base transition claim
 examples through direct text and JSON CLI validation. ADR-0140 carries the base
 claim-example and proof-certificate validator summaries into the aggregate
 project status report.
@@ -391,8 +392,9 @@ dispatch to predicate-result. ADR-0181 migrates completed self-target
 command-buffer unsupported preservation to predicate-result. ADR-0182 migrates
 completed self-target command-buffer write-buffer append execution to
 predicate-result. ADR-0183 migrates completed neighbor-target command-buffer
-delivery to predicate-result. ADR-0134 exposes the transition proof-certificate
-surface through direct text and JSON CLI validation.
+delivery to predicate-result. ADR-0184 migrates recipient init command-message
+processing to predicate-result. ADR-0134 exposes the transition
+proof-certificate surface through direct text and JSON CLI validation.
 
 ## P4: Define The First Object Language
 

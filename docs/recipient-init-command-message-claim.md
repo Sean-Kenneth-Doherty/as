@@ -1,6 +1,6 @@
 # Recipient Init Command-Message Claim
 
-Status: named claim and proof-certificate surface, 2026-05-17.
+Status: named claim and predicate-result proof-certificate surface, 2026-05-18.
 
 ADR-0050 promotes the ADR-0049 recipient init command-message behavior into
 the transition-claim surface. The claim is
@@ -36,9 +36,10 @@ multiple simultaneous command-message inputs, or occupied-output blocking.
 
 ## Proof Surface
 
-`claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for fixed upstream processing, stem direct-input processing, and a
-negative wrong-target example.
+`claims/proof_certificates.json` covers the claim with `predicate-result`
+steps that name `recipient_init_command_message_processed` directly for fixed
+upstream processing, stem direct-input processing, and a negative wrong-target
+example.
 
 ## Verification
 

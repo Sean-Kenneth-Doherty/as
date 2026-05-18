@@ -3734,3 +3734,26 @@ Status: accepted in
 `docs/adr/0183-neighbor-command-buffer-delivery-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest, focused proof/project-status
 tests, and the neighbor command-buffer delivery claim note.
+
+## ADR-0184: Recipient Init Command-Message Predicate Result Certificates
+
+Goal: make the recipient init command-message proof certificate name the
+predicate it evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED` proof-certificate steps use
+  `predicate-result`;
+- all three recipient init command-message certificate steps name
+  `recipient_init_command_message_processed`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  recipient init command-message certificate as three predicate-result steps;
+  and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0184-recipient-init-command-message-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest, focused proof/project-status
+tests, and the recipient init command-message claim note.

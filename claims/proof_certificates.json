@@ -250,19 +250,22 @@
       "claim_id": "UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "fixed upstream wire right init processed",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_init_command_message_processed"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "stem recipient wire left init processed",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_init_command_message_processed"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "recipient init wrong target",
-          "expected": false
+          "expected": false,
+          "predicate": "recipient_init_command_message_processed"
         }
       ]
     },
