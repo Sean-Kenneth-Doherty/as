@@ -3,7 +3,8 @@
 The project has separate validators for transition evidence bundles,
 transition-chain evidence bundles, and source-status records that explain why
 some command-token semantics remain blocked. This module gathers those
-existing artifacts into one report without adding new validation semantics.
+existing artifacts into one report while also enforcing the shared
+source-status frontier schema used by the focused source-status CLI.
 """
 
 from __future__ import annotations
@@ -58,7 +59,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 14
+PROJECT_STATUS_SCHEMA_VERSION = 15
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -178,6 +179,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         *_blocked_runtime_surface_text_lines(frontier),
         *_as_boundary_text_lines(frontier),
+        *_execution_readiness_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
         *_resolution_question_evidence_text_lines(frontier),
         *_resolved_resolution_question_text_lines(frontier),
@@ -692,6 +694,7 @@ def _frontier_summary(
                 "resolution_questions": _resolution_questions(data),
                 "resolution_question_evidence": _resolution_question_evidence(data),
                 "resolved_resolution_questions": _resolved_resolution_questions(data),
+                "execution_readiness": _execution_readiness(data),
                 "additional_source_statuses": _additional_source_statuses(data),
             }
         )
@@ -824,6 +827,20 @@ def _additional_source_statuses(data: dict[str, Any]) -> list[dict[str, str]]:
     ]
 
 
+def _execution_readiness(data: dict[str, Any]) -> dict[str, Any]:
+    readiness = data.get("execution_readiness")
+    if not isinstance(readiness, dict):
+        return {}
+    return {
+        "decision": readiness["decision"],
+        "execution_change_allowed": readiness["execution_change_allowed"],
+        "blocked_by_resolution_questions": list(
+            readiness["blocked_by_resolution_questions"]
+        ),
+        "summary": readiness["summary"],
+    }
+
+
 def _blocked_runtime_surfaces(data: dict[str, Any]) -> list[str]:
     surfaces = data.get("blocked_runtime_surfaces")
     if not isinstance(surfaces, list):
@@ -953,6 +970,28 @@ def _as_boundary_text_lines(frontier: dict[str, Any]) -> list[str]:
     return lines
 
 
+def _execution_readiness_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Execution readiness:"]
+    for source_status in frontier["source_statuses"]:
+        readiness = source_status["execution_readiness"]
+        if not readiness:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        allowed = "yes" if readiness["execution_change_allowed"] else "no"
+        blockers = readiness["blocked_by_resolution_questions"]
+        blocker_text = ", ".join(blockers) if blockers else "none"
+        lines.append(
+            f"  {command_label}: {readiness['decision']}; "
+            f"execution changes allowed: {allowed}; blockers: {blocker_text}"
+        )
+        summary = readiness["summary"]
+        if summary:
+            lines.append(f"    summary: {summary}")
+    if len(lines) == 1:
+        return ["Execution readiness: none"]
+    return lines
+
+
 def _resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
     lines = ["Resolution questions:"]
     for source_status in frontier["source_statuses"]:
@@ -1068,6 +1107,9 @@ def _source_status_schema_error(data: Any) -> str:
     question_disjointness_error = _resolution_question_disjointness_error(data)
     if question_disjointness_error:
         return question_disjointness_error
+    execution_readiness_error = _execution_readiness_shape_error(data)
+    if execution_readiness_error:
+        return execution_readiness_error
     additional_source_status_error = _additional_source_status_shape_error(data)
     if additional_source_status_error:
         return additional_source_status_error
@@ -1271,6 +1313,54 @@ def _resolution_question_evidence_shape_error(data: dict[str, Any]) -> str:
             "source-status resolution_question_evidence must cover "
             "required_resolution_questions"
         )
+    return ""
+
+
+def _execution_readiness_shape_error(data: dict[str, Any]) -> str:
+    if "execution_readiness" not in data:
+        return ""
+    readiness = data.get("execution_readiness")
+    if not isinstance(readiness, dict):
+        return "source-status execution_readiness field must be an object"
+    if not _is_nonempty_text(readiness.get("decision")):
+        return "source-status execution_readiness decision must be non-empty text"
+    allowed = readiness.get("execution_change_allowed")
+    if not isinstance(allowed, bool):
+        return (
+            "source-status execution_readiness execution_change_allowed "
+            "must be a boolean"
+        )
+    blockers = readiness.get("blocked_by_resolution_questions")
+    if not isinstance(blockers, list):
+        return (
+            "source-status execution_readiness "
+            "blocked_by_resolution_questions field must be a list"
+        )
+    required_question_ids = set(_resolution_question_ids(data))
+    for blocker in blockers:
+        if not isinstance(blocker, str):
+            return (
+                "source-status execution_readiness "
+                "blocked_by_resolution_questions entries must be text"
+            )
+        if not blocker.strip():
+            return (
+                "source-status execution_readiness "
+                "blocked_by_resolution_questions entries must be non-empty text"
+            )
+        if blocker not in required_question_ids:
+            return (
+                "source-status execution_readiness "
+                "blocked_by_resolution_questions must match "
+                "required_resolution_questions"
+            )
+    if allowed and blockers:
+        return (
+            "source-status execution_readiness cannot allow execution changes "
+            "while blocked_by_resolution_questions is non-empty"
+        )
+    if not _is_nonempty_text(readiness.get("summary")):
+        return "source-status execution_readiness summary must be non-empty text"
     return ""
 
 

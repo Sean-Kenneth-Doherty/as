@@ -12,6 +12,7 @@ from autarkic_systems.project_status import (
     _additional_source_status_text_lines,
     _as_boundary_text_lines,
     _blocked_runtime_surface_text_lines,
+    _execution_readiness_text_lines,
     _frontier_summary,
     _resolution_question_evidence_text_lines,
     _resolution_question_text_lines,
@@ -19,7 +20,7 @@ from autarkic_systems.project_status import (
 )
 
 
-SOURCE_STATUS_SCHEMA_VERSION = 1
+SOURCE_STATUS_SCHEMA_VERSION = 2
 
 
 def build_source_status_frontier_report(
@@ -62,6 +63,7 @@ def format_source_status_frontier_report(report: dict[str, Any]) -> str:
         *_source_status_file_text_lines(frontier),
         *_blocked_runtime_surface_text_lines(frontier),
         *_as_boundary_text_lines(frontier),
+        *_execution_readiness_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
         *_resolution_question_evidence_text_lines(frontier),
         *_resolved_resolution_question_text_lines(frontier),

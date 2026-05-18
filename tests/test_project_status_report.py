@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 14
+PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -312,6 +312,18 @@ WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = [
         ),
     },
 ]
+WRITE_BUFFER_EXECUTION_READINESS = {
+    "decision": "blocked",
+    "execution_change_allowed": False,
+    "blocked_by_resolution_questions": [
+        "buffer-full-boundary",
+        "post-append-clearing",
+    ],
+    "summary": (
+        "Write-buffer append execution stays blocked until buffer-full and "
+        "post-append clearing semantics are source-resolved."
+    ),
+}
 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
     {
         "adr": "ADR-0062",
@@ -547,6 +559,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE,
                 WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["execution_readiness"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                {},
+                {},
+                WRITE_BUFFER_EXECUTION_READINESS,
             ],
         )
         self.assertEqual(
@@ -979,6 +1002,25 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
 
+    def test_text_status_names_execution_readiness(self):
+        report = build_project_status_report()
+
+        text = format_project_status_report(report)
+
+        self.assertIn("Execution readiness:", text)
+        self.assertIn(
+            "write-buf-zero, write-buf-one: blocked; execution changes "
+            "allowed: no; blockers: buffer-full-boundary, "
+            "post-append-clearing",
+            text,
+        )
+        self.assertIn(
+            "summary: Write-buffer append execution stays blocked until "
+            "buffer-full and post-append clearing semantics are "
+            "source-resolved.",
+            text,
+        )
+
     def test_text_status_names_additional_source_statuses(self):
         report = build_project_status_report()
 
@@ -1180,6 +1222,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE,
                 WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["execution_readiness"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                {},
+                {},
+                WRITE_BUFFER_EXECUTION_READINESS,
             ],
         )
         self.assertEqual(
@@ -1880,6 +1933,114 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "cover required_resolution_questions",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_execution_readiness_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_execution_readiness.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "write-buf-zero",
+                    "as_boundary": "Keep this command blocked here.",
+                    "execution_readiness": "blocked",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "execution_readiness",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_non_bool_execution_change_allowed_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "non_bool_execution_readiness.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "write-buf-zero",
+                    "as_boundary": "Keep this command blocked here.",
+                    "execution_readiness": {
+                        "decision": "blocked",
+                        "execution_change_allowed": "no",
+                        "blocked_by_resolution_questions": [],
+                        "summary": "Keep execution blocked.",
+                    },
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "execution_change_allowed",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_execution_readiness_blocker_must_match_unresolved_question(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "unmatched_execution_readiness_blocker.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "write-buf-zero",
+                    "as_boundary": "Keep this command blocked here.",
+                    "required_resolution_questions": [
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "summary": "Decide buffer-full behavior.",
+                        }
+                    ],
+                    "resolution_question_evidence": [
+                        {
+                            "question_id": "buffer-full-boundary",
+                            "evidence": "Sources diverge here.",
+                        }
+                    ],
+                    "execution_readiness": {
+                        "decision": "blocked",
+                        "execution_change_allowed": False,
+                        "blocked_by_resolution_questions": [
+                            "post-append-clearing",
+                        ],
+                        "summary": "Keep execution blocked.",
+                    },
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "blocked_by_resolution_questions",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 

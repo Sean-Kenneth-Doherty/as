@@ -429,3 +429,6 @@
 - A command can remain blocked even after its runtime surface question is
   resolved. For write-buffer, self-target tokens are now unsupported-preserved,
   while buffer-full and post-append clearing still block execution semantics.
+- When an execution blocker is the live frontier, make it a structured gate in
+  status output. Otherwise future code can mistake a settled surface boundary
+  for implementation readiness.

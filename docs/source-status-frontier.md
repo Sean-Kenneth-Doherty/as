@@ -36,6 +36,7 @@ The report names:
 - accepted source-status file paths and decisions;
 - blocked runtime surfaces;
 - AS boundaries;
+- execution-readiness decisions, allowed-change flags, blockers, and summaries;
 - unresolved resolution questions and summaries;
 - source evidence explaining why unresolved questions remain open;
 - resolved resolution questions and details;
@@ -43,7 +44,7 @@ The report names:
 - the safe next slice; and
 - missing or invalid source-status paths.
 
-JSON mode emits the same surface with top-level `schema_version: 1`.
+JSON mode emits the same surface with top-level `schema_version: 2`.
 
 ADR-0146 tightens the shared validation contract: source evidence question IDs
 must match unresolved question IDs in the same source-status record. A typo or
@@ -70,6 +71,10 @@ ADR-0153 moves that write-buffer `self-target-surface` question from
 unresolved to resolved through the existing unsupported boundaries, so the
 remaining write-buffer frontier is buffer-full behavior and post-append
 clearing.
+ADR-0154 adds an `execution_readiness` section to the focused report and
+shared validation, so write-buffer append execution is explicitly blocked by
+`buffer-full-boundary` and `post-append-clearing` until those questions are
+resolved.
 
 ## Boundary
 

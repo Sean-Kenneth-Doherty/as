@@ -111,6 +111,15 @@
       "evidence": "RAA preserves the appended buffer, SEMSIM's stem wrapper clears the buffer after append, and FSMSIM clears self-mailbox and input channels without a matching buffer clear."
     }
   ],
+  "execution_readiness": {
+    "decision": "blocked",
+    "execution_change_allowed": false,
+    "blocked_by_resolution_questions": [
+      "buffer-full-boundary",
+      "post-append-clearing"
+    ],
+    "summary": "Write-buffer append execution stays blocked until buffer-full and post-append clearing semantics are source-resolved."
+  },
   "resolved_resolution_questions": [
     {
       "question_id": "standard-signal-interaction",

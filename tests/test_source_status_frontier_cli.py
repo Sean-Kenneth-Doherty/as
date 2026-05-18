@@ -26,6 +26,7 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
     def test_default_report_accepts_checked_in_source_status_frontier(self):
         report = build_source_status_frontier_report()
 
+        self.assertEqual(SOURCE_STATUS_SCHEMA_VERSION, 2)
         self.assertEqual(report["schema_version"], SOURCE_STATUS_SCHEMA_VERSION)
         self.assertTrue(report["accepted"])
         frontier = report["frontier"]
@@ -82,6 +83,13 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "self-target-surface: "
             "preserve-self-target-write-buffer-as-unsupported "
             "(sources/write_buffer_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn("Execution readiness:", text)
+        self.assertIn(
+            "write-buf-zero, write-buf-one: blocked; execution changes "
+            "allowed: no; blockers: buffer-full-boundary, "
+            "post-append-clearing",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)

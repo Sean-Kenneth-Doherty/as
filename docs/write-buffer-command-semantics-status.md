@@ -46,6 +46,11 @@ self-mailbox write-buffer command tokens are preserved as unsupported, and
 completed self-target command-buffer write-buffer command tokens remain at the
 append boundary. Executable write-buffer append semantics remain unresolved.
 
+ADR-0154 records that unresolved execution state as an explicit
+`execution_readiness` gate: write-buffer append execution is `blocked`,
+execution changes are not allowed yet, and the live blockers are
+`buffer-full-boundary` and `post-append-clearing`.
+
 ## AS Boundary
 
 AS keeps write-buffer command execution blocked across these runtime surfaces:
@@ -74,7 +79,8 @@ standard-signal interaction blocker out of the unresolved queue because the bit
 source is literal rather than high-rail derived. ADR-0152 moves
 `recipient-surface` into resolved questions. ADR-0153 moves
 `self-target-surface` into resolved questions and leaves
-`buffer-full-boundary` and `post-append-clearing` unresolved.
+`buffer-full-boundary` and `post-append-clearing` unresolved. ADR-0154 exposes
+those two blockers as the machine-checked execution readiness gate.
 
 ## Verification
 
@@ -86,4 +92,4 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 
 The tests check the decision, formal-model gap, legacy witness divergence,
 resolved recipient and self-target surfaces, remaining required resolution
-questions, and source-status frontier updates.
+questions, execution readiness, and source-status frontier updates.

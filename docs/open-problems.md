@@ -277,6 +277,9 @@ surface question to self-mailbox / self-target command-buffer behavior.
 ADR-0153 resolves that write-buffer self-target surface through the existing
 unsupported preservation boundaries, leaving buffer-full behavior and
 post-append clearing as the live write-buffer source-status questions.
+ADR-0154 turns those remaining write-buffer blockers into an explicit
+execution-readiness gate, so append execution cannot be treated as
+implementation-ready until both source questions are resolved.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

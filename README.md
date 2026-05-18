@@ -297,11 +297,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   chain evidence bundle IDs and paths, transition bundle positive and covered
   examples, claim/proof and language failed subjects when present, the
   standard-signal and write-buffer blocked runtime surfaces, source-status AS
-  boundaries, the resolution-question IDs and summaries that define the next
-  source-backed decision work, the source evidence explaining why unresolved
-  questions remain blocked, resolved question decisions that should not be
-  reopened without new evidence, and the source-status cross-links behind the
-  blocked frontier. Schema version `2` attributes
+  boundaries, execution-readiness gates, the resolution-question IDs and
+  summaries that define the next source-backed decision work, the source
+  evidence explaining why unresolved questions remain blocked, resolved
+  question decisions that should not be reopened without new evidence, and the
+  source-status cross-links behind the blocked frontier. Schema version `2`
+  attributes
   blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
   resolution-question IDs that still block command-token execution and rejects
@@ -324,7 +325,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   summaries to JSON/text. Schema version `13` adds the transition-chain claim
   summary to JSON/text. Schema version `14` adds
   `resolution_question_evidence` to accepted source-status entries and renders
-  a `Resolution question evidence:` text section.
+  a `Resolution question evidence:` text section. Schema version `15` adds
+  `execution_readiness` gates to accepted source-status entries and renders an
+  `Execution readiness:` text section.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
@@ -349,10 +352,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   accepted/rejected state, failed subjects, blocked command tokens,
   per-source decisions, blocked runtime surfaces, AS boundaries, unresolved
   questions, source evidence for those questions, resolved decisions,
-  source-status cross-links, missing/invalid source-status paths, and the safe
-  next slice. The shared validator rejects frontier records whose question IDs
-  are simultaneously unresolved and resolved. Text mode renders the same
-  frontier for operator diagnosis.
+  execution-readiness gates, source-status cross-links, missing/invalid
+  source-status paths, and the safe next slice. The shared validator rejects
+  frontier records whose question IDs are simultaneously unresolved and
+  resolved, and rejects execution-readiness blockers that do not match live
+  unresolved questions. Text mode renders the same frontier for operator
+  diagnosis.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status
@@ -370,7 +375,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `sources/write_buffer_command_semantics_status.json` makes the write-buffer
   command semantics source-status decision machine-checkable, including the
   literal command bit-source evidence and the resolved standard-signal
-  interaction, recipient-surface, and self-target-surface questions.
+  interaction, recipient-surface, and self-target-surface questions, plus the
+  execution-readiness gate that blocks append execution on buffer-full and
+  post-append clearing source conflicts.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

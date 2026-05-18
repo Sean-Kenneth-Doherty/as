@@ -66,6 +66,8 @@ The text report names:
 - blocked command tokens;
 - blocked runtime surfaces;
 - source-status AS boundaries;
+- source-status execution-readiness decisions, allowed-change flags, blockers,
+  and summaries;
 - blocker resolution question IDs and summaries;
 - source evidence explaining why unresolved blocker questions remain open;
 - resolved blocker question IDs, decisions, and optional detail fields;
@@ -73,7 +75,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 14`. If a registry file is missing, the corresponding registry
+`schema_version: 15`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -184,6 +186,9 @@ ADR-0153 resolves that write-buffer `self-target-surface` question through the
 existing unsupported preservation boundaries, leaving only
 `buffer-full-boundary` and `post-append-clearing` unresolved while preserving
 project status `schema_version: 14`.
+ADR-0154 adds optional per-source `execution_readiness` objects to project
+status JSON/text, rejects malformed readiness metadata as
+`source-status-schema`, and bumps the schema version to `15`.
 
 ## Boundary
 

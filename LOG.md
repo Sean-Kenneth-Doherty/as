@@ -3326,3 +3326,24 @@
   accepted schema 14 with the narrowed write-buffer frontier. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 662 tests.
+
+## 2026-05-18 - Source-Status Execution Readiness Gate
+
+- Added ADR-0154 to expose command-token execution readiness as a
+  machine-checkable source-status field instead of relying on prose.
+- Updated project-status and source-status frontier tests before
+  implementation. The red run executed 80 tests and failed because schema
+  versions were still old, readiness text was absent, and malformed readiness
+  fixtures were accepted.
+- Added `execution_readiness` extraction, rendering, and fail-closed schema
+  validation to the shared project-status frontier path, and exposed it through
+  the focused source-status CLI.
+- Updated `sources/write_buffer_command_semantics_status.json` so write-buffer
+  append execution is explicitly `blocked`, with execution changes disallowed
+  until `buffer-full-boundary` and `post-append-clearing` are resolved.
+- Verification passed: focused project-status and source-status frontier tests
+  ran 80 tests; source-status JSON accepted schema 2 with write-buffer
+  execution readiness blocked by `buffer-full-boundary` and
+  `post-append-clearing`; project-status JSON accepted schema 15 with the same
+  readiness payload; `py_compile` and `git diff --check` passed; and
+  `python -m unittest discover` passed 666 tests.

@@ -638,3 +638,7 @@
   unsupported self-mailbox and self-target command-buffer boundaries, leaving
   only `buffer-full-boundary` and `post-append-clearing` unresolved for
   write-buffer command-token execution.
+- ADR-0154 adds source-status `execution_readiness` gates. Project status now
+  reports schema 15, source-status frontier reports schema 2, and write-buffer
+  append execution is explicitly blocked by `buffer-full-boundary` and
+  `post-append-clearing`.

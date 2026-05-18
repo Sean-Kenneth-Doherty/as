@@ -3037,3 +3037,30 @@ Status: accepted in
 `tests/test_write_buffer_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0154: Source-Status Execution Readiness Gate
+
+Goal: make command-token execution readiness machine-checkable so unresolved
+write-buffer execution semantics cannot be mistaken for an implementation-ready
+frontier.
+
+Deliverables:
+
+- optional `execution_readiness` extraction and text rendering in
+  project-status and source-status frontier reports;
+- project-status schema bumped to `15`;
+- source-status frontier schema bumped to `2`;
+- schema rejection for malformed readiness objects, non-boolean
+  `execution_change_allowed`, and readiness blockers that do not match live
+  unresolved `required_resolution_questions`;
+- write-buffer source-status `execution_readiness` marked `blocked`, with
+  execution changes disallowed until `buffer-full-boundary` and
+  `post-append-clearing` are resolved; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0154-source-status-execution-readiness-gate.md`. Implemented in
+`autarkic_systems/project_status.py`, `autarkic_systems/source_status.py`, and
+`sources/write_buffer_command_semantics_status.json`, with tests in
+`tests/test_project_status_report.py` and
+`tests/test_source_status_frontier_cli.py`.
