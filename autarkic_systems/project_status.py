@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 3
+PROJECT_STATUS_SCHEMA_VERSION = 4
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -263,6 +263,7 @@ def _frontier_summary(
                 "as_boundary": _optional_text(data, "as_boundary"),
                 "commands": _ordered_blocked_commands(source_commands),
                 "required_resolution_questions": _resolution_question_ids(data),
+                "resolution_questions": _resolution_questions(data),
             }
         )
 
@@ -311,14 +312,38 @@ def _resolution_question_ids(data: dict[str, Any]) -> list[str]:
     return question_ids
 
 
+def _resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]:
+    questions = data.get("required_resolution_questions")
+    if not isinstance(questions, list):
+        return []
+    resolution_questions: list[dict[str, str]] = []
+    for question in questions:
+        if not isinstance(question, dict):
+            continue
+        question_id = question.get("question_id")
+        if not isinstance(question_id, str) or not question_id:
+            continue
+        resolution_questions.append({
+            "question_id": question_id,
+            "summary": _optional_text(question, "summary"),
+        })
+    return resolution_questions
+
+
 def _resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
     lines = ["Resolution questions:"]
     for source_status in frontier["source_statuses"]:
-        question_ids = source_status["required_resolution_questions"]
-        if not question_ids:
+        questions = source_status["resolution_questions"]
+        if not questions:
             continue
         command_label = ", ".join(source_status["commands"]) or source_status["path"]
-        lines.append(f"  {command_label}: {', '.join(question_ids)}")
+        lines.append(f"  {command_label}:")
+        for question in questions:
+            question_summary = question["summary"]
+            if question_summary:
+                lines.append(f"    {question['question_id']}: {question_summary}")
+            else:
+                lines.append(f"    {question['question_id']}")
     if len(lines) == 1:
         return ["Resolution questions: none"]
     return lines

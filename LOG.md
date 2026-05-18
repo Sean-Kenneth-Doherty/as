@@ -2465,3 +2465,33 @@
   write-buffer resolution question IDs, and `frontier.failed_subjects: []`.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
   with the full suite running 565 tests.
+
+## 2026-05-18 - Project Status Resolution Question Summaries
+
+- Added ADR-0111 to expose source-status resolution question summaries from
+  the project status report.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because the report still emitted `schema_version: 3`, lacked
+  per-source `resolution_questions`, and text output listed question IDs
+  without summaries.
+- Updated `autarkic_systems.project_status` so accepted
+  `frontier.source_statuses` entries include summary-bearing
+  `resolution_questions` while retaining `required_resolution_questions`, and
+  bumped `PROJECT_STATUS_SCHEMA_VERSION` to `4`.
+- Updated the text status report so each blocker question renders as
+  `question_id: summary` under its command label.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the schema 4 summary-bearing question surface.
+- Verified the focused project status test passed 29 tests; adjacent project
+  status, transition registry, and chain registry tests passed 54 tests. The
+  checked-in text status now reports accepted transition evidence with 8
+  bundles, accepted chain evidence with 2 bundles, blocked commands, and
+  summary-bearing text resolution-question lines for standard-signal and
+  write-buffer blockers. The checked-in JSON status reported
+  `schema_version: 4`, `accepted: true`, transition `bundle_count: 8`, chain
+  `bundle_count: 2`, aggregate blocked commands `standard-signal`,
+  `write-buf-zero`, and `write-buf-one`, per-source command attribution,
+  preserved `required_resolution_questions` ID lists, summary-bearing
+  `resolution_questions`, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 565 tests.

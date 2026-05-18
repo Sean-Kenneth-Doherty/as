@@ -255,12 +255,13 @@ the project legible:
   evidence accepted with 8 bundles, chain evidence accepted with 2 bundles,
   and the blocked `standard-signal`, `write-buf-zero`, and `write-buf-one`
   command-token frontier. The default text report also names the
-  standard-signal and write-buffer resolution-question IDs that define the next
-  source-backed decision work. Schema version `2` attributes blocked commands
-  to each accepted source-status entry, while schema version `3` also carries
-  the source-status resolution-question IDs that still block command-token
-  execution and rejects malformed resolution-question metadata. Missing
-  registries report
+  standard-signal and write-buffer resolution-question IDs and summaries that
+  define the next source-backed decision work. Schema version `2` attributes
+  blocked commands to each accepted source-status entry, schema version `3`
+  carries the source-status resolution-question IDs that still block
+  command-token execution and rejects malformed resolution-question metadata,
+  and schema version `4` adds summary-bearing `resolution_questions` objects.
+  Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
   `source-status-file`, `source-status-json`, or `source-status-schema`;

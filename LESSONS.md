@@ -307,3 +307,6 @@
 - Keep the human status surface at parity with the machine surface for
   operator-critical blockers. If JSON names the question IDs that unblock a
   frontier, the default text report should name them too.
+- Stable IDs are not enough for a useful blocker queue. Carry the short
+  question summaries with the IDs so agents can choose the next source-backed
+  work without re-opening every source-status artifact.

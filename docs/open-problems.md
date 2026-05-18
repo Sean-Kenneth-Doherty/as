@@ -175,6 +175,9 @@ cannot be silently dropped from project status.
 ADR-0110 renders those checked resolution question IDs in the default text
 status report so the human first-run surface exposes the same blocker work
 queue as the JSON report.
+ADR-0111 adds the corresponding question summaries to project status JSON and
+text output, bumping the schema version to `4` so the status report now carries
+the blocker work queue without requiring a second source-status file pass.
 
 ## P3: Choose The First Proof Apparatus
 

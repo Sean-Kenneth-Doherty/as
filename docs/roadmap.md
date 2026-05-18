@@ -2094,3 +2094,24 @@ Status: accepted in
 `docs/adr/0110-project-status-text-resolution-questions.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0111: Project Status Resolution Question Summaries
+
+Goal: expose source-status resolution question summaries from the project
+status frontier.
+
+Deliverables:
+
+- `resolution_questions` list on each accepted `frontier.source_statuses`
+  entry;
+- each `resolution_questions` item includes `question_id` and `summary`;
+- schema bump from project status `schema_version: 3` to `schema_version: 4`;
+- default text status renders question IDs with summaries;
+- existing `required_resolution_questions` ID lists remain present; and
+- focused in-process, JSON CLI, and text-output tests for summary-bearing
+  resolution questions.
+
+Status: accepted in
+`docs/adr/0111-project-status-resolution-question-summaries.md`. Implemented
+in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

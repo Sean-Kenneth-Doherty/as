@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 3
+PROJECT_STATUS_SCHEMA_VERSION = 4
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
     "command-table-offset",
@@ -33,6 +33,73 @@ WRITE_BUFFER_QUESTIONS = [
     "buffer-full-boundary",
     "post-append-clearing",
     "standard-signal-interaction",
+]
+STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
+    {
+        "question_id": "command-token-vs-binary-input",
+        "summary": (
+            "Decide whether a standard-signal command token is supposed to "
+            "reproduce ordinary binary-input standard-signal behavior or "
+            "remain a separate unsupported command."
+        ),
+    },
+    {
+        "question_id": "command-table-offset",
+        "summary": (
+            "Decide whether AS should preserve formal command offset 0 or "
+            "adopt a legacy command-buffer placement if later source evidence "
+            "justifies doing so."
+        ),
+    },
+    {
+        "question_id": "recipient-surface",
+        "summary": (
+            "Decide whether delivered recipient command-message inputs may "
+            "execute standard-signal at all, or whether standard-signal "
+            "remains limited to ordinary binary channel input."
+        ),
+    },
+    {
+        "question_id": "self-target-surface",
+        "summary": (
+            "Decide whether self-mailbox and self-target command-buffer "
+            "standard-signal tokens should execute, be preserved, or be "
+            "reported as unsupported."
+        ),
+    },
+]
+WRITE_BUFFER_RESOLUTION_QUESTIONS = [
+    {
+        "question_id": "recipient-vs-stem-surface",
+        "summary": (
+            "Decide whether write-buffer command messages execute on fixed "
+            "recipient cells, stem cells only, or only through self-mailbox / "
+            "command-buffer surfaces."
+        ),
+    },
+    {
+        "question_id": "buffer-full-boundary",
+        "summary": (
+            "Decide whether write-buffer commands are ignored, rejected, "
+            "preserve state, or report a status when the command buffer is "
+            "full."
+        ),
+    },
+    {
+        "question_id": "post-append-clearing",
+        "summary": (
+            "Decide whether write-buffer execution preserves the appended "
+            "buffer, clears it like SEMSIM's stem wrapper, or clears only "
+            "input/mail state."
+        ),
+    },
+    {
+        "question_id": "standard-signal-interaction",
+        "summary": (
+            "Decide how write-buffer commands interact with the high rail and "
+            "standard-signal command-buffer path."
+        ),
+    },
 ]
 
 
@@ -85,6 +152,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 WRITE_BUFFER_QUESTIONS,
             ],
         )
+        self.assertEqual(
+            [
+                item["resolution_questions"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_RESOLUTION_QUESTIONS,
+                WRITE_BUFFER_RESOLUTION_QUESTIONS,
+            ],
+        )
 
     def test_text_status_names_green_evidence_and_blocked_commands(self):
         report = build_project_status_report()
@@ -104,21 +182,24 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn("Missing source-status files: none", text)
 
-    def test_text_status_names_resolution_question_ids(self):
+    def test_text_status_names_resolution_question_summaries(self):
         report = build_project_status_report()
 
         text = format_project_status_report(report)
 
         self.assertIn("Resolution questions:", text)
+        self.assertIn("standard-signal:", text)
         self.assertIn(
-            "standard-signal: command-token-vs-binary-input, "
-            "command-table-offset, recipient-surface, self-target-surface",
+            "command-token-vs-binary-input: Decide whether a standard-signal "
+            "command token is supposed to reproduce ordinary binary-input "
+            "standard-signal behavior or remain a separate unsupported command.",
             text,
         )
+        self.assertIn("write-buf-zero, write-buf-one:", text)
         self.assertIn(
-            "write-buf-zero, write-buf-one: recipient-vs-stem-surface, "
-            "buffer-full-boundary, post-append-clearing, "
-            "standard-signal-interaction",
+            "post-append-clearing: Decide whether write-buffer execution "
+            "preserves the appended buffer, clears it like SEMSIM's stem "
+            "wrapper, or clears only input/mail state.",
             text,
         )
 
@@ -172,6 +253,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_QUESTIONS,
                 WRITE_BUFFER_QUESTIONS,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["resolution_questions"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_RESOLUTION_QUESTIONS,
+                WRITE_BUFFER_RESOLUTION_QUESTIONS,
             ],
         )
 
