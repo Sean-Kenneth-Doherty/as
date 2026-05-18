@@ -604,6 +604,10 @@
 - ADR-0180 migrates the completed self-target command-buffer init dispatch
   proof certificate to `predicate-result`, extending explicit predicate-named
   proof steps to the first self command-buffer execution claim.
+- ADR-0181 migrates the completed self-target command-buffer unsupported
+  preservation proof certificate to `predicate-result`, extending explicit
+  predicate-named proof steps to the standard-signal self-target unsupported
+  command-buffer boundary.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

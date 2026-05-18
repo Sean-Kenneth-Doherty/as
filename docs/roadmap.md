@@ -3661,3 +3661,28 @@ Status: accepted in
 `docs/adr/0180-self-command-buffer-init-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest, focused proof/project-status
 tests, and the self command-buffer init claim note.
+
+## ADR-0181: Command-Buffer Unsupported Predicate Result Certificates
+
+Goal: make the completed self-target command-buffer unsupported-preservation
+proof certificate name the predicate it evaluates instead of relying only on
+manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` proof-certificate steps use
+  `predicate-result`;
+- both command-buffer unsupported certificate steps name
+  `stem_command_buffer_preserves_unsupported_completion`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  command-buffer unsupported certificate as two predicate-result steps;
+- the command-buffer unsupported claim note matches the current
+  standard-signal-only boundary; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0181-command-buffer-unsupported-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest, focused proof/project-status
+tests, and the command-buffer unsupported claim note.

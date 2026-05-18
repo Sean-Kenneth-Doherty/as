@@ -299,7 +299,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   automail reconfiguration, buffer accumulation, and self-mailbox init command
   execution, unsupported-command preservation, and direct self-mailbox
   write-buffer append execution, plus completed self-target command-buffer init
-  dispatch, that name the evaluated predicates directly.
+  dispatch and unsupported-preservation boundaries, that name the evaluated
+  predicates directly.
 - `python -m autarkic_systems.proof_certificates` validates the transition
   proof-certificate surface in text or JSON form.
 - `python -m autarkic_systems.object_language` validates the transition claim

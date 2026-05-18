@@ -193,14 +193,16 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self standard signal command remains appended",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_command_buffer_preserves_unsupported_completion"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self standard signal command wrongfully processed",
-          "expected": false
+          "expected": false,
+          "predicate": "stem_command_buffer_preserves_unsupported_completion"
         }
       ]
     },

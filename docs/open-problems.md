@@ -30,10 +30,12 @@ stem buffer accumulation claim. ADR-0177 extends it to the first self-mailbox
 command-execution claim. ADR-0178 extends it to the unresolved self-mailbox
 unsupported-command preservation claim. ADR-0179 extends it to the direct
 self-mailbox write-buffer append claim. ADR-0180 extends it to the completed
-self-target command-buffer init dispatch claim. ADR-0135 exposes the base
-transition claim examples through direct text and JSON CLI validation.
-ADR-0140 carries the base claim-example and proof-certificate validator
-summaries into the aggregate project status report.
+self-target command-buffer init dispatch claim. ADR-0181 extends it to the
+completed self-target command-buffer unsupported-preservation boundary.
+ADR-0135 exposes the base transition claim examples through direct text and
+JSON CLI validation. ADR-0140 carries the base claim-example and
+proof-certificate validator summaries into the aggregate project status
+report.
 
 Status update: ADR-0031 promotes the self-mailbox init-command execution subset
 into a named transition claim with manifest examples and proof-certificate
@@ -383,8 +385,10 @@ self-mailbox init command execution to predicate-result. ADR-0178 migrates the
 self-mailbox unsupported-command preservation boundary to predicate-result.
 ADR-0179 migrates the direct self-mailbox write-buffer append claim to
 predicate-result. ADR-0180 migrates completed self-target command-buffer init
-dispatch to predicate-result. ADR-0134 exposes the transition
-proof-certificate surface through direct text and JSON CLI validation.
+dispatch to predicate-result. ADR-0181 migrates completed self-target
+command-buffer unsupported preservation to predicate-result. ADR-0134 exposes
+the transition proof-certificate surface through direct text and JSON CLI
+validation.
 
 ## P4: Define The First Object Language
 

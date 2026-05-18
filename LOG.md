@@ -3889,3 +3889,25 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 778 tests.
+
+## 2026-05-18 - Command-Buffer Unsupported Predicate Result Certificates
+
+- Added ADR-0181 to migrate
+  `UC-STEM-COMMAND-BUFFER-UNSUPPORTED-APPENDED` from `manifest-example` proof
+  steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 99 tests and failed because the command-buffer
+  unsupported certificate still used `manifest-example`, and
+  proof/project-status reports still described it as two `manifest-example`
+  steps.
+- Updated `claims/proof_certificates.json` so both command-buffer unsupported
+  certificate steps use `predicate-result` and name
+  `stem_command_buffer_preserves_unsupported_completion` directly.
+- Updated the command-buffer unsupported claim note and summary docs so they
+  describe the current standard-signal-only boundary and the new
+  predicate-result proof surface.
+- Focused green verification passed 99 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 779 tests.
