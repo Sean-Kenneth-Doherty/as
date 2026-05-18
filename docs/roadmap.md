@@ -2497,3 +2497,27 @@ Status: accepted in
 `sources/write_buffer_command_semantics_status.json` and
 `docs/write-buffer-command-semantics-status.md`, with tests in
 `tests/test_write_buffer_command_semantics_status.py`.
+
+## ADR-0130: Project Status Resolved Resolution Questions
+
+Goal: expose already settled source-status resolution questions in project
+status JSON and text so future work can distinguish closed decisions from the
+remaining command-token frontier.
+
+Deliverables:
+
+- project status JSON `schema_version: 9`;
+- `resolved_resolution_questions` arrays on accepted
+  `frontier.source_statuses` entries;
+- the standard-signal `command-table-offset` decision visible with its
+  `sources/stem_command_buffer_map.json` source-status path;
+- a default text `Resolved resolution questions:` section;
+- `Resolved resolution questions: none` fallback when no accepted source-status
+  records have resolved questions;
+- `source-status-schema` failures for malformed resolved-question metadata; and
+- focused project-status tests.
+
+Status: accepted in
+`docs/adr/0130-project-status-resolved-questions.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

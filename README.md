@@ -271,8 +271,9 @@ the project legible:
   frontier. The default text report also names the concrete transition and
   chain evidence bundle IDs and paths, transition bundle positive and covered
   examples, the standard-signal and write-buffer blocked runtime surfaces,
-  source-status AS boundaries, and the resolution-question IDs and summaries
-  that define the next source-backed decision work, plus the source-status
+  source-status AS boundaries, the resolution-question IDs and summaries that
+  define the next source-backed decision work, resolved question decisions that
+  should not be reopened without new evidence, and the source-status
   cross-links behind the blocked frontier. Schema version `2` attributes
   blocked commands to each
   accepted source-status entry, schema version `3` carries the source-status
@@ -287,7 +288,9 @@ the project legible:
   adds `additional_source_statuses` cross-links to accepted source-status
   entries so automation can inspect the source-review trail behind the
   blocked frontier; the default text report renders those cross-links when
-  present.
+  present. Schema version `9` adds `resolved_resolution_questions` to accepted
+  source-status entries and renders a `Resolved resolution questions:` text
+  section.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

@@ -32,7 +32,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 8
+PROJECT_STATUS_SCHEMA_VERSION = 9
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -101,6 +101,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         *_blocked_runtime_surface_text_lines(frontier),
         *_as_boundary_text_lines(frontier),
         *_resolution_question_text_lines(frontier),
+        *_resolved_resolution_question_text_lines(frontier),
         *_additional_source_status_text_lines(frontier),
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
@@ -272,6 +273,7 @@ def _frontier_summary(
                 "blocked_runtime_surfaces": _blocked_runtime_surfaces(data),
                 "required_resolution_questions": _resolution_question_ids(data),
                 "resolution_questions": _resolution_questions(data),
+                "resolved_resolution_questions": _resolved_resolution_questions(data),
                 "additional_source_statuses": _additional_source_statuses(data),
             }
         )
@@ -337,6 +339,31 @@ def _resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]:
             "summary": _optional_text(question, "summary"),
         })
     return resolution_questions
+
+
+def _resolved_resolution_questions(data: dict[str, Any]) -> list[dict[str, str]]:
+    questions = data.get("resolved_resolution_questions")
+    if not isinstance(questions, list):
+        return []
+    resolved_questions: list[dict[str, str]] = []
+    for question in questions:
+        if not isinstance(question, dict):
+            continue
+        question_id = question.get("question_id")
+        decision = question.get("decision")
+        if not isinstance(question_id, str) or not question_id:
+            continue
+        if not isinstance(decision, str) or not decision:
+            continue
+        resolved_question = {
+            "question_id": question_id,
+            "decision": decision,
+        }
+        source_status = question.get("source_status")
+        if isinstance(source_status, str) and source_status:
+            resolved_question["source_status"] = source_status
+        resolved_questions.append(resolved_question)
+    return resolved_questions
 
 
 def _additional_source_statuses(data: dict[str, Any]) -> list[dict[str, str]]:
@@ -421,6 +448,25 @@ def _resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
     return lines
 
 
+def _resolved_resolution_question_text_lines(frontier: dict[str, Any]) -> list[str]:
+    lines = ["Resolved resolution questions:"]
+    for source_status in frontier["source_statuses"]:
+        questions = source_status["resolved_resolution_questions"]
+        if not questions:
+            continue
+        command_label = ", ".join(source_status["commands"]) or source_status["path"]
+        lines.append(f"  {command_label}:")
+        for question in questions:
+            detail = f"{question['question_id']}: {question['decision']}"
+            source_status_path = question.get("source_status")
+            if source_status_path:
+                detail = f"{detail} ({source_status_path})"
+            lines.append(f"    {detail}")
+    if len(lines) == 1:
+        return ["Resolved resolution questions: none"]
+    return lines
+
+
 def _additional_source_status_text_lines(frontier: dict[str, Any]) -> list[str]:
     lines = ["Additional source statuses:"]
     for source_status in frontier["source_statuses"]:
@@ -464,6 +510,9 @@ def _source_status_schema_error(data: Any) -> str:
     question_error = _resolution_question_shape_error(data)
     if question_error:
         return question_error
+    resolved_question_error = _resolved_resolution_question_shape_error(data)
+    if resolved_question_error:
+        return resolved_question_error
     additional_source_status_error = _additional_source_status_shape_error(data)
     if additional_source_status_error:
         return additional_source_status_error
@@ -535,6 +584,35 @@ def _resolution_question_shape_error(data: dict[str, Any]) -> str:
             return "source-status resolution question entries must be objects"
         if not _is_nonempty_text(question.get("question_id")):
             return "source-status resolution question_id must be non-empty text"
+    return ""
+
+
+def _resolved_resolution_question_shape_error(data: dict[str, Any]) -> str:
+    if "resolved_resolution_questions" not in data:
+        return ""
+    questions = data.get("resolved_resolution_questions")
+    if not isinstance(questions, list):
+        return "source-status resolved_resolution_questions field must be a list"
+    for question in questions:
+        if not isinstance(question, dict):
+            return "source-status resolved resolution question entries must be objects"
+        if not _is_nonempty_text(question.get("question_id")):
+            return (
+                "source-status resolved resolution question_id must be "
+                "non-empty text"
+            )
+        if not _is_nonempty_text(question.get("decision")):
+            return (
+                "source-status resolved resolution question decision must be "
+                "non-empty text"
+            )
+        if "source_status" in question and not _is_nonempty_text(
+            question.get("source_status")
+        ):
+            return (
+                "source-status resolved resolution question source_status "
+                "must be non-empty text"
+            )
     return ""
 
 

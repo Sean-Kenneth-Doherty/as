@@ -2876,3 +2876,24 @@
   tests; JSON formatting, `py_compile`, and `git diff --check` passed; project
   status text and JSON remained accepted at `schema_version: 8`; and
   `python -m unittest discover` passed 590 tests.
+
+## 2026-05-18 - Project Status Resolved Resolution Questions
+
+- Added ADR-0130 to expose source-status `resolved_resolution_questions` in
+  project status JSON and text, so settled blocker questions are visible from
+  the first diagnostic command.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run executed 47 tests and failed because project status still reported
+  `schema_version: 8`, omitted resolved-question JSON/text, and accepted
+  malformed resolved-question metadata.
+- Updated `autarkic_systems.project_status` so accepted source-status entries
+  carry `resolved_resolution_questions`, malformed resolved-question metadata
+  fails as `source-status-schema`, and the default text report renders a
+  `Resolved resolution questions:` section.
+- Bumped project status JSON to `schema_version: 9`, carrying the
+  standard-signal `command-table-offset` decision as settled by
+  `sources/stem_command_buffer_map.json`.
+- Verification passed: adjacent project-status and standard-signal tests ran
+  54 tests; `py_compile` and `git diff --check` passed; project status text and
+  JSON were accepted at `schema_version: 9`; and
+  `python -m unittest discover` passed 594 tests.

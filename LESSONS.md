@@ -362,3 +362,6 @@
 - When sources agree on a sub-part of an unresolved behavior, record that as
   narrowed evidence without removing broader blockers from the unresolved
   queue.
+- Status reports should show settled blocker questions alongside unresolved
+  ones. Otherwise future work can waste time reopening decisions that were
+  already source-backed and recorded.

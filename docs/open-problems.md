@@ -225,6 +225,9 @@ recipient-surface, and self-target-surface questions open.
 ADR-0129 records that `write-buf-zero` and `write-buf-one` carry literal `0`
 and `1` append bits, narrowing standard-signal interaction without resolving
 write-buffer execution.
+ADR-0130 exposes resolved source-status questions in project status JSON/text,
+so `command-table-offset` appears as settled while the remaining command-token
+frontier stays open.
 
 ## P3: Choose The First Proof Apparatus
 

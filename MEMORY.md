@@ -563,3 +563,7 @@
   `write-buf-zero` and `write-buf-one` carry literal `0` and `1` append bits
   across the formal model and RAA/SEMSIM/FSMSIM witnesses. Runtime behavior and
   the unresolved write-buffer question queue remain unchanged.
+- ADR-0130 bumps project status to `schema_version: 9` and exposes
+  `resolved_resolution_questions` in JSON/text, so the standard-signal
+  `command-table-offset` decision is visible as settled from the first status
+  command while the remaining command-token questions stay open.

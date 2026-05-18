@@ -21,7 +21,7 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
-PROJECT_STATUS_SCHEMA_VERSION = 8
+PROJECT_STATUS_SCHEMA_VERSION = 9
 BLOCKED_RUNTIME_SURFACES = [
     "recipient-command-message",
     "self-mailbox-command",
@@ -167,6 +167,13 @@ STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
             "standard-signal tokens should execute, be preserved, or be "
             "reported as unsupported."
         ),
+    },
+]
+STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
+    {
+        "question_id": "command-table-offset",
+        "decision": "preserve-formal-command-offset-0",
+        "source_status": "sources/stem_command_buffer_map.json",
     },
 ]
 WRITE_BUFFER_RESOLUTION_QUESTIONS = [
@@ -352,6 +359,17 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(
             [
+                item["resolved_resolution_questions"]
+                for item in report["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_RESOLVED_QUESTIONS,
+                [],
+            ],
+        )
+        self.assertEqual(
+            [
                 item["additional_source_statuses"]
                 for item in report["frontier"]["source_statuses"]
             ],
@@ -483,6 +501,19 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
 
+    def test_text_status_names_resolved_resolution_questions(self):
+        report = build_project_status_report()
+
+        text = format_project_status_report(report)
+
+        self.assertIn("Resolved resolution questions:", text)
+        self.assertIn("standard-signal:", text)
+        self.assertIn(
+            "command-table-offset: preserve-formal-command-offset-0 "
+            "(sources/stem_command_buffer_map.json)",
+            text,
+        )
+
     def test_text_status_names_additional_source_statuses(self):
         report = build_project_status_report()
 
@@ -567,6 +598,7 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         text = format_project_status_report(report)
         self.assertIn("Resolution questions: none", text)
+        self.assertIn("Resolved resolution questions: none", text)
 
     def test_json_cli_reports_project_status(self):
         stdout = io.StringIO()
@@ -626,6 +658,17 @@ class ProjectStatusReportTests(unittest.TestCase):
                 [],
                 STANDARD_SIGNAL_RESOLUTION_QUESTIONS,
                 WRITE_BUFFER_RESOLUTION_QUESTIONS,
+            ],
+        )
+        self.assertEqual(
+            [
+                item["resolved_resolution_questions"]
+                for item in payload["frontier"]["source_statuses"]
+            ],
+            [
+                [],
+                STANDARD_SIGNAL_RESOLVED_QUESTIONS,
+                [],
             ],
         )
         self.assertEqual(
@@ -1189,6 +1232,94 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "question_id",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_scalar_resolved_resolution_questions_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "scalar_resolved_resolution_questions.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": "command-table-offset",
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolved_resolution_questions",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_resolved_resolution_question_id_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_resolved_resolution_question_id.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {"question_id": " ", "decision": "resolved"}
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolved resolution question_id",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
+    def test_blank_resolved_resolution_question_decision_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blank_resolved_resolution_question_decision.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "standard-signal",
+                    "as_boundary": "Keep this command blocked here.",
+                    "resolved_resolution_questions": [
+                        {"question_id": "command-table-offset", "decision": "  "}
+                    ],
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "resolved resolution question decision",
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
