@@ -8,6 +8,11 @@ candidate obtained by substituting the checked quotation term into the current
 fixed-point target template, encodes it, and records whether that code matches
 the originally quoted target instance code.
 
+ADR-0236 makes this surface a structured dependency of
+`autarkic_systems.formal_confidence`, so the aggregate formal-confidence
+target now fails closed if the candidate manifest is missing, invalid, or
+overclaims.
+
 ## Purpose
 
 ADR-0234 gave AS a formal quotation-term surface. The next risk is
@@ -37,6 +42,7 @@ It validates
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation --format json
 python -m autarkic_systems.fixed_point
+python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.formal_confidence --format json
 python -m autarkic_systems.project_status --format summary
 ```

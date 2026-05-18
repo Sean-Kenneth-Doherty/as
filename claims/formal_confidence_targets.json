@@ -23,6 +23,7 @@
         "proof_code_encoding": "language/formal_codebook.json via autarkic_systems.formal_code; tagged-prefix natural sequences round-trip terms, formulae, pi1/sigma1 sentence wrappers, and placeholder proof-line shells, but not substitution or deduction",
         "consistency_notion": "claims/consistency_level_targets.json selects Level-1 consistency over pi1/sigma1 sentence classes as target-selected-not-claimed; no consistency theorem is claimed",
         "self_reference": "claims/fixed_point_targets.json via autarkic_systems.fixed_point plus claims/fixed_point_equation_candidates.json via autarkic_systems.fixed_point_equation; a pi1 fixed-point target template and checked substitution instance exist over language/formal_substitution_examples.json, language/formal_quotation_sequence_examples.json, and language/formal_quotation_term_examples.json, and the naive equation candidate is recorded as candidate-not-fixed, but no diagonal lemma proof, fixed-point equation proof, or self-consistency theorem is claimed",
+        "fixed_point_equation_candidate": "claims/fixed_point_equation_candidates.json",
         "substrate_bridge": "transition, chain, and network-sequence evidence bundles over Universal Cell witnesses"
       },
       "blocked_by": [

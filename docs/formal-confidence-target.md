@@ -2,8 +2,8 @@
 
 Status: checked target boundary with arithmetic syntax, codebook, substitution,
 consistency-level target, deduction-apparatus target, fixed-point target, and
-quotation sequence/term dependencies, and fixed-point equation candidate,
-2026-05-18.
+quotation sequence/term dependencies, plus a validated fixed-point equation
+candidate dependency, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -48,7 +48,9 @@ instead of raw token tuples. ADR-0234 adds
 depends on a checked nested sequence term surface. The target remains blocked
 on constructing the actual fixed point. ADR-0235 adds
 `claims/fixed_point_equation_candidates.json`, recording that the naive
-quotation-term substitution candidate is not fixed.
+quotation-term substitution candidate is not fixed. ADR-0236 makes that
+candidate surface a structured, fail-closed dependency of the aggregate
+formal-confidence validator.
 
 ## Current Target
 
@@ -72,8 +74,8 @@ certificates through `claims/deduction_apparatus_targets.json`, plus the
 fixed-point target in `claims/fixed_point_targets.json`, which now references
 `language/formal_quotation_sequence_examples.json` and
 `language/formal_quotation_term_examples.json`; the naive equation candidate
-is recorded in `claims/fixed_point_equation_candidates.json`. It also records
-the remaining blocker: `fixed-point-construction`.
+is recorded and validated through `claims/fixed_point_equation_candidates.json`.
+It also records the remaining blocker: `fixed-point-construction`.
 
 ## Run
 
@@ -107,6 +109,7 @@ The validator checks that:
 - referenced Willard anchors exist;
 - required Willard anchors are present;
 - every required configuration field is present and non-blank;
+- the referenced fixed-point equation candidate surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.
 

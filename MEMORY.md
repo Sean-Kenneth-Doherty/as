@@ -127,6 +127,10 @@
   quotation-term substitution, records `candidate-not-fixed`, and still does
   not prove a diagonal lemma, fixed-point equation, arithmetized proof
   predicate, or self-consistency.
+- ADR-0236 makes `claims/fixed_point_equation_candidates.json` a structured
+  fail-closed dependency of `autarkic_systems.formal_confidence`; missing or
+  invalid candidate references now reject formal-confidence validation as
+  `target-fixed-point-equation-candidate`.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

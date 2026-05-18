@@ -32,8 +32,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   direction decision.
 - `docs/formal-confidence-target.md` records the first checked
   formal-confidence target boundary, explicitly marking current AS
-  self-consistency claims as blocked pending fixed-point self-reference and
-  deduction-apparatus work.
+  self-consistency claims as blocked pending fixed-point construction while
+  validating the current fixed-point equation candidate dependency.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -388,7 +388,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
-  construction exists.
+  construction exists and fail-closed over the current fixed-point equation
+  candidate dependency.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -457,8 +458,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   `candidate-not-fixed` result for the naive quotation-term substitution.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
-  Willard anchors, required configuration fields, explicit blockers, and the
-  next AS action.
+  Willard anchors, required configuration fields, the fixed-point equation
+  candidate dependency, explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

@@ -4886,3 +4886,26 @@ Deliverables:
 Status: accepted in `docs/adr/0235-fixed-point-equation-candidate.md`.
 Implemented in `autarkic_systems/fixed_point_equation.py`, with tests in
 `tests/test_fixed_point_equation_candidate.py`.
+
+## ADR-0236: Formal Confidence Candidate Dependency
+
+Goal: make the fixed-point equation candidate a checked dependency of the
+aggregate formal-confidence target instead of a text-only reference.
+
+Deliverables:
+
+- `claims/formal_confidence_targets.json` with a structured
+  `fixed_point_equation_candidate` configuration field;
+- `autarkic_systems.formal_confidence` validation that loads and checks the
+  referenced candidate surface;
+- accepted text/JSON report output for the healthy checked candidate;
+- fail-closed rejection for missing or invalid candidate references, reported
+  as `target-fixed-point-equation-candidate`; and
+- no diagonal lemma, fixed-point equation proof, arithmetized proof predicate,
+  theorem prover, runtime behavior, command semantics, evidence bundle, or
+  GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0236-formal-confidence-candidate-dependency.md`. Implemented in
+`autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.

@@ -5097,3 +5097,23 @@
   summary remained accepted and blocked. `compileall`, JSON checks,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 1055 tests.
+
+## 2026-05-18 - Formal Confidence Candidate Dependency
+
+- Added ADR-0236 to make the ADR-0235 fixed-point equation candidate a
+  structured dependency of the aggregate formal-confidence target.
+- Added red tests before implementation. The red run failed because
+  `fixed_point_equation_candidate` was not a required configuration field, the
+  aggregate report did not expose an accepted candidate result, and missing
+  candidate manifests did not reject formal-confidence validation.
+- Added `fixed_point_equation_candidate` to
+  `claims/formal_confidence_targets.json` and required configuration fields.
+- Updated `autarkic_systems.formal_confidence` to load and validate the
+  referenced candidate surface, report `fixed-point equation candidate
+  accepted` on the healthy path, and fail closed as
+  `target-fixed-point-equation-candidate` when the dependency is missing or
+  invalid.
+- Focused formal-confidence and project-status tests passed 99 tests. Live
+  formal-confidence text/JSON output reported the candidate dependency
+  accepted, while the formal-confidence target remained blocked on
+  `fixed-point-construction`; live project-status summary remained accepted.

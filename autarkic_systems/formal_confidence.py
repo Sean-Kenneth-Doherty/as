@@ -15,6 +15,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from autarkic_systems.fixed_point_equation import (
+    load_fixed_point_equation_candidates,
+    validate_fixed_point_equation_candidates,
+)
 from autarkic_systems.willard_map import load_willard_definition_map
 
 
@@ -29,6 +33,7 @@ REQUIRED_CONFIGURATION_FIELDS = (
     "proof_code_encoding",
     "consistency_notion",
     "self_reference",
+    "fixed_point_equation_candidate",
     "substrate_bridge",
 )
 
@@ -350,6 +355,9 @@ def _validate_target(
             )
         )
 
+    if "fixed_point_equation_candidate" in target.configuration:
+        results.extend(_validate_fixed_point_equation_candidate(target))
+
     if target.status == "blocked" and not target.blocked_by:
         results.append(
             _rejected(
@@ -374,11 +382,39 @@ def _validate_target(
     return results
 
 
+def _validate_fixed_point_equation_candidate(
+    target: FormalConfidenceTarget,
+) -> list[FormalConfidenceValidation]:
+    subject = f"{target.target_id}.fixed_point_equation_candidate"
+    candidate_path = target.configuration["fixed_point_equation_candidate"]
+    try:
+        candidates = load_fixed_point_equation_candidates(candidate_path)
+        report = validate_fixed_point_equation_candidates(candidates)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return [
+            _rejected(
+                subject,
+                "fixed-point equation candidate rejected: " + str(exc),
+            )
+        ]
+    if report.accepted:
+        return [_accepted(subject, "fixed-point equation candidate accepted")]
+    return [
+        _rejected(
+            subject,
+            "fixed-point equation candidate rejected: "
+            + _joined_or_none(report.failed_subjects),
+        )
+    ]
+
+
 def _failed_subject_for_result(subject: str) -> str:
     if subject.endswith(".willard_anchors"):
         return "target-willard-anchor"
     if subject.endswith(".configuration"):
         return "target-configuration"
+    if subject.endswith(".fixed_point_equation_candidate"):
+        return "target-fixed-point-equation-candidate"
     if subject.endswith(".blockers"):
         return "target-blockers"
     if subject.endswith(".status"):
