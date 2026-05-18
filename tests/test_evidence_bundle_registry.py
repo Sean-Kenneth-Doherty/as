@@ -1,3 +1,5 @@
+import contextlib
+import io
 import unittest
 from dataclasses import replace
 from pathlib import Path
@@ -6,6 +8,8 @@ import tempfile
 
 from autarkic_systems.evidence_bundle import (
     load_evidence_bundle_registry,
+    registry_validation_report_payload,
+    run_evidence_bundle_cli,
     validate_evidence_bundle_registry,
 )
 
@@ -133,6 +137,90 @@ class EvidenceBundleRegistryTests(unittest.TestCase):
                 "registry-bundle-validation",
                 "registry-completeness",
             },
+        )
+
+    def test_registry_json_payload_lists_registered_bundles(self):
+        results = validate_evidence_bundle_registry(self.registry)
+
+        payload = registry_validation_report_payload(self.registry, results)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["bundle_count"], 8)
+        self.assertEqual(
+            payload["bundles"],
+            [
+                {
+                    "bundle_id": BUNDLE_ID,
+                    "path": str(BUNDLE),
+                    "claim_id": CLAIM_ID,
+                    "expected_status": STATUS,
+                },
+                {
+                    "bundle_id": REJECTION_BUNDLE_ID,
+                    "path": str(REJECTION_BUNDLE),
+                    "claim_id": REJECTION_CLAIM_ID,
+                    "expected_status": REJECTION_STATUS,
+                },
+                {
+                    "bundle_id": MULTI_COMMAND_BUNDLE_ID,
+                    "path": str(MULTI_COMMAND_BUNDLE),
+                    "claim_id": REJECTION_CLAIM_ID,
+                    "expected_status": REJECTION_STATUS,
+                },
+                {
+                    "bundle_id": SELF_MAILBOX_BUNDLE_ID,
+                    "path": str(SELF_MAILBOX_BUNDLE),
+                    "claim_id": SELF_MAILBOX_CLAIM_ID,
+                    "expected_status": SELF_MAILBOX_STATUS,
+                },
+                {
+                    "bundle_id": UNSUPPORTED_MAILBOX_BUNDLE_ID,
+                    "path": str(UNSUPPORTED_MAILBOX_BUNDLE),
+                    "claim_id": UNSUPPORTED_MAILBOX_CLAIM_ID,
+                    "expected_status": UNSUPPORTED_MAILBOX_STATUS,
+                },
+                {
+                    "bundle_id": SELF_COMMAND_BUFFER_BUNDLE_ID,
+                    "path": str(SELF_COMMAND_BUFFER_BUNDLE),
+                    "claim_id": SELF_COMMAND_BUFFER_CLAIM_ID,
+                    "expected_status": SELF_COMMAND_BUFFER_STATUS,
+                },
+                {
+                    "bundle_id": UNSUPPORTED_COMMAND_BUFFER_BUNDLE_ID,
+                    "path": str(UNSUPPORTED_COMMAND_BUFFER_BUNDLE),
+                    "claim_id": UNSUPPORTED_COMMAND_BUFFER_CLAIM_ID,
+                    "expected_status": UNSUPPORTED_COMMAND_BUFFER_STATUS,
+                },
+                {
+                    "bundle_id": NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID,
+                    "path": str(NEIGHBOR_COMMAND_BUFFER_BUNDLE),
+                    "claim_id": NEIGHBOR_COMMAND_BUFFER_CLAIM_ID,
+                    "expected_status": NEIGHBOR_COMMAND_BUFFER_STATUS,
+                },
+            ],
+        )
+
+    def test_json_cli_lists_registered_bundles(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_evidence_bundle_cli(
+                ["--registry", str(REGISTRY), "--format", "json"]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["bundle_count"], 8)
+        self.assertEqual(payload["bundles"][0]["bundle_id"], BUNDLE_ID)
+        self.assertEqual(payload["bundles"][0]["path"], str(BUNDLE))
+        self.assertEqual(
+            payload["bundles"][-1]["bundle_id"],
+            NEIGHBOR_COMMAND_BUFFER_BUNDLE_ID,
+        )
+        self.assertEqual(
+            payload["bundles"][-1]["path"],
+            str(NEIGHBOR_COMMAND_BUFFER_BUNDLE),
         )
 
     def test_duplicate_bundle_ids_are_rejected(self):

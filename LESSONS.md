@@ -313,3 +313,6 @@
 - Blocker reports should include the runtime surfaces where a command is
   blocked. Otherwise a future implementation can resolve the right command at
   the wrong boundary.
+- Registry JSON should be self-describing. A green bundle count is much less
+  useful than the same green result plus the concrete bundle IDs, paths, claim
+  IDs, and expected statuses that were checked.

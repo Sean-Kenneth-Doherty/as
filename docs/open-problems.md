@@ -181,6 +181,8 @@ the blocker work queue without requiring a second source-status file pass.
 ADR-0112 adds blocked runtime surfaces to project status JSON and text output,
 bumping the schema version to `5` so the report now names where the unresolved
 command-token questions apply.
+ADR-0113 makes transition evidence registry JSON list the concrete registered
+bundle entries, matching the self-describing chain registry payload pattern.
 
 ## P3: Choose The First Proof Apparatus
 

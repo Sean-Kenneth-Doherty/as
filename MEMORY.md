@@ -508,3 +508,5 @@
 - ADR-0112 bumps `autarkic_systems.project_status` to `schema_version: 5`,
   adds per-source `blocked_runtime_surfaces`, renders them in text status, and
   rejects malformed surface lists as `source-status-schema`.
+- ADR-0113 adds a `bundles` array to transition evidence registry JSON output,
+  listing each registered bundle ID, path, claim ID, and expected status.

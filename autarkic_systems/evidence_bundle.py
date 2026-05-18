@@ -186,6 +186,15 @@ def registry_validation_report_payload(
         "accepted": all(result.accepted for result in results),
         "bundle_count": len(registry.bundles),
         "result_count": len(results),
+        "bundles": [
+            {
+                "bundle_id": entry.bundle_id,
+                "path": str(entry.path),
+                "claim_id": entry.claim_id,
+                "expected_status": entry.expected_status,
+            }
+            for entry in registry.bundles
+        ],
         "results": [
             {
                 "subject": result.subject,

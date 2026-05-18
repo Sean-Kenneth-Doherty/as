@@ -153,7 +153,8 @@ the project legible:
   validates the evidence bundle registry from the command line, including
   closed-index checks for unregistered sibling bundle files.
 - `python -m autarkic_systems.evidence_bundle --registry evidence/manifest.json --format json`
-  emits the same registry validation as machine-readable JSON.
+  emits the same registry validation as machine-readable JSON, including the
+  registered transition bundle IDs, paths, claim IDs, and expected statuses.
 - `docs/self-mailbox-init-claim.md` records the named claim and
   proof-certificate surface for the self-mailbox init-command subset.
 - `docs/self-mailbox-unsupported-claim.md` records the named preservation

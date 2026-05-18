@@ -2527,3 +2527,27 @@
   `resolution_questions`, and `frontier.failed_subjects: []`. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 569 tests.
+
+## 2026-05-18 - Transition Registry JSON Entries
+
+- Added ADR-0113 to make transition evidence registry JSON list the concrete
+  registered transition bundles, matching the chain registry JSON pattern.
+- Updated `tests/test_evidence_bundle_registry.py` before implementation. The
+  red run failed because the transition registry JSON payload did not include a
+  `bundles` key.
+- Updated `autarkic_systems.evidence_bundle.registry_validation_report_payload`
+  so JSON output includes each registered bundle ID, path, claim ID, and
+  expected status.
+- Updated README, evidence-bundle registry docs, open problems, roadmap,
+  memory, and lessons with the transition registry JSON entry contract.
+- Verified the focused evidence bundle registry test passed 15 tests; adjacent
+  evidence registry, chain registry, and project status tests passed 60 tests.
+  The transition evidence registry JSON reported `accepted: true`,
+  `bundle_count: 8`, and all eight registered transition bundle entries. The
+  checked-in project status JSON still reported `schema_version: 5`,
+  `accepted: true`, transition `bundle_count: 8`, chain `bundle_count: 2`,
+  aggregate blocked commands `standard-signal`, `write-buf-zero`, and
+  `write-buf-one`, per-source command attribution, blocked runtime surfaces,
+  resolution questions, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 571 tests.

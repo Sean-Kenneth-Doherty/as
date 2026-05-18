@@ -2136,3 +2136,20 @@ Status: accepted in
 `docs/adr/0112-project-status-blocked-runtime-surfaces.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0113: Transition Registry JSON Entries
+
+Goal: make transition evidence registry JSON list the concrete registered
+transition bundles.
+
+Deliverables:
+
+- `bundles` array in `registry_validation_report_payload`;
+- each entry includes `bundle_id`, `path`, `claim_id`, and `expected_status`;
+- JSON CLI output includes the same bundle entries;
+- unchanged registry validation semantics and manifest schema; and
+- focused in-process and JSON CLI tests for the transition registry payload.
+
+Status: accepted in `docs/adr/0113-transition-registry-json-entries.md`.
+Implemented in `autarkic_systems/evidence_bundle.py`, with tests in
+`tests/test_evidence_bundle_registry.py`.
