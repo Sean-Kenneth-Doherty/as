@@ -4906,3 +4906,34 @@
   remaining blockers without `consistency-level-selection`; live project-status
   summary remained accepted. `compileall`, JSON checks, `git diff --check`,
   and `python -m unittest discover` passed; the full suite ran 977 tests.
+
+## 2026-05-18 - Deduction Apparatus Target
+
+- Added ADR-0230 to remove the deduction-apparatus selection blocker from the
+  formal-confidence target without claiming self-justification, proof search,
+  or a theorem prover.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.deduction_apparatus` and
+  `claims/deduction_apparatus_targets.json` did not exist, and the
+  formal-confidence target still listed `deduction-apparatus-selection` as a
+  blocker.
+- Added `claims/deduction_apparatus_targets.json`, selecting the AS-local
+  `predicate-result` proof-certificate checker as
+  `target-selected-not-self-justifying` over transition, transition-chain, and
+  network-sequence certificate surfaces.
+- Added `autarkic_systems/deduction_apparatus.py` with formal-codebook
+  dependency validation, Willard generic/Hilbert/self-justifying/GenAC/tableau
+  anchor checks, certificate-surface validation, combined proof-rule counts,
+  and rejection of non-`predicate-result` rules, Hilbert/tableau overclaims,
+  and self-justifying status values.
+- Narrowed `claims/formal_confidence_targets.json` so
+  `AS-FORMAL-CONFIDENCE-TARGET-001` points at the deduction-apparatus target,
+  removes the deduction-apparatus-selection blocker, and remains blocked on
+  self-reference-fixed-point.
+- Focused deduction-apparatus, formal-confidence, and project-status tests
+  passed 111 tests. Live deduction-apparatus text/JSON output reported 52
+  `predicate-result` steps, 0 `manifest-example` steps, and no failed
+  subjects; live formal-confidence output reported the remaining blocker
+  without `deduction-apparatus-selection`; live project-status summary remained
+  accepted. `compileall`, JSON checks, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 990 tests.

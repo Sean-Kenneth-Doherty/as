@@ -86,6 +86,17 @@
   target and no longer lists `consistency-level-selection` as a blocker. It
   remains blocked on self-reference-fixed-point and
   deduction-apparatus-selection.
+- ADR-0230 adds `claims/deduction_apparatus_targets.json` and
+  `autarkic_systems/deduction_apparatus.py` to select the current AS-local
+  `predicate-result` proof-certificate checker as the deduction-apparatus
+  target for transition, transition-chain, and network-sequence certificate
+  surfaces. It validates 52 `predicate-result` steps and 0 `manifest-example`
+  steps, but does not claim Hilbert completeness, tableau proof search,
+  arithmetized proof predicates, or self-justification.
+- `AS-FORMAL-CONFIDENCE-TARGET-001` now also points at the
+  deduction-apparatus target and no longer lists
+  `deduction-apparatus-selection` as a blocker. It remains blocked on
+  self-reference-fixed-point.
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
   work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
   upstream issue `jpt4/as#1` records the permission blocker and fork handoff.

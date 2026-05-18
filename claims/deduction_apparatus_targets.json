@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "target_set_id": "as-deduction-apparatus-target-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First checked AS deduction-apparatus target selection. This chooses the current predicate-result proof-certificate checker for the executable substrate surfaces without claiming Hilbert completeness, tableau proof search, arithmetized proof predicates, or self-justification.",
+  "formal_codebook_path": "language/formal_codebook.json",
+  "willard_anchor_ids": [
+    "W2011-D3.4-GENERIC-CONFIGURATION",
+    "W2016-D3.2-HILBERT-STYLE",
+    "W2016-D3.4-SELF-JUSTIFYING-CONFIGURATION",
+    "W2020-D3.2-SELF-JUSTIFYING-GENAC",
+    "W2020-SEC4-TAB-XTAB-TAB1",
+    "W2020-T4.4-T4.5-LEM-BOUNDARY"
+  ],
+  "targets": [
+    {
+      "target_id": "AS-DEDUCTION-APPARATUS-PREDICATE-RESULT",
+      "apparatus_id": "as-local-predicate-result-proof-certificate-checker",
+      "family": "as-local-certificate-checker",
+      "rule": "predicate-result",
+      "status": "target-selected-not-self-justifying",
+      "proof_code_status": "not-arithmetized-in-formal-codebook",
+      "selected_for": [
+        "transition",
+        "transition-chain",
+        "network-sequence"
+      ],
+      "excluded_apparatuses": [
+        "hilbert-style",
+        "semantic-tableau",
+        "xtab",
+        "tab-1"
+      ],
+      "non_claims": [
+        "no theorem prover",
+        "no Hilbert-style completeness claim",
+        "no semantic-tableau proof search",
+        "no Tab-1 apparatus",
+        "no arithmetized proof predicate",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Construct fixed-point self-reference over the selected Level-1 consistency target before attempting any self-consistency claim."
+    }
+  ],
+  "certificate_surfaces": [
+    {
+      "surface_id": "transition",
+      "language_path": "language/transition_claim_language.json",
+      "claims_path": "claims/transition_claims.json",
+      "certificates_path": "claims/proof_certificates.json",
+      "required_rule": "predicate-result"
+    },
+    {
+      "surface_id": "transition-chain",
+      "language_path": "language/transition_chain_claim_language.json",
+      "claims_path": "claims/transition_chain_claims.json",
+      "certificates_path": "claims/transition_chain_proof_certificates.json",
+      "required_rule": "predicate-result"
+    },
+    {
+      "surface_id": "network-sequence",
+      "language_path": "language/network_sequence_claim_language.json",
+      "claims_path": "claims/network_sequence_claims.json",
+      "certificates_path": "claims/network_sequence_proof_certificates.json",
+      "required_rule": "predicate-result"
+    }
+  ]
+}

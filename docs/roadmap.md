@@ -4723,3 +4723,31 @@ Deliverables:
 Status: accepted in `docs/adr/0229-consistency-level-target.md`.
 Implemented in `autarkic_systems/consistency_level.py`, with tests in
 `tests/test_consistency_level_target.py`.
+
+## ADR-0230: Deduction Apparatus Target
+
+Goal: remove the deduction-apparatus selection blocker from the
+formal-confidence target without claiming self-justification or a theorem
+prover.
+
+Deliverables:
+
+- `claims/deduction_apparatus_targets.json` selecting the AS-local
+  `predicate-result` proof-certificate checker;
+- references to transition, transition-chain, and network-sequence
+  certificate surfaces;
+- Willard generic-configuration, Hilbert-style, self-justifying
+  configuration, GenAC, tableau, and excluded-middle boundary anchors;
+- rejection for unknown Willard anchors, missing certificate surfaces,
+  non-`predicate-result` proof rules, Hilbert/tableau family overclaims, and
+  statuses that claim self-justification;
+- `autarkic_systems.deduction_apparatus` text/JSON CLI validation;
+- formal-confidence target narrowed to the new deduction-apparatus artifact
+  while still blocked on fixed-point self-reference; and
+- no Hilbert deduction, semantic tableaux, Tab-1, proof search, arithmetized
+  proof predicate, fixed-point lemma, theorem prover, runtime behavior,
+  command semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0230-deduction-apparatus-target.md`.
+Implemented in `autarkic_systems/deduction_apparatus.py`, with tests in
+`tests/test_deduction_apparatus_target.py`.

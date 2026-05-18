@@ -426,8 +426,11 @@ surface with `delta0`, `pi1`, `sigma1`, and placeholder-only proof objects.
 ADR-0227 adds `language/formal_codebook.json`, a first tagged natural-number
 codebook over that syntax and placeholder proof-line shells. IS(A),
 parser/evaluator semantics, tableaux syntax, fixed-point self-reference, and
-deduction syntax remain open. ADR-0228 adds capture-avoiding substitution
-examples over the codebook nodes.
+full deduction syntax remain open. ADR-0228 adds capture-avoiding substitution
+examples over the codebook nodes. ADR-0230 selects the current AS-local
+`predicate-result` proof-certificate checker as a checked deduction-apparatus
+target for the executable substrate surfaces, without claiming Hilbert,
+tableau, or arithmetized proof-predicate machinery.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -453,8 +456,10 @@ round-trip encoder/decoder for terms, formulae, sentences, and placeholder
 proof-line shells. ADR-0228 removes the substitution blocker by adding checked
 capture-avoiding substitution examples over those codebook nodes. ADR-0229
 removes the consistency-level selection blocker by selecting Level-1
-consistency as the first target notion. The remaining blockers are fixed-point
-self-reference and deduction-apparatus selection.
+consistency as the first target notion. ADR-0230 removes the
+deduction-apparatus selection blocker by selecting the AS-local
+`predicate-result` certificate checker as the current apparatus target. The
+remaining blocker is fixed-point self-reference.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

@@ -1,7 +1,7 @@
 # Formal Confidence Target
 
 Status: checked target boundary with arithmetic syntax, codebook, substitution,
-and consistency-level target, 2026-05-18.
+consistency-level target, and deduction-apparatus target, 2026-05-18.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -34,8 +34,11 @@ placeholder proof lines. ADR-0228 adds
 `language/formal_substitution_examples.json`, so capture-avoiding substitution
 examples now validate against those codes. ADR-0229 adds
 `claims/consistency_level_targets.json`, so Level-1 consistency is selected as
-the first target notion. The target remains blocked on a fixed-point
-self-reference construction and deduction-apparatus work.
+the first target notion. ADR-0230 adds
+`claims/deduction_apparatus_targets.json`, so the AS-local predicate-result
+proof-certificate checker is selected as the current deduction-apparatus
+target. The target remains blocked on a fixed-point self-reference
+construction.
 
 ## Current Target
 
@@ -55,8 +58,8 @@ object languages, `language/formal_arithmetic_language.json`,
 `language/formal_codebook.json`,
 `language/formal_substitution_examples.json`,
 `claims/consistency_level_targets.json`, and local predicate-result proof
-certificates. It also records the remaining blockers: fixed-point
-self-reference and deduction-apparatus selection.
+certificates through `claims/deduction_apparatus_targets.json`. It also
+records the remaining blocker: fixed-point self-reference.
 
 ## Run
 
@@ -71,6 +74,8 @@ python -m autarkic_systems.formal_substitution
 python -m autarkic_systems.formal_substitution --format json
 python -m autarkic_systems.consistency_level
 python -m autarkic_systems.consistency_level --format json
+python -m autarkic_systems.deduction_apparatus
+python -m autarkic_systems.deduction_apparatus --format json
 python -m autarkic_systems.project_status --format summary
 ```
 

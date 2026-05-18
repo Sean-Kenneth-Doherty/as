@@ -6,7 +6,7 @@
     {
       "target_id": "AS-FORMAL-CONFIDENCE-TARGET-001",
       "status": "blocked",
-      "summary": "Current AS validates Universal Cell transition, transition-chain, and network-sequence evidence through local predicate-result proof certificates, names a syntax-only Type-NS bounded arithmetic language, round-trips first proof-code shells, validates capture-avoiding substitution examples, and selects Level-1 consistency as the first target notion, but it does not yet implement a fixed-point self-reference construction, a deduction apparatus, or a self-consistency claim.",
+      "summary": "Current AS validates Universal Cell transition, transition-chain, and network-sequence evidence through local predicate-result proof certificates, names a syntax-only Type-NS bounded arithmetic language, round-trips first proof-code shells, validates capture-avoiding substitution examples, selects Level-1 consistency as the first target notion, and selects the AS-local predicate-result proof-certificate checker as the current deduction-apparatus target, but it does not yet implement a fixed-point self-reference construction or a self-consistency claim.",
       "willard_anchor_ids": [
         "W2011-D3.4-GENERIC-CONFIGURATION",
         "W2011-D5.6-LEVEL-K-CONSISTENCY",
@@ -19,17 +19,16 @@
         "language": "current AS transition, transition-chain, and network-sequence object languages plus language/formal_arithmetic_language.json; arithmetic surface is syntax-only Type-NS, not IS(A) and not a parser, evaluator, proof-code encoding, or theorem prover",
         "bounded_formula_class": "delta0",
         "axiom_basis": "current executable substrate claims and predicate-result proof certificates only",
-        "deduction_method": "as-local-predicate-result-proof-certificate-checker",
+        "deduction_method": "claims/deduction_apparatus_targets.json selects the AS-local predicate-result proof-certificate checker over transition, transition-chain, and network-sequence certificate surfaces as target-selected-not-self-justifying; no Hilbert completeness, tableau proof search, arithmetized proof predicate, or self-justification theorem is claimed",
         "proof_code_encoding": "language/formal_codebook.json via autarkic_systems.formal_code; tagged-prefix natural sequences round-trip terms, formulae, pi1/sigma1 sentence wrappers, and placeholder proof-line shells, but not substitution or deduction",
         "consistency_notion": "claims/consistency_level_targets.json selects Level-1 consistency over pi1/sigma1 sentence classes as target-selected-not-claimed; no consistency theorem is claimed",
         "self_reference": "language/formal_substitution_examples.json via autarkic_systems.formal_substitution; capture-avoiding free-variable substitution over encoded syntax exists, but no fixed-point self-reference construction is implemented",
         "substrate_bridge": "transition, chain, and network-sequence evidence bundles over Universal Cell witnesses"
       },
       "blocked_by": [
-        "self-reference-fixed-point",
-        "deduction-apparatus-selection"
+        "self-reference-fixed-point"
       ],
-      "next_as_action": "Implement fixed-point self-reference and select a deduction apparatus before claiming Willard-style self-consistency."
+      "next_as_action": "Implement fixed-point self-reference before claiming Willard-style self-consistency."
     }
   ]
 }

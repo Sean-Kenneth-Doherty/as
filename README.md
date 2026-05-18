@@ -42,6 +42,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution surface over formal codebook nodes.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
+- `docs/deduction-apparatus-target.md` records the AS-local
+  `predicate-result` proof-certificate checker as the current selected
+  deduction-apparatus target.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
 - `docs/transition-chain-claim-language.md` explains the first explicit object
@@ -389,7 +392,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   `AS-FORMAL-CONFIDENCE-TARGET-001`, a blocked Willard-style
   formal-confidence target over the current AS proof/evidence surface and the
   first checked syntax-only arithmetic language, proof-code, substitution, and
-  consistency-level target artifacts.
+  consistency-level and deduction-apparatus target artifacts.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -403,6 +406,11 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.consistency_level --format json` validates
   `claims/consistency_level_targets.json`, including the Level-1 target,
   `pi1`/`sigma1` sentence classes, and non-claim status.
+- `python -m autarkic_systems.deduction_apparatus --format json` validates
+  `claims/deduction_apparatus_targets.json`, including the selected
+  AS-local `predicate-result` proof-certificate checker and 52 checked
+  certificate steps across the transition, transition-chain, and
+  network-sequence surfaces.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, explicit blockers, and the
