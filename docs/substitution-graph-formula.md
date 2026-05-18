@@ -5,7 +5,9 @@ Status: checked formula schema, not a correctness proof, 2026-05-18.
 ADR-0248 adds `claims/substitution_graph_formula_candidates.json` and
 `autarkic_systems/substitution_graph_formula.py`. It records the first checked
 syntactic formula candidate for the ADR-0246 substitution graph target:
-`substitution_code(x,y) = z`.
+`substitution_code(x,y) = z`. ADR-0249 makes this candidate a structured
+dependency of the aggregate formal-confidence target, so formal-confidence
+validation fails closed if this surface drifts.
 
 ## Purpose
 

@@ -175,6 +175,10 @@
   `4815`; it does not prove formula correctness, substitution
   representability, the diagonal lemma, a fixed-point equation, or
   self-consistency.
+- ADR-0249 makes `claims/substitution_graph_formula_candidates.json` a
+  structured fail-closed dependency of `autarkic_systems.formal_confidence`;
+  missing or invalid substitution graph formula references now reject
+  formal-confidence validation as `target-substitution-graph-formula`.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive
