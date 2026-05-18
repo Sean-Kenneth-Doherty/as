@@ -27,7 +27,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 15
+PROJECT_STATUS_SCHEMA_VERSION = 16
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -218,6 +218,37 @@ CHAIN_CLAIMS = {
     "claim_count": 2,
     "certificate_count": 2,
     "result_count": 4,
+}
+PROOF_RULE_AUDIT = {
+    "accepted": True,
+    "transition": {
+        "certificates_path": "claims/proof_certificates.json",
+        "accepted": True,
+        "step_count": 40,
+        "rule_counts": {
+            "manifest-example": 0,
+            "predicate-result": 40,
+        },
+        "failed_subjects": [],
+    },
+    "chain": {
+        "certificates_path": "claims/transition_chain_proof_certificates.json",
+        "accepted": True,
+        "step_count": 9,
+        "rule_counts": {
+            "manifest-example": 0,
+            "predicate-result": 9,
+        },
+        "failed_subjects": [],
+    },
+    "combined": {
+        "step_count": 49,
+        "rule_counts": {
+            "manifest-example": 0,
+            "predicate-result": 49,
+        },
+        "failed_subjects": [],
+    },
 }
 STANDARD_SIGNAL_QUESTIONS = []
 STANDARD_SIGNAL_RESOLUTION_QUESTIONS = []
@@ -654,6 +685,7 @@ class ProjectStatusReportTests(unittest.TestCase):
                 },
             ],
         )
+        self.assertEqual(report["proof_rule_audit"], PROOF_RULE_AUDIT)
         self.assertTrue(report["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(report["transition_language"][key], expected)
@@ -793,6 +825,10 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn("Chain claim failures: none", text)
+        self.assertIn(
+            "Proof rule audit: predicate-result=49, manifest-example=0",
+            text,
+        )
         self.assertIn("Transition language: accepted (16 claims, 16 certificates)", text)
         self.assertIn("Chain language: accepted (2 claims, 2 certificates)", text)
         self.assertIn("Language failures: none", text)
@@ -958,6 +994,32 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Claim/proof failures:", text)
         self.assertIn(
             "Transition proof certificate failures: UC-FIXED-OUTPUT-PRESERVED",
+            text,
+        )
+
+    def test_proof_rule_audit_reports_missing_chain_certificate_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing = Path(tmp) / "missing_transition_chain_proof_certificates.json"
+
+            report = build_project_status_report(
+                chain_certificates_path=missing,
+            )
+
+        text = format_project_status_report(report)
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["proof_rule_audit"]["accepted"])
+        self.assertTrue(report["proof_rule_audit"]["transition"]["accepted"])
+        self.assertFalse(report["proof_rule_audit"]["chain"]["accepted"])
+        self.assertEqual(
+            report["proof_rule_audit"]["chain"]["failed_subjects"],
+            ["chain-certificate-file"],
+        )
+        self.assertEqual(
+            report["proof_rule_audit"]["combined"]["failed_subjects"],
+            ["chain-certificate-file"],
+        )
+        self.assertIn(
+            "Proof rule audit: rejected (chain-certificate-file)",
             text,
         )
 
@@ -1389,6 +1451,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             payload["chain_claims"]["results"][0]["subject"],
             "chain-language-manifest",
         )
+        self.assertEqual(payload["proof_rule_audit"], PROOF_RULE_AUDIT)
         self.assertTrue(payload["transition_language"]["accepted"])
         for key, expected in TRANSITION_LANGUAGE.items():
             self.assertEqual(payload["transition_language"][key], expected)

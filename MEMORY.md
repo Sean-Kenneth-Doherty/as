@@ -627,6 +627,10 @@
 - ADR-0187 adds `predicate-result` support to the transition-chain
   proof-certificate verifier and object language, then migrates both checked
   transition-chain proof certificates to predicate-named steps.
+- ADR-0188 bumps `autarkic_systems.project_status` to `schema_version: 16` and
+  adds `proof_rule_audit`, showing that the checked transition and
+  transition-chain proof-certificate manifests now contain 49
+  `predicate-result` steps and 0 `manifest-example` steps.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

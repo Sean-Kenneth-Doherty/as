@@ -41,6 +41,9 @@ from autarkic_systems.object_language import (
     validate_transition_claim_language_project,
 )
 from autarkic_systems.proof_certificates import (
+    MANIFEST_EXAMPLE_RULE,
+    PREDICATE_RESULT_RULE,
+    load_proof_certificates,
     proof_certificate_report_payload,
     validate_proof_certificate_project,
 )
@@ -59,7 +62,15 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 15
+PROJECT_STATUS_SCHEMA_VERSION = 16
+PROOF_RULE_TEXT_ORDER = (
+    PREDICATE_RESULT_RULE,
+    MANIFEST_EXAMPLE_RULE,
+)
+PROOF_RULE_BASELINE_ORDER = (
+    MANIFEST_EXAMPLE_RULE,
+    PREDICATE_RESULT_RULE,
+)
 BLOCKED_COMMAND_ORDER = (
     "standard-signal",
     "write-buf-zero",
@@ -92,6 +103,10 @@ def build_project_status_report(
         chain_claims_path,
         chain_certificates_path,
     )
+    proof_rule_audit = _proof_rule_audit_summary(
+        transition_certificates_path,
+        chain_certificates_path,
+    )
     transition_language = _transition_language_summary(
         transition_language_path,
         transition_claims_path,
@@ -109,6 +124,7 @@ def build_project_status_report(
         and transition_claims["accepted"]
         and transition_proof_certificates["accepted"]
         and chain_claims["accepted"]
+        and proof_rule_audit["accepted"]
         and transition_language["accepted"]
         and chain_language["accepted"]
         and not frontier["missing_source_statuses"]
@@ -122,6 +138,7 @@ def build_project_status_report(
         "transition_claims": transition_claims,
         "transition_proof_certificates": transition_proof_certificates,
         "chain_claims": chain_claims,
+        "proof_rule_audit": proof_rule_audit,
         "transition_language": transition_language,
         "chain_language": chain_language,
         "frontier": frontier,
@@ -137,6 +154,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     transition_claims = report["transition_claims"]
     transition_proof_certificates = report["transition_proof_certificates"]
     chain_claims = report["chain_claims"]
+    proof_rule_audit = report["proof_rule_audit"]
     transition_language = report["transition_language"]
     chain_language = report["chain_language"]
     frontier = report["frontier"]
@@ -170,6 +188,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         ),
         _chain_claim_text_line(chain_claims),
         *_chain_claim_failure_text_lines(chain_claims),
+        _proof_rule_audit_text_line(proof_rule_audit),
         _language_text_line("Transition language", transition_language),
         _language_text_line("Chain language", chain_language),
         *_language_failure_text_lines(transition_language, chain_language),
@@ -397,6 +416,100 @@ def _chain_claim_summary(
         "result_count": payload["result_count"],
         "results": payload["results"],
     }
+
+
+def _proof_rule_audit_summary(
+    transition_certificates_path: Path | str,
+    chain_certificates_path: Path | str,
+) -> dict[str, Any]:
+    transition = _proof_rule_source_summary(
+        transition_certificates_path,
+        missing_subject="certificate-file",
+        invalid_subject="proof-json",
+    )
+    chain = _proof_rule_source_summary(
+        chain_certificates_path,
+        missing_subject="chain-certificate-file",
+        invalid_subject="chain-json",
+    )
+    combined_counts = _combine_rule_counts(
+        transition["rule_counts"],
+        chain["rule_counts"],
+    )
+    failed_subjects = _unique_texts(
+        [*transition["failed_subjects"], *chain["failed_subjects"]]
+    )
+    return {
+        "accepted": transition["accepted"] and chain["accepted"],
+        "transition": transition,
+        "chain": chain,
+        "combined": {
+            "step_count": transition["step_count"] + chain["step_count"],
+            "rule_counts": combined_counts,
+            "failed_subjects": failed_subjects,
+        },
+    }
+
+
+def _proof_rule_source_summary(
+    certificates_path: Path | str,
+    missing_subject: str,
+    invalid_subject: str,
+) -> dict[str, Any]:
+    path = Path(certificates_path)
+    try:
+        certificates = load_proof_certificates(path)
+    except FileNotFoundError:
+        return _proof_rule_source_failure(path, missing_subject)
+    except Exception:
+        return _proof_rule_source_failure(path, invalid_subject)
+
+    rule_counts = _empty_proof_rule_counts()
+    step_count = 0
+    for certificate in certificates:
+        for step in certificate.steps:
+            step_count += 1
+            rule_counts[step.rule] = rule_counts.get(step.rule, 0) + 1
+    return {
+        "certificates_path": str(path),
+        "accepted": True,
+        "step_count": step_count,
+        "rule_counts": rule_counts,
+        "failed_subjects": [],
+    }
+
+
+def _proof_rule_source_failure(path: Path, subject: str) -> dict[str, Any]:
+    return {
+        "certificates_path": str(path),
+        "accepted": False,
+        "step_count": 0,
+        "rule_counts": _empty_proof_rule_counts(),
+        "failed_subjects": [subject],
+    }
+
+
+def _empty_proof_rule_counts() -> dict[str, int]:
+    return {rule: 0 for rule in PROOF_RULE_BASELINE_ORDER}
+
+
+def _combine_rule_counts(
+    first: dict[str, int],
+    second: dict[str, int],
+) -> dict[str, int]:
+    combined = _empty_proof_rule_counts()
+    for counts in (first, second):
+        for rule, count in counts.items():
+            combined[rule] = combined.get(rule, 0) + count
+    return combined
+
+
+def _unique_texts(values: list[str]) -> list[str]:
+    unique: list[str] = []
+    for value in values:
+        if value not in unique:
+            unique.append(value)
+    return unique
 
 
 def _transition_language_summary(
@@ -963,6 +1076,19 @@ def _chain_claim_failure_text_lines(summary: dict[str, Any]) -> list[str]:
     if not failed_subjects:
         return ["Chain claim failures: none"]
     return [f"Chain claim failures: {', '.join(failed_subjects)}"]
+
+
+def _proof_rule_audit_text_line(summary: dict[str, Any]) -> str:
+    if not summary["accepted"]:
+        failed_subjects = summary["combined"]["failed_subjects"]
+        subjects = ", ".join(failed_subjects) if failed_subjects else "unknown"
+        return f"Proof rule audit: rejected ({subjects})"
+
+    rule_counts = summary["combined"]["rule_counts"]
+    rendered_counts = ", ".join(
+        f"{rule}={rule_counts.get(rule, 0)}" for rule in PROOF_RULE_TEXT_ORDER
+    )
+    return f"Proof rule audit: {rendered_counts}"
 
 
 def _language_failure_text_lines(

@@ -58,6 +58,7 @@ The text report names:
 - claim/proof failed subjects when either lower surface is rejected;
 - transition-chain claim accepted or rejected state and certificate count;
 - transition-chain claim failed subjects when that surface is rejected;
+- proof-rule audit counts for checked transition and chain proof certificates;
 - transition language accepted or rejected state and claim/certificate counts;
 - chain language accepted or rejected state and claim/certificate counts;
 - language failed subjects when a language summary is rejected;
@@ -75,7 +76,7 @@ The text report names:
 - the safe next slice from the source-status records.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 15`. If a registry file is missing, the corresponding registry
+`schema_version: 16`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -256,6 +257,9 @@ snapshot in `sources/standard_signal_source_review_status.json`, and changes
 the remaining safe-next fields to a `no-` prefixed guard. Project status still
 reports `standard-signal` as blocked, but the aggregate safe next slice now
 renders as `none` while preserving project status `schema_version: 15`.
+ADR-0188 adds a `proof_rule_audit` JSON summary and `Proof rule audit:` text
+line over the checked transition and transition-chain proof-certificate
+manifests, bumping project status to `schema_version: 16`.
 
 ## Boundary
 

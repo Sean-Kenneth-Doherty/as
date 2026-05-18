@@ -4044,3 +4044,24 @@
   language manifests, `compileall`, `git diff --check`, a direct no
   `manifest-example` chain-certificate guard, and `python -m unittest discover`
   passed; the full suite ran 788 tests.
+
+## 2026-05-18 - Proof Rule Status Summary
+
+- Added ADR-0188 to make the checked proof-certificate rule mix visible from
+  aggregate project status.
+- Added red project-status tests before implementation. The focused red run
+  executed 74 tests and failed because status still reported
+  `schema_version: 15`, had no `proof_rule_audit` JSON payload, and did not
+  render a proof-rule text line.
+- Updated `autarkic_systems/project_status.py` so project status loads the
+  checked transition and transition-chain certificate manifests through the
+  existing proof-certificate loader, counts proof steps by rule, reports
+  transition, chain, and combined counts, and rejects missing or malformed audit
+  sources with source-specific failed subjects.
+- Bumped project status to `schema_version: 16` and added the text line
+  `Proof rule audit: predicate-result=49, manifest-example=0` for the current
+  checked manifests.
+- Focused green verification passed 74 tests. The text and JSON project-status
+  commands accepted the updated surface. JSON parsing for both checked
+  proof-certificate manifests, `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 789 tests.

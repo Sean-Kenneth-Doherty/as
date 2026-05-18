@@ -282,8 +282,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/project_status.py` renders one operator-facing report over
   the transition evidence registry, chain evidence registry, base
   claim/proof/language surfaces, transition-chain claim/language surfaces, and
-  the live source-status frontier for blocked command-token semantics and
-  their resolution-question IDs.
+  the checked proof-rule audit, plus the live source-status frontier for
+  blocked command-token semantics and their resolution-question IDs.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -335,7 +335,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   transition claim examples accepted with 16 claims and 40 matched examples,
   transition proof certificates accepted with 16 claims and 16 certificates,
   transition-chain claims accepted with 2 claims, 9 examples, and 2
-  certificates,
+  certificates, a proof-rule audit showing 49 checked `predicate-result` steps
+  and 0 checked `manifest-example` steps,
   transition language accepted with 16 claims and 16 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition and
   chain registry bundle entries, and the current blocked `standard-signal`
@@ -377,7 +378,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `Execution readiness:` text section. Completed safe-next items whose
   source-status strings begin with `no-` are treated as guards rather than
   active aggregate next slices, so the current report renders `Safe next
-  slice: none` while `standard-signal` remains blocked.
+  slice: none` while `standard-signal` remains blocked. Schema version `16`
+  adds the proof-rule audit to JSON/text so the checked transition and chain
+  proof-certificate rule mix is visible from project status.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as

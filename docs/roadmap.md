@@ -3829,3 +3829,24 @@ Status: accepted in `docs/adr/0187-chain-predicate-result-certificates.md`.
 Implemented in the chain proof-certificate verifier, chain object language,
 chain proof-certificate manifest, focused chain/project-status tests, and chain
 claim/language summary docs.
+
+## ADR-0188: Proof Rule Status Summary
+
+Goal: make the checked proof-certificate rule mix visible from aggregate
+project status.
+
+Deliverables:
+
+- `proof_rule_audit` in project-status JSON;
+- transition, chain, and combined proof-step counts by rule;
+- default status text rendering of the accepted combined audit as
+  `Proof rule audit: predicate-result=49, manifest-example=0`;
+- source-specific rejected audit summaries when certificate manifests cannot be
+  loaded; and
+- no changes to transition behavior, claims, proof certificates, evidence
+  bundles, source-status records, or blocked frontier semantics.
+
+Status: accepted in `docs/adr/0188-proof-rule-status-summary.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py` and summary docs in
+`docs/project-status-report.md`.
