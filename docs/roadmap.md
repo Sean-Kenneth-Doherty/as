@@ -5334,3 +5334,29 @@ Status: accepted in
 `docs/adr/0253-formal-confidence-substitution-graph-correctness-dependency.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0254: Substitution Graph Correctness Cases
+
+Goal: decompose the substitution graph correctness target into explicit open
+proof cases, each tied to the checked dependency surface it will need.
+
+Deliverables:
+
+- `claims/substitution_graph_correctness_cases.json` with five open proof
+  cases;
+- `autarkic_systems.substitution_graph_correctness_cases` validation that
+  checks correctness-target, codebook, quotation-term, formal-substitution,
+  formula-candidate, and substitution-representability dependencies;
+- text/JSON report output for case kind, dependency coverage, and remaining
+  future work;
+- fail-closed rejection for unknown correctness targets, missing case
+  dependencies, missing non-claims, and proved-status overclaims; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, arithmetized proof predicate, theorem
+  prover, runtime behavior, command semantics, evidence bundle, or GitHub
+  submission logic changes.
+
+Status: accepted in
+`docs/adr/0254-substitution-graph-correctness-cases.md`. Implemented in
+`autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
+`tests/test_substitution_graph_correctness_cases.py`.

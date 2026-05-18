@@ -5464,3 +5464,20 @@
   `target-substitution-graph-correctness` on failure.
 - Focused formal-confidence/project-status tests passed 106 tests. The
   formal-confidence target remains blocked on fixed-point construction.
+
+## 2026-05-18 - Substitution Graph Correctness Cases
+
+- Added ADR-0254 to decompose the substitution graph correctness target into
+  explicit open proof cases.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_correctness_cases` and
+  `claims/substitution_graph_correctness_cases.json` did not exist.
+- Added `claims/substitution_graph_correctness_cases.json` with five cases:
+  codebook round-trip, quotation-term closure, meta-substitution semantics,
+  formula-schema relation, and diagonal-witness composition.
+- Added `autarkic_systems/substitution_graph_correctness_cases.py`, validating
+  the correctness target, formal codebook, quotation-term examples,
+  formal-substitution examples, formula candidate, substitution witness,
+  dependency lists, future work, and non-claims.
+- Focused substitution-graph correctness-case tests passed 12 tests. This
+  creates a proof-case map without proving formula correctness.

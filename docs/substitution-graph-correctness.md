@@ -7,7 +7,8 @@ ADR-0252 adds `claims/substitution_graph_correctness_targets.json` and
 obligation that the checked delta0 formula schema must satisfy before the
 diagonal construction can depend on the substitution graph route. ADR-0253
 makes this proof target a fail-closed dependency of aggregate
-formal-confidence validation.
+formal-confidence validation. ADR-0254 decomposes this target into open proof
+cases for the next proof work.
 
 ## Purpose
 
@@ -47,9 +48,16 @@ The validator checks that:
 - required future work and non-claims are explicit; and
 - overclaiming statuses fail closed.
 
+ADR-0254 adds a companion case validator:
+
+```sh
+python -m autarkic_systems.substitution_graph_correctness_cases
+python -m autarkic_systems.substitution_graph_correctness_cases --format json
+```
+
 ## Boundary
 
 This is not a formula correctness proof, not a substitution representability
 proof, not a diagonal lemma, not a fixed-point equation proof, and not a
-self-consistency theorem. It is a checked theorem target for the next proof
-step.
+self-consistency theorem. It is a checked theorem target and case map for the
+next proof step.

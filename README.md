@@ -72,6 +72,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-graph-correctness.md` records the checked proof target
   that binds the graph target, formula schema, and finite examples while
   leaving the correctness proof open.
+- `docs/substitution-graph-correctness-cases.md` records five open proof cases
+  for the substitution graph correctness target while leaving every case
+  unproved.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -429,6 +432,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/substitution_graph_correctness.py` validates and runs the
   checked correctness proof target binding the graph target, formula schema,
   and finite evaluation examples while keeping the proof obligation open.
+- `autarkic_systems/substitution_graph_correctness_cases.py` validates and
+  runs the open case decomposition for that correctness target, tying each
+  case to its checked dependency surface without claiming proof.
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, substitution surface, and complement surface without
@@ -547,6 +553,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_correctness_targets.json`, including
   the checked proof target tying the graph target, formula schema, and finite
   examples together.
+- `python -m autarkic_systems.substitution_graph_correctness_cases --format json`
+  validates `claims/substitution_graph_correctness_cases.json`, including the
+  five open proof cases for the substitution graph correctness target.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct

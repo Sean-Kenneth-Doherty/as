@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "case_set_id": "as-substitution-graph-correctness-cases-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Open proof-case decomposition for the substitution graph correctness target. These cases identify the checked dependencies needed for a future correctness proof without claiming that any case has been proved.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "correctness_targets_path": "claims/substitution_graph_correctness_targets.json",
+  "formal_substitution_examples_path": "language/formal_substitution_examples.json",
+  "quotation_term_examples_path": "language/formal_quotation_term_examples.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "cases": [
+    {
+      "case_id": "AS-SUBST-GRAPH-CORRECTNESS-CODEBOOK-ROUNDTRIP",
+      "case_kind": "codebook-roundtrip",
+      "correctness_target_id": "AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET",
+      "status": "proof-case-open",
+      "required_dependency_subjects": [
+        "correctness_target",
+        "codebook"
+      ],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove that every code in the substitution graph domain round-trips through the checked codebook before relying on decoded graph inputs."
+    },
+    {
+      "case_id": "AS-SUBST-GRAPH-CORRECTNESS-QUOTATION-TERM-CLOSURE",
+      "case_kind": "quotation-term-closure",
+      "correctness_target_id": "AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET",
+      "status": "proof-case-open",
+      "required_dependency_subjects": [
+        "correctness_target",
+        "codebook",
+        "quotation_term"
+      ],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove that argument-code quotation always yields the closed sequence term used by the substitution graph evaluator."
+    },
+    {
+      "case_id": "AS-SUBST-GRAPH-CORRECTNESS-META-SUBSTITUTION-SEMANTICS",
+      "case_kind": "meta-substitution-semantics",
+      "correctness_target_id": "AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET",
+      "status": "proof-case-open",
+      "required_dependency_subjects": [
+        "correctness_target",
+        "formal_substitution"
+      ],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove that the meta-level substitution helper matches the intended capture-avoiding substitution semantics over the full node vocabulary."
+    },
+    {
+      "case_id": "AS-SUBST-GRAPH-CORRECTNESS-FORMULA-SCHEMA-RELATION",
+      "case_kind": "formula-schema-relation",
+      "correctness_target_id": "AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET",
+      "status": "proof-case-open",
+      "required_dependency_subjects": [
+        "correctness_target",
+        "formula_candidate"
+      ],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove that the checked formula schema states exactly the substitution graph relation for all graph inputs in scope."
+    },
+    {
+      "case_id": "AS-SUBST-GRAPH-CORRECTNESS-DIAGONAL-WITNESS-COMPOSITION",
+      "case_kind": "diagonal-witness-composition",
+      "correctness_target_id": "AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET",
+      "status": "proof-case-open",
+      "required_dependency_subjects": [
+        "correctness_target",
+        "substitution_representability"
+      ],
+      "required_future_work": [
+        "formula-correctness-proof",
+        "substitution-representability-proof",
+        "diagonal-lemma-proof",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no formula correctness proof",
+        "no substitution representability proof",
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Prove that the graph correctness result composes with the checked diagonal witness before promoting the witness to representability."
+    }
+  ]
+}
