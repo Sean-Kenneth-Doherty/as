@@ -1,0 +1,613 @@
+"""Object-language validation for network-sequence claims."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from dataclasses import dataclass, replace
+from pathlib import Path
+from typing import Any, Iterable, get_args
+
+from autarkic_systems import network_sequence_predicates
+from autarkic_systems.network_sequence import (
+    SequenceStatus,
+    execute_post_handoff_signal_witness,
+)
+from autarkic_systems.network_sequence_claims import (
+    NetworkSequenceClaim,
+    load_network_sequence_claims,
+)
+from autarkic_systems.proof_certificates import (
+    ClaimCertificate,
+    MANIFEST_EXAMPLE_RULE,
+    PREDICATE_RESULT_RULE,
+    load_proof_certificates,
+)
+from autarkic_systems.transition_chains import ChainStatus
+from autarkic_systems.universal_cell import (
+    Cell,
+    Signal,
+    Status,
+    VALID_AUTOMAIL,
+    VALID_MEMORY,
+    VALID_ROLES,
+    VALID_SELF_MAILBOX,
+)
+
+
+REQUIRED_SEQUENCE_SYNTAX_CLASSES = (
+    "terms",
+    "sequence_formulae",
+    "sequence_sentences",
+    "proof_objects",
+    "substrate_sequence_claims",
+)
+
+REQUIRED_TERM_KEYS = (
+    "roles",
+    "memory",
+    "signals",
+    "automail",
+    "command_messages",
+    "transition_statuses",
+    "chain_statuses",
+    "sequence_statuses",
+    "cell_fields",
+)
+
+REQUIRED_CELL_FIELDS = (
+    "role",
+    "memory",
+    "upstream",
+    "input",
+    "output",
+    "automail",
+    "self_mailbox",
+    "control",
+    "buffer",
+)
+
+
+@dataclass(frozen=True)
+class NetworkSequenceClaimLanguage:
+    """Loaded manifest for the network-sequence claim object language."""
+
+    language_id: str
+    syntax_classes: dict[str, Any]
+
+    def without_syntax_class(self, class_name: str) -> "NetworkSequenceClaimLanguage":
+        """Return a copy with one class removed for negative validation tests."""
+
+        classes = dict(self.syntax_classes)
+        classes.pop(class_name, None)
+        return replace(self, syntax_classes=classes)
+
+    def with_syntax_class(
+        self,
+        class_name: str,
+        value: Any,
+    ) -> "NetworkSequenceClaimLanguage":
+        """Return a copy with one class replaced for focused tests."""
+
+        classes = dict(self.syntax_classes)
+        classes[class_name] = value
+        return replace(self, syntax_classes=classes)
+
+
+@dataclass(frozen=True)
+class SequenceLanguageValidation:
+    """One network-sequence language validation result."""
+
+    subject: str
+    accepted: bool
+    detail: str
+
+
+@dataclass(frozen=True)
+class NetworkSequenceClaimLanguageProjectReport:
+    """Operator-facing validation report for the sequence claim language."""
+
+    language_path: Path
+    claims_path: Path
+    certificates_path: Path
+    language_id: str
+    claim_count: int
+    certificate_count: int
+    results: tuple[SequenceLanguageValidation, ...]
+
+
+def load_network_sequence_claim_language(
+    path: Path | str,
+) -> NetworkSequenceClaimLanguage:
+    """Load the network-sequence claim language manifest."""
+
+    language_path = Path(path)
+    data = json.loads(language_path.read_text(encoding="utf-8"))
+    return NetworkSequenceClaimLanguage(
+        language_id=_required_text(data, "language_id"),
+        syntax_classes=_required_mapping(data, "syntax_classes"),
+    )
+
+
+def validate_network_sequence_claim_language_project(
+    language_path: Path | str = "language/network_sequence_claim_language.json",
+    claims_path: Path | str = "claims/network_sequence_claims.json",
+    certificates_path: Path | str = "claims/network_sequence_proof_certificates.json",
+) -> NetworkSequenceClaimLanguageProjectReport:
+    """Validate the sequence claim language and its checked-in surface."""
+
+    language_manifest = Path(language_path)
+    claim_manifest = Path(claims_path)
+    certificate_manifest = Path(certificates_path)
+    language = load_network_sequence_claim_language(language_manifest)
+    claims = load_network_sequence_claims(claim_manifest)
+    certificates = load_proof_certificates(certificate_manifest)
+    results = tuple(
+        [
+            *validate_sequence_language_manifest(language),
+            *validate_sequence_claim_surface(language, claims, certificates),
+        ]
+    )
+    return NetworkSequenceClaimLanguageProjectReport(
+        language_path=language_manifest,
+        claims_path=claim_manifest,
+        certificates_path=certificate_manifest,
+        language_id=language.language_id,
+        claim_count=len(claims),
+        certificate_count=len(certificates),
+        results=results,
+    )
+
+
+def format_network_sequence_claim_language_report(
+    report: NetworkSequenceClaimLanguageProjectReport,
+) -> str:
+    """Format a concise operator report for the sequence claim language."""
+
+    lines = [f"Network sequence claim language: {report.language_id}"]
+    for result in report.results:
+        prefix = "OK" if result.accepted else "FAIL"
+        lines.append(f"{prefix} {result.subject}: {result.detail}")
+    return "\n".join(lines)
+
+
+def network_sequence_claim_language_report_payload(
+    report: NetworkSequenceClaimLanguageProjectReport,
+) -> dict[str, Any]:
+    """Return a structured sequence claim language validation payload."""
+
+    return {
+        "accepted": all(result.accepted for result in report.results),
+        "language_id": report.language_id,
+        "language_path": str(report.language_path),
+        "claims_path": str(report.claims_path),
+        "certificates_path": str(report.certificates_path),
+        "claim_count": report.claim_count,
+        "certificate_count": report.certificate_count,
+        "result_count": len(report.results),
+        "results": [
+            {
+                "subject": result.subject,
+                "accepted": result.accepted,
+                "detail": result.detail,
+            }
+            for result in report.results
+        ],
+    }
+
+
+def run_network_sequence_claim_language_cli(argv: list[str] | None = None) -> int:
+    """Run network-sequence claim object-language validation."""
+
+    parser = argparse.ArgumentParser(
+        prog="python -m autarkic_systems.network_sequence_object_language",
+        description="Validate the AS network-sequence claim language surface.",
+    )
+    parser.add_argument(
+        "--language",
+        default="language/network_sequence_claim_language.json",
+        help="Path to the network-sequence claim language manifest.",
+    )
+    parser.add_argument(
+        "--claims",
+        default="claims/network_sequence_claims.json",
+        help="Path to the network-sequence claim manifest.",
+    )
+    parser.add_argument(
+        "--certificates",
+        default="claims/network_sequence_proof_certificates.json",
+        help="Path to the network-sequence proof certificate manifest.",
+    )
+    parser.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format for the validation report.",
+    )
+    args = parser.parse_args(argv)
+
+    report = validate_network_sequence_claim_language_project(
+        language_path=args.language,
+        claims_path=args.claims,
+        certificates_path=args.certificates,
+    )
+    if args.format == "json":
+        print(
+            json.dumps(
+                network_sequence_claim_language_report_payload(report),
+                sort_keys=True,
+            )
+        )
+    else:
+        print(format_network_sequence_claim_language_report(report))
+    return 0 if all(result.accepted for result in report.results) else 1
+
+
+def validate_sequence_language_manifest(
+    language: NetworkSequenceClaimLanguage,
+) -> list[SequenceLanguageValidation]:
+    """Validate the sequence language manifest itself."""
+
+    results: list[SequenceLanguageValidation] = []
+    for class_name in REQUIRED_SEQUENCE_SYNTAX_CLASSES:
+        if class_name not in language.syntax_classes:
+            results.append(
+                _rejected(class_name, f"missing syntax class: {class_name}")
+            )
+        else:
+            results.append(_accepted(class_name, "syntax class present"))
+
+    terms = language.syntax_classes.get("terms")
+    if isinstance(terms, dict):
+        results.extend(_validate_term_class(terms))
+    formulae = language.syntax_classes.get("sequence_formulae")
+    if isinstance(formulae, dict):
+        results.extend(_validate_formula_class(formulae))
+    sentences = language.syntax_classes.get("sequence_sentences")
+    if isinstance(sentences, dict):
+        results.extend(_validate_sentence_class(sentences))
+    proof_objects = language.syntax_classes.get("proof_objects")
+    if isinstance(proof_objects, dict):
+        results.extend(_validate_proof_object_class(proof_objects))
+    substrate_claims = language.syntax_classes.get("substrate_sequence_claims")
+    if isinstance(substrate_claims, dict):
+        results.extend(_validate_substrate_claim_class(substrate_claims))
+
+    return results
+
+
+def validate_sequence_claim_surface(
+    language: NetworkSequenceClaimLanguage,
+    claims: Iterable[NetworkSequenceClaim],
+    certificates: Iterable[ClaimCertificate],
+) -> list[SequenceLanguageValidation]:
+    """Validate sequence claims and certificates against the sequence language."""
+
+    results: list[SequenceLanguageValidation] = []
+    allowed_predicates = _allowed_set(
+        language,
+        "sequence_formulae",
+        "predicate_symbols",
+    )
+    claim_prefixes = tuple(
+        _allowed_list(language, "sequence_sentences", "claim_id_prefixes")
+    )
+    allowed_rules = _allowed_set(language, "proof_objects", "rules")
+    claim_by_id = {claim.claim_id: claim for claim in claims}
+
+    for claim in claim_by_id.values():
+        if claim_prefixes and not claim.claim_id.startswith(claim_prefixes):
+            results.append(
+                _rejected(claim.claim_id, "claim id does not match sentence prefix")
+            )
+            continue
+        if claim.predicate not in allowed_predicates:
+            results.append(
+                _rejected(
+                    claim.claim_id,
+                    f"unknown sequence predicate: {claim.predicate}",
+                )
+            )
+            continue
+
+        sequence_issue = _first_sequence_claim_issue(language, claim)
+        if sequence_issue is not None:
+            results.append(_rejected(claim.claim_id, sequence_issue))
+            continue
+        results.append(_accepted(claim.claim_id, "sequence claim sentence is in language"))
+
+    for certificate in certificates:
+        if certificate.claim_id not in claim_by_id:
+            results.append(
+                _rejected(
+                    certificate.claim_id,
+                    "proof object cites unknown sequence claim",
+                )
+            )
+            continue
+        for step in certificate.steps:
+            if step.rule not in allowed_rules:
+                results.append(
+                    _rejected(
+                        certificate.claim_id,
+                        f"unknown proof object rule: {step.rule}",
+                    )
+                )
+                break
+        else:
+            results.append(
+                _accepted(certificate.claim_id, "proof object is in language")
+            )
+
+    return results
+
+
+def _validate_term_class(terms: dict[str, Any]) -> list[SequenceLanguageValidation]:
+    results: list[SequenceLanguageValidation] = []
+    for key in REQUIRED_TERM_KEYS:
+        if key not in terms:
+            results.append(_rejected(f"terms.{key}", f"missing term key: {key}"))
+        else:
+            results.append(_accepted(f"terms.{key}", "term key present"))
+
+    results.append(_same_set("terms.roles", terms.get("roles"), VALID_ROLES))
+    results.append(_same_set("terms.memory", terms.get("memory"), VALID_MEMORY))
+    results.append(_same_set("terms.signals", terms.get("signals"), get_args(Signal)))
+    results.append(_same_set("terms.automail", terms.get("automail"), VALID_AUTOMAIL))
+    results.append(
+        _same_set(
+            "terms.command_messages",
+            terms.get("command_messages"),
+            VALID_SELF_MAILBOX,
+        )
+    )
+    results.append(
+        _same_set(
+            "terms.transition_statuses",
+            terms.get("transition_statuses"),
+            get_args(Status),
+        )
+    )
+    results.append(
+        _same_set(
+            "terms.chain_statuses",
+            terms.get("chain_statuses"),
+            get_args(ChainStatus),
+        )
+    )
+    results.append(
+        _same_set(
+            "terms.sequence_statuses",
+            terms.get("sequence_statuses"),
+            get_args(SequenceStatus),
+        )
+    )
+    results.append(
+        _same_set("terms.cell_fields", terms.get("cell_fields"), REQUIRED_CELL_FIELDS)
+    )
+    return results
+
+
+def _validate_formula_class(
+    formulae: dict[str, Any],
+) -> list[SequenceLanguageValidation]:
+    predicates = formulae.get("predicate_symbols")
+    if not isinstance(predicates, list) or not predicates:
+        return [_rejected("sequence_formulae.predicate_symbols", "missing predicates")]
+
+    results: list[SequenceLanguageValidation] = []
+    for predicate in predicates:
+        if not isinstance(predicate, str):
+            results.append(
+                _rejected("sequence_formulae.predicate_symbols", "predicate is not text")
+            )
+        elif getattr(network_sequence_predicates, predicate, None) is None:
+            results.append(
+                _rejected(
+                    "sequence_formulae.predicate_symbols",
+                    f"unknown predicate implementation: {predicate}",
+                )
+            )
+        else:
+            results.append(
+                _accepted(
+                    "sequence_formulae.predicate_symbols",
+                    f"predicate implementation found: {predicate}",
+                )
+            )
+    return results
+
+
+def _validate_sentence_class(
+    sentences: dict[str, Any],
+) -> list[SequenceLanguageValidation]:
+    kinds = sentences.get("kinds")
+    prefixes = sentences.get("claim_id_prefixes")
+    results: list[SequenceLanguageValidation] = []
+    if not isinstance(kinds, list) or "network-sequence-claim" not in kinds:
+        results.append(
+            _rejected("sequence_sentences.kinds", "missing network-sequence-claim kind")
+        )
+    else:
+        results.append(
+            _accepted("sequence_sentences.kinds", "network-sequence-claim kind present")
+        )
+    if not isinstance(prefixes, list) or not prefixes:
+        results.append(
+            _rejected("sequence_sentences.claim_id_prefixes", "missing claim prefixes")
+        )
+    else:
+        results.append(
+            _accepted("sequence_sentences.claim_id_prefixes", "claim prefixes present")
+        )
+    return results
+
+
+def _validate_proof_object_class(
+    proof_objects: dict[str, Any],
+) -> list[SequenceLanguageValidation]:
+    rules = proof_objects.get("rules")
+    if not isinstance(rules, list):
+        return [_rejected("proof_objects.rules", "rules must be a list")]
+
+    results: list[SequenceLanguageValidation] = []
+    for rule in (MANIFEST_EXAMPLE_RULE, PREDICATE_RESULT_RULE):
+        if rule not in rules:
+            results.append(_rejected("proof_objects.rules", f"missing {rule} rule"))
+        else:
+            results.append(_accepted("proof_objects.rules", f"{rule} rule present"))
+    return results
+
+
+def _validate_substrate_claim_class(
+    substrate_claims: dict[str, Any],
+) -> list[SequenceLanguageValidation]:
+    results: list[SequenceLanguageValidation] = []
+    for key in ("claim_manifest", "certificate_manifest"):
+        if not isinstance(substrate_claims.get(key), str) or not substrate_claims[key]:
+            results.append(
+                _rejected(f"substrate_sequence_claims.{key}", f"missing {key}")
+            )
+        else:
+            results.append(
+                _accepted(f"substrate_sequence_claims.{key}", f"{key} present")
+            )
+    return results
+
+
+def _first_sequence_claim_issue(
+    language: NetworkSequenceClaimLanguage,
+    claim: NetworkSequenceClaim,
+) -> str | None:
+    sequence_statuses = _allowed_set(language, "terms", "sequence_statuses")
+    chain_statuses = _allowed_set(language, "terms", "chain_statuses")
+    transition_statuses = _allowed_set(language, "terms", "transition_statuses")
+    signals = _allowed_set(language, "terms", "signals")
+    for example in claim.examples:
+        sender_issue = _cell_issue(language, example.sender)
+        if sender_issue is not None:
+            return f"{example.name} sender has {sender_issue}"
+        recipient_issue = _cell_issue(language, example.recipient)
+        if recipient_issue is not None:
+            return f"{example.name} recipient has {recipient_issue}"
+        for item in example.followup_input:
+            if item not in signals:
+                return f"{example.name} has unknown follow-up signal: {item}"
+
+        witness = execute_post_handoff_signal_witness(
+            example.sender,
+            example.recipient,
+            followup_input=example.followup_input,
+        )
+        if witness.status not in sequence_statuses:
+            return f"{example.name} has unknown sequence status: {witness.status}"
+        if witness.delivery_witness.status not in chain_statuses:
+            return (
+                f"{example.name} delivery has unknown chain status: "
+                f"{witness.delivery_witness.status}"
+            )
+        if witness.recipient_before_followup is not None:
+            before_issue = _cell_issue(language, witness.recipient_before_followup)
+            if before_issue is not None:
+                return f"{example.name} recipient before follow-up has {before_issue}"
+        if witness.followup_result is not None:
+            if witness.followup_result.status not in transition_statuses:
+                return (
+                    f"{example.name} follow-up result has unknown transition status: "
+                    f"{witness.followup_result.status}"
+                )
+            result_issue = _cell_issue(language, witness.followup_result.cell)
+            if result_issue is not None:
+                return f"{example.name} follow-up result has {result_issue}"
+    return None
+
+
+def _cell_issue(language: NetworkSequenceClaimLanguage, cell: Cell) -> str | None:
+    roles = _allowed_set(language, "terms", "roles")
+    memory = _allowed_set(language, "terms", "memory")
+    automail = _allowed_set(language, "terms", "automail")
+    command_messages = _allowed_set(language, "terms", "command_messages")
+    signals = _allowed_set(language, "terms", "signals")
+    if cell.role not in roles:
+        return f"unknown role: {cell.role}"
+    if cell.memory not in memory:
+        return f"unknown memory: {cell.memory}"
+    if cell.automail not in automail:
+        return f"unknown automail: {cell.automail}"
+    if cell.self_mailbox not in command_messages:
+        return f"unknown self mailbox: {cell.self_mailbox}"
+    channels = (*cell.upstream, *cell.input, *cell.output, *cell.control, *cell.buffer)
+    for channel in channels:
+        if channel not in signals:
+            return f"unknown signal: {channel}"
+    return None
+
+
+def _allowed_set(
+    language: NetworkSequenceClaimLanguage,
+    class_name: str,
+    key: str,
+) -> set[Any]:
+    return set(_allowed_list(language, class_name, key))
+
+
+def _allowed_list(
+    language: NetworkSequenceClaimLanguage,
+    class_name: str,
+    key: str,
+) -> list[Any]:
+    class_value = language.syntax_classes.get(class_name)
+    if not isinstance(class_value, dict):
+        return []
+    values = class_value.get(key)
+    if not isinstance(values, list):
+        return []
+    return values
+
+
+def _same_set(
+    subject: str,
+    observed: Any,
+    expected: Iterable[Any],
+) -> SequenceLanguageValidation:
+    if not isinstance(observed, list):
+        return _rejected(subject, "value must be a list")
+    observed_set = set(observed)
+    expected_set = set(expected)
+    if observed_set != expected_set:
+        return _rejected(
+            subject,
+            "set mismatch: "
+            f"expected {_sorted_repr(expected_set)}, got {_sorted_repr(observed_set)}",
+        )
+    return _accepted(subject, "symbol set matches implementation")
+
+
+def _sorted_repr(values: Iterable[Any]) -> str:
+    return ", ".join(repr(value) for value in sorted(values, key=repr))
+
+
+def _accepted(subject: str, detail: str) -> SequenceLanguageValidation:
+    return SequenceLanguageValidation(subject=subject, accepted=True, detail=detail)
+
+
+def _rejected(subject: str, detail: str) -> SequenceLanguageValidation:
+    return SequenceLanguageValidation(subject=subject, accepted=False, detail=detail)
+
+
+def _required_text(item: dict[str, Any], key: str) -> str:
+    value = item.get(key)
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"required text field missing: {key}")
+    return value
+
+
+def _required_mapping(item: dict[str, Any], key: str) -> dict[str, Any]:
+    value = item.get(key)
+    if not isinstance(value, dict):
+        raise ValueError(f"required object field missing: {key}")
+    return value
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests.
+    raise SystemExit(run_network_sequence_claim_language_cli())

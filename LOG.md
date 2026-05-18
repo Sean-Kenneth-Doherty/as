@@ -4284,3 +4284,22 @@
   schema version `18` and accepted sequence claims. `compileall`,
   `git diff --check`, refreshed handoff, and `python -m unittest discover`
   passed; the full suite ran 848 tests.
+
+## 2026-05-18 - Network Sequence Object Language
+
+- Added ADR-0201 to make the network-sequence claim syntax explicit.
+- Added red object-language tests before implementation. The focused red run
+  failed because `autarkic_systems.network_sequence_object_language` and
+  `language/network_sequence_claim_language.json` did not exist.
+- Added `language/network_sequence_claim_language.json` and
+  `autarkic_systems/network_sequence_object_language.py`, validating required
+  syntax classes, roles, memory, signal vocabulary, automail, command messages,
+  transition statuses, chain statuses, sequence statuses, cell fields,
+  predicate symbols, sentence prefixes, proof-object rules, manifest pointers,
+  and the checked sequence claim/proof surface.
+- Focused green verification passed 12 sequence object-language tests.
+  Adjacent sequence object-language/claims/evidence tests passed 32 tests. The
+  sequence object-language JSON CLI reported accepted
+  `as-network-sequence-claim-v1` with one claim and one certificate.
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 860 tests.

@@ -269,6 +269,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   follow-up signal routes through the existing fixed-cell logic.
 - `autarkic_systems/network_sequence_claims.py` validates the first named claim
   and predicate-result proof certificate over that post-handoff signal witness.
+- `autarkic_systems/network_sequence_object_language.py` validates the first
+  network-sequence claim object language and checked sequence claim/proof
+  surface.
 - `autarkic_systems/network_sequence_evidence_bundle.py` validates the first
   evidence bundle and registry over the post-handoff signal witness claim,
   proof, executable witness, underlying delivery chain evidence, and
@@ -360,6 +363,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.network_sequence_claims --format json` validates
   the post-handoff signal claim and proof-certificate surface as
   machine-readable JSON.
+- `python -m autarkic_systems.network_sequence_object_language --format json`
+  validates the post-handoff network-sequence claim object language and checked
+  claim/proof surface as machine-readable JSON.
 - `python -m autarkic_systems.network_sequence_evidence_bundle --registry evidence/sequences/manifest.json --format json`
   validates the post-handoff network-sequence evidence-bundle registry as
   machine-readable JSON.

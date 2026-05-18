@@ -834,3 +834,7 @@
   project status as `sequence_claims`, includes sequence certificates in the
   proof-rule audit, adds `--sequence-claims` / `--sequence-certificates`, and
   bumps project status to `schema_version: 18`.
+- ADR-0201 adds `language/network_sequence_claim_language.json` and
+  `autarkic_systems.network_sequence_object_language`, making the
+  post-handoff sequence claim syntax explicit and validating the checked
+  sequence claim/proof surface against it without changing runtime behavior.

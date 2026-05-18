@@ -4078,3 +4078,24 @@ Deliverables:
 Status: accepted in `docs/adr/0200-project-status-sequence-claims.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and `tests/test_handoff_status.py`.
+
+## ADR-0201: Network Sequence Object Language
+
+Goal: make the network-sequence claim syntax explicit instead of leaving it
+implicit in Python and JSON conventions.
+
+Deliverables:
+
+- `language/network_sequence_claim_language.json`;
+- `autarkic_systems/network_sequence_object_language.py`;
+- text and JSON CLI validation;
+- checks for required syntax classes, term vocabulary, predicate symbols,
+  sentence shape, proof-object rules, and manifest pointers;
+- claim/proof surface validation against the language; and
+- no new runtime behavior, proof rules, evidence bundles, project-status
+  fields, scheduler, topology, timing, or command semantics.
+
+Status: accepted in `docs/adr/0201-network-sequence-object-language.md`.
+Implemented in `autarkic_systems/network_sequence_object_language.py`, with
+tests in `tests/test_network_sequence_object_language.py` and operator notes in
+`docs/network-sequence-claim-language.md`.
