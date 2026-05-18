@@ -10,15 +10,19 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
 
 DEFAULT_TRACKING_ISSUE_URL = "https://github.com/jpt4/as/issues/1"
+DEFAULT_REMOTE_REF_MAX_AGE_SECONDS = 86_400
+FORK_MAIN_REMOTE_REF = "refs/remotes/fork/main"
 
 
 GitRunner = Callable[[list[str]], str]
+Clock = Callable[[], float]
 
 
 @dataclass(frozen=True)
@@ -34,6 +38,7 @@ class GitHubSubmissionStatus:
     origin_main_short: str
     fork_main_commit: str
     fork_main_short: str
+    fork_main_ref_freshness: dict[str, Any]
     head_behind_origin_main_by: int
     head_ahead_origin_main_by: int
     tracking_issue_url: str
@@ -68,12 +73,20 @@ class GitHubSubmissionStatus:
 def build_github_submission_status(
     runner: GitRunner | None = None,
     tracking_issue_url: str = DEFAULT_TRACKING_ISSUE_URL,
+    clock: Clock = time.time,
+    remote_ref_max_age_seconds: int = DEFAULT_REMOTE_REF_MAX_AGE_SECONDS,
 ) -> GitHubSubmissionStatus:
     """Build a local GitHub submission report from git commands."""
 
     git = runner or _run_git
     origin_divergence = _parse_divergence(
         git(["rev-list", "--left-right", "--count", "origin/main...HEAD"])
+    )
+    fork_main_freshness = _remote_ref_freshness(
+        git,
+        ref=FORK_MAIN_REMOTE_REF,
+        clock=clock,
+        max_age_seconds=remote_ref_max_age_seconds,
     )
     return GitHubSubmissionStatus(
         branch=git(["branch", "--show-current"]),
@@ -85,6 +98,7 @@ def build_github_submission_status(
         origin_main_short=git(["rev-parse", "--short", "origin/main"]),
         fork_main_commit=git(["rev-parse", "fork/main"]),
         fork_main_short=git(["rev-parse", "--short", "fork/main"]),
+        fork_main_ref_freshness=fork_main_freshness,
         head_behind_origin_main_by=origin_divergence[0],
         head_ahead_origin_main_by=origin_divergence[1],
         tracking_issue_url=tracking_issue_url,
@@ -112,6 +126,7 @@ def github_submission_status_payload(
             "commit": report.fork_main_commit,
             "short": report.fork_main_short,
             "matches_head": report.fork_main_matches_head,
+            "remote_ref_freshness": report.fork_main_ref_freshness,
         },
         "origin_main": {
             "commit": report.origin_main_commit,
@@ -139,6 +154,7 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
         f"Branch: {report.branch}",
         f"HEAD: {report.head_short}",
         f"fork/main: {fork_line}",
+        _format_remote_ref_freshness(report.fork_main_ref_freshness),
         (
             "origin/main: HEAD ahead by "
             f"{report.head_ahead_origin_main_by} commits, behind by "
@@ -153,6 +169,7 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
 def run_github_submission_cli(
     argv: list[str] | None = None,
     runner: GitRunner | None = None,
+    clock: Clock = time.time,
 ) -> int:
     """Run the GitHub submission status CLI."""
 
@@ -171,11 +188,19 @@ def run_github_submission_cli(
         default="text",
         help="Output format for the submission status report.",
     )
+    parser.add_argument(
+        "--max-ref-age-seconds",
+        type=int,
+        default=DEFAULT_REMOTE_REF_MAX_AGE_SECONDS,
+        help="Maximum age for treating the local fork/main ref as fresh.",
+    )
     args = parser.parse_args(argv)
 
     report = build_github_submission_status(
         runner=runner,
         tracking_issue_url=args.tracking_issue,
+        clock=clock,
+        remote_ref_max_age_seconds=args.max_ref_age_seconds,
     )
     if args.format == "json":
         print(json.dumps(github_submission_status_payload(report), sort_keys=True))
@@ -200,6 +225,48 @@ def _parse_divergence(value: str) -> tuple[int, int]:
     if len(parts) != 2:
         raise ValueError(f"malformed git divergence count: {value!r}")
     return int(parts[0]), int(parts[1])
+
+
+def _remote_ref_freshness(
+    git: GitRunner,
+    ref: str,
+    clock: Clock,
+    max_age_seconds: int,
+) -> dict[str, Any]:
+    try:
+        updated_at = int(
+            git(["reflog", "show", "--date=unix", "-1", "--format=%cd", ref])
+        )
+    except Exception:
+        return {
+            "state": "unknown",
+            "checked_ref": ref,
+            "updated_at_unix": None,
+            "age_seconds": None,
+            "max_age_seconds": max_age_seconds,
+        }
+    age_seconds = max(0, int(clock()) - updated_at)
+    state = "fresh" if age_seconds <= max_age_seconds else "stale"
+    return {
+        "state": state,
+        "checked_ref": ref,
+        "updated_at_unix": updated_at,
+        "age_seconds": age_seconds,
+        "max_age_seconds": max_age_seconds,
+    }
+
+
+def _format_remote_ref_freshness(freshness: dict[str, Any]) -> str:
+    if freshness["state"] == "unknown":
+        return (
+            "fork/main freshness: unknown "
+            f"(max {freshness['max_age_seconds']}s)"
+        )
+    return (
+        f"fork/main freshness: {freshness['state']} "
+        f"({freshness['age_seconds']}s old, "
+        f"max {freshness['max_age_seconds']}s)"
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests.

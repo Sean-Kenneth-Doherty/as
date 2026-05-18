@@ -4113,3 +4113,19 @@
   accepted the current project status and GitHub submission state before this
   ADR was committed. Handoff text/JSON, `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 801 tests.
+
+## 2026-05-18 - Submission Ref Freshness
+
+- Added ADR-0192 to make the local freshness of fork submission evidence
+  explicit in GitHub submission and handoff reports.
+- Added red GitHub-submission and handoff tests before implementation. The
+  focused red run failed because submission status did not accept freshness
+  metadata, did not accept a clock, and had no freshness text/JSON fields.
+- Updated `autarkic_systems/github_submission.py` to read
+  `refs/remotes/fork/main` from the local git reflog, classify the ref as fresh
+  or stale against a configurable freshness window, and expose that field in
+  text and JSON output.
+- Focused green verification passed 11 tests. Live submission and handoff
+  text/JSON commands reported `fork/main` freshness as fresh before this ADR
+  was committed. `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 802 tests.

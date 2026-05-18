@@ -37,6 +37,14 @@ GIT_OUTPUTS = {
     ("rev-list", "--left-right", "--count", "origin/main...HEAD"): "0\t190",
     ("remote", "get-url", "origin"): "https://github.com/jpt4/as.git",
     ("remote", "get-url", "fork"): "https://github.com/Sean-Kenneth-Doherty/as.git",
+    (
+        "reflog",
+        "show",
+        "--date=unix",
+        "-1",
+        "--format=%cd",
+        "refs/remotes/fork/main",
+    ): "1779110000",
 }
 
 
@@ -44,7 +52,10 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
     def test_status_payload_reports_fork_submission_and_origin_divergence(self):
         runner = FakeGitRunner(GIT_OUTPUTS)
 
-        report = build_github_submission_status(runner=runner)
+        report = build_github_submission_status(
+            runner=runner,
+            clock=lambda: 1779110300,
+        )
         payload = github_submission_status_payload(report)
 
         self.assertTrue(payload["accepted"])
@@ -65,11 +76,35 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertFalse(payload["origin_main"]["matches_head"])
         self.assertEqual(payload["origin_main"]["head_ahead_by"], 190)
         self.assertEqual(payload["origin_main"]["head_behind_by"], 0)
+        self.assertEqual(
+            payload["fork_main"]["remote_ref_freshness"],
+            {
+                "state": "fresh",
+                "checked_ref": "refs/remotes/fork/main",
+                "updated_at_unix": 1779110000,
+                "age_seconds": 300,
+                "max_age_seconds": 86400,
+            },
+        )
         self.assertEqual(payload["tracking_issue"]["url"], DEFAULT_TRACKING_ISSUE_URL)
         self.assertIn(("rev-parse", "fork/main"), runner.commands)
+        self.assertIn(
+            (
+                "reflog",
+                "show",
+                "--date=unix",
+                "-1",
+                "--format=%cd",
+                "refs/remotes/fork/main",
+            ),
+            runner.commands,
+        )
 
     def test_text_status_reports_operator_submission_summary(self):
-        report = build_github_submission_status(runner=FakeGitRunner(GIT_OUTPUTS))
+        report = build_github_submission_status(
+            runner=FakeGitRunner(GIT_OUTPUTS),
+            clock=lambda: 1779110300,
+        )
 
         text = format_github_submission_status(report)
 
@@ -77,10 +112,33 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertIn("Branch: main", text)
         self.assertIn("HEAD: be59d20", text)
         self.assertIn("fork/main: matches HEAD (be59d20)", text)
+        self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 190 commits, behind by 0 commits", text)
         self.assertIn("Origin: https://github.com/jpt4/as.git", text)
         self.assertIn("Fork: https://github.com/Sean-Kenneth-Doherty/as.git", text)
         self.assertIn(f"Tracking issue: {DEFAULT_TRACKING_ISSUE_URL}", text)
+
+    def test_status_reports_stale_fork_main_ref_freshness(self):
+        report = build_github_submission_status(
+            runner=FakeGitRunner(GIT_OUTPUTS),
+            clock=lambda: 1779200001,
+        )
+
+        payload = github_submission_status_payload(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(
+            payload["fork_main"]["remote_ref_freshness"]["state"],
+            "stale",
+        )
+        self.assertEqual(
+            payload["fork_main"]["remote_ref_freshness"]["age_seconds"],
+            90001,
+        )
+        self.assertIn(
+            "fork/main freshness: stale (90001s old, max 86400s)",
+            format_github_submission_status(report),
+        )
 
     def test_status_rejects_when_fork_main_does_not_match_head(self):
         outputs = dict(GIT_OUTPUTS)
@@ -101,6 +159,7 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
             exit_code = run_github_submission_cli(
                 ["--format", "json"],
                 runner=FakeGitRunner(GIT_OUTPUTS),
+                clock=lambda: 1779110300,
             )
 
         payload = json.loads(stdout.getvalue())

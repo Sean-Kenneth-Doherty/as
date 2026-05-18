@@ -641,6 +641,8 @@
 - ADR-0191 adds `python -m autarkic_systems.handoff`, combining compact project
   status and local GitHub submission evidence into one end-of-month handoff
   report.
+- ADR-0192 adds local `fork/main` remote-tracking ref freshness to GitHub
+  submission and handoff reports, using the git reflog rather than GitHub APIs.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

@@ -341,7 +341,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.github_submission` emits a local text/JSON
   submission-status report showing whether the current `HEAD` is visible on
   fork `main`, how far local `HEAD` is ahead of upstream `origin/main`, and
-  where upstream submission notes are tracked.
+  where upstream submission notes are tracked. It also reports local
+  `fork/main` remote-tracking ref freshness from the git reflog so operators
+  can see how recent the submission evidence is.
 - `python -m autarkic_systems.handoff` emits a local text/JSON handoff report
   that combines accepted project status with GitHub submission evidence.
 - `python -m autarkic_systems.project_status --format json` emits the current

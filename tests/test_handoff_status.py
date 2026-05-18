@@ -49,6 +49,13 @@ SUBMISSION_REPORT = GitHubSubmissionStatus(
     origin_main_short="1a2fc06",
     fork_main_commit="04158fc29229d091f616734725be3c8f54198200",
     fork_main_short="04158fc",
+    fork_main_ref_freshness={
+        "state": "fresh",
+        "checked_ref": "refs/remotes/fork/main",
+        "updated_at_unix": 1779110000,
+        "age_seconds": 300,
+        "max_age_seconds": 86400,
+    },
     head_behind_origin_main_by=0,
     head_ahead_origin_main_by=191,
     tracking_issue_url=DEFAULT_TRACKING_ISSUE_URL,
@@ -77,6 +84,10 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertEqual(payload["project_status"], PROJECT_REPORT)
         self.assertEqual(payload["github_submission"]["submission_state"], "submitted-to-fork")
         self.assertEqual(payload["github_submission"]["head"]["short"], "04158fc")
+        self.assertEqual(
+            payload["github_submission"]["fork_main"]["remote_ref_freshness"]["state"],
+            "fresh",
+        )
 
     def test_handoff_text_renders_project_and_submission_sections(self):
         report = build_handoff_status(
@@ -105,6 +116,7 @@ class HandoffStatusTests(unittest.TestCase):
             origin_main_short=SUBMISSION_REPORT.origin_main_short,
             fork_main_commit=SUBMISSION_REPORT.fork_main_commit,
             fork_main_short=SUBMISSION_REPORT.fork_main_short,
+            fork_main_ref_freshness=SUBMISSION_REPORT.fork_main_ref_freshness,
             head_behind_origin_main_by=0,
             head_ahead_origin_main_by=192,
             tracking_issue_url=DEFAULT_TRACKING_ISSUE_URL,

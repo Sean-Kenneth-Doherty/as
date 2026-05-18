@@ -3906,3 +3906,20 @@ Deliverables:
 Status: accepted in `docs/adr/0191-end-of-month-handoff-status.md`.
 Implemented in `autarkic_systems/handoff.py`, with tests in
 `tests/test_handoff_status.py`.
+
+## ADR-0192: Submission Ref Freshness
+
+Goal: make the local freshness of fork submission evidence explicit.
+
+Deliverables:
+
+- `fork/main` remote-tracking reflog timestamp in GitHub submission status;
+- JSON `fork_main.remote_ref_freshness` with state, checked ref, update time,
+  age, and max age;
+- text line rendering fork-main freshness;
+- deterministic clock and freshness-window test seams; and
+- handoff JSON/text inherits the same submission freshness field.
+
+Status: accepted in `docs/adr/0192-submission-ref-freshness.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.
