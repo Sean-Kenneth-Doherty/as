@@ -3428,3 +3428,23 @@
   and project-status JSON CLIs accepted the narrowed write-buffer blocker list.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 674 tests.
+
+## 2026-05-18 - Write-Buffer Post-Append Resolution
+
+- Added ADR-0160 to resolve the final write-buffer `post-append-clearing`
+  question without widening runtime execution.
+- Added red write-buffer, project-status, and source-status frontier tests
+  before implementation. The focused red run executed 99 tests and failed
+  because `post-append-clearing` was still unresolved, absent from
+  `resolved_resolution_questions`, and still blocked execution readiness.
+- Updated `sources/write_buffer_command_semantics_status.json` with a
+  structured `post_append_clearing_resolution`, moved
+  `post-append-clearing` to resolved questions, emptied the live write-buffer
+  unresolved queue, and marked write-buffer append execution source-ready for
+  a later implementation ADR.
+- Focused verification passed 99 tests, and the adjacent stale multi-command
+  status assertion was updated to the new write-buffer safe-next slice.
+  Source-status JSON accepted schema 2 with write-buffer ready; project-status
+  JSON accepted schema 15 with the same readiness. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 676 tests.

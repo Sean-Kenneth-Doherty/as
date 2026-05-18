@@ -3163,3 +3163,30 @@ Status: accepted in
 `tests/test_write_buffer_command_semantics_status.py`,
 `tests/test_project_status_report.py`, and
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0160: Write-Buffer Post-Append Resolution
+
+Goal: resolve the final write-buffer post-append clearing question without
+widening runtime execution.
+
+Deliverables:
+
+- `post-append-clearing` removed from write-buffer unresolved
+  `required_resolution_questions`;
+- `post-append-clearing` added to write-buffer
+  `resolved_resolution_questions`;
+- structured source-status basis for selecting RAA/FSMSIM buffer preservation
+  and recording SEMSIM buffer clearing as legacy divergence;
+- write-buffer `execution_readiness` marked ready, with execution changes
+  allowed for a later implementation ADR;
+- unchanged project-status schema `15`;
+- unchanged source-status frontier schema `2`; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0160-write-buffer-post-append-resolution.md`. Implemented in
+`sources/write_buffer_command_semantics_status.json` and
+`docs/write-buffer-command-semantics-status.md`, with tests in
+`tests/test_write_buffer_command_semantics_status.py`,
+`tests/test_project_status_report.py`, and
+`tests/test_source_status_frontier_cli.py`.

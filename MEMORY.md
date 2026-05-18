@@ -661,3 +661,9 @@
   on the formal less-than-full write guard and RAA `buffer-full?` guard.
   Write-buffer execution remains blocked only by `post-append-clearing`; the
   JSON shapes stay at project status schema 15 and source-status schema 2.
+- ADR-0160 resolves write-buffer `post-append-clearing` as
+  `preserve-appended-buffer-clear-command-source`, selecting RAA/FSMSIM buffer
+  preservation and recording SEMSIM's buffer-clearing wrapper as divergent
+  legacy behavior. Write-buffer append execution is source-ready for a later
+  implementation ADR; project status remains schema 15 and source-status
+  remains schema 2.

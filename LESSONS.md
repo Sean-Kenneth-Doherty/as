@@ -446,3 +446,6 @@
   positive rule from mere absence. For write-buffer full buffers, the formal
   model and RAA provide a guard, while SEMSIM/FSMSIM absence can keep execution
   blocked without keeping the full-buffer question unresolved.
+- When the final source blocker resolves, flip readiness before runtime code.
+  Marking write-buffer append execution source-ready creates a clean boundary
+  for the next ADR without silently changing Universal Cell behavior.

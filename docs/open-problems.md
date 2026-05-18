@@ -291,6 +291,11 @@ write-buffer buffer-full and post-append questions remain open.
 ADR-0159 resolves the write-buffer buffer-full boundary through the formal
 less-than-full write guard and RAA `buffer-full?` guard, leaving
 `post-append-clearing` as the only live write-buffer execution question.
+ADR-0160 resolves that final `post-append-clearing` question by selecting the
+RAA/FSMSIM buffer-preservation behavior and recording SEMSIM's buffer-clearing
+wrapper as divergent legacy behavior. Write-buffer command execution is now
+source-ready for a later implementation ADR, while the current Universal Cell
+runtime boundaries remain unchanged.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

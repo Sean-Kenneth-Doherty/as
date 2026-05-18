@@ -20,7 +20,10 @@ RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
-SAFE_NEXT_SLICE = "revisit-standard-signal-or-write-buffer-command-semantics"
+SAFE_NEXT_SLICE = (
+    "revisit-standard-signal-or-write-buffer-command-semantics, "
+    "implement-write-buffer-command-execution"
+)
 PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
@@ -43,9 +46,9 @@ STANDARD_SIGNAL_AS_BOUNDARY = (
     "blocks only command-token execution."
 )
 WRITE_BUFFER_AS_BOUNDARY = (
-    "Continue preserving write-buffer command tokens at the existing "
-    "self-target unsupported boundaries until a later ADR selects "
-    "source-backed post-append execution semantics."
+    "Write-buffer command execution is source-resolved; preserve current "
+    "unsupported runtime boundaries until a later ADR implements append "
+    "behavior."
 )
 TRANSITION_BUNDLES = [
     {
@@ -177,9 +180,7 @@ CHAIN_CLAIMS = {
     "result_count": 4,
 }
 STANDARD_SIGNAL_QUESTIONS = []
-WRITE_BUFFER_QUESTIONS = [
-    "post-append-clearing",
-]
+WRITE_BUFFER_QUESTIONS = []
 STANDARD_SIGNAL_RESOLUTION_QUESTIONS = []
 STANDARD_SIGNAL_RESOLUTION_QUESTION_EVIDENCE = []
 STANDARD_SIGNAL_RESOLVED_QUESTIONS = [
@@ -286,36 +287,27 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
             "rule but provide no contrary full-buffer policy."
         ),
     },
-]
-WRITE_BUFFER_RESOLUTION_QUESTIONS = [
     {
         "question_id": "post-append-clearing",
-        "summary": (
-            "Decide whether write-buffer execution preserves the appended "
-            "buffer, clears it like SEMSIM's stem wrapper, or clears only "
-            "input/mail state."
+        "decision": "preserve-appended-buffer-clear-command-source",
+        "source_status": "sources/write_buffer_command_semantics_status.json",
+        "legacy_divergence": (
+            "RAA and FSMSIM preserve the appended literal bit while clearing "
+            "the active command source; SEMSIM clears the buffer through its "
+            "stem special-message wrapper, so AS records SEMSIM as divergent "
+            "legacy behavior."
         ),
     },
 ]
-WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = [
-    {
-        "question_id": "post-append-clearing",
-        "evidence": (
-            "RAA preserves the appended buffer, SEMSIM's stem wrapper clears "
-            "the buffer after append, and FSMSIM clears self-mailbox and "
-            "input channels without a matching buffer clear."
-        ),
-    },
-]
+WRITE_BUFFER_RESOLUTION_QUESTIONS = []
+WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = []
 WRITE_BUFFER_EXECUTION_READINESS = {
-    "decision": "blocked",
-    "execution_change_allowed": False,
-    "blocked_by_resolution_questions": [
-        "post-append-clearing",
-    ],
+    "decision": "ready",
+    "execution_change_allowed": True,
+    "blocked_by_resolution_questions": [],
     "summary": (
-        "Write-buffer append execution stays blocked until post-append "
-        "clearing semantics are source-resolved."
+        "Write-buffer append execution is source-resolved; implementation "
+        "may proceed in a later ADR."
     ),
 }
 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
@@ -844,14 +836,9 @@ class ProjectStatusReportTests(unittest.TestCase):
             "self-target-surface: Decide whether self-mailbox and self-target",
             text,
         )
-        self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertIn("Resolution questions: none", text)
         self.assertNotIn("buffer-full-boundary: Decide whether", text)
-        self.assertIn(
-            "post-append-clearing: Decide whether write-buffer execution "
-            "preserves the appended buffer, clears it like SEMSIM's stem "
-            "wrapper, or clears only input/mail state.",
-            text,
-        )
+        self.assertNotIn("post-append-clearing: Decide whether", text)
         self.assertNotIn("recipient-vs-stem-surface", text)
 
     def test_text_status_names_resolution_question_evidence(self):
@@ -868,15 +855,9 @@ class ProjectStatusReportTests(unittest.TestCase):
             "self-target-surface: The formal model excludes standard signals",
             text,
         )
-        self.assertIn("write-buf-zero, write-buf-one:", text)
+        self.assertIn("Resolution question evidence: none", text)
         self.assertNotIn("buffer-full-boundary: RAA guards", text)
-        self.assertIn(
-            "post-append-clearing: RAA preserves the appended buffer, "
-            "SEMSIM's stem wrapper clears the buffer after append, and "
-            "FSMSIM clears self-mailbox and input channels without a "
-            "matching buffer clear.",
-            text,
-        )
+        self.assertNotIn("post-append-clearing: RAA preserves", text)
         self.assertNotIn("recipient-vs-stem-surface", text)
 
     def test_text_status_names_resolved_resolution_questions(self):
@@ -1012,6 +993,18 @@ class ProjectStatusReportTests(unittest.TestCase):
             "full-buffer policy.",
             text,
         )
+        self.assertIn(
+            "post-append-clearing: preserve-appended-buffer-clear-command-source "
+            "(sources/write_buffer_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
+            "legacy divergence: RAA and FSMSIM preserve the appended literal "
+            "bit while clearing the active command source; SEMSIM clears the "
+            "buffer through its stem special-message wrapper, so AS records "
+            "SEMSIM as divergent legacy behavior.",
+            text,
+        )
 
     def test_text_status_names_execution_readiness(self):
         report = build_project_status_report()
@@ -1020,13 +1013,13 @@ class ProjectStatusReportTests(unittest.TestCase):
 
         self.assertIn("Execution readiness:", text)
         self.assertIn(
-            "write-buf-zero, write-buf-one: blocked; execution changes "
-            "allowed: no; blockers: post-append-clearing",
+            "write-buf-zero, write-buf-one: ready; execution changes "
+            "allowed: yes; blockers: none",
             text,
         )
         self.assertIn(
-            "summary: Write-buffer append execution stays blocked until "
-            "post-append clearing semantics are source-resolved.",
+            "summary: Write-buffer append execution is source-resolved; "
+            "implementation may proceed in a later ADR.",
             text,
         )
 

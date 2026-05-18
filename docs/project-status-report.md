@@ -205,6 +205,10 @@ ADR-0159 resolves the write-buffer `buffer-full-boundary` question through the
 formal less-than-full write guard and RAA `buffer-full?` guard, leaving only
 `post-append-clearing` as a live write-buffer execution-readiness blocker while
 preserving project status `schema_version: 15`.
+ADR-0160 resolves that final write-buffer `post-append-clearing` question as
+`preserve-appended-buffer-clear-command-source`, leaving no live write-buffer
+resolution questions and marking write-buffer append execution source-ready
+while preserving project status `schema_version: 15`.
 
 ## Boundary
 

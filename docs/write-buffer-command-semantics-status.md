@@ -7,7 +7,8 @@ The structured status lives in
 
 ## Decision
 
-Do not implement write-buffer command execution yet.
+Write-buffer command execution is source-resolved and ready for a later
+implementation ADR.
 
 The formal model names `write-buf-zero` and `write-buf-one` in the command
 table and routes special messages through generic special-message paths, but
@@ -27,9 +28,7 @@ ADR-0129 records one narrower agreement across those witnesses: the named
 `write-buf-zero` and `write-buf-one` commands carry literal `0` and `1` append
 bits. The bit value is not derived from the ordinary standard-signal high-rail
 comparison path. ADR-0142 records that as the resolved
-`standard-signal-interaction` question. That does not resolve post-append
-clearing or any high-rail state clearing that may be chosen as part of
-post-append execution semantics.
+`standard-signal-interaction` question.
 
 ADR-0144 records the remaining source conflicts in
 `resolution_question_evidence`, including the RAA buffer-full guard divergence
@@ -56,11 +55,16 @@ ADR-0159 resolves `buffer-full-boundary` as
 model gates writes to the stem buffer on less-than-full state and RAA guards
 `write-buf` with `buffer-full?`; SEMSIM and FSMSIM omit a matching named
 command-token full-buffer rule, but provide no contrary full-buffer policy.
-Post-append clearing remains unresolved.
+ADR-0160 resolves `post-append-clearing` as
+`preserve-appended-buffer-clear-command-source`. RAA and FSMSIM preserve the
+appended literal bit while clearing command-source/input state; SEMSIM's stem
+wrapper clears the buffer after append, so AS records SEMSIM as divergent
+legacy behavior instead of selecting the buffer-erasing wrapper.
 
 ## AS Boundary
 
-AS keeps write-buffer command execution blocked across these runtime surfaces:
+AS keeps the current unsupported runtime boundaries in place until a later ADR
+implements write-buffer command execution across these runtime surfaces:
 
 - self-mailbox command;
 - self-target command-buffer dispatch.
@@ -70,8 +74,8 @@ execution surface. AS rejects delivered recipient write-buffer command messages
 through `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
 
 The current rejection and preservation claims remain the correct executable
-boundary until a later ADR selects source-backed semantics for post-append
-input/mail clearing, buffer clearing, and high-rail interaction. ADR-0061
+boundary until a later ADR implements the source-resolved append behavior.
+ADR-0061
 completes the current multi-command rejection render frontier, so future
 write-buffer work should start from source resolution rather than another
 rejection artifact. ADR-0062 reviews `guile-asmsim.scm`, which has binary
@@ -89,7 +93,10 @@ source is literal rather than high-rail derived. ADR-0152 moves
 `buffer-full-boundary` and `post-append-clearing` unresolved. ADR-0154 exposes
 those two blockers as the machine-checked execution readiness gate. ADR-0159
 moves `buffer-full-boundary` into resolved questions and leaves
-`post-append-clearing` as the only live write-buffer blocker.
+`post-append-clearing` as the only live write-buffer blocker. ADR-0160 moves
+`post-append-clearing` into resolved questions, clears the live write-buffer
+question queue, and marks write-buffer append execution as source-ready for a
+later implementation ADR.
 
 ## Verification
 
@@ -100,5 +107,6 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 ```
 
 The tests check the decision, formal-model gap, legacy witness divergence,
-resolved recipient, self-target, and buffer-full surfaces, remaining required
-resolution questions, execution readiness, and source-status frontier updates.
+resolved recipient, self-target, buffer-full, and post-append surfaces, empty
+required resolution questions, ready execution-readiness, and source-status
+frontier updates.

@@ -87,6 +87,10 @@ same blocker or settled decision twice.
 ADR-0159 moves write-buffer `buffer-full-boundary` from unresolved to resolved
 and narrows write-buffer execution-readiness blockers to
 `post-append-clearing`.
+ADR-0160 moves write-buffer `post-append-clearing` from unresolved to resolved
+as `preserve-appended-buffer-clear-command-source`, so the focused frontier
+now reports no live write-buffer resolution questions and ready write-buffer
+execution-readiness without changing schema version `2`.
 
 ## Boundary
 

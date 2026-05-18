@@ -76,13 +76,14 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/recipient-non-init-command-rejection-svg.md` records the rendered view
   of that recipient non-init command-message rejection trace.
 - `docs/write-buffer-command-semantics-status.md` records why write-buffer
-  command execution remains source-blocked and records the narrowed source
+  command execution is now source-resolved and records the narrowed source
   agreement that `write-buf-zero` / `write-buf-one` carry literal `0` / `1`
   append bits rather than high-rail-derived standard-signal values. It also
   records that recipient write-buffer command messages use the recipient
   non-init rejection boundary and that self-target write-buffer command tokens
-  use the unsupported preservation boundaries. The remaining execution blocker
-  is post-append clearing after the full-buffer boundary resolution.
+  use the unsupported preservation boundaries. The next slice can implement
+  append execution from the resolved full-buffer and post-append clearing
+  source boundaries.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented, and records the
@@ -388,8 +389,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   command semantics source-status decision machine-checkable, including the
   literal command bit-source evidence and the resolved standard-signal
   interaction, recipient-surface, and self-target-surface questions, plus the
-  resolved full-buffer boundary and the execution-readiness gate that blocks
-  append execution on the remaining post-append clearing source conflict.
+  resolved full-buffer and post-append clearing boundaries. Its
+  execution-readiness gate now marks append execution source-ready for a later
+  implementation ADR.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

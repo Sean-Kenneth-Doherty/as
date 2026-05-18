@@ -21,16 +21,16 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
     def setUp(self):
         self.status = json.loads(STATUS.read_text(encoding="utf-8"))
 
-    def test_decision_blocks_write_buffer_runtime_execution(self):
+    def test_decision_marks_write_buffer_runtime_execution_source_ready(self):
         self.assertEqual(self.status["schema_version"], 1)
         self.assertEqual(
             self.status["decision"],
-            "do-not-implement-write-buffer-command-execution-yet",
+            "write-buffer-command-execution-source-resolved",
         )
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "implement-write-buffer-command-execution",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -110,12 +110,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
             for question in self.status["required_resolution_questions"]
         }
 
-        self.assertEqual(
-            question_ids,
-            {
-                "post-append-clearing",
-            },
-        )
+        self.assertEqual(question_ids, set())
 
     def test_recipient_surface_is_resolved_to_existing_rejection_boundary(self):
         resolved_questions = {
@@ -225,17 +220,48 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn("RAA", resolved["legacy_divergence"])
         self.assertIn("no contrary full-buffer policy", resolved["legacy_divergence"])
 
-    def test_execution_readiness_only_names_remaining_post_append_blocker(self):
+    def test_post_append_clearing_resolution_records_source_basis(self):
+        resolution = self.status["post_append_clearing_resolution"]
+
+        self.assertEqual(
+            resolution["decision"],
+            "preserve-appended-buffer-clear-command-source",
+        )
+        self.assertIn("lines 231-254", resolution["raa_locus"])
+        self.assertIn("lines 262-267", resolution["fsmsim_locus"])
+        self.assertIn("lines 353-365", resolution["semsim_locus"])
+        self.assertIn("SEMSIM", resolution["legacy_divergence"])
+
+    def test_post_append_clearing_is_resolved_as_buffer_preservation(self):
+        resolved_questions = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+
+        resolved = resolved_questions["post-append-clearing"]
+        self.assertEqual(
+            resolved["decision"],
+            "preserve-appended-buffer-clear-command-source",
+        )
+        self.assertEqual(
+            resolved["source_status"],
+            "sources/write_buffer_command_semantics_status.json",
+        )
+        self.assertIn("RAA", resolved["legacy_divergence"])
+        self.assertIn("FSMSIM", resolved["legacy_divergence"])
+        self.assertIn("SEMSIM", resolved["legacy_divergence"])
+
+    def test_execution_readiness_allows_write_buffer_implementation(self):
         readiness = self.status["execution_readiness"]
 
-        self.assertEqual(readiness["decision"], "blocked")
-        self.assertFalse(readiness["execution_change_allowed"])
+        self.assertEqual(readiness["decision"], "ready")
+        self.assertTrue(readiness["execution_change_allowed"])
         self.assertEqual(
             readiness["blocked_by_resolution_questions"],
-            ["post-append-clearing"],
+            [],
         )
-        self.assertIn("post-append clearing", readiness["summary"])
-        self.assertNotIn("buffer-full", readiness["summary"])
+        self.assertIn("source-resolved", readiness["summary"])
+        self.assertIn("implementation may proceed", readiness["summary"])
 
     def test_existing_source_status_frontiers_point_past_write_buffer(self):
         recipient_non_init = json.loads(RECIPIENT_NON_INIT.read_text(encoding="utf-8"))
