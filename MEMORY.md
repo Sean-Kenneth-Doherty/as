@@ -826,3 +826,7 @@
   `evidence/sequences/manifest.json`, validating the post-handoff sequence
   claim/proof/witness against the underlying neighbor delivery chain evidence
   bundle and source-status boundaries.
+- ADR-0199 folds that network-sequence evidence registry into aggregate project
+  status as `sequence_evidence`, includes it in acceptance, renders it in text
+  and summary modes, adds `--sequence-registry`, and bumps project status to
+  `schema_version: 17`.

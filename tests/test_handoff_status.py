@@ -33,6 +33,7 @@ PROJECT_REPORT = {
     "accepted": True,
     "transition_evidence": {"bundle_count": 11},
     "chain_evidence": {"bundle_count": 2},
+    "sequence_evidence": {"bundle_count": 1},
     "transition_claims": {"claim_count": 16, "matched_count": 40},
     "chain_claims": {"claim_count": 2, "certificate_count": 2},
     "proof_rule_audit": {
@@ -116,6 +117,10 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["handoff_state"], "ready")
         self.assertIn("Autarkic Systems summary: accepted", payload["project_summary"])
+        self.assertIn(
+            "Evidence: 11 transition bundles; 2 chain bundles; 1 sequence bundle",
+            payload["project_summary"],
+        )
         self.assertEqual(payload["project_status"], PROJECT_REPORT)
         self.assertEqual(payload["github_submission"]["submission_state"], "submitted-to-fork")
         self.assertEqual(payload["github_submission"]["head"]["short"], "04158fc")

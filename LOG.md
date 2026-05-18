@@ -4239,3 +4239,25 @@
   text/JSON validation for the new evidence surface. `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full suite
   ran 843 tests.
+
+## 2026-05-18 - Project Status Sequence Evidence
+
+- Added ADR-0199 to fold the checked network-sequence evidence registry into
+  aggregate project status.
+- Added red project-status tests before implementation. The focused red run
+  executed 78 tests and failed because project status still reported schema
+  version `16`, had no `sequence_evidence`, omitted sequence evidence from
+  text/summary output, rejected `--sequence-registry`, and did not accept a
+  `sequence_registry_path` builder override.
+- Updated `autarkic_systems/project_status.py` to validate
+  `evidence/sequences/manifest.json`, expose `sequence_evidence`, include that
+  registry in aggregate acceptance, render the one sequence bundle in text and
+  summary output, and report missing sequence registries as structured
+  `registry-file` failures.
+- Focused green verification passed 78 project-status tests after
+  implementation. The first full regression run exposed stale handoff test
+  fixtures that lacked `sequence_evidence`; after updating that fixture,
+  focused handoff tests, focused project-status tests, `compileall`,
+  `git diff --check`, live project-status text/summary/JSON checks, refreshed
+  handoff, and `python -m unittest discover` passed. The full suite ran 845
+  tests.

@@ -36,6 +36,11 @@ from autarkic_systems.evidence_bundle import (
     registry_validation_report_payload,
     validate_evidence_bundle_registry,
 )
+from autarkic_systems.network_sequence_evidence_bundle import (
+    load_network_sequence_evidence_bundle_registry,
+    network_sequence_registry_validation_report_payload,
+    validate_network_sequence_evidence_bundle_registry,
+)
 from autarkic_systems.object_language import (
     transition_claim_language_report_payload,
     validate_transition_claim_language_project,
@@ -51,6 +56,7 @@ from autarkic_systems.proof_certificates import (
 
 DEFAULT_TRANSITION_REGISTRY = Path("evidence/manifest.json")
 DEFAULT_CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
+DEFAULT_SEQUENCE_REGISTRY = Path("evidence/sequences/manifest.json")
 DEFAULT_TRANSITION_LANGUAGE = Path("language/transition_claim_language.json")
 DEFAULT_TRANSITION_CLAIMS = Path("claims/transition_claims.json")
 DEFAULT_TRANSITION_CERTIFICATES = Path("claims/proof_certificates.json")
@@ -62,7 +68,7 @@ DEFAULT_SOURCE_STATUS_PATHS = (
     Path("sources/standard_signal_command_semantics_status.json"),
     Path("sources/write_buffer_command_semantics_status.json"),
 )
-PROJECT_STATUS_SCHEMA_VERSION = 16
+PROJECT_STATUS_SCHEMA_VERSION = 17
 PROOF_RULE_TEXT_ORDER = (
     PREDICATE_RESULT_RULE,
     MANIFEST_EXAMPLE_RULE,
@@ -81,6 +87,7 @@ BLOCKED_COMMAND_ORDER = (
 def build_project_status_report(
     transition_registry_path: Path | str = DEFAULT_TRANSITION_REGISTRY,
     chain_registry_path: Path | str = DEFAULT_CHAIN_REGISTRY,
+    sequence_registry_path: Path | str = DEFAULT_SEQUENCE_REGISTRY,
     transition_language_path: Path | str = DEFAULT_TRANSITION_LANGUAGE,
     transition_claims_path: Path | str = DEFAULT_TRANSITION_CLAIMS,
     transition_certificates_path: Path | str = DEFAULT_TRANSITION_CERTIFICATES,
@@ -93,6 +100,7 @@ def build_project_status_report(
 
     transition_summary = _transition_registry_summary(transition_registry_path)
     chain_summary = _chain_registry_summary(chain_registry_path)
+    sequence_summary = _sequence_registry_summary(sequence_registry_path)
     transition_claims = _transition_claim_summary(transition_claims_path)
     transition_proof_certificates = _transition_proof_certificate_summary(
         transition_claims_path,
@@ -121,6 +129,7 @@ def build_project_status_report(
     accepted = (
         transition_summary["accepted"]
         and chain_summary["accepted"]
+        and sequence_summary["accepted"]
         and transition_claims["accepted"]
         and transition_proof_certificates["accepted"]
         and chain_claims["accepted"]
@@ -135,6 +144,7 @@ def build_project_status_report(
         "accepted": accepted,
         "transition_evidence": transition_summary,
         "chain_evidence": chain_summary,
+        "sequence_evidence": sequence_summary,
         "transition_claims": transition_claims,
         "transition_proof_certificates": transition_proof_certificates,
         "chain_claims": chain_claims,
@@ -151,6 +161,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     status = "accepted" if report["accepted"] else "rejected"
     transition = report["transition_evidence"]
     chain = report["chain_evidence"]
+    sequence = report["sequence_evidence"]
     transition_claims = report["transition_claims"]
     transition_proof_certificates = report["transition_proof_certificates"]
     chain_claims = report["chain_claims"]
@@ -160,15 +171,16 @@ def format_project_status_report(report: dict[str, Any]) -> str:
     frontier = report["frontier"]
     transition_status = "accepted" if transition["accepted"] else "rejected"
     chain_status = "accepted" if chain["accepted"] else "rejected"
+    sequence_status = "accepted" if sequence["accepted"] else "rejected"
     blocked_commands = frontier["blocked_commands"] or []
     missing_registries = [
         summary["path"]
-        for summary in (transition, chain)
+        for summary in (transition, chain, sequence)
         if "registry-file" in summary["failed_subjects"]
     ]
     invalid_registries = [
         summary["path"]
-        for summary in (transition, chain)
+        for summary in (transition, chain, sequence)
         if "registry-json" in summary["failed_subjects"]
     ]
     missing = frontier["missing_source_statuses"] or []
@@ -180,6 +192,10 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Autarkic Systems project status: {status}",
         f"Transition evidence: {transition_status} ({transition['bundle_count']} bundles)",
         f"Chain evidence: {chain_status} ({chain['bundle_count']} bundles)",
+        (
+            f"Network sequence evidence: {sequence_status} "
+            f"({_bundle_count_text(sequence['bundle_count'])})"
+        ),
         _transition_claim_text_line(transition_claims),
         _transition_proof_certificate_text_line(transition_proof_certificates),
         *_claim_proof_failure_text_lines(
@@ -194,6 +210,7 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         *_language_failure_text_lines(transition_language, chain_language),
         *_registry_bundle_text_lines("Transition evidence", transition),
         *_registry_bundle_text_lines("Chain evidence", chain),
+        *_registry_bundle_text_lines("Network sequence evidence", sequence),
         "Blocked commands: "
         + (", ".join(blocked_commands) if blocked_commands else "none"),
         *_blocked_runtime_surface_text_lines(frontier),
@@ -222,6 +239,7 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
     status = "accepted" if report["accepted"] else "rejected"
     transition = report["transition_evidence"]
     chain = report["chain_evidence"]
+    sequence = report["sequence_evidence"]
     transition_claims = report["transition_claims"]
     chain_claims = report["chain_claims"]
     proof_rule_audit = report["proof_rule_audit"]
@@ -231,7 +249,9 @@ def format_project_status_summary(report: dict[str, Any]) -> str:
         f"Autarkic Systems summary: {status}",
         (
             f"Evidence: {transition['bundle_count']} transition bundles; "
-            f"{chain['bundle_count']} chain bundles"
+            f"{chain['bundle_count']} chain bundles; "
+            f"{sequence['bundle_count']} sequence "
+            f"{_bundle_noun(sequence['bundle_count'])}"
         ),
         (
             f"Claims: {transition_claims['claim_count']} transition claims/"
@@ -262,6 +282,11 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
         "--chain-registry",
         default=str(DEFAULT_CHAIN_REGISTRY),
         help="Path to the transition-chain evidence registry JSON.",
+    )
+    parser.add_argument(
+        "--sequence-registry",
+        default=str(DEFAULT_SEQUENCE_REGISTRY),
+        help="Path to the network-sequence evidence registry JSON.",
     )
     parser.add_argument(
         "--transition-language",
@@ -315,6 +340,7 @@ def run_project_status_cli(argv: list[str] | None = None) -> int:
     report = build_project_status_report(
         transition_registry_path=args.transition_registry,
         chain_registry_path=args.chain_registry,
+        sequence_registry_path=args.sequence_registry,
         transition_language_path=args.transition_language,
         transition_claims_path=args.transition_claims,
         transition_certificates_path=args.transition_certificates,
@@ -353,6 +379,18 @@ def _chain_registry_summary(registry_path: Path | str) -> dict[str, Any]:
 
     results = validate_chain_evidence_bundle_registry(registry)
     payload = chain_registry_validation_report_payload(registry, results)
+    return _registry_summary(payload, path)
+
+
+def _sequence_registry_summary(registry_path: Path | str) -> dict[str, Any]:
+    path = Path(registry_path)
+    try:
+        registry = load_network_sequence_evidence_bundle_registry(path)
+    except Exception as exc:
+        return _registry_failure_summary(path, exc)
+
+    results = validate_network_sequence_evidence_bundle_registry(registry)
+    payload = network_sequence_registry_validation_report_payload(registry, results)
     return _registry_summary(payload, path)
 
 
@@ -1045,6 +1083,14 @@ def _registry_bundle_text_lines(label: str, summary: dict[str, Any]) -> list[str
         if covered_examples:
             lines.append(f"    covered examples: {'; '.join(covered_examples)}")
     return lines
+
+
+def _bundle_count_text(count: int) -> str:
+    return f"{count} {_bundle_noun(count)}"
+
+
+def _bundle_noun(count: int) -> str:
+    return "bundle" if count == 1 else "bundles"
 
 
 def _language_text_line(label: str, summary: dict[str, Any]) -> str:

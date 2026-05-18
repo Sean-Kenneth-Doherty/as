@@ -4041,3 +4041,22 @@ Status: accepted in `docs/adr/0198-network-sequence-evidence-bundle.md`.
 Implemented in `autarkic_systems/network_sequence_evidence_bundle.py`, with
 tests in `tests/test_network_sequence_evidence_bundle.py` and operator notes in
 `docs/network-sequence-evidence-bundles.md`.
+
+## ADR-0199: Project Status Sequence Evidence
+
+Goal: make aggregate project status fail closed over the checked
+network-sequence evidence registry.
+
+Deliverables:
+
+- `sequence_evidence` in project-status JSON;
+- aggregate acceptance that includes the network-sequence registry result;
+- default text and compact summary output naming the sequence evidence count;
+- `--sequence-registry` override for alternate registry paths;
+- structured `registry-file` / `registry-json` failures for sequence registry
+  problems; and
+- project-status schema version `17`.
+
+Status: accepted in `docs/adr/0199-project-status-sequence-evidence.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

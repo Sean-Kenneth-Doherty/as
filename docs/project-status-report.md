@@ -34,6 +34,7 @@ The report validates:
 
 - `evidence/manifest.json`, the transition evidence registry;
 - `evidence/chains/manifest.json`, the transition-chain evidence registry;
+- `evidence/sequences/manifest.json`, the network-sequence evidence registry;
 - `claims/transition_claims.json`, the base transition claim examples;
 - `claims/proof_certificates.json`, the base transition proof certificates;
 - `claims/transition_chain_claims.json` and
@@ -52,6 +53,7 @@ The text report names:
 - overall accepted or rejected status;
 - transition evidence accepted or rejected state and bundle count;
 - chain evidence accepted or rejected state and bundle count;
+- network-sequence evidence accepted or rejected state and bundle count;
 - transition claim accepted or rejected state, claim count, example count, and
   matched-example count;
 - transition proof-certificate accepted or rejected state and certificate
@@ -63,7 +65,7 @@ The text report names:
 - transition language accepted or rejected state and claim/certificate counts;
 - chain language accepted or rejected state and claim/certificate counts;
 - language failed subjects when a language summary is rejected;
-- transition and chain evidence bundle IDs and paths;
+- transition, chain, and network-sequence evidence bundle IDs and paths;
 - transition bundle primary positive examples and covered examples;
 - blocked command tokens;
 - blocked runtime surfaces;
@@ -81,7 +83,7 @@ digest: accepted state, evidence counts, claim counts, proof-rule counts,
 blocked commands, and safe next slice.
 
 JSON mode emits the same surface for automation and includes top-level
-`schema_version: 16`. If a registry file is missing, the corresponding registry
+`schema_version: 17`. If a registry file is missing, the corresponding registry
 summary reports `registry-file`; if a registry file is present but malformed,
 it reports `registry-json`. Missing or invalid source-status files are also
 reported as structured rejected output instead of a traceback. ADR-0099 adds
@@ -267,6 +269,9 @@ line over the checked transition and transition-chain proof-certificate
 manifests, bumping project status to `schema_version: 16`.
 ADR-0189 adds `--format summary`, a compact text mode over the same payload,
 while preserving project status `schema_version: 16`.
+ADR-0199 adds `sequence_evidence` from the network-sequence evidence registry,
+includes it in aggregate acceptance, renders it in text and summary modes, adds
+`--sequence-registry`, and bumps project status to `schema_version: 17`.
 
 ## Boundary
 

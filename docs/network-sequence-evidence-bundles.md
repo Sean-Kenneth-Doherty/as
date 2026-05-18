@@ -40,7 +40,8 @@ The validator checks:
 
 ## Boundary
 
-This is not part of aggregate project status yet. It is the first evidence
-bundle over the ADR-0196/ADR-0197 post-handoff sequence surface, preserving the
-same boundary: no scheduler, topology, timing, output clearing, queued
-delivery, or new command semantics.
+ADR-0199 makes this registry part of aggregate project status through
+`sequence_evidence`. It remains the first evidence bundle over the
+ADR-0196/ADR-0197 post-handoff sequence surface, preserving the same boundary:
+no scheduler, topology, timing, output clearing, queued delivery, or new
+command semantics.

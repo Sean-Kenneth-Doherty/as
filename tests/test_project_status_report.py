@@ -17,6 +17,7 @@ from autarkic_systems.project_status import (
 
 TRANSITION_REGISTRY = Path("evidence/manifest.json")
 CHAIN_REGISTRY = Path("evidence/chains/manifest.json")
+SEQUENCE_REGISTRY = Path("evidence/sequences/manifest.json")
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
@@ -28,7 +29,7 @@ RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
 SAFE_NEXT_SLICE = ""
-PROJECT_STATUS_SCHEMA_VERSION = 16
+PROJECT_STATUS_SCHEMA_VERSION = 17
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
     "self-target-command-buffer",
@@ -179,6 +180,14 @@ CHAIN_BUNDLES = [
         "expected_status": "recipient-not-consumed",
     },
 ]
+SEQUENCE_BUNDLES = [
+    {
+        "bundle_id": "post-handoff-signal-sequence-evidence-bundle",
+        "path": "evidence/sequences/post_handoff_signal_bundle.json",
+        "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+        "expected_status": "post-handoff-signal-routed",
+    },
+]
 TRANSITION_LANGUAGE = {
     "language_id": "as-transition-claim-v1",
     "language_path": "language/transition_claim_language.json",
@@ -254,7 +263,7 @@ PROOF_RULE_AUDIT = {
 PROJECT_STATUS_SUMMARY = "\n".join(
     [
         "Autarkic Systems summary: accepted",
-        "Evidence: 11 transition bundles; 2 chain bundles",
+        "Evidence: 11 transition bundles; 2 chain bundles; 1 sequence bundle",
         (
             "Claims: 16 transition claims/40 matched examples; "
             "2 chain claims/2 certificates"
@@ -516,6 +525,13 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(report["chain_evidence"]["accepted"])
         self.assertEqual(report["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(report["chain_evidence"]["bundles"], CHAIN_BUNDLES)
+        self.assertEqual(
+            report["sequence_evidence"]["registry_id"],
+            "network-sequence-evidence-bundle-registry",
+        )
+        self.assertTrue(report["sequence_evidence"]["accepted"])
+        self.assertEqual(report["sequence_evidence"]["bundle_count"], 1)
+        self.assertEqual(report["sequence_evidence"]["bundles"], SEQUENCE_BUNDLES)
         self.assertTrue(report["transition_claims"]["accepted"])
         for key, expected in TRANSITION_CLAIMS.items():
             self.assertEqual(report["transition_claims"][key], expected)
@@ -825,6 +841,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Autarkic Systems project status: accepted", text)
         self.assertIn("Transition evidence: accepted (11 bundles)", text)
         self.assertIn("Chain evidence: accepted (2 bundles)", text)
+        self.assertIn("Network sequence evidence: accepted (1 bundle)", text)
         self.assertIn(
             "Transition claims: accepted (16 claims, 40 examples, 40 matched)",
             text,
@@ -882,6 +899,12 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn(
             "neighbor-delivery-recipient-rejection-chain-evidence-bundle -> "
             "evidence/chains/neighbor_delivery_rejection_chain_bundle.json",
+            text,
+        )
+        self.assertIn("Network sequence evidence bundles:", text)
+        self.assertIn(
+            "post-handoff-signal-sequence-evidence-bundle -> "
+            "evidence/sequences/post_handoff_signal_bundle.json",
             text,
         )
         self.assertIn(
@@ -1447,6 +1470,8 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(payload["chain_evidence"]["bundles"], CHAIN_BUNDLES)
+        self.assertEqual(payload["sequence_evidence"]["bundle_count"], 1)
+        self.assertEqual(payload["sequence_evidence"]["bundles"], SEQUENCE_BUNDLES)
         self.assertTrue(payload["transition_claims"]["accepted"])
         for key, expected in TRANSITION_CLAIMS.items():
             self.assertEqual(payload["transition_claims"][key], expected)
@@ -1581,6 +1606,24 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(stdout.getvalue().strip(), PROJECT_STATUS_SUMMARY)
         self.assertNotIn("Transition evidence bundles:", stdout.getvalue())
         self.assertNotIn("AS boundaries:", stdout.getvalue())
+
+    def test_cli_accepts_sequence_registry_override(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = run_project_status_cli(
+                [
+                    "--sequence-registry",
+                    str(SEQUENCE_REGISTRY),
+                    "--format",
+                    "json",
+                ]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["sequence_evidence"]["accepted"])
+        self.assertEqual(payload["sequence_evidence"]["bundle_count"], 1)
 
     def test_missing_source_status_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -3210,6 +3253,27 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(report["chain_evidence"]["bundles"], [])
         self.assertEqual(
             report["chain_evidence"]["failed_subjects"],
+            ["registry-file"],
+        )
+
+    def test_missing_sequence_registry_is_structured_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_registry = Path(tmp) / "missing_sequence_manifest.json"
+
+            report = build_project_status_report(
+                sequence_registry_path=missing_registry,
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertTrue(report["transition_evidence"]["accepted"])
+        self.assertTrue(report["chain_evidence"]["accepted"])
+        self.assertFalse(report["sequence_evidence"]["accepted"])
+        self.assertEqual(report["sequence_evidence"]["registry_id"], "")
+        self.assertEqual(report["sequence_evidence"]["path"], str(missing_registry))
+        self.assertEqual(report["sequence_evidence"]["bundle_count"], 0)
+        self.assertEqual(report["sequence_evidence"]["bundles"], [])
+        self.assertEqual(
+            report["sequence_evidence"]["failed_subjects"],
             ["registry-file"],
         )
 

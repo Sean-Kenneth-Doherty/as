@@ -182,8 +182,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   over one checked transition-chain evidence path or the whole chain evidence
   registry.
 - `docs/project-status-report.md` records the operator-facing status report
-  over transition evidence, chain evidence, and the blocked command-token
-  frontier.
+  over transition evidence, chain evidence, network-sequence evidence, and the
+  blocked command-token frontier.
 - `docs/source-status-frontier.md` records the focused source-status frontier
   command for inspecting blocked command-token semantics without the full
   project status surface.
@@ -294,10 +294,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   lower-level evidence bundles, source-status boundaries, artifact-presence
   summary, and validation result.
 - `autarkic_systems/project_status.py` renders one operator-facing report over
-  the transition evidence registry, chain evidence registry, base
-  claim/proof/language surfaces, transition-chain claim/language surfaces, and
-  the checked proof-rule audit, plus the live source-status frontier for
-  blocked command-token semantics and their resolution-question IDs.
+  the transition evidence registry, chain evidence registry, network-sequence
+  evidence registry, base claim/proof/language surfaces, transition-chain
+  claim/language surfaces, and the checked proof-rule audit, plus the live
+  source-status frontier for blocked command-token semantics and their
+  resolution-question IDs.
 - `autarkic_systems/github_submission.py` renders local git evidence for the
   current GitHub submission path: current branch, `HEAD`, origin/fork remote
   URLs, fork `main` match state, origin `main` divergence, and the upstream
@@ -379,18 +380,20 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
   evidence accepted with 11 bundles, chain evidence accepted with 2 bundles,
+  network-sequence evidence accepted with 1 bundle,
   transition claim examples accepted with 16 claims and 40 matched examples,
   transition proof certificates accepted with 16 claims and 16 certificates,
   transition-chain claims accepted with 2 claims, 9 examples, and 2
   certificates, a proof-rule audit showing 49 checked `predicate-result` steps
   and 0 checked `manifest-example` steps,
   transition language accepted with 16 claims and 16 certificates, chain
-  language accepted with 2 claims and 2 certificates, concrete transition and
-  chain registry bundle entries, and the current blocked `standard-signal`
+  language accepted with 2 claims and 2 certificates, concrete transition,
+  chain, and network-sequence registry bundle entries, and the current blocked
+  `standard-signal`
   command-token frontier. The default text report also names the concrete
-  transition and
-  chain evidence bundle IDs and paths, transition bundle positive and covered
-  examples, claim/proof and language failed subjects when present, the
+  transition, chain, and network-sequence evidence bundle IDs and paths,
+  transition bundle positive and covered examples, claim/proof and language
+  failed subjects when present, the
   standard-signal blocked runtime surfaces, source-status AS boundaries,
   execution-readiness gates, the resolution-question IDs and
   summaries that define the next source-backed decision work, the source
@@ -429,7 +432,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   adds the proof-rule audit to JSON/text so the checked transition and chain
   proof-certificate rule mix is visible from project status. The summary output
   format preserves schema version `16` while rendering the same payload as a
-  compact operator digest.
+  compact operator digest. Schema version `17` adds `sequence_evidence` from
+  the network-sequence evidence registry, includes it in aggregate acceptance,
+  renders it in text and summary output, and adds `--sequence-registry`.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
