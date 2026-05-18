@@ -1,6 +1,7 @@
 # Recipient Write-Buffer Command Evidence Bundle
 
-Status: transition evidence bundle, added 2026-05-18.
+Status: transition evidence bundle with predicate-result proof surface, updated
+2026-05-18.
 
 ADR-0170 adds
 `evidence/recipient_write_buffer_command_message_bundle.json`, registering the
@@ -11,7 +12,7 @@ The bundle ties together:
 
 - `UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED`;
 - the `recipient_write_buffer_command_message_appends_literal` predicate;
-- the proof certificate for that claim;
+- the predicate-result proof certificate for that claim;
 - `schematics/recipient_write_buffer_command_message_trace.json`;
 - `schematics/recipient_write_buffer_command_message_trace.svg`;
 - `sources/prc_hardware_witness_map.json`; and

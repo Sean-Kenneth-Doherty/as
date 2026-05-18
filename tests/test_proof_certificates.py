@@ -264,6 +264,25 @@ class ProofCertificateTests(unittest.TestCase):
             {"recipient_init_command_message_processed"},
         )
 
+    def test_recipient_write_buffer_command_message_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates[
+            "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED"
+        ]
+
+        self.assertEqual(len(certificate.steps), 3)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"recipient_write_buffer_command_message_appends_literal"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -290,6 +309,10 @@ class ProofCertificateTests(unittest.TestCase):
         )
         self.assertIn("OK UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED:", text)
         self.assertIn("OK UC-RECIPIENT-INIT-COMMAND-MESSAGE-PROCESSED:", text)
+        self.assertIn(
+            "OK UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED:",
+            text,
+        )
         self.assertIn("predicate-result", text)
         self.assertNotIn("FAIL", text)
 
@@ -441,6 +464,17 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertTrue(recipient_init_command_message["accepted"])
         self.assertEqual(
             recipient_init_command_message["detail"],
+            "verified 3 certificate steps: 3 predicate-result steps",
+        )
+        recipient_write_buffer_command_message = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"]
+            == "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED"
+        )
+        self.assertTrue(recipient_write_buffer_command_message["accepted"])
+        self.assertEqual(
+            recipient_write_buffer_command_message["detail"],
             "verified 3 certificate steps: 3 predicate-result steps",
         )
 

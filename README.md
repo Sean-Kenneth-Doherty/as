@@ -300,8 +300,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   execution, unsupported-command preservation, and direct self-mailbox
   write-buffer append execution, plus completed self-target command-buffer init
   dispatch, unsupported-preservation, write-buffer append, and neighbor-target
-  delivery boundaries, plus recipient init command-message processing, that name
-  the evaluated predicates directly.
+  delivery boundaries, plus recipient init and write-buffer command-message
+  processing, that name the evaluated predicates directly.
 - `python -m autarkic_systems.proof_certificates` validates the transition
   proof-certificate surface in text or JSON form.
 - `python -m autarkic_systems.object_language` validates the transition claim

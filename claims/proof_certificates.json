@@ -273,19 +273,22 @@
       "claim_id": "UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "fixed upstream write-buf-zero command appended",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_write_buffer_command_message_appends_literal"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "stem recipient write-buf-one command appended",
-          "expected": true
+          "expected": true,
+          "predicate": "recipient_write_buffer_command_message_appends_literal"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "recipient write buffer wrong bit",
-          "expected": false
+          "expected": false,
+          "predicate": "recipient_write_buffer_command_message_appends_literal"
         }
       ]
     },

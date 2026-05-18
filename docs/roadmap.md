@@ -3757,3 +3757,26 @@ Status: accepted in
 `docs/adr/0184-recipient-init-command-message-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest, focused proof/project-status
 tests, and the recipient init command-message claim note.
+
+## ADR-0185: Recipient Write-Buffer Command-Message Predicate Result Certificates
+
+Goal: make the recipient write-buffer command-message proof certificate name the
+predicate it evaluates instead of relying only on manifest-example lookup.
+
+Deliverables:
+
+- `UC-RECIPIENT-WRITE-BUFFER-COMMAND-MESSAGE-APPENDED` proof-certificate steps
+  use `predicate-result`;
+- all three recipient write-buffer command-message certificate steps name
+  `recipient_write_buffer_command_message_appends_literal`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  recipient write-buffer command-message certificate as three predicate-result
+  steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0185-recipient-write-buffer-command-message-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest, focused proof/project-status
+tests, and the recipient write-buffer command evidence-bundle note.
