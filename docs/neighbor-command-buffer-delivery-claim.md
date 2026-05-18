@@ -1,6 +1,6 @@
 # Neighbor Command Buffer Delivery Claim
 
-Status: named claim and proof-certificate surface, 2026-05-17.
+Status: named claim and predicate-result proof-certificate surface, 2026-05-18.
 
 ADR-0045 promotes ADR-0044 neighbor-target command-buffer delivery into the
 transition-claim surface. The claim is
@@ -29,9 +29,10 @@ execution. It is a delivery claim only.
 
 ## Proof Surface
 
-`claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for a positive neighbor B delivery example plus a negative wrong-channel
-example. The direct predicate tests also cover neighbor A and neighbor C.
+`claims/proof_certificates.json` covers the claim with `predicate-result`
+steps that name `stem_command_buffer_delivers_neighbor_command` directly for a
+positive neighbor B delivery example plus a negative wrong-channel example. The
+direct predicate tests also cover neighbor A and neighbor C.
 
 ## Verification
 

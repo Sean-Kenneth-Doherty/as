@@ -591,6 +591,14 @@ class ProjectStatusReportTests(unittest.TestCase):
                 "detail": "verified 3 certificate steps: 3 predicate-result steps",
             },
         )
+        self.assertEqual(
+            report["transition_proof_certificates"]["results"][12],
+            {
+                "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
+                "accepted": True,
+                "detail": "verified 2 certificate steps: 2 predicate-result steps",
+            },
+        )
         self.assertTrue(report["chain_claims"]["accepted"])
         for key, expected in CHAIN_CLAIMS.items():
             self.assertEqual(report["chain_claims"][key], expected)

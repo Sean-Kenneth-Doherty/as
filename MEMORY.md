@@ -612,6 +612,9 @@
   append proof certificate to `predicate-result`, extending explicit
   predicate-named proof steps to the self command-buffer write-buffer
   execution claim.
+- ADR-0183 migrates the completed neighbor-target command-buffer delivery proof
+  certificate to `predicate-result`, extending explicit predicate-named proof
+  steps to the neighbor command-buffer delivery claim.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

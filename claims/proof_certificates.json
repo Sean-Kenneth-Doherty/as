@@ -233,14 +233,16 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor b proc left command delivered",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_command_buffer_delivers_neighbor_command"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "neighbor b command delivered to wrong channel",
-          "expected": false
+          "expected": false,
+          "predicate": "stem_command_buffer_delivers_neighbor_command"
         }
       ]
     },

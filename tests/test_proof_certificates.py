@@ -230,6 +230,23 @@ class ProofCertificateTests(unittest.TestCase):
             {"stem_command_buffer_executes_self_write_buffer"},
         )
 
+    def test_neighbor_command_buffer_delivery_claim_uses_explicit_predicate_result_steps(self):
+        certificates = {
+            certificate.claim_id: certificate
+            for certificate in load_proof_certificates(CERTIFICATES)
+        }
+
+        certificate = certificates["UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED"]
+
+        self.assertEqual(len(certificate.steps), 2)
+        self.assertTrue(
+            all(step.rule == "predicate-result" for step in certificate.steps)
+        )
+        self.assertEqual(
+            {step.predicate for step in certificate.steps},
+            {"stem_command_buffer_delivers_neighbor_command"},
+        )
+
     def test_report_formats_successful_proof_certificate_validation(self):
         report = proof_certificates.validate_proof_certificate_project(
             claims_path=MANIFEST,
@@ -254,6 +271,7 @@ class ProofCertificateTests(unittest.TestCase):
             "OK UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED:",
             text,
         )
+        self.assertIn("OK UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED:", text)
         self.assertIn("predicate-result", text)
         self.assertNotIn("FAIL", text)
 
@@ -386,6 +404,16 @@ class ProofCertificateTests(unittest.TestCase):
         self.assertEqual(
             self_command_buffer_write_buffer["detail"],
             "verified 3 certificate steps: 3 predicate-result steps",
+        )
+        neighbor_command_buffer_delivery = next(
+            result
+            for result in payload["results"]
+            if result["claim_id"] == "UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED"
+        )
+        self.assertTrue(neighbor_command_buffer_delivery["accepted"])
+        self.assertEqual(
+            neighbor_command_buffer_delivery["detail"],
+            "verified 2 certificate steps: 2 predicate-result steps",
         )
 
     def test_cli_returns_zero_for_checked_in_proof_certificates(self):

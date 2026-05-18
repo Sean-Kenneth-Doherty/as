@@ -3931,3 +3931,24 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 780 tests.
+
+## 2026-05-18 - Neighbor Command-Buffer Delivery Predicate Result Certificates
+
+- Added ADR-0183 to migrate
+  `UC-STEM-COMMAND-BUFFER-NEIGHBOR-DELIVERED` from `manifest-example` proof
+  steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 101 tests and failed because the neighbor
+  command-buffer delivery certificate still used `manifest-example`, and
+  proof/project-status reports still described it as two `manifest-example`
+  steps.
+- Updated `claims/proof_certificates.json` so both neighbor command-buffer
+  delivery certificate steps use `predicate-result` and name
+  `stem_command_buffer_delivers_neighbor_command` directly.
+- Updated the neighbor command-buffer delivery claim note and summary docs so
+  they describe the new predicate-result proof surface.
+- Focused green verification passed 101 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 781 tests.
