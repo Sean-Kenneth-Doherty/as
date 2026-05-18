@@ -97,6 +97,15 @@
   deduction-apparatus target and no longer lists
   `deduction-apparatus-selection` as a blocker. It remains blocked on
   self-reference-fixed-point.
+- ADR-0231 adds `claims/fixed_point_targets.json` and
+  `autarkic_systems/fixed_point.py` as the first checked fixed-point target
+  surface. It validates a `pi1` template with free code variable `n` and one
+  substitution instance over the formal codebook, but does not prove a
+  diagonal lemma, construct quotation terms, prove a fixed-point equation, or
+  claim self-consistency.
+- `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
+  longer uses the broad `self-reference-fixed-point` blocker. It remains
+  blocked on `fixed-point-construction`.
 - Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
   work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
   upstream issue `jpt4/as#1` records the permission blocker and fork handoff.

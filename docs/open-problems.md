@@ -430,7 +430,9 @@ full deduction syntax remain open. ADR-0228 adds capture-avoiding substitution
 examples over the codebook nodes. ADR-0230 selects the current AS-local
 `predicate-result` proof-certificate checker as a checked deduction-apparatus
 target for the executable substrate surfaces, without claiming Hilbert,
-tableau, or arithmetized proof-predicate machinery.
+tableau, or arithmetized proof-predicate machinery. ADR-0231 adds a checked
+fixed-point target template and substitution instance, but actual quotation
+terms and fixed-point equations remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -459,7 +461,7 @@ removes the consistency-level selection blocker by selecting Level-1
 consistency as the first target notion. ADR-0230 removes the
 deduction-apparatus selection blocker by selecting the AS-local
 `predicate-result` certificate checker as the current apparatus target. The
-remaining blocker is fixed-point self-reference.
+remaining blocker is fixed-point construction.
 
 ## P6: Recover Or Replace The Active Proflog Frontier
 

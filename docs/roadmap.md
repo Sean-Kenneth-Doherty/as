@@ -4751,3 +4751,30 @@ Deliverables:
 Status: accepted in `docs/adr/0230-deduction-apparatus-target.md`.
 Implemented in `autarkic_systems/deduction_apparatus.py`, with tests in
 `tests/test_deduction_apparatus_target.py`.
+
+## ADR-0231: Fixed-Point Target Surface
+
+Goal: narrow the self-reference blocker by selecting a checked fixed-point
+target template without claiming a diagonal lemma or fixed-point equation.
+
+Deliverables:
+
+- `claims/fixed_point_targets.json` selecting a `pi1` target template with
+  free code variable `n`;
+- references to the checked formal codebook, substitution examples,
+  consistency-level target, and deduction-apparatus target;
+- Willard generic-configuration, Level(k), SelfCons_k, and GenAC anchors;
+- substitution-instance validation against expected node and code output;
+- rejection for unknown Willard anchors, templates missing the target
+  variable, expected-instance mismatches, and statuses that claim a proved
+  fixed point;
+- `autarkic_systems.fixed_point` text/JSON CLI validation;
+- formal-confidence target narrowed to the new fixed-point artifact while
+  still blocked on fixed-point construction; and
+- no diagonal lemma, quotation-term construction, arithmetized proof
+  predicate, fixed-point equation proof, theorem prover, runtime behavior,
+  command semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0231-fixed-point-target.md`. Implemented in
+`autarkic_systems/fixed_point.py`, with tests in
+`tests/test_fixed_point_target.py`.

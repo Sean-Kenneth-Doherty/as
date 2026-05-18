@@ -45,6 +45,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/deduction-apparatus-target.md` records the AS-local
   `predicate-result` proof-certificate checker as the current selected
   deduction-apparatus target.
+- `docs/fixed-point-target.md` records the first checked `pi1`
+  fixed-point target template and substitution instance, while leaving actual
+  fixed-point construction blocked.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
 - `docs/transition-chain-claim-language.md` explains the first explicit object
@@ -360,10 +363,13 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/consistency_level.py` validates the first consistency-level
   target selection, tying Level-1 consistency to the checked arithmetic
   language, codebook, and substitution surface without claiming a proof.
+- `autarkic_systems/fixed_point.py` validates the first fixed-point target
+  template over the checked codebook and substitution surface without claiming
+  a diagonal lemma, quotation-term construction, or self-consistency theorem.
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
-  self-reference and deduction-apparatus choices exist.
+  construction exists.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -392,7 +398,7 @@ proof certificates, object languages, evidence bundles, and status reports:
   `AS-FORMAL-CONFIDENCE-TARGET-001`, a blocked Willard-style
   formal-confidence target over the current AS proof/evidence surface and the
   first checked syntax-only arithmetic language, proof-code, substitution, and
-  consistency-level and deduction-apparatus target artifacts.
+  consistency-level, deduction-apparatus, and fixed-point target artifacts.
 - `python -m autarkic_systems.formal_arithmetic --format json` validates
   `language/formal_arithmetic_language.json`, including required Willard
   anchors, the Type-NS profile, `delta0`, `pi1`, `sigma1`, and the
@@ -411,6 +417,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   AS-local `predicate-result` proof-certificate checker and 52 checked
   certificate steps across the transition, transition-chain, and
   network-sequence surfaces.
+- `python -m autarkic_systems.fixed_point --format json` validates
+  `claims/fixed_point_targets.json`, including the selected `pi1` target
+  template, free code variable, checked substitution instance, and
+  non-constructed status.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, explicit blockers, and the

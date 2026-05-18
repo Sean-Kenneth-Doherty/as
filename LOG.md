@@ -4937,3 +4937,33 @@
   without `deduction-apparatus-selection`; live project-status summary remained
   accepted. `compileall`, JSON checks, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 990 tests.
+
+## 2026-05-18 - Fixed-Point Target Surface
+
+- Added ADR-0231 to narrow the self-reference blocker by selecting a checked
+  fixed-point target template without claiming a diagonal lemma, quotation
+  term, fixed-point equation proof, or self-consistency theorem.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point` and `claims/fixed_point_targets.json` did not
+  exist, and the formal-confidence target still pointed at the broad
+  `self-reference-fixed-point` blocker.
+- Added `claims/fixed_point_targets.json`, selecting a `pi1` template with
+  free code variable `n`, a placeholder quotation term, an expected
+  substitution instance, and expected encoded output as
+  `target-selected-not-constructed`.
+- Added `autarkic_systems/fixed_point.py` with dependency validation against
+  the formal codebook, substitution examples, consistency-level target, and
+  deduction-apparatus target; Willard generic/Level(k)/SelfCons_k/GenAC anchor
+  checks; template free-variable checks; expected instance/node/code checks;
+  and rejection of statuses that claim a proved fixed point.
+- Narrowed `claims/formal_confidence_targets.json` so
+  `AS-FORMAL-CONFIDENCE-TARGET-001` points at the fixed-point target, replaces
+  `self-reference-fixed-point` with `fixed-point-construction`, and remains
+  blocked rather than claiming self-consistency.
+- Focused fixed-point, formal-confidence, and project-status tests passed 110
+  tests. Live fixed-point text/JSON output reported the `pi1` template and
+  checked substitution instance with no failed subjects; live formal-confidence
+  output reported the remaining blocker as `fixed-point-construction`; live
+  project-status summary remained accepted. `compileall`, JSON checks,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 1002 tests.

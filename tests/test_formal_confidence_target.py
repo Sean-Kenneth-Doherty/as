@@ -23,6 +23,7 @@ FORMAL_CODEBOOK = Path("language/formal_codebook.json")
 FORMAL_SUBSTITUTION_EXAMPLES = Path("language/formal_substitution_examples.json")
 CONSISTENCY_LEVEL_TARGETS = Path("claims/consistency_level_targets.json")
 DEDUCTION_APPARATUS_TARGETS = Path("claims/deduction_apparatus_targets.json")
+FIXED_POINT_TARGETS = Path("claims/fixed_point_targets.json")
 
 
 class FormalConfidenceTargetTests(unittest.TestCase):
@@ -62,7 +63,6 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             "W2011-D3.4-GENERIC-CONFIGURATION",
             target.willard_anchor_ids,
         )
-        self.assertIn("self-reference-fixed-point", target.blocked_by)
         self.assertIn(
             str(DEDUCTION_APPARATUS_TARGETS),
             target.configuration["deduction_method"],
@@ -81,7 +81,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             target.configuration["consistency_notion"],
         )
         self.assertIn(
-            str(FORMAL_SUBSTITUTION_EXAMPLES),
+            str(FIXED_POINT_TARGETS),
             target.configuration["self_reference"],
         )
         self.assertNotIn("arithmetic-object-language", target.blocked_by)
@@ -89,7 +89,8 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertNotIn("self-reference-substitution", target.blocked_by)
         self.assertNotIn("consistency-level-selection", target.blocked_by)
         self.assertNotIn("deduction-apparatus-selection", target.blocked_by)
-        self.assertIn("self-reference-fixed-point", target.blocked_by)
+        self.assertNotIn("self-reference-fixed-point", target.blocked_by)
+        self.assertIn("fixed-point-construction", target.blocked_by)
 
     def test_checked_in_target_validates_against_willard_map(self):
         report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
@@ -115,7 +116,7 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertEqual(payload["failed_subjects"], [])
         self.assertEqual(payload["targets"][0]["status"], "blocked")
         self.assertIn(
-            "self-reference-fixed-point",
+            "fixed-point-construction",
             payload["targets"][0]["blocked_by"],
         )
         self.assertNotIn(
@@ -138,6 +139,10 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             "deduction-apparatus-selection",
             payload["targets"][0]["blocked_by"],
         )
+        self.assertNotIn(
+            "self-reference-fixed-point",
+            payload["targets"][0]["blocked_by"],
+        )
         self.assertTrue(
             any(
                 result["subject"].endswith(".configuration")
@@ -153,12 +158,13 @@ class FormalConfidenceTargetTests(unittest.TestCase):
 
         self.assertIn("Formal confidence targets: accepted", text)
         self.assertIn("AS-FORMAL-CONFIDENCE-TARGET-001: blocked", text)
-        self.assertIn("Blockers: self-reference-fixed-point", text)
+        self.assertIn("Blockers: fixed-point-construction", text)
         self.assertNotIn("arithmetic-object-language", text)
         self.assertNotIn("proof-code-encoding", text)
         self.assertNotIn("self-reference-substitution", text)
         self.assertNotIn("consistency-level-selection", text)
         self.assertNotIn("deduction-apparatus-selection", text)
+        self.assertNotIn("self-reference-fixed-point", text)
         self.assertIn("Willard anchors:", text)
         self.assertNotIn("FAIL", text)
 
