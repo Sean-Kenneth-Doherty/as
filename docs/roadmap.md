@@ -3686,3 +3686,27 @@ Status: accepted in
 `docs/adr/0181-command-buffer-unsupported-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest, focused proof/project-status
 tests, and the command-buffer unsupported claim note.
+
+## ADR-0182: Self Command-Buffer Write-Buffer Predicate Result Certificates
+
+Goal: make the completed self-target command-buffer write-buffer append proof
+certificate name the predicate it evaluates instead of relying only on
+manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED` proof-certificate steps
+  use `predicate-result`;
+- all three self command-buffer write-buffer certificate steps name
+  `stem_command_buffer_executes_self_write_buffer`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  self command-buffer write-buffer certificate as three predicate-result
+  steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0182-self-command-buffer-write-buffer-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest and focused proof/project-status
+tests.

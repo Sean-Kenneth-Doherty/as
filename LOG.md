@@ -3911,3 +3911,23 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 779 tests.
+
+## 2026-05-18 - Self Command-Buffer Write-Buffer Predicate Result Certificates
+
+- Added ADR-0182 to migrate
+  `UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED` from
+  `manifest-example` proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 100 tests and failed because the self
+  command-buffer write-buffer certificate still used `manifest-example`, and
+  proof/project-status reports still described it as three `manifest-example`
+  steps.
+- Updated `claims/proof_certificates.json` so all three self command-buffer
+  write-buffer certificate steps use `predicate-result` and name
+  `stem_command_buffer_executes_self_write_buffer` directly.
+- Updated summary docs so they describe the new predicate-result proof surface.
+- Focused green verification passed 100 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 780 tests.

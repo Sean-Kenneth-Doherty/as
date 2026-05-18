@@ -608,6 +608,10 @@
   preservation proof certificate to `predicate-result`, extending explicit
   predicate-named proof steps to the standard-signal self-target unsupported
   command-buffer boundary.
+- ADR-0182 migrates the completed self-target command-buffer write-buffer
+  append proof certificate to `predicate-result`, extending explicit
+  predicate-named proof steps to the self command-buffer write-buffer
+  execution claim.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

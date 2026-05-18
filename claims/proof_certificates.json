@@ -210,19 +210,22 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-WRITE-BUFFER-APPENDED",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self command buffer write buffer zero appended",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_command_buffer_executes_self_write_buffer"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self command buffer write buffer one appended",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_command_buffer_executes_self_write_buffer"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self command buffer write buffer preserved command source",
-          "expected": false
+          "expected": false,
+          "predicate": "stem_command_buffer_executes_self_write_buffer"
         }
       ]
     },
