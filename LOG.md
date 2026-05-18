@@ -2190,3 +2190,24 @@
   chain `bundle_count: 2`, and no missing source-status files. `py_compile`,
   `git diff --check`, and `python -m unittest discover` passed, with the full
   suite running 545 tests.
+
+## 2026-05-18 - Project Status Invalid Registries
+
+- Added ADR-0098 to distinguish malformed registry files from missing registry
+  files in the project status report.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed because invalid transition and chain registries still reported
+  `failed_subjects: ["registry-file"]`, and text output listed them under
+  missing registry files.
+- Updated `autarkic_systems.project_status` so missing registry paths keep
+  `registry-file`, while existing registry files with JSON/schema/load errors
+  report `registry-json`. Text output now names invalid registry files
+  separately.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the refined failure contract.
+- Verified the focused project status test passed 12 tests; adjacent project
+  status, transition registry, and chain registry tests passed 37 tests. The
+  checked-in JSON status remained accepted with transition `bundle_count: 8`,
+  chain `bundle_count: 2`, and no missing or invalid source-status files.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
+  with the full suite running 548 tests.

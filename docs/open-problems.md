@@ -149,6 +149,8 @@ evidence registries and reports the blocked command-token frontier from the
 current source-status records.
 ADR-0097 hardens that status command so missing registry files are structured
 report failures rather than tracebacks.
+ADR-0098 distinguishes malformed registry files from missing registry files in
+that status output.
 
 ## P3: Choose The First Proof Apparatus
 

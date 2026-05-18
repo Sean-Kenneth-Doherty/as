@@ -168,6 +168,43 @@ class ProjectStatusReportTests(unittest.TestCase):
             str(missing_registry),
         )
 
+    def test_invalid_transition_registry_is_structured_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_registry = Path(tmp) / "invalid_transition_manifest.json"
+            invalid_registry.write_text("{not-json", encoding="utf-8")
+
+            report = build_project_status_report(
+                transition_registry_path=invalid_registry,
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertFalse(report["transition_evidence"]["accepted"])
+        self.assertEqual(report["transition_evidence"]["path"], str(invalid_registry))
+        self.assertEqual(report["transition_evidence"]["bundle_count"], 0)
+        self.assertEqual(
+            report["transition_evidence"]["failed_subjects"],
+            ["registry-json"],
+        )
+
+    def test_invalid_chain_registry_is_structured_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_registry = Path(tmp) / "invalid_chain_manifest.json"
+            invalid_registry.write_text("{}", encoding="utf-8")
+
+            report = build_project_status_report(
+                chain_registry_path=invalid_registry,
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertTrue(report["transition_evidence"]["accepted"])
+        self.assertFalse(report["chain_evidence"]["accepted"])
+        self.assertEqual(report["chain_evidence"]["path"], str(invalid_registry))
+        self.assertEqual(report["chain_evidence"]["bundle_count"], 0)
+        self.assertEqual(
+            report["chain_evidence"]["failed_subjects"],
+            ["registry-json"],
+        )
+
     def test_text_status_names_missing_registry_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
             missing_registry = Path(tmp) / "missing_chain_manifest.json"
@@ -180,6 +217,20 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertIn("Autarkic Systems project status: rejected", text)
         self.assertIn("Chain evidence: rejected (0 bundles)", text)
         self.assertIn(f"Missing registry files: {missing_registry}", text)
+
+    def test_text_status_names_invalid_registry_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_registry = Path(tmp) / "invalid_chain_manifest.json"
+            invalid_registry.write_text("{}", encoding="utf-8")
+
+            report = build_project_status_report(
+                chain_registry_path=invalid_registry,
+            )
+
+        text = format_project_status_report(report)
+        self.assertIn("Autarkic Systems project status: rejected", text)
+        self.assertIn("Chain evidence: rejected (0 bundles)", text)
+        self.assertIn(f"Invalid registry files: {invalid_registry}", text)
 
     def test_module_execution_runs_text_status_report(self):
         completed = subprocess.run(

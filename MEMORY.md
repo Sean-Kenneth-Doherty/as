@@ -460,3 +460,6 @@
 - ADR-0097 hardens `autarkic_systems.project_status` so missing transition or
   chain registry paths produce structured rejected text/JSON status output
   with `failed_subjects: ["registry-file"]` instead of a traceback.
+- ADR-0098 refines `autarkic_systems.project_status` so malformed transition
+  or chain registry files report `failed_subjects: ["registry-json"]` and text
+  output names invalid registry files separately from missing registry files.

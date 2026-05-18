@@ -38,9 +38,11 @@ The text report names:
 - blocked command tokens; and
 - the safe next slice from the source-status records.
 
-JSON mode emits the same surface for automation. If a registry file or
-source-status file is missing or invalid, the command returns structured
-rejected output instead of a traceback.
+JSON mode emits the same surface for automation. If a registry file is missing,
+the corresponding registry summary reports `registry-file`; if a registry file
+is present but malformed, it reports `registry-json`. Missing or invalid
+source-status files are also reported as structured rejected output instead of
+a traceback.
 
 ## Boundary
 

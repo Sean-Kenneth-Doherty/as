@@ -1857,3 +1857,21 @@ Deliverables:
 Status: accepted in `docs/adr/0097-project-status-registry-failures.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0098: Project Status Invalid Registries
+
+Goal: distinguish malformed registry files from missing registry files in the
+project status report.
+
+Deliverables:
+
+- invalid transition registry classification as `registry-json`;
+- invalid chain registry classification as `registry-json`;
+- text output that names invalid registry files separately from missing
+  registry files;
+- focused tests covering invalid transition and chain registries;
+- documentation update for the refined status failure contract.
+
+Status: accepted in `docs/adr/0098-project-status-invalid-registries.md`.
+Implemented in `autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

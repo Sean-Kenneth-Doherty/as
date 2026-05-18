@@ -78,6 +78,11 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         for summary in (transition, chain)
         if "registry-file" in summary["failed_subjects"]
     ]
+    invalid_registries = [
+        summary["path"]
+        for summary in (transition, chain)
+        if "registry-json" in summary["failed_subjects"]
+    ]
     missing = frontier["missing_source_statuses"] or []
     invalid = [
         f"{item['path']}: {item['error']}"
@@ -92,6 +97,8 @@ def format_project_status_report(report: dict[str, Any]) -> str:
         f"Safe next slice: {frontier['safe_next_slice'] or 'none'}",
         "Missing registry files: "
         + (", ".join(missing_registries) if missing_registries else "none"),
+        "Invalid registry files: "
+        + (", ".join(invalid_registries) if invalid_registries else "none"),
         "Missing source-status files: "
         + (", ".join(missing) if missing else "none"),
     ]
@@ -188,17 +195,18 @@ def _registry_summary(payload: dict[str, Any], path: Path) -> dict[str, Any]:
 
 
 def _registry_failure_summary(path: Path, exc: Exception) -> dict[str, Any]:
+    subject = "registry-file" if isinstance(exc, FileNotFoundError) else "registry-json"
     detail = f"{type(exc).__name__}: {exc}"
     return {
         "registry_id": "",
         "path": str(path),
         "accepted": False,
         "bundle_count": 0,
-        "failed_subjects": ["registry-file"],
+        "failed_subjects": [subject],
         "result_count": 1,
         "results": [
             {
-                "subject": "registry-file",
+                "subject": subject,
                 "accepted": False,
                 "detail": detail,
             }

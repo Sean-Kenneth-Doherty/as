@@ -269,3 +269,6 @@
 - A top-level status command should degrade one section at a time. Missing
   registries should reject their own summary while preserving other registry
   and frontier evidence when possible.
+- Distinguish absent artifacts from malformed artifacts in operator reports.
+  The next action for a missing registry is not the same as the next action for
+  an unreadable or schema-invalid registry.
