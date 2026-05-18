@@ -195,6 +195,9 @@ unresolved `required_resolution_questions` ID while preserving project status
 ADR-0156 rejects `execution_readiness` records that allow execution changes
 while unresolved `required_resolution_questions` remain, preserving project
 status `schema_version: 15`.
+ADR-0157 rejects contradictory `execution_readiness` records that mark a
+command `blocked` while allowing execution changes, preserving project status
+`schema_version: 15`.
 
 ## Boundary
 

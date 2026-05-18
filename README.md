@@ -346,7 +346,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   `blocked`, its `blocked_by_resolution_questions` list must also cover every
   unresolved question ID. A source-status record also cannot set
   `execution_change_allowed` to `true` while unresolved
-  `required_resolution_questions` remain.
+  `required_resolution_questions` remain, or while `execution_readiness.decision`
+  is `blocked`.
   Source-status cross-link paths and resolved question source paths must also
   point to existing files that contain JSON objects.
   Accepted source-status records must also provide non-empty top-level
@@ -362,8 +363,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   frontier records whose question IDs are simultaneously unresolved and
   resolved, and rejects execution-readiness blockers that do not match live
   unresolved questions or only partially cover them. It also rejects readiness
-  records that allow execution changes while unresolved questions remain. Text
-  mode renders the same frontier for operator diagnosis.
+  records that allow execution changes while unresolved questions remain or
+  while the readiness decision is `blocked`. Text mode renders the same
+  frontier for operator diagnosis.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

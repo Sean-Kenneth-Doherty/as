@@ -2144,6 +2144,39 @@ class ProjectStatusReportTests(unittest.TestCase):
             report["frontier"]["invalid_source_statuses"][0]["error"],
         )
 
+    def test_blocked_execution_readiness_cannot_allow_execution_changes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "blocked_but_execution_allowed.json"
+            invalid_status.write_text(
+                json.dumps({
+                    "decision": "do-not-implement-command-yet",
+                    "safe_next_slice": "revisit-command-source-evidence",
+                    "command": "write-buf-zero",
+                    "as_boundary": "Keep this command blocked here.",
+                    "execution_readiness": {
+                        "decision": "blocked",
+                        "execution_change_allowed": True,
+                        "blocked_by_resolution_questions": [],
+                        "summary": "Execution is blocked.",
+                    },
+                }),
+                encoding="utf-8",
+            )
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-schema"],
+        )
+        self.assertIn(
+            "blocked",
+            report["frontier"]["invalid_source_statuses"][0]["error"],
+        )
+
     def test_partial_resolution_question_evidence_coverage_is_structured_failure_subject(self):
         with tempfile.TemporaryDirectory() as tmp:
             invalid_status = Path(tmp) / "partial_resolution_question_evidence.json"

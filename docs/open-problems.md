@@ -283,6 +283,8 @@ implementation-ready until both source questions are resolved.
 ADR-0155 and ADR-0156 make that gate fail closed: blocked readiness must name
 all live blockers, and allowed readiness is rejected while unresolved
 questions remain.
+ADR-0157 also rejects contradictory readiness metadata where a command is
+marked blocked while execution changes are allowed.
 ADR-0138 adds base and chain language summaries to project status, so the first
 diagnostic command covers the object-language surfaces beneath evidence and
 frontier reports.

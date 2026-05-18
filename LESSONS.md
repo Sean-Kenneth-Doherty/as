@@ -437,3 +437,5 @@
   does.
 - Readiness should be bidirectional: if unresolved questions exist, execution
   cannot be marked allowed, even when the blocker list is empty.
+- Treat readiness fields as a small state machine. Individual fields that make
+  sense alone can still create a contradiction in combination.

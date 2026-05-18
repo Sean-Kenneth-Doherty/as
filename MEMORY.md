@@ -649,3 +649,6 @@
 - ADR-0156 adds the inverse execution-readiness guard: execution changes cannot
   be allowed while any unresolved `required_resolution_questions` remain. The
   JSON shapes stay at project status schema 15 and source-status schema 2.
+- ADR-0157 makes execution readiness internally consistent: a record whose
+  readiness decision is `blocked` cannot allow execution changes. The JSON
+  shapes stay at project status schema 15 and source-status schema 2.

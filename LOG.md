@@ -3376,3 +3376,18 @@
   source-status frontier remains schema 2; this is a validation-only change.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 668 tests.
+
+## 2026-05-18 - Execution Readiness Blocked Consistency
+
+- Added ADR-0157 to reject contradictory readiness metadata where
+  `execution_readiness.decision` is `blocked` but execution changes are
+  allowed.
+- Added the red project-status schema fixture before implementation. The red
+  run executed 83 focused tests and failed only that new fixture because the
+  validator accepted the contradictory readiness record.
+- Tightened source-status schema validation so blocked readiness cannot allow
+  execution changes.
+- Focused verification passed 83 tests. Project-status remains schema 15 and
+  source-status frontier remains schema 2; this is a validation-only change.
+  `py_compile`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 669 tests.

@@ -3100,3 +3100,21 @@ Status: accepted in
 `docs/adr/0156-execution-readiness-allowed-question-guard.md`. Implemented in
 `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0157: Execution Readiness Blocked Consistency
+
+Goal: prevent contradictory readiness metadata where execution is marked
+blocked but execution changes are allowed.
+
+Deliverables:
+
+- schema rejection for `execution_readiness.decision: blocked` combined with
+  `execution_change_allowed: true`;
+- unchanged project-status schema `15`;
+- unchanged source-status frontier schema `2`; and
+- unchanged Universal Cell runtime behavior.
+
+Status: accepted in
+`docs/adr/0157-execution-readiness-blocked-consistency.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

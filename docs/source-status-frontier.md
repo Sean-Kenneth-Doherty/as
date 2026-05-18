@@ -79,6 +79,8 @@ ADR-0155 tightens that shared validation: when readiness is `blocked`, its
 blocker list must cover every live unresolved resolution question.
 ADR-0156 adds the inverse guard: readiness cannot allow execution changes
 while live unresolved resolution questions remain.
+ADR-0157 adds a consistency guard: readiness cannot use decision `blocked`
+while allowing execution changes.
 
 ## Boundary
 
