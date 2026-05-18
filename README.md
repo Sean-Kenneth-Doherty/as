@@ -267,6 +267,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   witness showing that a delivered init command has a later recipient behavior:
   `proc-l-init` reconfigures the recipient to `proc/left`, after which a binary
   follow-up signal routes through the existing fixed-cell logic.
+- `autarkic_systems/network_sequence_claims.py` validates the first named claim
+  and predicate-result proof certificate over that post-handoff signal witness.
 - `autarkic_systems/chain_trace.py` validates the recorded transition-chain
   traces for consumed and rejected neighbor-delivery handoffs.
 - `autarkic_systems/chain_svg.py` renders and validates transition-chain SVG
@@ -350,6 +352,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   post-handoff signal witness as machine-readable JSON, including the
   underlying delivery witness, follow-up input, follow-up status, and recipient
   before/after follow-up state.
+- `python -m autarkic_systems.network_sequence_claims --format json` validates
+  the post-handoff signal claim and proof-certificate surface as
+  machine-readable JSON.
 - `python -m autarkic_systems.project_status --format summary` emits a compact
   six-line operator digest over the accepted state, evidence counts, claim
   counts, proof-rule audit, blocked commands, and safe next slice.

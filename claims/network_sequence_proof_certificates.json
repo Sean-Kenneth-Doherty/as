@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "certificates": [
+    {
+      "claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+      "steps": [
+        {
+          "rule": "predicate-result",
+          "example": "proc left init handoff routes later binary signal",
+          "expected": true,
+          "predicate": "post_handoff_signal_routed"
+        },
+        {
+          "rule": "predicate-result",
+          "example": "write buffer handoff is not post init signal routing",
+          "expected": false,
+          "predicate": "post_handoff_signal_routed"
+        },
+        {
+          "rule": "predicate-result",
+          "example": "malformed followup input does not route after init handoff",
+          "expected": false,
+          "predicate": "post_handoff_signal_routed"
+        }
+      ]
+    }
+  ]
+}

@@ -4001,3 +4001,22 @@ Status: accepted in `docs/adr/0196-post-handoff-signal-witness.md`.
 Implemented in `autarkic_systems/network_sequence.py`, with tests in
 `tests/test_post_handoff_signal_witness.py` and operator notes in
 `docs/post-handoff-signal-witness.md`.
+
+## ADR-0197: Post-Handoff Sequence Claim
+
+Goal: name and check the ADR-0196 post-handoff signal witness as a claim.
+
+Deliverables:
+
+- `autarkic_systems/network_sequence_predicates.py`;
+- `autarkic_systems/network_sequence_claims.py`;
+- `claims/network_sequence_claims.json`;
+- `claims/network_sequence_proof_certificates.json`;
+- text and JSON CLI validation; and
+- positive/negative example and incomplete-certificate tests.
+
+Status: accepted in `docs/adr/0197-post-handoff-sequence-claim.md`.
+Implemented in `autarkic_systems/network_sequence_predicates.py` and
+`autarkic_systems/network_sequence_claims.py`, with tests in
+`tests/test_network_sequence_claims.py` and operator notes in
+`docs/network-sequence-claims.md`.

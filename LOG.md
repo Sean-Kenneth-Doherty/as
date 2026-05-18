@@ -4203,3 +4203,20 @@
   and malformed-follow-up fixtures exposed the expected sequence status and
   recipient final state. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 823 tests.
+
+## 2026-05-18 - Post-Handoff Sequence Claim
+
+- Added ADR-0197 to name the ADR-0196 post-handoff signal witness as a checked
+  claim surface before any later evidence-bundle promotion.
+- Added red sequence-claim tests before implementation. The focused red run
+  failed because `autarkic_systems.network_sequence_claims` did not exist.
+- Added `autarkic_systems/network_sequence_predicates.py` with
+  `post_handoff_signal_routed`, checking the accepted `proc-l-init` handoff,
+  follow-up input `(1, 0, 0)`, routed output `(0, 0, 1)`, processor memory
+  toggle to `right`, and cleared recipient input.
+- Added `autarkic_systems/network_sequence_claims.py` plus
+  `claims/network_sequence_claims.json` and
+  `claims/network_sequence_proof_certificates.json`, with one positive
+  post-handoff routing example and two negative examples.
+- Focused green verification passed 10 tests. The validator rejects incomplete
+  certificate manifests and exposes text/JSON CLI output.

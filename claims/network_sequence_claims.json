@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "claims": [
+    {
+      "id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+      "predicate": "post_handoff_signal_routed",
+      "description": "An accepted proc-l-init neighbor delivery can reconfigure the recipient so a later binary signal routes through the recipient as a proc/left cell and toggles processor memory.",
+      "examples": [
+        {
+          "name": "proc left init handoff routes later binary signal",
+          "expected": true,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "control": [1, 0, 0],
+            "buffer": [1, 0, 1, 0]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          },
+          "followup_input": [1, 0, 0]
+        },
+        {
+          "name": "write buffer handoff is not post init signal routing",
+          "expected": false,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [0, 1, 0],
+            "control": [0, 1, 0],
+            "buffer": [1, 1, 1, 1]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          },
+          "followup_input": [1, 0, 0]
+        },
+        {
+          "name": "malformed followup input does not route after init handoff",
+          "expected": false,
+          "sender": {
+            "role": "stem",
+            "memory": "right",
+            "input": [1, 0, 0],
+            "control": [1, 0, 0],
+            "buffer": [1, 0, 1, 0]
+          },
+          "recipient": {
+            "role": "wire",
+            "memory": "right"
+          },
+          "followup_input": ["standard-signal", "_", "_"]
+        }
+      ]
+    }
+  ]
+}

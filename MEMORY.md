@@ -814,3 +814,10 @@
   follow-up input `(1, 0, 0)`, routed output `(0, 0, 1)`, and processor memory
   toggled to `right` without adding scheduler, topology, timing, or new command
   semantics.
+- ADR-0197 names that post-handoff sequence as
+  `UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED`, with
+  `autarkic_systems.network_sequence_predicates`,
+  `autarkic_systems.network_sequence_claims`,
+  `claims/network_sequence_claims.json`, and predicate-result proof
+  certificates. It checks one positive routed follow-up example and two
+  negative examples without adding new runtime behavior.
