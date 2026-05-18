@@ -356,3 +356,6 @@
   before rendering it as an operator trail.
 - When a source narrows only one runtime surface, record that narrower fact
   without pretending it resolves the whole command-token frontier.
+- When a previously open blocker is already settled by a checked artifact,
+  move it out of the unresolved queue and point to the artifact that settled
+  it.

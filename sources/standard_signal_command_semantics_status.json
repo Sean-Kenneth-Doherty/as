@@ -26,6 +26,15 @@
     "decision": "do-not-treat-self-mailbox-standard-signal-as-binary-input",
     "summary": "The formal model says wire, proc, and stem cells perform productive behavior on standard signals unless the standard signal is sent to the self-mailbox of a stem cell. This blocks treating a stem self-mailbox standard-signal command as ordinary binary-input standard-signal behavior."
   },
+  "resolved_resolution_questions": [
+    {
+      "question_id": "command-table-offset",
+      "decision": "preserve-formal-command-offset-0",
+      "source_status": "sources/stem_command_buffer_map.json",
+      "formal_command_offset": 0,
+      "legacy_divergence": "RAA maps its final command-buffer case to standard-signal, but AS preserves the formal PRC command-buffer map from ADR-0026."
+    }
+  ],
   "legacy_standard_signal_witnesses": [
     {
       "witness_id": "LEGACY-RAA-STANDARD-SIGNAL",
@@ -58,10 +67,6 @@
     {
       "question_id": "command-token-vs-binary-input",
       "summary": "Decide whether a standard-signal command token is supposed to reproduce ordinary binary-input standard-signal behavior or remain a separate unsupported command."
-    },
-    {
-      "question_id": "command-table-offset",
-      "summary": "Decide whether AS should preserve formal command offset 0 or adopt a legacy command-buffer placement if later source evidence justifies doing so."
     },
     {
       "question_id": "recipient-surface",

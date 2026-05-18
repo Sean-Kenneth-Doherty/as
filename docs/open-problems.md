@@ -219,6 +219,9 @@ so existing junk files cannot pass as source-status trail artifacts.
 ADR-0127 promotes the formal-model self-mailbox exception for
 `standard-signal`, narrowing the self-target-surface question without changing
 runtime behavior.
+ADR-0128 resolves the `standard-signal` command-table offset question in favor
+of the formal PRC map, leaving the command-token/binary-input,
+recipient-surface, and self-target-surface questions open.
 
 ## P3: Choose The First Proof Apparatus
 

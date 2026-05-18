@@ -554,3 +554,7 @@
   standard-signal behavior must not be applied by default to stem
   self-mailbox `standard-signal` command tokens, so runtime behavior remains
   blocked pending a later preserve/clear/no-op semantics decision.
+- ADR-0128 resolves the standard-signal `command-table-offset` question in
+  favor of the formal PRC map encoded by `sources/stem_command_buffer_map.json`
+  (`standard-signal` offset `0`) and removes that question from the project
+  status unresolved queue; command-token execution remains blocked.

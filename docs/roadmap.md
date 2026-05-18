@@ -2448,3 +2448,29 @@ Status: accepted in
 `sources/standard_signal_command_semantics_status.json` and
 `docs/standard-signal-command-semantics-status.md`, with tests in
 `tests/test_standard_signal_command_semantics_status.py`.
+
+## ADR-0128: Standard-Signal Command Offset Resolution
+
+Goal: resolve the standard-signal `command-table-offset` question in favor of
+the formal PRC stem command-buffer map already encoded by ADR-0026.
+
+Deliverables:
+
+- a `resolved_resolution_questions` entry for `command-table-offset` in
+  `sources/standard_signal_command_semantics_status.json`;
+- removal of `command-table-offset` from unresolved
+  `required_resolution_questions`;
+- tests proving the resolved decision points at
+  `sources/stem_command_buffer_map.json`;
+- project-status tests proving the unresolved standard-signal queue no longer
+  includes `command-table-offset`;
+- unchanged Universal Cell runtime behavior;
+- unchanged project status JSON at `schema_version: 8`; and
+- focused standard-signal and project-status tests.
+
+Status: accepted in
+`docs/adr/0128-standard-signal-command-offset-resolution.md`. Implemented in
+`sources/standard_signal_command_semantics_status.json` and
+`docs/standard-signal-command-semantics-status.md`, with tests in
+`tests/test_standard_signal_command_semantics_status.py` and
+`tests/test_project_status_report.py`.

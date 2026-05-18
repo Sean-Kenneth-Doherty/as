@@ -95,6 +95,9 @@ missing cross-link targets as `source-status-schema` while preserving
 ADR-0126 requires each source-status cross-link path target to contain
 parseable top-level JSON object content, reporting invalid or non-object
 targets as `source-status-schema` while preserving `schema_version: 8`.
+ADR-0128 removes `command-table-offset` from the unresolved standard-signal
+resolution questions after resolving that ordering in favor of the formal PRC
+stem command-buffer map, while preserving `schema_version: 8`.
 
 ## Boundary
 

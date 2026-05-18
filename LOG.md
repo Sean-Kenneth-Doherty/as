@@ -2837,3 +2837,23 @@
   project-status tests ran 54 tests; JSON formatting, `py_compile`, and
   `git diff --check` passed; project status text and JSON remained accepted at
   `schema_version: 8`; and `python -m unittest discover` passed 588 tests.
+
+## 2026-05-18 - Standard-Signal Command Offset Resolution
+
+- Added ADR-0128 to resolve the standard-signal `command-table-offset`
+  question in favor of the formal PRC stem command-buffer map from ADR-0026.
+- Updated `tests/test_standard_signal_command_semantics_status.py` and
+  `tests/test_project_status_report.py` before implementation. The red run
+  executed 50 tests and failed because `resolved_resolution_questions` was
+  absent and project status still reported `command-table-offset` as
+  unresolved.
+- Updated `sources/standard_signal_command_semantics_status.json` and
+  `docs/standard-signal-command-semantics-status.md` so
+  `command-table-offset` is recorded as resolved by
+  `sources/stem_command_buffer_map.json`, where `standard-signal` is formal
+  offset `0`.
+- Verification passed: standard-signal, project-status, and stem command-map
+  tests ran 58 tests; JSON formatting, `py_compile`, and `git diff --check`
+  passed; project status text no longer listed `command-table-offset`; project
+  status JSON remained accepted at `schema_version: 8`; and
+  `python -m unittest discover` passed 589 tests.

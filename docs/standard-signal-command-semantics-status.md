@@ -24,6 +24,11 @@ self-mailbox `standard-signal` command as ordinary binary-input
 standard-signal behavior without a later source-backed ADR selecting the exact
 preserve, clear/no-op, or execution rule.
 
+ADR-0128 resolves the command-table-offset question: AS preserves the formal
+PRC command-buffer map from ADR-0026, where `standard-signal` is offset `0` in
+each target range. RAA's offset-7 command-buffer divergence remains recorded
+as legacy evidence, but it is no longer an open AS ordering question.
+
 The restored legacy sketches do not supply a stable execution rule:
 
 - RAA excludes `standard-signal` from `special-messages`, treats ordinary
@@ -57,7 +62,9 @@ which uses `tar+sic?` and code-shape predicates rather than a named
 `standard-signal` command token. ADR-0064 records the official PRC TLA files
 as incomplete and missing `standard-signal` command-token semantics. ADR-0127
 records the formal-model self-mailbox exception as a narrowed
-self-target-surface source anchor without changing runtime behavior.
+self-target-surface source anchor without changing runtime behavior. ADR-0128
+removes `command-table-offset` from the unresolved queue after resolving it in
+favor of the formal PRC command-buffer map.
 
 ## Verification
 

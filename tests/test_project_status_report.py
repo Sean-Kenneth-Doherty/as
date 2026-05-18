@@ -134,7 +134,6 @@ CHAIN_BUNDLES = [
 ]
 STANDARD_SIGNAL_QUESTIONS = [
     "command-token-vs-binary-input",
-    "command-table-offset",
     "recipient-surface",
     "self-target-surface",
 ]
@@ -151,14 +150,6 @@ STANDARD_SIGNAL_RESOLUTION_QUESTIONS = [
             "Decide whether a standard-signal command token is supposed to "
             "reproduce ordinary binary-input standard-signal behavior or "
             "remain a separate unsupported command."
-        ),
-    },
-    {
-        "question_id": "command-table-offset",
-        "summary": (
-            "Decide whether AS should preserve formal command offset 0 or "
-            "adopt a legacy command-buffer placement if later source evidence "
-            "justifies doing so."
         ),
     },
     {

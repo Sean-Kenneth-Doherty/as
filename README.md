@@ -79,7 +79,9 @@ the project legible:
   `standard-signal` command-token execution remains source-blocked while
   ordinary standard-signal binary input stays implemented, and records the
   formal-model self-mailbox exception that prevents treating stem
-  self-mailbox `standard-signal` as ordinary binary input by default.
+  self-mailbox `standard-signal` as ordinary binary input by default. It also
+  records that AS resolves the command-table offset question in favor of the
+  formal PRC map where `standard-signal` is offset `0`.
 - `docs/guile-asmsim-command-semantics-status.md` records why the
   `guile-asmsim.scm` command witness strengthens the standard-signal and
   write-buffer blocker rather than resolving it.
@@ -316,7 +318,8 @@ the project legible:
   command semantics source-status decision machine-checkable.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
-  machine-checkable, including the formal-model self-mailbox exception.
+  machine-checkable, including the formal-model self-mailbox exception and the
+  resolved command-table offset decision.
 - `sources/guile_asmsim_command_semantics_status.json` makes the
   `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.

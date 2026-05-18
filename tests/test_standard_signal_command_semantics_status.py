@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 STATUS = Path("sources/standard_signal_command_semantics_status.json")
+COMMAND_MAP = Path("sources/stem_command_buffer_map.json")
 RECIPIENT_NON_INIT = Path("sources/recipient_non_init_command_source_status.json")
 RECIPIENT_STATUS = Path("sources/recipient_command_consumption_source_status.json")
 STEM_STATUS = Path("sources/stem_command_execution_source_status.json")
@@ -66,6 +67,25 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn("self-mailbox", exception["summary"])
         self.assertIn("ordinary binary-input", exception["summary"])
 
+    def test_command_table_offset_is_resolved_to_formal_map(self):
+        resolved = {
+            question["question_id"]: question
+            for question in self.status["resolved_resolution_questions"]
+        }
+        command_map = json.loads(COMMAND_MAP.read_text(encoding="utf-8"))
+
+        self.assertIn("command-table-offset", resolved)
+        offset = resolved["command-table-offset"]
+        self.assertEqual(
+            offset["decision"],
+            "preserve-formal-command-offset-0",
+        )
+        self.assertEqual(offset["source_status"], str(COMMAND_MAP))
+        self.assertEqual(offset["formal_command_offset"], 0)
+        self.assertEqual(command_map["commands"][0]["offset"], 0)
+        self.assertEqual(command_map["commands"][0]["command_id"], "standard-signal")
+        self.assertIn("RAA", offset["legacy_divergence"])
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness
@@ -99,7 +119,6 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
             question_ids,
             {
                 "command-token-vs-binary-input",
-                "command-table-offset",
                 "recipient-surface",
                 "self-target-surface",
             },
