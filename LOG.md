@@ -3869,3 +3869,23 @@
   certificate surface. JSON parsing for the touched certificate manifest,
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 777 tests.
+
+## 2026-05-18 - Self Command-Buffer Init Predicate Result Certificates
+
+- Added ADR-0180 to migrate `UC-STEM-COMMAND-BUFFER-SELF-INIT` from
+  `manifest-example` proof steps to explicit `predicate-result` proof steps.
+- Added red proof-certificate and project-status tests before implementation.
+  The focused red run executed 98 tests and failed because the self
+  command-buffer init certificate still used `manifest-example`, and
+  proof/project-status reports still described it as two `manifest-example`
+  steps.
+- Updated `claims/proof_certificates.json` so both self command-buffer init
+  certificate steps use `predicate-result` and name
+  `stem_command_buffer_executes_self_init` directly.
+- Updated the self command-buffer init claim note and summary docs so they
+  describe the new predicate-result proof surface.
+- Focused green verification passed 98 tests. The proof-certificate CLI JSON,
+  project-status JSON, and object-language JSON checks accepted the updated
+  certificate surface. JSON parsing for the touched certificate manifest,
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 778 tests.

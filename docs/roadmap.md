@@ -3638,3 +3638,26 @@ Status: accepted in
 `docs/adr/0179-self-mailbox-write-buffer-predicate-result-certificates.md`.
 Implemented in the proof-certificate manifest and focused proof/project-status
 tests.
+
+## ADR-0180: Self Command-Buffer Init Predicate Result Certificates
+
+Goal: make the completed self-target command-buffer init dispatch proof
+certificate name the predicate it evaluates instead of relying only on
+manifest-example lookup.
+
+Deliverables:
+
+- `UC-STEM-COMMAND-BUFFER-SELF-INIT` proof-certificate steps use
+  `predicate-result`;
+- both self command-buffer init certificate steps name
+  `stem_command_buffer_executes_self_init`;
+- proof-certificate text/JSON and aggregate project-status reports render the
+  self command-buffer init certificate as two predicate-result steps; and
+- Universal Cell runtime behavior, transition claims, object-language schema,
+  evidence bundles, source-status records, and status schema versions remain
+  unchanged.
+
+Status: accepted in
+`docs/adr/0180-self-command-buffer-init-predicate-result-certificates.md`.
+Implemented in the proof-certificate manifest, focused proof/project-status
+tests, and the self command-buffer init claim note.

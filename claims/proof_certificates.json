@@ -176,14 +176,16 @@
       "claim_id": "UC-STEM-COMMAND-BUFFER-SELF-INIT",
       "steps": [
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self command buffer processor left init",
-          "expected": true
+          "expected": true,
+          "predicate": "stem_command_buffer_executes_self_init"
         },
         {
-          "rule": "manifest-example",
+          "rule": "predicate-result",
           "example": "self command buffer wrong target",
-          "expected": false
+          "expected": false,
+          "predicate": "stem_command_buffer_executes_self_init"
         }
       ]
     },

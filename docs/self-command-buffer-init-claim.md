@@ -31,8 +31,8 @@ write-buffer commands, or full command-buffer execution.
 
 ## Proof Surface
 
-`claims/proof_certificates.json` covers the claim with `manifest-example`
-steps for the positive and negative manifest examples.
+`claims/proof_certificates.json` covers the claim with `predicate-result`
+steps that name `stem_command_buffer_executes_self_init` directly.
 
 ## Verification
 
