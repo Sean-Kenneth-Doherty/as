@@ -888,3 +888,8 @@
   `registry_validation_report_payload.bundle_failed_subjects`, preserving
   inner failed subjects such as `claim-example` and `schematic-trace` while
   leaving missing registered-bundle paths as registry-level failures.
+- ADR-0214 adds `autarkic_systems.vertical_demo`, a first-run digest over the
+  accepted project-status stack that names the current post-handoff signal
+  routing demonstration, evidence counts, proof-rule mix, blocked
+  `standard-signal` frontier, registries, and sequence evidence bundle without
+  introducing new validation authority.

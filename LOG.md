@@ -4564,3 +4564,23 @@
   `bundle_failed_subjects: []`; project-status summary remained accepted.
   `compileall`, `git diff --check`, and `python -m unittest discover` passed;
   the full suite ran 902 tests.
+
+## 2026-05-18 - Vertical Demo Digest
+
+- Added ADR-0214 to provide one top-level first-run digest over the accepted
+  AS evidence stack.
+- Added red vertical-demo tests before implementation. The focused red run
+  failed because `autarkic_systems.vertical_demo` did not exist.
+- Added `autarkic_systems/vertical_demo.py`, delegating acceptance to
+  `build_project_status_report` and formatting the current post-handoff signal
+  routing demonstration with evidence counts, claim/proof counts, proof-rule
+  mix, blocked command frontier, canonical registries, and the checked
+  sequence evidence bundle.
+- Added `docs/vertical-demo-digest.md` and updated README, roadmap, and repo
+  memory notes for the new first-run command.
+- Focused vertical-demo tests passed 4 tests. Adjacent vertical-demo,
+  project-status, and network-sequence demo tests passed 103 tests. Live text
+  and JSON demo commands reported accepted status, 11 transition bundles,
+  2 chain bundles, 1 sequence bundle, 52 `predicate-result` proof steps, and
+  the remaining `standard-signal` frontier. `compileall`, `git diff --check`,
+  and `python -m unittest discover` passed; the full suite ran 906 tests.

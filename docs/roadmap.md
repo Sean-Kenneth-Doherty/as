@@ -4350,3 +4350,25 @@ Status: accepted in
 `docs/adr/0213-transition-registry-bundle-failed-subjects.md`.
 Implemented in `autarkic_systems/evidence_bundle.py`, with tests in
 `tests/test_evidence_bundle_registry.py`.
+
+## ADR-0214: Vertical Demo Digest
+
+Goal: provide one first-run command that explains the current accepted AS
+demonstration without replacing the existing validators.
+
+Deliverables:
+
+- `autarkic_systems/vertical_demo.py`;
+- text output naming the current demonstration, evidence counts, claim/proof
+  counts, proof-rule mix, blocked command frontier, canonical registries, and
+  sequence evidence bundle;
+- JSON output carrying the same digest;
+- module execution through `python -m autarkic_systems.vertical_demo`;
+- documentation in `docs/vertical-demo-digest.md`; and
+- no runtime behavior, claim, proof-rule, validation-authority,
+  source-status decision, registry schema, project-status schema, trace/SVG
+  rendering, scheduler, topology, timing, or command-semantics changes.
+
+Status: accepted in `docs/adr/0214-vertical-demo-digest.md`.
+Implemented in `autarkic_systems/vertical_demo.py`, with tests in
+`tests/test_vertical_demo_digest.py`.
