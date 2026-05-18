@@ -4,8 +4,8 @@
   "decision": "preserve-standard-signal-and-conflict-rejection-boundary",
   "runtime_change": "recipient-write-buffer-implemented",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "review-new-standard-signal-command-token-source-evidence-before-execution-change",
-  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal command tokens and multi-command conflicts; standard-signal recipient input is a resolved rejection boundary and standard-signal self-target command execution is preserved unsupported unless new source evidence replaces that boundary, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161 and recipient write-buffer command-message execution is implemented by ADR-0169. The accepted current runtime behavior rejects only standard-signal command messages and multi-command conflicts.",
+  "safe_next_slice": "no-standard-signal-command-token-execution-change-without-new-source-evidence",
+  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal command tokens and multi-command conflicts; standard-signal recipient input is a resolved rejection boundary and standard-signal self-target command execution is preserved unsupported unless new source evidence replaces that boundary. ADR-0171 reviewed current source heads and found no new standard-signal execution evidence, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161 and recipient write-buffer command-message execution is implemented by ADR-0169. The accepted current runtime behavior rejects only standard-signal command messages and multi-command conflicts.",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -136,7 +136,5 @@
     "summary": "multiple simultaneous command-message inputs are assigned the existing reject-and-clear boundary; AS does not prioritize or sequence them.",
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token. ADR-0059 selects rejection for two or more simultaneous command-message tokens."
   },
-  "allowed_next_slices": [
-    "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary."
-  ]
+  "allowed_next_slices": []
 }

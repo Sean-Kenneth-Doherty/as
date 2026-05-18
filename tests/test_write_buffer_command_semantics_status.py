@@ -369,7 +369,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            "no-standard-signal-command-token-execution-change-without-new-source-evidence",
         )
         self.assertFalse(
             any(
@@ -395,7 +395,7 @@ class WriteBufferCommandSemanticsStatusTests(unittest.TestCase):
                 for item in recipient_status["allowed_next_slices"]
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             any(
                 "standard-signal" in item
                 for item in recipient_status["allowed_next_slices"]

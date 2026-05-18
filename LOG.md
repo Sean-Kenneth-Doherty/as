@@ -3704,3 +3704,29 @@
   source-status JSON accepted schema 2 with only `standard-signal` blocked.
   JSON parsing, `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 763 tests.
+
+## 2026-05-18 - Standard-Signal Source Review Snapshot
+
+- Added ADR-0171 to perform the remaining standard-signal command-token
+  source-review gate before any execution change.
+- Added red source-review, standard-signal, recipient non-init, multi-command,
+  project-status, and source-status tests before implementation. The focused
+  red run executed 112 tests and failed because the source-review snapshot was
+  absent, the standard-signal status lacked a latest-review link, and source
+  statuses still advertised the review as an active safe-next slice.
+- Checked upstream source heads with `git ls-remote`: AS, AFS, PRC, SJAS,
+  Proflog, and LeanTAP matched the pinned manifest heads. The local PRC
+  witness remained at `7e82c73fac8f108faac801a5c65e2c2b92653ba5`.
+- Added `sources/standard_signal_source_review_status.json`, recording that no
+  reviewed source replaces the existing unsupported standard-signal
+  command-token boundary.
+- Updated standard-signal, recipient non-init, multi-command, and recipient
+  command-consumption source-status records so standard-signal remains blocked
+  behind `no-standard-signal-command-token-execution-change-without-new-source-evidence`
+  rather than an active source-review safe-next slice.
+- Focused green verification passed 132 tests. Project-status JSON accepted
+  schema 15 with `standard-signal` as the only blocked command and no active
+  aggregate safe-next slice; source-status JSON accepted schema 2 with the
+  same frontier. Transition and chain evidence registries accepted 11 and 2
+  bundles respectively. JSON parsing, `compileall`, `git diff --check`, and
+  `python -m unittest discover` passed; the full suite ran 769 tests.

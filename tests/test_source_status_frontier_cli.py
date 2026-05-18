@@ -19,12 +19,12 @@ RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
-    "review-new-standard-signal-command-token-source-evidence-before-execution-change"
+    "no-standard-signal-command-token-execution-change-without-new-source-evidence"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
-SAFE_NEXT_SLICE = STANDARD_SIGNAL_SAFE_NEXT_SLICE
+SAFE_NEXT_SLICE = ""
 BLOCKED_COMMANDS = ["standard-signal"]
 
 
@@ -118,7 +118,7 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)
-        self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
+        self.assertIn("Safe next slice: none", text)
         self.assertIn("Missing source-status files: none", text)
         self.assertIn("Invalid source-status files: none", text)
 

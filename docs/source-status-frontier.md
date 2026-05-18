@@ -127,6 +127,12 @@ evidence-bundle promotion. The focused frontier schema remains `2`.
 ADR-0170 registers that recipient write-buffer command-message evidence bundle
 and removes the completed write-buffer promotion from the active safe-next
 frontier. The focused frontier schema remains `2`.
+ADR-0171 records a dated standard-signal source-review snapshot, finds no new
+source evidence replacing the preserved-unsupported boundary, and changes the
+remaining standard-signal safe-next fields to a `no-` prefixed guard. The
+focused frontier still reports `standard-signal` as blocked, but the aggregate
+safe next slice now renders as `none`. The focused frontier schema remains
+`2`.
 
 ## Boundary
 

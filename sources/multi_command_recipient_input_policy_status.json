@@ -6,7 +6,7 @@
   "accepted_command_message_count": 1,
   "conflict_command_message_count_minimum": 2,
   "policy": "reject-and-clear-active-command-input",
-  "safe_next_slice": "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+  "safe_next_slice": "no-standard-signal-command-token-execution-change-without-new-source-evidence",
   "covered_runtime_surfaces": [
     "fixed-direct-input",
     "fixed-upstream-input",

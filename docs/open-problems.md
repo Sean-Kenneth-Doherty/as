@@ -101,6 +101,9 @@ evidence replacing the unsupported self-target boundaries.
 ADR-0166 updates safe-next wording to match: standard-signal work is now
 evidence-gated, while the active recipient command-message frontier is
 write-buffer-specific.
+ADR-0171 performs the standard-signal source review and finds no new evidence
+replacing the unsupported boundary, so standard-signal now has a `no-` guard
+rather than an active execution slice.
 ADR-0167 turns that write-buffer-specific frontier into a live
 `recipient-command-message-surface` source-status question with evidence and a
 readiness blocker.

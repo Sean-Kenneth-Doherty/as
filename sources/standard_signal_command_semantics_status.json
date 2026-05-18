@@ -3,7 +3,7 @@
   "reviewed_at": "2026-05-17",
   "decision": "do-not-implement-standard-signal-command-execution-yet",
   "runtime_change": "none-source-status-only",
-  "safe_next_slice": "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+  "safe_next_slice": "no-standard-signal-command-token-execution-change-without-new-source-evidence",
   "command": "standard-signal",
   "blocked_runtime_surfaces": [
     "self-mailbox-command",
@@ -119,6 +119,13 @@
     "blocked_by_resolution_questions": [],
     "summary": "Standard-signal command-token execution remains preserved as unsupported at the self-target boundaries; execution changes require new source evidence that replaces the existing boundary."
   },
+  "latest_source_review": {
+    "path": "sources/standard_signal_source_review_status.json",
+    "review_id": "standard-signal-command-token-source-review-2026-05-18",
+    "decision": "no-new-standard-signal-command-token-execution-evidence",
+    "execution_change_allowed": false,
+    "summary": "ADR-0171 reviewed current upstream source heads and found no new standard-signal command-token evidence replacing the unsupported boundary."
+  },
   "additional_source_statuses": [
     {
       "adr": "ADR-0062",
@@ -134,7 +141,12 @@
       "adr": "ADR-0064",
       "path": "sources/official_tla_universal_cell_status.json",
       "summary": "The official PRC TLA files are partial/stub/empty and do not define standard-signal command-token semantics."
+    },
+    {
+      "adr": "ADR-0171",
+      "path": "sources/standard_signal_source_review_status.json",
+      "summary": "The 2026-05-18 source-review snapshot found no new standard-signal command-token execution evidence and keeps execution changes disallowed without new source evidence."
     }
   ],
-  "as_boundary": "Continue rejecting or preserving standard-signal command tokens at the existing claimed boundaries. AS already has ordinary standard-signal routing and stem buffer accumulation for binary input; this artifact blocks only command-token execution."
+  "as_boundary": "Continue rejecting or preserving standard-signal command tokens at the existing claimed boundaries. AS already has ordinary standard-signal routing and stem buffer accumulation for binary input; ADR-0171 found no new source evidence replacing the unsupported command-token boundary."
 }

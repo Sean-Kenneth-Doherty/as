@@ -3437,7 +3437,7 @@ Deliverables:
 - `evidence/manifest.json` now registers 11 transition evidence bundles;
 - write-buffer source status marks the recipient evidence bundle implemented;
 - project/source status keep `standard-signal` as the only blocked command and
-  active safe-next frontier; and
+  active safe-next frontier before the follow-up source review; and
 - project-status schema `15` and source-status frontier schema `2` remain
   unchanged.
 
@@ -3445,3 +3445,30 @@ Status: accepted in
 `docs/adr/0170-recipient-write-buffer-command-evidence-bundle.md`. Implemented
 in trace, SVG, evidence-bundle, registry, source-status, and project-status
 surfaces.
+
+## ADR-0171: Standard-Signal Source Review Snapshot
+
+Goal: perform the remaining source-review gate before any standard-signal
+command-token execution change.
+
+Deliverables:
+
+- `sources/standard_signal_source_review_status.json` records the dated review
+  snapshot for AS, AFS, PRC, SJAS, Proflog, and LeanTAP remote heads;
+- the PRC remote and local witness heads remain at
+  `7e82c73fac8f108faac801a5c65e2c2b92653ba5`;
+- `sources/standard_signal_command_semantics_status.json` links the latest
+  source review and keeps execution changes disallowed;
+- recipient non-init and multi-command source-status records move to the
+  `no-standard-signal-command-token-execution-change-without-new-source-evidence`
+  guard;
+- project/source status keep `standard-signal` as the only blocked command but
+  render no active aggregate safe-next slice; and
+- Universal Cell runtime behavior, claims, proof certificates, traces, SVGs,
+  evidence bundles, project-status schema `15`, and source-status frontier
+  schema `2` remain unchanged.
+
+Status: accepted in
+`docs/adr/0171-standard-signal-source-review-snapshot.md`. Implemented in the
+standard-signal source-review snapshot, source-status records, and focused
+source-status/project-status tests.

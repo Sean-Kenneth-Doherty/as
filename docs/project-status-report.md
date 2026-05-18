@@ -251,6 +251,11 @@ ADR-0170 registers the recipient write-buffer command-message evidence bundle,
 raising transition evidence to 11 bundles and leaving standard-signal source
 review as the only active safe-next frontier while preserving project status
 `schema_version: 15`.
+ADR-0171 performs that standard-signal source review, records the source-head
+snapshot in `sources/standard_signal_source_review_status.json`, and changes
+the remaining safe-next fields to a `no-` prefixed guard. Project status still
+reports `standard-signal` as blocked, but the aggregate safe next slice now
+renders as `none` while preserving project status `schema_version: 15`.
 
 ## Boundary
 

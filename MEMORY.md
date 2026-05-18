@@ -718,5 +718,11 @@
 - ADR-0170 registers the recipient write-buffer command-message evidence
   bundle. Transition evidence now has 11 bundles, write-buffer evidence-bundle
   status is implemented for direct self-mailbox, completed self-target, and
-  recipient command-message surfaces, and the active safe-next frontier is
-  standard-signal source review only.
+  recipient command-message surfaces, leaving standard-signal source review as
+  the next frontier before ADR-0171.
+- ADR-0171 records the 2026-05-18 standard-signal source-review snapshot.
+  Upstream AS/AFS/PRC/SJAS/Proflog/LeanTAP heads matched the pinned manifest,
+  PRC stayed at `7e82c73fac8f108faac801a5c65e2c2b92653ba5`, no new
+  standard-signal command-token execution evidence was found, and the active
+  aggregate safe-next now renders as none while `standard-signal` remains
+  blocked behind a `no-` source-evidence guard.

@@ -74,6 +74,13 @@ standard-signal source-status record no longer advertises a generic
 `standard-signal` / write-buffer revisit as its next slice; it points only to
 new standard-signal command-token source evidence before any execution change.
 
+ADR-0171 performs that source review and records the dated snapshot in
+`sources/standard_signal_source_review_status.json`. The reviewed upstream
+heads did not change from the pinned manifest, and the PRC local witness stayed
+at `7e82c73fac8f108faac801a5c65e2c2b92653ba5`. No reviewed source replaces the
+preserved-unsupported boundary, so the source-status safe-next field is now the
+guard `no-standard-signal-command-token-execution-change-without-new-source-evidence`.
+
 ## AS Boundary
 
 AS keeps `standard-signal` command-token execution blocked across these runtime
@@ -90,7 +97,7 @@ Recipient command-message input is no longer an unresolved
 Command-token execution also no longer inherits ordinary binary-input
 standard-signal behavior by default. Future work that wants executable
 standard-signal command-token behavior must intentionally replace these
-unsupported preservation boundaries.
+unsupported preservation boundaries with new source evidence.
 
 The current ordinary standard-signal behavior remains valid because it is
 binary-input behavior, not command-token execution. ADR-0059 selects
@@ -117,6 +124,8 @@ source-status record with no unresolved questions. ADR-0165 adds explicit
 execution-readiness metadata so "no unresolved questions" cannot be mistaken
 for permission to implement `standard-signal` command-token execution.
 ADR-0166 updates the safe-next wording to match that settled boundary.
+ADR-0171 closes that review gate for the current source snapshot and leaves no
+active standard-signal execution slice.
 
 ## Verification
 
@@ -127,6 +136,6 @@ python -m unittest tests.test_standard_signal_command_semantics_status
 ```
 
 The tests check the decision, formal-model command/binary distinction, legacy
-witness divergence, resolved recipient-surface,
-command-token/binary-input, self-target boundaries, execution-readiness
-metadata, and source-status frontier updates.
+witness divergence, resolved recipient-surface, command-token/binary-input,
+self-target boundaries, execution-readiness metadata, ADR-0171 source-review
+backlink, and source-status frontier updates.

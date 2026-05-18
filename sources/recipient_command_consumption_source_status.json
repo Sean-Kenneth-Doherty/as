@@ -153,7 +153,5 @@
       "summary": "ADR-0059 selects reject-and-clear for multiple simultaneous command-message inputs; ADR-0060 adds the schematic-linked rejection trace, and ADR-0061 adds the rendered SVG view."
     }
   ],
-  "allowed_next_slices": [
-    "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary."
-  ]
+  "allowed_next_slices": []
 }

@@ -22,7 +22,9 @@ Delivered recipient `standard-signal` command messages remain rejected by the
 ADR-0054 non-init rejection boundary. ADR-0148 resolves the recipient surface,
 ADR-0150 resolves the command-token/binary-input distinction, ADR-0151
 resolves self-target `standard-signal` as unsupported preservation, and
-ADR-0165 makes execution changes require new source evidence.
+ADR-0165 makes execution changes require new source evidence. ADR-0171
+reviewed the current source heads and found no new standard-signal
+command-token execution evidence.
 
 Delivered recipient `write-buf-zero` and `write-buf-one` command messages no
 longer belong to this rejection boundary. ADR-0168 resolves their source
@@ -97,10 +99,11 @@ inputs rather than executed.
 The rejection evidence ladder is complete again for `standard-signal` and
 multi-command conflicts. ADR-0169 implements recipient write-buffer
 command-message append execution, and ADR-0170 adds the dedicated recipient
-write-buffer command-message evidence bundle. The active safe next slice is
-now standard-signal source review: standard-signal command-token execution
-should be changed only if later source evidence replaces the ADR-0165
-preserved unsupported boundary.
+write-buffer command-message evidence bundle. ADR-0171 performs the remaining
+standard-signal source review and changes the safe-next field to the guard
+`no-standard-signal-command-token-execution-change-without-new-source-evidence`.
+Standard-signal command-token execution should be changed only if later source
+evidence replaces the ADR-0165 preserved unsupported boundary.
 
 ADR-0117 keeps this boundary visible to project-status automation: accepted
 source-status records must now carry non-empty top-level `as_boundary` text.

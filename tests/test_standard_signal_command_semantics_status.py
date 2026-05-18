@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 STATUS = Path("sources/standard_signal_command_semantics_status.json")
+SOURCE_REVIEW = Path("sources/standard_signal_source_review_status.json")
 COMMAND_MAP = Path("sources/stem_command_buffer_map.json")
 RECIPIENT_NON_INIT = Path("sources/recipient_non_init_command_source_status.json")
 RECIPIENT_STATUS = Path("sources/recipient_command_consumption_source_status.json")
@@ -12,6 +13,9 @@ FORMAL_MODEL = Path("/home/sean/Projects/_upstream/prc/theory/official/formal-mo
 LEGACY_RAA = Path("/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm")
 LEGACY_SEMSIM = Path("/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm")
 LEGACY_FSMSIM = Path("/home/sean/Projects/_upstream/prc/practice/legacy/fsmsim.scm")
+NO_STANDARD_SIGNAL_SAFE_NEXT = (
+    "no-standard-signal-command-token-execution-change-without-new-source-evidence"
+)
 
 
 class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
@@ -27,7 +31,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -180,6 +184,26 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertIn("unsupported", readiness["summary"])
         self.assertIn("new source evidence", readiness["summary"])
 
+    def test_latest_source_review_closes_active_evidence_gate(self):
+        review = self.status["latest_source_review"]
+        source_review = json.loads(SOURCE_REVIEW.read_text(encoding="utf-8"))
+
+        self.assertEqual(review["path"], str(SOURCE_REVIEW))
+        self.assertEqual(
+            review["review_id"],
+            "standard-signal-command-token-source-review-2026-05-18",
+        )
+        self.assertEqual(
+            review["decision"],
+            "no-new-standard-signal-command-token-execution-evidence",
+        )
+        self.assertFalse(review["execution_change_allowed"])
+        self.assertEqual(source_review["decision"], review["decision"])
+        self.assertEqual(
+            source_review["execution_boundary"]["status_safe_next_slice"],
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
+        )
+
     def test_legacy_witnesses_exclude_standard_signal_from_special_messages(self):
         witnesses = {
             witness["witness_id"]: witness
@@ -229,7 +253,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
         )
         self.assertFalse(
             any(

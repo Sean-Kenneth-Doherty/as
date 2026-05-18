@@ -18,6 +18,9 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 CLAIMS = Path("claims/transition_claims.json")
 CLAIM_ID = "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED"
 EMPTY = ("_", "_", "_")
+NO_STANDARD_SIGNAL_SAFE_NEXT = (
+    "no-standard-signal-command-token-execution-change-without-new-source-evidence"
+)
 
 
 class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
@@ -39,7 +42,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
         )
         self.assertEqual(
             self.status["covered_runtime_surfaces"],
@@ -118,7 +121,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
@@ -126,7 +129,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
         )
         trace = self.status["implemented_traces"][0]
         self.assertEqual(trace["adr"], "ADR-0060")

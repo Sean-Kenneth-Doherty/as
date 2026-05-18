@@ -91,6 +91,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   command-message surface plus the command-token/binary-input equivalence and
   self-target surface questions, and gates future execution changes on new
   source evidence.
+- `docs/standard-signal-source-review-status.md` records the ADR-0171
+  source-head review snapshot that found no new `standard-signal`
+  command-token execution evidence and converts the active review slice into a
+  `no-` prefixed guard.
 - `docs/guile-asmsim-command-semantics-status.md` records why the
   `guile-asmsim.scm` command witness strengthens the standard-signal and
   write-buffer blocker rather than resolving it.
@@ -317,20 +321,20 @@ proof certificates, object languages, evidence bundles, and status reports:
   and missing-path summaries.
 - `python -m autarkic_systems.project_status --format json` emits the current
   project status as schema-versioned machine-readable JSON: transition
-  evidence accepted with 10 bundles, chain evidence accepted with 2 bundles,
-  transition claim examples accepted with 15 claims and 39 matched examples,
-  transition proof certificates accepted with 15 claims and 15 certificates,
+  evidence accepted with 11 bundles, chain evidence accepted with 2 bundles,
+  transition claim examples accepted with 16 claims and 40 matched examples,
+  transition proof certificates accepted with 16 claims and 16 certificates,
   transition-chain claims accepted with 2 claims, 9 examples, and 2
   certificates,
-  transition language accepted with 15 claims and 15 certificates, chain
+  transition language accepted with 16 claims and 16 certificates, chain
   language accepted with 2 claims and 2 certificates, concrete transition and
-  chain registry bundle entries, and the blocked
-  `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
-  frontier. The default text report also names the concrete transition and
+  chain registry bundle entries, and the current blocked `standard-signal`
+  command-token frontier. The default text report also names the concrete
+  transition and
   chain evidence bundle IDs and paths, transition bundle positive and covered
   examples, claim/proof and language failed subjects when present, the
-  standard-signal and write-buffer blocked runtime surfaces, source-status AS
-  boundaries, execution-readiness gates, the resolution-question IDs and
+  standard-signal blocked runtime surfaces, source-status AS boundaries,
+  execution-readiness gates, the resolution-question IDs and
   summaries that define the next source-backed decision work, the source
   evidence explaining why unresolved questions remain blocked, resolved
   question decisions that should not be reopened without new evidence, and the
@@ -360,7 +364,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   `resolution_question_evidence` to accepted source-status entries and renders
   a `Resolution question evidence:` text section. Schema version `15` adds
   `execution_readiness` gates to accepted source-status entries and renders an
-  `Execution readiness:` text section.
+  `Execution readiness:` text section. Completed safe-next items whose
+  source-status strings begin with `no-` are treated as guards rather than
+  active aggregate next slices, so the current report renders `Safe next
+  slice: none` while `standard-signal` remains blocked.
   Missing registries report
   `registry-file`, malformed registries report `registry-json`, and
   source-status path problems are summarized in `frontier.failed_subjects` as
@@ -432,6 +439,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   decisions. Its execution-readiness gate preserves the existing unsupported
   self-target command boundaries and forbids execution changes without new
   source evidence.
+- `sources/standard_signal_source_review_status.json` makes the ADR-0171
+  standard-signal source-review snapshot machine-checkable.
 - `sources/guile_asmsim_command_semantics_status.json` makes the
   `guile-asmsim.scm` command-semantics source-status decision
   machine-checkable.

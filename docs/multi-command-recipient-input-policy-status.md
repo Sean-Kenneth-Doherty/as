@@ -1,6 +1,6 @@
 # Multi-Command Recipient Input Policy Status
 
-Status: source-status decision, 2026-05-17.
+Status: source-status decision, updated 2026-05-18.
 
 The structured status lives in
 `sources/multi_command_recipient_input_policy_status.json`.
@@ -40,10 +40,11 @@ The boundary is:
 - `standard-signal` command-token execution remains blocked under ADR-0058.
 
 ADR-0060 adds that schematic-linked trace, and ADR-0061 adds the generated
-SVG render. The multi-command evidence ladder is now complete; the next
-write-buffer work is ADR-0169 evidence-bundle promotion. Standard-signal
-command-token execution is preserved as unsupported unless new source evidence
-replaces that boundary.
+SVG render. The multi-command evidence ladder is now complete. ADR-0171
+reviewed the current source heads and found no new standard-signal
+command-token execution evidence, so this status now uses the same
+`no-standard-signal-command-token-execution-change-without-new-source-evidence`
+guard as the standard-signal source-status record.
 
 ADR-0069 records the same direct `wire-r-init` plus `proc-l-init` conflict as
 an integrated evidence bundle in

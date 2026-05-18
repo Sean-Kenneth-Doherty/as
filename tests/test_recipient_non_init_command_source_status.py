@@ -10,6 +10,9 @@ FORMAL_MODEL = Path("/home/sean/Projects/_upstream/prc/theory/official/formal-mo
 LEGACY_RAA = Path("/home/sean/Projects/_upstream/prc/practice/legacy/raa.scm")
 LEGACY_SEMSIM = Path("/home/sean/Projects/_upstream/prc/practice/legacy/semsim.scm")
 LEGACY_FSMSIM = Path("/home/sean/Projects/_upstream/prc/practice/legacy/fsmsim.scm")
+NO_STANDARD_SIGNAL_SAFE_NEXT = (
+    "no-standard-signal-command-token-execution-change-without-new-source-evidence"
+)
 
 
 class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
@@ -25,7 +28,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "recipient-write-buffer-implemented")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+            NO_STANDARD_SIGNAL_SAFE_NEXT,
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -172,7 +175,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
                 for item in recipient_status["allowed_next_slices"]
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             any(
                 "standard-signal" in item
                 for item in recipient_status["allowed_next_slices"]

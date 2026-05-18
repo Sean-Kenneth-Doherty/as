@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-05-18",
+  "review_id": "standard-signal-command-token-source-review-2026-05-18",
+  "decision": "no-new-standard-signal-command-token-execution-evidence",
+  "runtime_change": "none-source-review-only",
+  "command": "standard-signal",
+  "review_scope": {
+    "safe_next_slice_closed": "review-new-standard-signal-command-token-source-evidence-before-execution-change",
+    "reviewed_question": "Does any current upstream source replace AS preserved-unsupported standard-signal command-token execution boundaries?",
+    "reviewed_boundaries": [
+      "recipient-command-message",
+      "self-mailbox-command",
+      "self-target-command-buffer"
+    ],
+    "conclusion": "No reviewed source defines a standard-signal command-token execution rule that replaces the existing recipient rejection and self-target unsupported boundaries."
+  },
+  "remote_head_checks": [
+    {
+      "id": "as",
+      "clone_url": "https://github.com/jpt4/as.git",
+      "default_branch": "main",
+      "public_remote_head": "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0",
+      "manifest_remote_head": "1a2fc06b75f5d33aee6655956c2a56df07a7bfb0",
+      "changed_since_manifest": false,
+      "standard_signal_relevance": "AS upstream did not receive a newer standard-signal command-token decision; local fork work remains ahead because upstream push is denied."
+    },
+    {
+      "id": "afs",
+      "clone_url": "https://github.com/jpt4/afs.git",
+      "default_branch": "main",
+      "public_remote_head": "a61592eab02a93d480149ce3465af5e3271ca213",
+      "manifest_remote_head": "a61592eab02a93d480149ce3465af5e3271ca213",
+      "changed_since_manifest": false,
+      "standard_signal_relevance": "AFS remains at the reviewed placeholder source head and does not add standard-signal command-token execution evidence."
+    },
+    {
+      "id": "prc",
+      "clone_url": "https://github.com/jpt4/prc.git",
+      "default_branch": "master",
+      "public_remote_head": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+      "manifest_remote_head": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+      "changed_since_manifest": false,
+      "standard_signal_relevance": "PRC is the primary standard-signal command-token source and its public head is unchanged from the reviewed manifest."
+    },
+    {
+      "id": "sjas",
+      "clone_url": "https://github.com/jpt4/sjas.git",
+      "default_branch": "master",
+      "public_remote_head": "f1c11af5f310d39f487c3b91ee1ca70f4ade8871",
+      "manifest_remote_head": "f1c11af5f310d39f487c3b91ee1ca70f4ade8871",
+      "changed_since_manifest": false,
+      "standard_signal_relevance": "SJAS is formal-confidence context and does not add PRC standard-signal command-token execution evidence at the reviewed head."
+    },
+    {
+      "id": "proflog",
+      "clone_url": "https://github.com/jpt4/proflog.git",
+      "default_branch": "main",
+      "public_remote_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+      "manifest_remote_head": "77af8481d9f41a439eb42e1d8268a5b39f7c5c33",
+      "changed_since_manifest": false,
+      "standard_signal_relevance": "Proflog is an adjacent proof-apparatus candidate and does not define PRC standard-signal command-token execution."
+    },
+    {
+      "id": "leantap",
+      "clone_url": "https://github.com/namin/leanTAP.git",
+      "default_branch": "master",
+      "public_remote_head": "c17864a911c0c3cbd727b43743fdcb19b43714b8",
+      "manifest_remote_head": "c17864a911c0c3cbd727b43743fdcb19b43714b8",
+      "changed_since_manifest": false,
+      "standard_signal_relevance": "LeanTAP is an adjacent tableaux reference and does not define PRC standard-signal command-token execution."
+    }
+  ],
+  "local_prc_review": {
+    "local_path": "/home/sean/Projects/_upstream/prc",
+    "head": "7e82c73fac8f108faac801a5c65e2c2b92653ba5",
+    "status": "unchanged-primary-command-token-witness",
+    "formal_model_loci": [
+      "theory/official/formal-model.txt lines 207-218, self-mailbox exception",
+      "theory/official/formal-model.txt lines 420-427, ordinary standard-signal processing",
+      "theory/official/formal-model.txt lines 437-454, command table",
+      "theory/official/formal-model.txt lines 593-657, standard-signal processing"
+    ],
+    "legacy_loci": [
+      "practice/legacy/raa.scm lines 169-173 and 213-221",
+      "practice/legacy/semsim.scm lines 86-90 and 194-206",
+      "practice/legacy/fsmsim.scm lines 12-14 and 84-88",
+      "practice/legacy/guile-asmsim.scm lines 15-18 and 210-234",
+      "practice/asmsim.scm lines 170-188 and 256-290"
+    ]
+  },
+  "source_status_inputs": [
+    "sources/standard_signal_command_semantics_status.json",
+    "sources/recipient_non_init_command_source_status.json",
+    "sources/guile_asmsim_command_semantics_status.json",
+    "sources/asmsim_process_buffer_status.json",
+    "sources/official_tla_universal_cell_status.json"
+  ],
+  "execution_boundary": {
+    "replaces_existing_boundary": false,
+    "standard_signal_execution_change_allowed": false,
+    "status_safe_next_slice": "no-standard-signal-command-token-execution-change-without-new-source-evidence",
+    "summary": "The reviewed heads and PRC witness snapshot do not replace the existing unsupported standard-signal command-token boundary. Execution remains disallowed until new source evidence appears."
+  },
+  "review_commands": [
+    "git ls-remote https://github.com/jpt4/as.git HEAD refs/heads/main",
+    "git ls-remote https://github.com/jpt4/afs.git HEAD refs/heads/main",
+    "timeout 20s git ls-remote https://github.com/jpt4/prc.git HEAD refs/heads/master",
+    "git ls-remote https://github.com/jpt4/sjas.git HEAD refs/heads/master",
+    "git ls-remote https://github.com/jpt4/proflog.git HEAD refs/heads/main",
+    "git ls-remote https://github.com/namin/leanTAP.git HEAD refs/heads/master",
+    "git -C /home/sean/Projects/_upstream/prc rev-parse HEAD"
+  ]
+}

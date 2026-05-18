@@ -105,7 +105,9 @@ decision in `sources/standard_signal_command_semantics_status.json` while
 preserving ordinary binary-input standard-signal behavior. ADR-0165 and
 ADR-0166 record that command-token execution is not the active safe next
 implementation lane unless new source evidence replaces the unsupported
-boundary.
+boundary. ADR-0171 reviews the current source heads, finds no replacing
+standard-signal command-token evidence, and removes the previous active review
+slice from this recipient consumption status.
 
 ADR-0059 records the multi-command recipient input policy in
 `sources/multi_command_recipient_input_policy_status.json`, selecting

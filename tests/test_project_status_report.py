@@ -21,12 +21,12 @@ STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal"]
 STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
-    "review-new-standard-signal-command-token-source-evidence-before-execution-change"
+    "no-standard-signal-command-token-execution-change-without-new-source-evidence"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "no-write-buffer-follow-up-pending-after-recipient-evidence-bundle"
 )
-SAFE_NEXT_SLICE = STANDARD_SIGNAL_SAFE_NEXT_SLICE
+SAFE_NEXT_SLICE = ""
 PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
     "self-mailbox-command",
@@ -38,17 +38,19 @@ RECIPIENT_NON_INIT_AS_BOUNDARY = (
     "standard-signal command tokens and multi-command conflicts; standard-signal "
     "recipient input is a resolved rejection boundary and standard-signal "
     "self-target command execution is preserved unsupported unless new source "
-    "evidence replaces that boundary, while direct self-mailbox and completed "
-    "self-target write-buffer execution are implemented by ADR-0161 and "
-    "recipient write-buffer command-message execution is implemented by "
-    "ADR-0169. The accepted current runtime behavior rejects only "
-    "standard-signal command messages and multi-command conflicts."
+    "evidence replaces that boundary. ADR-0171 reviewed current source heads "
+    "and found no new standard-signal execution evidence, while direct "
+    "self-mailbox and completed self-target write-buffer execution are "
+    "implemented by ADR-0161 and recipient write-buffer command-message "
+    "execution is implemented by ADR-0169. The accepted current runtime "
+    "behavior rejects only standard-signal command messages and multi-command "
+    "conflicts."
 )
 STANDARD_SIGNAL_AS_BOUNDARY = (
     "Continue rejecting or preserving standard-signal command tokens at the "
     "existing claimed boundaries. AS already has ordinary standard-signal "
-    "routing and stem buffer accumulation for binary input; this artifact "
-    "blocks only command-token execution."
+    "routing and stem buffer accumulation for binary input; ADR-0171 found no "
+    "new source evidence replacing the unsupported command-token boundary."
 )
 WRITE_BUFFER_AS_BOUNDARY = (
     "Direct self-mailbox and completed self-target command-buffer "
@@ -405,6 +407,15 @@ STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
             "define standard-signal command-token semantics."
         ),
     },
+    {
+        "adr": "ADR-0171",
+        "path": "sources/standard_signal_source_review_status.json",
+        "summary": (
+            "The 2026-05-18 source-review snapshot found no new "
+            "standard-signal command-token execution evidence and keeps "
+            "execution changes disallowed without new source evidence."
+        ),
+    },
 ]
 WRITE_BUFFER_ADDITIONAL_SOURCE_STATUSES = [
     {
@@ -725,7 +736,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             f"write-buf-zero, write-buf-one: {WRITE_BUFFER_AS_BOUNDARY}",
             text,
         )
-        self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
+        self.assertIn("Safe next slice: none", text)
         self.assertNotIn("add-write-buffer-command-execution-evidence-bundle", text)
         self.assertIn("Missing source-status files: none", text)
 
@@ -1144,6 +1155,13 @@ class ProjectStatusReportTests(unittest.TestCase):
             "ADR-0064 -> sources/official_tla_universal_cell_status.json: "
             "The official PRC TLA files are partial/stub/empty and do not "
             "define standard-signal command-token semantics.",
+            text,
+        )
+        self.assertIn(
+            "ADR-0171 -> sources/standard_signal_source_review_status.json: "
+            "The 2026-05-18 source-review snapshot found no new "
+            "standard-signal command-token execution evidence and keeps "
+            "execution changes disallowed without new source evidence.",
             text,
         )
         self.assertIn("write-buf-zero, write-buf-one:", text)
