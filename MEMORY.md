@@ -821,3 +821,8 @@
   `claims/network_sequence_claims.json`, and predicate-result proof
   certificates. It checks one positive routed follow-up example and two
   negative examples without adding new runtime behavior.
+- ADR-0198 adds `autarkic_systems.network_sequence_evidence_bundle` plus
+  `evidence/sequences/post_handoff_signal_bundle.json` and
+  `evidence/sequences/manifest.json`, validating the post-handoff sequence
+  claim/proof/witness against the underlying neighbor delivery chain evidence
+  bundle and source-status boundaries.

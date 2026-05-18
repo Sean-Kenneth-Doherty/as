@@ -4220,3 +4220,22 @@
   post-handoff routing example and two negative examples.
 - Focused green verification passed 10 tests. The validator rejects incomplete
   certificate manifests and exposes text/JSON CLI output.
+
+## 2026-05-18 - Network Sequence Evidence Bundle
+
+- Added ADR-0198 to make the post-handoff sequence claim discoverable as a
+  checked evidence bundle.
+- Added red evidence-bundle tests before implementation. The focused red run
+  failed because `autarkic_systems.network_sequence_evidence_bundle` did not
+  exist.
+- Added `autarkic_systems/network_sequence_evidence_bundle.py`,
+  `evidence/sequences/post_handoff_signal_bundle.json`, and
+  `evidence/sequences/manifest.json`.
+- The bundle validator checks the sequence claim example, predicate-result
+  proof certificate, executable witness status, underlying registered
+  neighbor-delivery chain evidence bundle, referenced source-status files, and
+  explicit boundary text.
+- Focused green verification passed 10 tests. Bundle and registry CLIs expose
+  text/JSON validation for the new evidence surface. `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 843 tests.

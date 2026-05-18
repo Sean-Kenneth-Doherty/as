@@ -4020,3 +4020,24 @@ Implemented in `autarkic_systems/network_sequence_predicates.py` and
 `autarkic_systems/network_sequence_claims.py`, with tests in
 `tests/test_network_sequence_claims.py` and operator notes in
 `docs/network-sequence-claims.md`.
+
+## ADR-0198: Network Sequence Evidence Bundle
+
+Goal: make the post-handoff sequence claim discoverable as a checked evidence
+bundle.
+
+Deliverables:
+
+- `autarkic_systems/network_sequence_evidence_bundle.py`;
+- `evidence/sequences/post_handoff_signal_bundle.json`;
+- `evidence/sequences/manifest.json`;
+- text and JSON CLI validation for one bundle or the registry;
+- checks for sequence claim, proof certificate, executable witness, underlying
+  chain bundle, source-status files, and boundary text; and
+- no scheduler, timing, topology, output-clearing, project-status, or new
+  command semantics.
+
+Status: accepted in `docs/adr/0198-network-sequence-evidence-bundle.md`.
+Implemented in `autarkic_systems/network_sequence_evidence_bundle.py`, with
+tests in `tests/test_network_sequence_evidence_bundle.py` and operator notes in
+`docs/network-sequence-evidence-bundles.md`.

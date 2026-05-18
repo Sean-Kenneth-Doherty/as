@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "registry_id": "network-sequence-evidence-bundle-registry",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Registry of network-sequence evidence bundles that can be batch-validated across sequence claim, proof, executable witness, underlying chain evidence, and source-status boundaries.",
+  "bundles": [
+    {
+      "bundle_id": "post-handoff-signal-sequence-evidence-bundle",
+      "path": "evidence/sequences/post_handoff_signal_bundle.json",
+      "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+      "expected_status": "post-handoff-signal-routed"
+    }
+  ]
+}

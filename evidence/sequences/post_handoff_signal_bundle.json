@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "bundle_id": "post-handoff-signal-sequence-evidence-bundle",
+  "reviewed_at": "2026-05-18",
+  "purpose": "Tie the executable post-handoff signal witness to its sequence claim, proof certificate, underlying delivery chain evidence, and source-status boundaries.",
+  "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+  "predicate": "post_handoff_signal_routed",
+  "positive_example": "proc left init handoff routes later binary signal",
+  "sequence_function": "execute_post_handoff_signal_witness",
+  "expected_status": "post-handoff-signal-routed",
+  "artifacts": {
+    "sequence_claims": "claims/network_sequence_claims.json",
+    "sequence_proof_certificates": "claims/network_sequence_proof_certificates.json",
+    "sequence_claim_validator": "autarkic_systems/network_sequence_claims.py",
+    "sequence_witness": "autarkic_systems/network_sequence.py",
+    "chain_bundles": [
+      "evidence/chains/neighbor_delivery_chain_bundle.json"
+    ],
+    "source_statuses": [
+      "sources/stem_command_execution_source_status.json",
+      "sources/recipient_command_consumption_source_status.json",
+      "sources/recipient_non_init_command_source_status.json",
+      "sources/standard_signal_command_semantics_status.json",
+      "sources/write_buffer_command_semantics_status.json"
+    ]
+  },
+  "boundaries": [
+    "This bundle covers one post-handoff sequence after consumed proc-l-init neighbor delivery.",
+    "The underlying delivery is justified by the registered neighbor delivery recipient chain evidence bundle.",
+    "No scheduler, topology, timing, output-clearing, queued-delivery, or new command semantics are claimed."
+  ]
+}
