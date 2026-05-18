@@ -582,3 +582,6 @@
 - ADR-0135 adds `python -m autarkic_systems.claim_manifest` with text/JSON
   validation of the base transition claim examples and failing exit codes for
   mismatched manifest expectations.
+- ADR-0136 adds `python -m autarkic_systems.object_language` with text/JSON
+  validation of the transition claim language and checked claim/proof surface,
+  including failing exit codes for rejected language surfaces.

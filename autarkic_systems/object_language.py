@@ -8,17 +8,19 @@ and self-referential proof codes belong to later language layers.
 
 from __future__ import annotations
 
+import argparse
 import json
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable, get_args
 
 from autarkic_systems import transition_predicates
-from autarkic_systems.claim_manifest import Claim
+from autarkic_systems.claim_manifest import Claim, load_transition_claims
 from autarkic_systems.proof_certificates import (
     ClaimCertificate,
     MANIFEST_EXAMPLE_RULE,
     PREDICATE_RESULT_RULE,
+    load_proof_certificates,
 )
 from autarkic_systems.universal_cell import (
     Cell,
@@ -94,6 +96,19 @@ class LanguageValidation:
     detail: str
 
 
+@dataclass(frozen=True)
+class TransitionClaimLanguageProjectReport:
+    """Operator-facing validation report for the transition claim language."""
+
+    language_path: Path
+    claims_path: Path
+    certificates_path: Path
+    language_id: str
+    claim_count: int
+    certificate_count: int
+    results: tuple[LanguageValidation, ...]
+
+
 def load_transition_claim_language(path: Path | str) -> TransitionClaimLanguage:
     """Load the transition-claim language manifest."""
 
@@ -103,6 +118,115 @@ def load_transition_claim_language(path: Path | str) -> TransitionClaimLanguage:
         language_id=_required_text(data, "language_id"),
         syntax_classes=_required_mapping(data, "syntax_classes"),
     )
+
+
+def validate_transition_claim_language_project(
+    language_path: Path | str = "language/transition_claim_language.json",
+    claims_path: Path | str = "claims/transition_claims.json",
+    certificates_path: Path | str = "claims/proof_certificates.json",
+) -> TransitionClaimLanguageProjectReport:
+    """Validate the transition claim language and its checked-in surface."""
+
+    language_manifest = Path(language_path)
+    claim_manifest = Path(claims_path)
+    certificate_manifest = Path(certificates_path)
+    language = load_transition_claim_language(language_manifest)
+    claims = load_transition_claims(claim_manifest)
+    certificates = load_proof_certificates(certificate_manifest)
+    results = tuple(
+        [
+            *validate_language_manifest(language),
+            *validate_claim_surface(language, claims, certificates),
+        ]
+    )
+    return TransitionClaimLanguageProjectReport(
+        language_path=language_manifest,
+        claims_path=claim_manifest,
+        certificates_path=certificate_manifest,
+        language_id=language.language_id,
+        claim_count=len(claims),
+        certificate_count=len(certificates),
+        results=results,
+    )
+
+
+def format_transition_claim_language_report(
+    report: TransitionClaimLanguageProjectReport,
+) -> str:
+    """Format a concise operator report for the transition claim language."""
+
+    lines = [f"Transition claim language: {report.language_id}"]
+    for result in report.results:
+        prefix = "OK" if result.accepted else "FAIL"
+        lines.append(f"{prefix} {result.subject}: {result.detail}")
+    return "\n".join(lines)
+
+
+def transition_claim_language_report_payload(
+    report: TransitionClaimLanguageProjectReport,
+) -> dict[str, Any]:
+    """Return a structured transition claim language validation payload."""
+
+    return {
+        "accepted": all(result.accepted for result in report.results),
+        "language_id": report.language_id,
+        "language_path": str(report.language_path),
+        "claims_path": str(report.claims_path),
+        "certificates_path": str(report.certificates_path),
+        "claim_count": report.claim_count,
+        "certificate_count": report.certificate_count,
+        "result_count": len(report.results),
+        "results": [
+            {
+                "subject": result.subject,
+                "accepted": result.accepted,
+                "detail": result.detail,
+            }
+            for result in report.results
+        ],
+    }
+
+
+def run_transition_claim_language_cli(argv: list[str] | None = None) -> int:
+    """Run the transition claim object-language validation command."""
+
+    parser = argparse.ArgumentParser(
+        prog="python -m autarkic_systems.object_language",
+        description="Validate the AS transition claim object-language surface.",
+    )
+    parser.add_argument(
+        "--language",
+        default="language/transition_claim_language.json",
+        help="Path to the transition claim language manifest.",
+    )
+    parser.add_argument(
+        "--claims",
+        default="claims/transition_claims.json",
+        help="Path to the transition claim manifest.",
+    )
+    parser.add_argument(
+        "--certificates",
+        default="claims/proof_certificates.json",
+        help="Path to the transition proof certificate manifest.",
+    )
+    parser.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format for the validation report.",
+    )
+    args = parser.parse_args(argv)
+
+    report = validate_transition_claim_language_project(
+        language_path=args.language,
+        claims_path=args.claims,
+        certificates_path=args.certificates,
+    )
+    if args.format == "json":
+        print(json.dumps(transition_claim_language_report_payload(report), sort_keys=True))
+    else:
+        print(format_transition_claim_language_report(report))
+    return 0 if all(result.accepted for result in report.results) else 1
 
 
 def validate_language_manifest(
@@ -391,3 +515,7 @@ def _required_mapping(item: dict[str, Any], key: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"required mapping field missing: {key}")
     return value
+
+
+if __name__ == "__main__":  # pragma: no cover - exercised by subprocess tests.
+    raise SystemExit(run_transition_claim_language_cli())

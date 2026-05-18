@@ -1,6 +1,13 @@
+import contextlib
+import io
+import json
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
+from autarkic_systems import object_language
 from autarkic_systems.claim_manifest import load_transition_claims
 from autarkic_systems.object_language import (
     REQUIRED_SYNTAX_CLASSES,
@@ -40,6 +47,157 @@ class ObjectLanguageTests(unittest.TestCase):
 
         self.assertTrue(results)
         self.assertTrue(all(result.accepted for result in results), results)
+
+    def test_report_formats_successful_language_validation(self):
+        report = object_language.validate_transition_claim_language_project(
+            language_path=LANGUAGE,
+            claims_path=CLAIMS,
+            certificates_path=CERTIFICATES,
+        )
+
+        text = object_language.format_transition_claim_language_report(report)
+
+        self.assertIn("Transition claim language: as-transition-claim-v1", text)
+        self.assertIn("OK terms.roles:", text)
+        self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", text)
+        self.assertNotIn("FAIL", text)
+
+    def test_json_payload_records_successful_language_validation(self):
+        report = object_language.validate_transition_claim_language_project(
+            language_path=LANGUAGE,
+            claims_path=CLAIMS,
+            certificates_path=CERTIFICATES,
+        )
+
+        payload = object_language.transition_claim_language_report_payload(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["language_id"], "as-transition-claim-v1")
+        self.assertEqual(payload["claim_count"], len(self.claims))
+        self.assertEqual(payload["certificate_count"], len(self.certificates))
+        self.assertEqual(payload["result_count"], len(report.results))
+        self.assertTrue(
+            any(
+                result["subject"] == "proof_objects.rules" and result["accepted"]
+                for result in payload["results"]
+            )
+        )
+
+    def test_cli_returns_zero_for_checked_in_language_surface(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = object_language.run_transition_claim_language_cli(
+                [
+                    "--language",
+                    str(LANGUAGE),
+                    "--claims",
+                    str(CLAIMS),
+                    "--certificates",
+                    str(CERTIFICATES),
+                ]
+            )
+
+        output = stdout.getvalue()
+        self.assertEqual(exit_code, 0, output)
+        self.assertIn("Transition claim language: as-transition-claim-v1", output)
+        self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", output)
+
+    def test_cli_returns_json_for_checked_in_language_surface(self):
+        stdout = io.StringIO()
+
+        with contextlib.redirect_stdout(stdout):
+            exit_code = object_language.run_transition_claim_language_cli(
+                [
+                    "--language",
+                    str(LANGUAGE),
+                    "--claims",
+                    str(CLAIMS),
+                    "--certificates",
+                    str(CERTIFICATES),
+                    "--format",
+                    "json",
+                ]
+            )
+
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(exit_code, 0, payload)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["claim_count"], len(self.claims))
+        self.assertNotIn("OK ", stdout.getvalue())
+
+    def test_cli_returns_one_for_missing_language_class(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            language_path = Path(tmp) / "transition_claim_language.json"
+            data = json.loads(LANGUAGE.read_text(encoding="utf-8"))
+            del data["syntax_classes"]["formulae"]
+            language_path.write_text(json.dumps(data), encoding="utf-8")
+            stdout = io.StringIO()
+
+            with contextlib.redirect_stdout(stdout):
+                exit_code = object_language.run_transition_claim_language_cli(
+                    [
+                        "--language",
+                        str(language_path),
+                        "--claims",
+                        str(CLAIMS),
+                        "--certificates",
+                        str(CERTIFICATES),
+                    ]
+                )
+
+        output = stdout.getvalue()
+        self.assertEqual(exit_code, 1, output)
+        self.assertIn("FAIL formulae: missing syntax class: formulae", output)
+
+    def test_module_execution_runs_language_validation(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.object_language",
+                "--language",
+                str(LANGUAGE),
+                "--claims",
+                str(CLAIMS),
+                "--certificates",
+                str(CERTIFICATES),
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("Transition claim language: as-transition-claim-v1", completed.stdout)
+        self.assertIn("OK UC-FIXED-OUTPUT-PRESERVED:", completed.stdout)
+
+    def test_module_execution_runs_json_language_validation(self):
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "autarkic_systems.object_language",
+                "--language",
+                str(LANGUAGE),
+                "--claims",
+                str(CLAIMS),
+                "--certificates",
+                str(CERTIFICATES),
+                "--format",
+                "json",
+            ],
+            check=False,
+            cwd=Path.cwd(),
+            capture_output=True,
+            text=True,
+        )
+
+        payload = json.loads(completed.stdout)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["language_id"], "as-transition-claim-v1")
 
     def test_language_manifest_names_current_proof_object_rules(self):
         rules = self.language.syntax_classes["proof_objects"]["rules"]

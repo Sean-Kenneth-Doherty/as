@@ -248,6 +248,8 @@ the project legible:
   `predicate-result` steps that name the evaluated predicate directly.
 - `python -m autarkic_systems.proof_certificates` validates the transition
   proof-certificate surface in text or JSON form.
+- `python -m autarkic_systems.object_language` validates the transition claim
+  language manifest and the checked claim/proof surface in text or JSON form.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init delivery and rejected non-init
   delivery.

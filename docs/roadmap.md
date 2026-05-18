@@ -2624,3 +2624,22 @@ Deliverables:
 Status: accepted in `docs/adr/0135-transition-claim-cli.md`. Implemented in
 `autarkic_systems/claim_manifest.py`, with tests in
 `tests/test_claim_manifest.py`.
+
+## ADR-0136: Transition Object Language CLI
+
+Goal: make the base transition object-language layer directly inspectable from
+the command line.
+
+Deliverables:
+
+- `python -m autarkic_systems.object_language` text output;
+- `--format json` output with accepted state, language ID, claim count,
+  certificate count, result count, and per-result validation details;
+- `--language`, `--claims`, and `--certificates` path overrides;
+- exit code `0` for accepted language surfaces and `1` for rejected language
+  or claim/proof surfaces; and
+- focused CLI tests covering successful and failing language manifests.
+
+Status: accepted in `docs/adr/0136-transition-object-language-cli.md`.
+Implemented in `autarkic_systems/object_language.py`, with tests in
+`tests/test_object_language.py`.

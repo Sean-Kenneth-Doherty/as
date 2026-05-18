@@ -380,3 +380,6 @@
 - When a lower layer already feeds several richer operator reports, give that
   lower layer a direct report too. It shortens diagnosis when proof or evidence
   validation fails above it.
+- An object language is more useful when operators can validate both the
+  language manifest and the live surfaces that claim to inhabit it from one
+  command.

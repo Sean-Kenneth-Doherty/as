@@ -268,8 +268,9 @@ sentences, proof objects, and substrate claims.
 Status: started by ADR-0012. `language/transition_claim_language.json` now
 names the first explicit syntax classes for current transition claims, and
 `autarkic_systems/object_language.py` validates the current claim/certificate
-surface against that language. IS(A), Type NS, tableaux syntax, and
-arithmetized proof-code syntax remain open.
+surface against that language. ADR-0136 exposes that language/surface check
+through direct text and JSON CLI validation. IS(A), Type NS, tableaux syntax,
+and arithmetized proof-code syntax remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 

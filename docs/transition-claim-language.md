@@ -29,6 +29,8 @@ that deliver decoded command tokens onto output channels. ADR-0045 adds
 `stem_command_buffer_delivers_neighbor_command` for the corresponding named
 transition claim. ADR-0133 adds `predicate-result` as a proof-object rule so
 transition proof certificates can name the predicate evaluated by a step.
+ADR-0136 exposes this language and the checked transition claim/proof surface
+through `python -m autarkic_systems.object_language`.
 
 The point is to stop relying on implicit Python/JSON shape as the only syntax
 boundary. Current claims can now be checked against named syntax classes before
@@ -58,6 +60,8 @@ Fast validation is covered by:
 ```sh
 python -m autarkic_systems.claim_manifest
 python -m autarkic_systems.claim_manifest --format json
+python -m autarkic_systems.object_language
+python -m autarkic_systems.object_language --format json
 python -m unittest tests.test_object_language
 ```
 
@@ -69,6 +73,8 @@ The validator checks:
 - formula predicate symbols correspond to implemented predicate functions;
 - current transition claims fit the language;
 - current proof certificates use known proof-object rules;
+- text/JSON CLI output reports accepted and rejected language surfaces with
+  matching exit codes;
 - deliberately missing classes, unknown predicates, unknown proof rules, and
   incomplete term vocabularies are rejected.
 

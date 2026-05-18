@@ -2988,3 +2988,21 @@
   formatting, `py_compile`, and `git diff --check` passed; transition-claim
   text and JSON CLI output were accepted; and
   `python -m unittest discover` passed 617 tests.
+
+## 2026-05-18 - Transition Object Language CLI
+
+- Added ADR-0136 to expose the base transition object-language layer through
+  `python -m autarkic_systems.object_language`.
+- Updated object-language tests before implementation. The red run executed 14
+  tests and failed because the report builder, CLI runner, and module
+  execution output did not exist.
+- Updated `autarkic_systems.object_language` with a project report, text and
+  JSON formatting, `--language`, `--claims`, and `--certificates` path
+  overrides, `--format` selection, and accepted/rejected exit codes.
+- The default text command now reports the `as-transition-claim-v1` language
+  surface; JSON mode reports `accepted: true`, `claim_count: 13`,
+  `certificate_count: 13`, and `result_count: 63`.
+- Verification passed: focused object-language tests ran 14 tests; JSON
+  formatting, `py_compile`, and `git diff --check` passed; object-language
+  text and JSON CLI output were accepted; and
+  `python -m unittest discover` passed 624 tests.
