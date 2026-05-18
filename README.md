@@ -54,6 +54,8 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-target.md` records the first checked `pi1`
   fixed-point target template and substitution instance, while leaving actual
   fixed-point construction blocked.
+- `docs/fixed-point-equation-candidate.md` records the first checked naive
+  fixed-point equation candidate and why it is not yet fixed.
 - `docs/transition-claim-language.md` explains the first explicit object
   language for transition claims.
 - `docs/transition-chain-claim-language.md` explains the first explicit object
@@ -380,6 +382,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   template over the checked codebook, substitution, quotation, and quotation
   sequence/term surfaces without claiming a diagonal lemma, fixed-point
   equation proof, or self-consistency theorem.
+- `autarkic_systems/fixed_point_equation.py` validates the first naive
+  fixed-point equation candidate, recording that the checked quotation-term
+  substitution is not yet a fixed point.
 - `autarkic_systems/formal_confidence.py` validates the first
   formal-confidence target manifest against the Willard definition map, keeping
   the current AS self-consistency claim explicitly blocked until fixed-point
@@ -447,6 +452,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `claims/fixed_point_targets.json`, including the selected `pi1` target
   template, free code variable, checked substitution instance, quotation
   sequence and term dependencies, and non-constructed status.
+- `python -m autarkic_systems.fixed_point_equation --format json` validates
+  `claims/fixed_point_equation_candidates.json`, including the current
+  `candidate-not-fixed` result for the naive quotation-term substitution.
 - `python -m autarkic_systems.formal_confidence --format json` validates that
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, explicit blockers, and the

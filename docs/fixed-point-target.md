@@ -11,9 +11,10 @@ formal codebook.
 
 AS now has a formal codebook, capture-avoiding substitution examples, token
 numeral quotation examples, token-numeral sequence examples, quotation term
-examples, a Level-1 consistency target, and a selected deduction-apparatus
-target. Those are prerequisites for a SelfCons-style statement, but they still
-do not construct a diagonal fixed point.
+examples, a checked naive equation candidate, a Level-1 consistency target,
+and a selected deduction-apparatus target. Those are prerequisites for a
+SelfCons-style statement, but they still do not construct a diagonal fixed
+point.
 
 The fixed-point target records the next precise obligation:
 
@@ -38,7 +39,8 @@ It names these Willard anchors as constraints:
 The checked instance proves only that the current substitution, codebook,
 token quotation, token-numeral sequence, and quotation-term surfaces can
 preserve the selected template boundary and round-trip the expected encoded
-instance.
+instance. ADR-0235 additionally checks the naive quotation substitution and
+records that it is not a fixed point.
 
 ## Run
 
@@ -47,6 +49,7 @@ python -m autarkic_systems.fixed_point
 python -m autarkic_systems.fixed_point --format json
 python -m autarkic_systems.formal_quotation_sequence
 python -m autarkic_systems.formal_quotation_term
+python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary
 ```

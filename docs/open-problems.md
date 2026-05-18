@@ -435,7 +435,8 @@ fixed-point target template and substitution instance, but actual quotation
 terms and fixed-point equations remain open. ADR-0232 adds unary token
 numerals for formal code tokens. ADR-0233 wraps those numerals into a checked
 token-numeral sequence object. ADR-0234 adds nested sequence term encoding for
-quotation terms, while diagonal fixed-point equations remain open.
+quotation terms. ADR-0235 checks the naive quotation-term substitution and
+records that it is not fixed, while diagonal fixed-point equations remain open.
 
 ## P5: Annotate Core Willard Sources At Definition Granularity
 
@@ -464,7 +465,8 @@ removes the consistency-level selection blocker by selecting Level-1
 consistency as the first target notion. ADR-0230 removes the
 deduction-apparatus selection blocker by selecting the AS-local
 `predicate-result` certificate checker as the current apparatus target.
-ADR-0234 adds a checked quotation-term surface over the codebook. The remaining
+ADR-0234 adds a checked quotation-term surface over the codebook. ADR-0235
+records the naive fixed-point equation candidate as not fixed. The remaining
 blocker is fixed-point construction.
 
 ## P6: Recover Or Replace The Active Proflog Frontier

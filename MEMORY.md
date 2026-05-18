@@ -121,6 +121,12 @@
   quotation-term layer over quoted token sequences. It still does not prove
   sequence arithmetic axioms, a diagonal lemma, a fixed-point equation, or
   self-consistency.
+- ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
+  `autarkic_systems/fixed_point_equation.py` as the first checked
+  fixed-point-equation candidate surface. It constructs the naive
+  quotation-term substitution, records `candidate-not-fixed`, and still does
+  not prove a diagonal lemma, fixed-point equation, arithmetized proof
+  predicate, or self-consistency.
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.

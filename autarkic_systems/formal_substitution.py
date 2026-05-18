@@ -175,10 +175,14 @@ def free_variables(node: dict[str, Any]) -> frozenset[str]:
     kind = _node_kind(node)
     if kind == "variable":
         return frozenset({_required_text(node, "name")})
-    if kind == "zero":
+    if kind in {"zero", "sequence_nil"}:
         return frozenset()
     if kind == "successor":
         return free_variables(_required_node(node, "term"))
+    if kind == "sequence_cons":
+        return free_variables(_required_node(node, "head")) | free_variables(
+            _required_node(node, "tail")
+        )
     if kind in {"addition", "multiplication", "equals", "less_than", "and", "or", "implies"}:
         return free_variables(_required_node(node, "left")) | free_variables(
             _required_node(node, "right")
@@ -320,12 +324,18 @@ def _substitute(
         if _required_text(node, "name") == variable:
             return _clone_node(replacement)
         return _clone_node(node)
-    if kind == "zero":
+    if kind in {"zero", "sequence_nil"}:
         return _clone_node(node)
     if kind == "successor":
         return {
             "kind": "successor",
             "term": _substitute(_required_node(node, "term"), variable, replacement),
+        }
+    if kind == "sequence_cons":
+        return {
+            "kind": "sequence_cons",
+            "head": _substitute(_required_node(node, "head"), variable, replacement),
+            "tail": _substitute(_required_node(node, "tail"), variable, replacement),
         }
     if kind in {"addition", "multiplication", "equals", "less_than", "and", "or", "implies"}:
         return {
@@ -535,10 +545,14 @@ def _node_kind(node: dict[str, Any]) -> str:
 
 def _is_term_node(node: dict[str, Any]) -> bool:
     kind = _node_kind(node)
-    if kind in {"variable", "zero"}:
+    if kind in {"variable", "zero", "sequence_nil"}:
         return True
     if kind == "successor":
         return _is_term_node(_required_node(node, "term"))
+    if kind == "sequence_cons":
+        return _is_term_node(_required_node(node, "head")) and _is_term_node(
+            _required_node(node, "tail")
+        )
     if kind in {"addition", "multiplication"}:
         return _is_term_node(_required_node(node, "left")) and _is_term_node(
             _required_node(node, "right")

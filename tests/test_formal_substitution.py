@@ -86,6 +86,26 @@ class FormalSubstitutionTests(unittest.TestCase):
             {"kind": "successor", "term": {"kind": "variable", "name": "n"}},
         )
 
+    def test_substitutes_inside_sequence_terms(self):
+        node = {
+            "kind": "sequence_cons",
+            "head": {"kind": "variable", "name": "x"},
+            "tail": {"kind": "sequence_nil"},
+        }
+        replacement = {"kind": "successor", "term": {"kind": "zero"}}
+
+        substituted = substitute_node(node, "x", replacement)
+
+        self.assertEqual(
+            substituted,
+            {
+                "kind": "sequence_cons",
+                "head": {"kind": "successor", "term": {"kind": "zero"}},
+                "tail": {"kind": "sequence_nil"},
+            },
+        )
+        self.assertEqual(free_variables(substituted), frozenset())
+
     def test_substitutes_inside_formulae(self):
         node = {
             "kind": "bounded_exists",

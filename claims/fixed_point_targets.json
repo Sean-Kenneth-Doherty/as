@@ -73,7 +73,7 @@
         "no arithmetized proof predicate",
         "no self-consistency theorem"
       ],
-      "next_as_action": "Use the checked quotation term surface to prove a diagonal fixed-point equation before claiming SelfCons_1."
+      "next_as_action": "Replace the checked naive candidate with a real diagonal construction and fixed-point equation proof before claiming SelfCons_1."
     }
   ]
 }

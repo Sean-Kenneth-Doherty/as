@@ -4858,3 +4858,31 @@ Deliverables:
 Status: accepted in `docs/adr/0234-quotation-term-surface.md`. Implemented in
 `autarkic_systems/formal_quotation_term.py`, with tests in
 `tests/test_formal_quotation_term.py`.
+
+## ADR-0235: Fixed-Point Equation Candidate
+
+Goal: construct and check the first naive fixed-point equation candidate
+without claiming a diagonal lemma or fixed-point equation proof.
+
+Deliverables:
+
+- `claims/fixed_point_equation_candidates.json` recording the naive
+  quotation-substitution candidate for `AS-FIXED-POINT-SELFCONS1-TARGET`;
+- `autarkic_systems.fixed_point_equation` text/JSON CLI validation;
+- construction of the candidate instance by substituting the checked
+  quotation term into the target template;
+- validation that the observed candidate code length and prefix match the
+  manifest;
+- explicit `candidate-not-fixed` status when the candidate code differs from
+  the originally quoted target code;
+- rejection for unknown target IDs, unknown quotation-term examples, stale
+  candidate-code lengths, and proved-equation statuses;
+- formal-confidence metadata updated to name the candidate surface while
+  preserving the fixed-point-construction blocker; and
+- no diagonal lemma, fixed-point equation proof, arithmetic sequence axioms,
+  arithmetized proof predicate, theorem prover, runtime behavior, command
+  semantics, evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in `docs/adr/0235-fixed-point-equation-candidate.md`.
+Implemented in `autarkic_systems/fixed_point_equation.py`, with tests in
+`tests/test_fixed_point_equation_candidate.py`.

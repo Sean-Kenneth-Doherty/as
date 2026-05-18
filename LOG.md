@@ -5064,3 +5064,36 @@
   formal-confidence JSON and project-status summary remained accepted and
   blocked. `compileall`, JSON checks, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 1041 tests.
+
+## 2026-05-18 - Fixed-Point Equation Candidate
+
+- Added ADR-0235 to construct and check the first naive fixed-point equation
+  candidate without claiming diagonalization, a fixed-point equation proof, an
+  arithmetized proof predicate, or self-consistency.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_equation` and
+  `claims/fixed_point_equation_candidates.json` did not exist.
+- Added `claims/fixed_point_equation_candidates.json`, recording
+  `AS-FIXED-POINT-SELFCONS1-NAIVE-QUOTE-CANDIDATE` as `candidate-not-fixed`,
+  with expected original code `[41, 1, 22, 11, 1, 13, 12]`, observed candidate
+  length `121`, and candidate prefix `[41, 1, 22, 11, 1, 17]`.
+- Added `autarkic_systems/fixed_point_equation.py` with dependency validation
+  against the fixed-point target, quotation-term examples, formal codebook,
+  and Willard anchors; construction of the naive quotation-term substitution;
+  text/JSON CLI output; and rejection of unknown target IDs, unknown
+  quotation-term examples, stale candidate lengths, and proved-equation
+  statuses.
+- Extended `autarkic_systems/formal_substitution.py` so `sequence_nil` and
+  `sequence_cons` are recognized as term nodes for free-variable calculation
+  and substitution. This was required for the checked quotation term to be a
+  valid substitution replacement.
+- Updated the formal-confidence manifest and navigation docs to name the
+  fixed-point-equation candidate surface while preserving the
+  `fixed-point-construction` blocker.
+- Focused fixed-point-equation, formal-substitution, and project-status tests
+  passed 117 tests. Live fixed-point-equation text/JSON output reported the
+  candidate accepted as `candidate-not-fixed`, with `candidate_is_fixed=false`
+  and observed length `121`; live formal-confidence JSON and project-status
+  summary remained accepted and blocked. `compileall`, JSON checks,
+  `git diff --check`, and `python -m unittest discover` passed; the full suite
+  ran 1055 tests.

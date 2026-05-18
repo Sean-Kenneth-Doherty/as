@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "candidate_set_id": "as-fixed-point-equation-candidate-v1",
+  "reviewed_at": "2026-05-18",
+  "purpose": "First checked fixed-point equation candidate surface. This constructs the naive quotation-term substitution for the current AS fixed-point target and records that it is not yet a fixed point, preserving the need for a real diagonal construction.",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "quotation_term_examples_path": "language/formal_quotation_term_examples.json",
+  "codebook_path": "language/formal_codebook.json",
+  "candidate_kind": "naive-quotation-substitution-candidate",
+  "willard_anchor_ids": [
+    "W2011-D3.4-GENERIC-CONFIGURATION",
+    "W2011-D5.7-SELFCONSK",
+    "W2020-D3.2-SELF-JUSTIFYING-GENAC"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "AS-FIXED-POINT-SELFCONS1-NAIVE-QUOTE-CANDIDATE",
+      "target_id": "AS-FIXED-POINT-SELFCONS1-TARGET",
+      "quotation_term_example_id": "fixed-point-instance-quotation-term",
+      "status": "candidate-not-fixed",
+      "expected_original_code": [41, 1, 22, 11, 1, 13, 12],
+      "expected_candidate_code_length": 121,
+      "expected_candidate_code_prefix": [41, 1, 22, 11, 1, 17],
+      "required_future_work": [
+        "diagonal-construction",
+        "fixed-point-equation-proof",
+        "self-consistency-theorem"
+      ],
+      "non_claims": [
+        "no diagonal lemma proof",
+        "no fixed-point equation proof",
+        "no arithmetized proof predicate",
+        "no self-consistency theorem"
+      ],
+      "next_as_action": "Replace the naive candidate with a real diagonal construction that proves the encoded candidate satisfies the fixed-point equation."
+    }
+  ]
+}
