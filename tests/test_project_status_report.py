@@ -41,6 +41,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertTrue(report["chain_evidence"]["accepted"])
         self.assertEqual(report["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(report["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
+        self.assertEqual(report["frontier"]["failed_subjects"], [])
         self.assertEqual(report["frontier"]["safe_next_slice"], SAFE_NEXT_SLICE)
         self.assertEqual(report["frontier"]["missing_source_statuses"], [])
         self.assertEqual(
@@ -82,6 +83,7 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertEqual(payload["transition_evidence"]["bundle_count"], 8)
         self.assertEqual(payload["chain_evidence"]["bundle_count"], 2)
         self.assertEqual(payload["frontier"]["blocked_commands"], BLOCKED_COMMANDS)
+        self.assertEqual(payload["frontier"]["failed_subjects"], [])
 
     def test_missing_source_status_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -94,10 +96,51 @@ class ProjectStatusReportTests(unittest.TestCase):
         self.assertFalse(report["accepted"])
         self.assertEqual(report["frontier"]["blocked_commands"], [])
         self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-file"],
+        )
+        self.assertEqual(
             report["frontier"]["missing_source_statuses"],
             [str(missing_status)],
         )
         self.assertEqual(report["frontier"]["source_statuses"], [])
+
+    def test_invalid_source_status_is_structured_failure_subject(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            invalid_status = Path(tmp) / "invalid_status.json"
+            invalid_status.write_text("{not-json", encoding="utf-8")
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(report["frontier"]["blocked_commands"], [])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-json"],
+        )
+        self.assertEqual(report["frontier"]["missing_source_statuses"], [])
+        self.assertEqual(
+            [item["path"] for item in report["frontier"]["invalid_source_statuses"]],
+            [str(invalid_status)],
+        )
+
+    def test_frontier_failed_subjects_preserve_mixed_failure_order(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            missing_status = Path(tmp) / "missing_status.json"
+            invalid_status = Path(tmp) / "invalid_status.json"
+            invalid_status.write_text("{not-json", encoding="utf-8")
+
+            report = build_project_status_report(
+                source_status_paths=[invalid_status, missing_status],
+            )
+
+        self.assertFalse(report["accepted"])
+        self.assertEqual(
+            report["frontier"]["failed_subjects"],
+            ["source-status-file", "source-status-json"],
+        )
 
     def test_missing_transition_registry_is_structured_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

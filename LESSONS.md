@@ -272,3 +272,6 @@
 - Distinguish absent artifacts from malformed artifacts in operator reports.
   The next action for a missing registry is not the same as the next action for
   an unreadable or schema-invalid registry.
+- Give every status section a compact failure-subject list once automation may
+  consume it. Detail arrays are useful for humans; stable subject names are
+  better for scripts and future agents.

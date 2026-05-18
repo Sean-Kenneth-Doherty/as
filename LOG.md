@@ -2211,3 +2211,23 @@
   chain `bundle_count: 2`, and no missing or invalid source-status files.
   `py_compile`, `git diff --check`, and `python -m unittest discover` passed,
   with the full suite running 548 tests.
+
+## 2026-05-18 - Project Status Frontier Failure Summary
+
+- Added ADR-0099 to give the project status frontier section a compact
+  `failed_subjects` summary.
+- Updated `tests/test_project_status_report.py` before implementation. The red
+  run failed in five accepted, missing, invalid, and mixed source-status cases
+  because `frontier.failed_subjects` was absent.
+- Updated `autarkic_systems.project_status` so frontier output reports an empty
+  failure-subject list on the checked-in path, `source-status-file` for missing
+  source-status files, `source-status-json` for malformed source-status files,
+  and both subjects in stable order when both failure modes occur.
+- Updated README, project-status docs, open problems, roadmap, memory, and
+  lessons with the frontier failure-summary contract.
+- Verified the focused project status test passed 14 tests; adjacent project
+  status, transition registry, and chain registry tests passed 39 tests. The
+  checked-in JSON status remained accepted with transition `bundle_count: 8`,
+  chain `bundle_count: 2`, and `frontier.failed_subjects: []`. `py_compile`,
+  `git diff --check`, and `python -m unittest discover` passed, with the full
+  suite running 550 tests.

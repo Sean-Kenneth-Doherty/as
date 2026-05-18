@@ -463,3 +463,7 @@
 - ADR-0098 refines `autarkic_systems.project_status` so malformed transition
   or chain registry files report `failed_subjects: ["registry-json"]` and text
   output names invalid registry files separately from missing registry files.
+- ADR-0099 adds `frontier.failed_subjects` to `autarkic_systems.project_status`:
+  checked-in status reports `[]`, missing source-status files report
+  `source-status-file`, malformed source-status files report
+  `source-status-json`, and mixed failures preserve that order.

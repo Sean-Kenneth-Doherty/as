@@ -1875,3 +1875,22 @@ Deliverables:
 Status: accepted in `docs/adr/0098-project-status-invalid-registries.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0099: Project Status Frontier Failure Summary
+
+Goal: give the project status frontier section a compact machine-readable
+failure-subject summary.
+
+Deliverables:
+
+- `frontier.failed_subjects` in `autarkic_systems.project_status` JSON output;
+- empty frontier failure subject list on the checked-in accepted path;
+- `source-status-file` for missing source-status files;
+- `source-status-json` for malformed source-status files;
+- stable ordering when both source-status failure modes are present;
+- focused tests and documentation for the frontier JSON contract.
+
+Status: accepted in
+`docs/adr/0099-project-status-frontier-failure-summary.md`. Implemented in
+`autarkic_systems/project_status.py`, with tests in
+`tests/test_project_status_report.py`.

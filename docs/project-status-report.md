@@ -42,7 +42,9 @@ JSON mode emits the same surface for automation. If a registry file is missing,
 the corresponding registry summary reports `registry-file`; if a registry file
 is present but malformed, it reports `registry-json`. Missing or invalid
 source-status files are also reported as structured rejected output instead of
-a traceback.
+a traceback. ADR-0099 adds `frontier.failed_subjects`, which reports
+`source-status-file` for missing source-status files and `source-status-json`
+for malformed source-status files.
 
 ## Boundary
 

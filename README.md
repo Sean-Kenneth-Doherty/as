@@ -254,8 +254,8 @@ the project legible:
   bundles, chain evidence accepted with 2 bundles, and the blocked
   `standard-signal`, `write-buf-zero`, and `write-buf-one` command-token
   frontier. Missing registries report `registry-file`, malformed registries
-  report `registry-json`, and source-status path problems are reported as
-  structured rejected status output.
+  report `registry-json`, and source-status path problems are summarized in
+  `frontier.failed_subjects`.
 - `sources/willard_definition_map.json` makes the Willard anchor map
   machine-checkable.
 - `sources/proflog_frontier_status.json` makes the Proflog source-status

@@ -247,8 +247,14 @@ def _frontier_summary(
             }
         )
 
+    failed_subjects = []
+    if missing:
+        failed_subjects.append("source-status-file")
+    if invalid:
+        failed_subjects.append("source-status-json")
     return {
         "blocked_commands": _ordered_blocked_commands(blocked_commands),
+        "failed_subjects": failed_subjects,
         "safe_next_slice": _common_or_joined(safe_next_slices),
         "source_statuses": source_statuses,
         "missing_source_statuses": missing,
