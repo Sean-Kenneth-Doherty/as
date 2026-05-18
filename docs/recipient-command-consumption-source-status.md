@@ -1,6 +1,6 @@
 # Recipient Command Consumption Source Status
 
-Status: source-status decision, 2026-05-17.
+Status: source-status decision, 2026-05-18.
 
 ADR-0048 records the source boundary for recipient-side command-message inputs
 after ADR-0044 through ADR-0047 made neighbor-target command-buffer delivery
@@ -43,10 +43,11 @@ command tokens remain preserved as unsupported. ADR-0165 gates any future
 execution change on new source evidence.
 
 Delivered recipient `write-buf-zero` and `write-buf-one` command messages
-remain blocked by the ADR-0054 non-init rejection boundary. ADR-0161 selects
+remain rejected by the current ADR-0054 non-init rejection boundary, but
+ADR-0168 resolves their source semantics as append execution. ADR-0161 selects
 and implements direct self-mailbox and completed self-target command-buffer
-write-buffer append behavior, but recipient write-buffer command-message
-execution remains outside the init-family consumption slice.
+write-buffer append behavior; the remaining recipient work is now runtime
+implementation rather than source-semantics resolution.
 
 Full recipient-side command-message consumption still excludes non-init
 command-token execution. ADR-0059 selects reject-and-clear as the policy for
@@ -93,8 +94,9 @@ ADR-0056 adds the rendered SVG view in
 ADR-0057 records the write-buffer command semantics source-status decision in
 `sources/write_buffer_command_semantics_status.json`. ADR-0161 implements the
 direct self-mailbox and completed self-target command-buffer write-buffer
-surfaces while this recipient-consumption status keeps delivered recipient
-write-buffer command messages blocked.
+surfaces, and ADR-0168 marks delivered recipient write-buffer command messages
+source-ready for append execution while this recipient-consumption status keeps
+the current runtime boundary blocked until the implementation slice.
 
 ADR-0058 records the `standard-signal` command-token semantics source-status
 decision in `sources/standard_signal_command_semantics_status.json` while

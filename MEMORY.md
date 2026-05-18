@@ -702,3 +702,9 @@
   `self-target-implemented-recipient-blocked`: self-target append execution is
   implemented, but delivered recipient write-buffer command-message execution
   remains blocked pending that question.
+- ADR-0168 resolves `recipient-command-message-surface` as
+  `execute-recipient-write-buffer-command-message-append`. Write-buffer
+  readiness is now `recipient-command-message-source-ready`: recipient
+  append behavior is source-resolved, current runtime still rejects delivered
+  recipient write-buffer command messages, and the safe next slice is runtime
+  implementation of that recipient surface.

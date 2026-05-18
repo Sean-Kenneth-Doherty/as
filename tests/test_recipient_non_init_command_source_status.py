@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "revisit-recipient-write-buffer-command-message-semantics",
+            "implement-recipient-write-buffer-command-message-execution",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -139,11 +139,15 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertIn("append", divergences["LEGACY-FSMSIM-WRITE-BUFFER"]["summary"])
         self.assertEqual(
             self.status["write_buffer_status"]["decision"],
-            "recipient-non-init-rejection-preserved",
+            "recipient-command-message-source-ready-runtime-rejected",
         )
         self.assertEqual(
             self.status["write_buffer_status"]["depends_on"],
             "sources/write_buffer_command_semantics_status.json",
+        )
+        self.assertIn(
+            "current runtime",
+            self.status["write_buffer_status"]["as_boundary"],
         )
 
     def test_multi_command_policy_is_selected_as_reject_and_clear(self):
@@ -176,7 +180,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
-                "write-buffer" in item
+                item.startswith("Implement recipient write-buffer")
                 for item in recipient_status["allowed_next_slices"]
             )
         )

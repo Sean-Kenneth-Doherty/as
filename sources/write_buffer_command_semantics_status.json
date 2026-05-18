@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-05-17",
-  "decision": "write-buffer-self-target-execution-implemented",
-  "runtime_change": "implemented-by-adr-0161",
-  "safe_next_slice": "revisit-recipient-write-buffer-command-message-semantics",
+  "reviewed_at": "2026-05-18",
+  "decision": "write-buffer-recipient-command-message-source-ready",
+  "runtime_change": "self-target-implemented-recipient-source-status-only",
+  "safe_next_slice": "implement-recipient-write-buffer-command-message-execution",
   "commands": [
     "write-buf-zero",
     "write-buf-one"
@@ -87,15 +87,15 @@
     "summary": "Write-buffer command execution should preserve the appended literal bit and clear the active command source. High/control state is preserved for the implementation slice unless a later source-backed ADR changes it."
   },
   "recipient_surface_resolution": {
-    "decision": "reject-recipient-write-buffer-command-message-as-non-init",
-    "source_status": "sources/recipient_non_init_command_source_status.json",
-    "claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
-    "evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
+    "decision": "execute-recipient-write-buffer-command-message-append",
+    "source_status": "sources/write_buffer_command_semantics_status.json",
+    "current_runtime_boundary_claim_id": "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED",
+    "current_runtime_evidence_bundle": "evidence/recipient_non_init_command_rejection_bundle.json",
     "covered_positive_examples": [
       "fixed upstream write-buf-zero command rejected",
       "fixed upstream write-buf-one command rejected"
     ],
-    "summary": "Delivered recipient write-buffer command messages stay in the existing recipient non-init rejection boundary. ADR-0163 makes both write-buffer rejection examples explicit in the claim/proof and evidence-bundle coverage. Direct self-mailbox and completed self-target command-buffer write-buffer tokens now execute under ADR-0161."
+    "summary": "Delivered recipient write-buffer command messages are source-ready for append execution, but current runtime still rejects them under the recipient non-init boundary until an implementation ADR replaces that checked behavior. ADR-0163 keeps both write-buffer rejection examples explicit in claim/proof and evidence-bundle coverage for the current runtime boundary."
   },
   "self_target_surface_resolution": {
     "decision": "execute-self-target-write-buffer-append",
@@ -110,25 +110,13 @@
     ],
     "summary": "AS executes direct self-mailbox write-buffer commands and completed self-target command-buffer write-buffer commands by appending the command's literal bit and clearing the active command source. ADR-0162 records both implemented self-target surfaces as integrated evidence bundles."
   },
-  "required_resolution_questions": [
-    {
-      "question_id": "recipient-command-message-surface",
-      "summary": "Decide whether delivered recipient write-buffer command messages execute append semantics or remain rejected by the recipient non-init boundary."
-    }
-  ],
-  "resolution_question_evidence": [
-    {
-      "question_id": "recipient-command-message-surface",
-      "evidence": "The formal model and legacy RAA/FSMSIM witnesses route input-channel write-buffer special messages to append behavior, while the checked AS recipient boundary currently rejects delivered write-buffer command messages and SEMSIM still diverges on post-append buffer clearing."
-    }
-  ],
+  "required_resolution_questions": [],
+  "resolution_question_evidence": [],
   "execution_readiness": {
-    "decision": "self-target-implemented-recipient-blocked",
-    "execution_change_allowed": false,
-    "blocked_by_resolution_questions": [
-      "recipient-command-message-surface"
-    ],
-    "summary": "Write-buffer append execution is implemented for direct self-mailbox and completed self-target command-buffer surfaces; delivered recipient command-message execution remains blocked pending recipient-command-message-surface resolution."
+    "decision": "recipient-command-message-source-ready",
+    "execution_change_allowed": true,
+    "blocked_by_resolution_questions": [],
+    "summary": "Recipient write-buffer command-message append execution is source-resolved but not yet implemented; direct self-mailbox and completed self-target command-buffer surfaces remain implemented."
   },
   "resolved_resolution_questions": [
     {
@@ -139,9 +127,15 @@
     },
     {
       "question_id": "recipient-surface",
-      "decision": "reject-recipient-write-buffer-command-message-as-non-init",
-      "source_status": "sources/recipient_non_init_command_source_status.json",
-      "legacy_divergence": "AS already rejects delivered recipient write-buffer command messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; direct self-mailbox and self-target command-buffer write-buffer command tokens execute under ADR-0161."
+      "decision": "execute-recipient-write-buffer-command-message-append",
+      "source_status": "sources/write_buffer_command_semantics_status.json",
+      "legacy_divergence": "The formal model routes input-channel special messages through process-special-message; RAA and FSMSIM route write-buf-zero and write-buf-one to literal append behavior while clearing command-source input. SEMSIM clears the buffer after append, but AS preserves appended-buffer behavior consistently with ADR-0160. Current runtime remains rejected until the implementation ADR replaces the ADR-0054 boundary."
+    },
+    {
+      "question_id": "recipient-command-message-surface",
+      "decision": "execute-recipient-write-buffer-command-message-append",
+      "source_status": "sources/write_buffer_command_semantics_status.json",
+      "legacy_divergence": "The formal model routes input-channel special messages through process-special-message; RAA and FSMSIM route write-buf-zero and write-buf-one to literal append behavior while clearing command-source input. SEMSIM clears the buffer after append, but AS preserves appended-buffer behavior consistently with ADR-0160. Current runtime remains rejected until the implementation ADR replaces the ADR-0054 boundary."
     },
     {
       "question_id": "self-target-surface",
@@ -179,5 +173,5 @@
       "summary": "The official PRC TLA files are partial/stub/empty and do not define write-buf-zero or write-buf-one command-token semantics."
     }
   ],
-  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162; delivered recipient write-buffer command-message inputs remain rejected by the recipient non-init boundary with explicit ADR-0163 claim/proof and evidence-bundle coverage until the recipient-command-message-surface question is resolved."
+  "as_boundary": "Direct self-mailbox and completed self-target command-buffer write-buffer execution are implemented through ADR-0161 append behavior and bundled as integrated evidence by ADR-0162. Delivered recipient write-buffer command-message inputs are source-ready for append execution after ADR-0168, but current runtime still rejects them under the ADR-0054/ADR-0163 recipient non-init boundary until the implementation ADR replaces that checked behavior."
 }

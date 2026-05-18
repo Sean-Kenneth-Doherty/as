@@ -3617,3 +3617,31 @@
   schema 2 with the same question. JSON parsing, `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full
   suite ran 732 tests.
+
+## 2026-05-18 - Recipient Write-Buffer Surface Resolution
+
+- Added ADR-0168 to resolve the live
+  `recipient-command-message-surface` question as
+  `execute-recipient-write-buffer-command-message-append`.
+- Added red write-buffer, project-status, source-status frontier, recipient
+  non-init, recipient command-consumption, multi-command, and standard-signal
+  frontier tests before changing the source-status records. The focused red
+  run executed 126 tests and failed because the old write-buffer status still
+  listed the recipient question as unresolved, blocked execution readiness,
+  and pointed safe-next guidance at semantics rather than implementation.
+- Updated `sources/write_buffer_command_semantics_status.json` so the
+  recipient command-message surface is source-ready, has no live required
+  resolution questions, and exposes
+  `execution_readiness.decision:
+  recipient-command-message-source-ready`.
+- Updated recipient-facing source-status records to preserve the checked
+  current runtime rejection boundary while moving the safe next slice to
+  recipient write-buffer command-message implementation.
+- Runtime behavior, claims, proof certificates, traces, SVGs, evidence
+  bundles, and schema versions remain unchanged.
+- Focused green verification passed 137 tests after including the adjacent
+  stem source-status expectation. Project-status JSON accepted schema 15 with
+  source-ready write-buffer readiness; source-status JSON accepted schema 2
+  with no live resolution questions. JSON parsing, `compileall`,
+  `git diff --check`, and `python -m unittest discover` passed; the full
+  suite ran 733 tests.

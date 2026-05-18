@@ -229,7 +229,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "revisit-recipient-write-buffer-command-message-semantics",
+            "implement-recipient-write-buffer-command-message-execution",
         )
         self.assertFalse(
             any(

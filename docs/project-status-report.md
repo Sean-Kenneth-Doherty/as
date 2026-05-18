@@ -236,6 +236,11 @@ ADR-0167 adds the live write-buffer `recipient-command-message-surface`
 question and matching evidence to project-status JSON/text, and changes
 write-buffer readiness to `self-target-implemented-recipient-blocked` while
 preserving project status `schema_version: 15`.
+ADR-0168 resolves that live write-buffer recipient question as source-ready
+append execution, clears the live write-buffer question/evidence lists, marks
+write-buffer readiness as `recipient-command-message-source-ready`, and moves
+the safe next slice to recipient write-buffer command-message implementation
+while preserving project status `schema_version: 15`.
 
 ## Boundary
 

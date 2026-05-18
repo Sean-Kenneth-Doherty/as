@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-05-17",
+  "reviewed_at": "2026-05-18",
   "decision": "do-not-implement-full-stem-command-execution-yet",
   "map_dependency": "sources/stem_command_buffer_map.json",
   "formal_model_command_table": {
@@ -30,7 +30,7 @@
     "local_witness": "/home/sean/Projects/_upstream/prc/theory/official/formal-model.txt",
     "locus": "lines 660-681, process-buffer and stem-process-special-message",
     "summary": "The formal model sketches 32 target/message cases, clears the buffer, places self-target messages in a self mailbox, places neighbor-target messages on output channels, and then processes self special messages.",
-    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox standard-signal preservation, direct self-mailbox write-buffer append execution, self-target init command-buffer dispatch, self-target write-buffer command-buffer execution, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, and the unsupported self-target standard-signal append boundary. It still does not execute non-init command-message inputs on recipient cells or execute self-target standard-signal commands."
+    "as_gap": "AS now models self mailbox state, command-message channel tokens, direct self-mailbox init execution, unsupported self-mailbox standard-signal preservation, direct self-mailbox write-buffer append execution, self-target init command-buffer dispatch, self-target write-buffer command-buffer execution, neighbor-target command-buffer delivery onto output channels, recipient-side init-family command-message input consumption, source-ready recipient write-buffer command-message append behavior, and the unsupported self-target standard-signal append boundary. It still does not execute recipient write-buffer command-message inputs at runtime or execute standard-signal command tokens."
   },
   "implemented_evidence_bundles": [
     {
@@ -168,7 +168,7 @@
   "blockers": [
     {
       "blocker_id": "recipient-non-init-command-message-semantics",
-      "summary": "AS can consume delivered init-family command-message inputs, but recipient cells still reject non-init command messages while standard-signal command execution remains blocked and recipient write-buffer command-message execution stays under the ADR-0054 rejection boundary."
+      "summary": "AS can consume delivered init-family command-message inputs, and ADR-0168 resolves recipient write-buffer command-message append semantics as source-ready. Recipient cells still reject delivered write-buffer command messages at runtime until the implementation ADR replaces the ADR-0054 boundary, and standard-signal command execution remains blocked."
     },
     {
       "blocker_id": "standard-signal-command-semantics",
@@ -176,11 +176,11 @@
     },
     {
       "blocker_id": "write-buffer-command-semantics",
-      "summary": "ADR-0161 implements direct self-mailbox and completed self-target command-buffer write-buffer execution; recipient write-buffer command-message execution remains under the recipient non-init rejection boundary until a later source-backed ADR changes it."
+      "summary": "ADR-0161 implements direct self-mailbox and completed self-target command-buffer write-buffer execution; ADR-0168 resolves recipient write-buffer command-message semantics as source-ready append behavior, leaving runtime implementation as the next slice."
     }
   ],
   "allowed_next_slices": [
-    "Revisit recipient write-buffer command-message semantics if a source-backed rule moves that input out of the recipient non-init rejection boundary.",
+    "Implement recipient write-buffer command-message append execution from the ADR-0168 source-ready surface.",
     "Add more source-status tests if another PRC source resolves the target, command-order, standard-signal command-token, or recipient write-buffer command-message divergence."
   ]
 }

@@ -3359,3 +3359,34 @@ Status: accepted in
 `docs/adr/0167-recipient-write-buffer-readiness-question.md`. Implemented in
 the write-buffer source-status record and focused write-buffer/source-status/
 project-status tests.
+
+## ADR-0168: Recipient Write-Buffer Surface Resolution
+
+Goal: resolve delivered recipient `write-buf-zero` and `write-buf-one`
+command-message semantics as source-ready append behavior while preserving
+the current runtime rejection boundary until implementation.
+
+Deliverables:
+
+- `sources/write_buffer_command_semantics_status.json` resolves
+  `recipient-command-message-surface` as
+  `execute-recipient-write-buffer-command-message-append`;
+- write-buffer `required_resolution_questions` and
+  `resolution_question_evidence` are empty again;
+- write-buffer execution readiness is
+  `recipient-command-message-source-ready`, with execution changes allowed and
+  no blockers;
+- recipient-facing source-status records keep the checked current runtime
+  rejection boundary visible while moving their safe-next guidance to
+  recipient write-buffer command-message implementation;
+- project-status JSON/text and source-status frontier JSON/text render the
+  source-ready recipient write-buffer readiness and implementation safe-next
+  slice; and
+- unchanged Universal Cell runtime behavior, claims, proof certificates,
+  traces, SVGs, evidence bundles, project-status schema `15`, and
+  source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0168-recipient-write-buffer-surface-resolution.md`. Implemented in
+the write-buffer and recipient source-status records plus focused
+write-buffer/source-status/project-status/recipient frontier tests.

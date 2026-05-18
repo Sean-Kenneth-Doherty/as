@@ -39,7 +39,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "revisit-recipient-write-buffer-command-message-semantics",
+            "implement-recipient-write-buffer-command-message-execution",
         )
         self.assertEqual(
             self.status["covered_runtime_surfaces"],
@@ -118,11 +118,11 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "revisit-recipient-write-buffer-command-message-semantics",
+            "implement-recipient-write-buffer-command-message-execution",
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
-            "revisit-recipient-write-buffer-command-message-semantics",
+            "implement-recipient-write-buffer-command-message-execution",
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],

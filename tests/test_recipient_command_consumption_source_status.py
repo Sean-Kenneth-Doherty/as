@@ -27,7 +27,7 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
         )
         self.assertTrue(self.status["allowed_next_slice"]["recipient_init_family"])
         self.assertFalse(self.status["allowed_next_slice"]["standard_signal"])
-        self.assertFalse(self.status["allowed_next_slice"]["write_buffer"])
+        self.assertTrue(self.status["allowed_next_slice"]["write_buffer"])
 
         implemented = self.status["implemented_slices"][0]
         self.assertEqual(implemented["adr"], "ADR-0049")
@@ -130,7 +130,7 @@ class RecipientCommandConsumptionSourceStatusTests(unittest.TestCase):
         blocker_ids = {blocker["blocker_id"] for blocker in self.status["blockers"]}
 
         self.assertIn("standard-signal-command-message-divergence", blocker_ids)
-        self.assertIn("write-buffer-command-message-semantics", blocker_ids)
+        self.assertIn("write-buffer-command-message-runtime", blocker_ids)
         self.assertIn("multi-command-input-conflict-policy", blocker_ids)
 
         implemented_statuses = {

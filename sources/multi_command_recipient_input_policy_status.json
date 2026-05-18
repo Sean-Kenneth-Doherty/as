@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-05-17",
+  "reviewed_at": "2026-05-18",
   "decision": "reject-multiple-recipient-command-message-inputs",
   "runtime_change": "none-policy-status-only",
   "accepted_command_message_count": 1,
   "conflict_command_message_count_minimum": 2,
   "policy": "reject-and-clear-active-command-input",
-  "safe_next_slice": "revisit-recipient-write-buffer-command-message-semantics",
+  "safe_next_slice": "implement-recipient-write-buffer-command-message-execution",
   "covered_runtime_surfaces": [
     "fixed-direct-input",
     "fixed-upstream-input",

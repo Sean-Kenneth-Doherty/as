@@ -24,7 +24,7 @@ STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "review-new-standard-signal-command-token-source-evidence-before-execution-change"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
-    "revisit-recipient-write-buffer-command-message-semantics"
+    "implement-recipient-write-buffer-command-message-execution"
 )
 SAFE_NEXT_SLICE = (
     f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
@@ -44,8 +44,10 @@ RECIPIENT_NON_INIT_AS_BOUNDARY = (
     "recipient input is a resolved rejection boundary and standard-signal "
     "self-target command execution is preserved unsupported unless new source "
     "evidence replaces that boundary, while direct self-mailbox and completed "
-    "self-target write-buffer execution are implemented by ADR-0161. The "
-    "accepted recipient behavior is the ADR-0054 rejection boundary, with "
+    "self-target write-buffer execution are implemented by ADR-0161 and "
+    "recipient write-buffer command-message execution is source-ready after "
+    "ADR-0168. The accepted current runtime behavior is still the ADR-0054 "
+    "rejection boundary until the implementation ADR replaces it, with "
     "multi-command conflicts assigned to ADR-0059 reject-and-clear."
 )
 STANDARD_SIGNAL_AS_BOUNDARY = (
@@ -57,11 +59,11 @@ STANDARD_SIGNAL_AS_BOUNDARY = (
 WRITE_BUFFER_AS_BOUNDARY = (
     "Direct self-mailbox and completed self-target command-buffer "
     "write-buffer execution are implemented through ADR-0161 append behavior "
-    "and bundled as integrated evidence by ADR-0162; delivered recipient "
-    "write-buffer command-message inputs remain rejected by the recipient "
-    "non-init boundary with explicit ADR-0163 claim/proof and evidence-bundle "
-    "coverage until the recipient-command-message-surface question is "
-    "resolved."
+    "and bundled as integrated evidence by ADR-0162. Delivered recipient "
+    "write-buffer command-message inputs are source-ready for append execution "
+    "after ADR-0168, but current runtime still rejects them under the "
+    "ADR-0054/ADR-0163 recipient non-init boundary until the implementation "
+    "ADR replaces that checked behavior."
 )
 TRANSITION_BUNDLES = [
     {
@@ -288,13 +290,30 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
     },
     {
         "question_id": "recipient-surface",
-        "decision": "reject-recipient-write-buffer-command-message-as-non-init",
-        "source_status": "sources/recipient_non_init_command_source_status.json",
+        "decision": "execute-recipient-write-buffer-command-message-append",
+        "source_status": "sources/write_buffer_command_semantics_status.json",
         "legacy_divergence": (
-            "AS already rejects delivered recipient write-buffer command "
-            "messages under UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; "
-            "direct self-mailbox and self-target command-buffer write-buffer "
-            "command tokens execute under ADR-0161."
+            "The formal model routes input-channel special messages through "
+            "process-special-message; RAA and FSMSIM route write-buf-zero and "
+            "write-buf-one to literal append behavior while clearing "
+            "command-source input. SEMSIM clears the buffer after append, but "
+            "AS preserves appended-buffer behavior consistently with ADR-0160. "
+            "Current runtime remains rejected until the implementation ADR "
+            "replaces the ADR-0054 boundary."
+        ),
+    },
+    {
+        "question_id": "recipient-command-message-surface",
+        "decision": "execute-recipient-write-buffer-command-message-append",
+        "source_status": "sources/write_buffer_command_semantics_status.json",
+        "legacy_divergence": (
+            "The formal model routes input-channel special messages through "
+            "process-special-message; RAA and FSMSIM route write-buf-zero and "
+            "write-buf-one to literal append behavior while clearing "
+            "command-source input. SEMSIM clears the buffer after append, but "
+            "AS preserves appended-buffer behavior consistently with ADR-0160. "
+            "Current runtime remains rejected until the implementation ADR "
+            "replaces the ADR-0054 boundary."
         ),
     },
     {
@@ -333,29 +352,9 @@ WRITE_BUFFER_RESOLVED_QUESTIONS = [
         ),
     },
 ]
-WRITE_BUFFER_QUESTIONS = ["recipient-command-message-surface"]
-WRITE_BUFFER_RESOLUTION_QUESTIONS = [
-    {
-        "question_id": "recipient-command-message-surface",
-        "summary": (
-            "Decide whether delivered recipient write-buffer command messages "
-            "execute append semantics or remain rejected by the recipient "
-            "non-init boundary."
-        ),
-    }
-]
-WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = [
-    {
-        "question_id": "recipient-command-message-surface",
-        "evidence": (
-            "The formal model and legacy RAA/FSMSIM witnesses route "
-            "input-channel write-buffer special messages to append behavior, "
-            "while the checked AS recipient boundary currently rejects "
-            "delivered write-buffer command messages and SEMSIM still diverges "
-            "on post-append buffer clearing."
-        ),
-    }
-]
+WRITE_BUFFER_QUESTIONS = []
+WRITE_BUFFER_RESOLUTION_QUESTIONS = []
+WRITE_BUFFER_RESOLUTION_QUESTION_EVIDENCE = []
 STANDARD_SIGNAL_EXECUTION_READINESS = {
     "decision": "preserved-unsupported",
     "execution_change_allowed": False,
@@ -367,14 +366,13 @@ STANDARD_SIGNAL_EXECUTION_READINESS = {
     ),
 }
 WRITE_BUFFER_EXECUTION_READINESS = {
-    "decision": "self-target-implemented-recipient-blocked",
-    "execution_change_allowed": False,
-    "blocked_by_resolution_questions": ["recipient-command-message-surface"],
+    "decision": "recipient-command-message-source-ready",
+    "execution_change_allowed": True,
+    "blocked_by_resolution_questions": [],
     "summary": (
-        "Write-buffer append execution is implemented for direct self-mailbox "
-        "and completed self-target command-buffer surfaces; delivered "
-        "recipient command-message execution remains blocked pending "
-        "recipient-command-message-surface resolution."
+        "Recipient write-buffer command-message append execution is "
+        "source-resolved but not yet implemented; direct self-mailbox and "
+        "completed self-target command-buffer surfaces remain implemented."
     ),
 }
 STANDARD_SIGNAL_ADDITIONAL_SOURCE_STATUSES = [
@@ -901,11 +899,10 @@ class ProjectStatusReportTests(unittest.TestCase):
             "self-target-surface: Decide whether self-mailbox and self-target",
             text,
         )
-        self.assertIn("Resolution questions:", text)
-        self.assertIn(
+        self.assertIn("Resolution questions: none", text)
+        self.assertNotIn(
             "recipient-command-message-surface: Decide whether delivered "
-            "recipient write-buffer command messages execute append semantics "
-            "or remain rejected by the recipient non-init boundary.",
+            "recipient write-buffer command messages",
             text,
         )
         self.assertNotIn("buffer-full-boundary: Decide whether", text)
@@ -918,13 +915,10 @@ class ProjectStatusReportTests(unittest.TestCase):
         text = format_project_status_report(report)
 
         self.assertIn("Resolution question evidence:", text)
-        self.assertIn(
+        self.assertIn("Resolution question evidence: none", text)
+        self.assertNotIn(
             "recipient-command-message-surface: The formal model and legacy "
-            "RAA/FSMSIM witnesses route input-channel write-buffer special "
-            "messages to append behavior, while the checked AS recipient "
-            "boundary currently rejects delivered write-buffer command "
-            "messages and SEMSIM still diverges on post-append buffer "
-            "clearing.",
+            "RAA/FSMSIM witnesses route input-channel write-buffer",
             text,
         )
         self.assertNotIn(
@@ -1023,8 +1017,8 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "recipient-surface: "
-            "reject-recipient-write-buffer-command-message-as-non-init "
-            "(sources/recipient_non_init_command_source_status.json)",
+            "execute-recipient-write-buffer-command-message-append "
+            "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
         self.assertIn(
@@ -1035,11 +1029,19 @@ class ProjectStatusReportTests(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "legacy divergence: AS already rejects delivered recipient "
-            "write-buffer command messages under "
-            "UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED; direct "
-            "self-mailbox and self-target command-buffer write-buffer command "
-            "tokens execute under ADR-0161.",
+            "legacy divergence: The formal model routes input-channel "
+            "special messages through process-special-message; RAA and "
+            "FSMSIM route write-buf-zero and write-buf-one to literal append "
+            "behavior while clearing command-source input. SEMSIM clears the "
+            "buffer after append, but AS preserves appended-buffer behavior "
+            "consistently with ADR-0160. Current runtime remains rejected "
+            "until the implementation ADR replaces the ADR-0054 boundary.",
+            text,
+        )
+        self.assertIn(
+            "recipient-command-message-surface: "
+            "execute-recipient-write-buffer-command-message-append "
+            "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
         self.assertIn(
@@ -1105,15 +1107,15 @@ class ProjectStatusReportTests(unittest.TestCase):
         )
         self.assertIn(
             "write-buf-zero, write-buf-one: "
-            "self-target-implemented-recipient-blocked; execution changes "
-            "allowed: no; blockers: recipient-command-message-surface",
+            "recipient-command-message-source-ready; execution changes "
+            "allowed: yes; blockers: none",
             text,
         )
         self.assertIn(
-            "summary: Write-buffer append execution is implemented for direct "
-            "self-mailbox and completed self-target command-buffer surfaces; "
-            "delivered recipient command-message execution remains blocked "
-            "pending recipient-command-message-surface resolution.",
+            "summary: Recipient write-buffer command-message append execution "
+            "is source-resolved but not yet implemented; direct self-mailbox "
+            "and completed self-target command-buffer surfaces remain "
+            "implemented.",
             text,
         )
 

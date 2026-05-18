@@ -115,6 +115,11 @@ ADR-0167 makes that recipient write-buffer frontier a live source-status
 question. The focused report now renders
 `recipient-command-message-surface` and blocks write-buffer readiness on that
 question while preserving source-status frontier schema `2`.
+ADR-0168 resolves that live recipient write-buffer question as source-ready
+append execution, clears the live write-buffer question/evidence lists, marks
+write-buffer readiness as `recipient-command-message-source-ready`, and moves
+the safe next slice to recipient write-buffer command-message implementation.
+The focused frontier schema remains `2`.
 
 ## Boundary
 

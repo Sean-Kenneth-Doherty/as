@@ -80,8 +80,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   self-mailbox plus completed self-target command-buffer surfaces. It records
   the narrowed source agreement that `write-buf-zero` / `write-buf-one` carry
   literal `0` / `1` append bits rather than high-rail-derived standard-signal
-  values, and records that recipient write-buffer command messages still use
-  the recipient non-init rejection boundary.
+  values, and records that recipient write-buffer command messages are
+  source-ready for append execution while current runtime still uses the
+  recipient non-init rejection boundary.
 - `docs/standard-signal-command-semantics-status.md` records why
   `standard-signal` command-token execution is preserved as unsupported while
   ordinary standard-signal binary input stays implemented, and records the
@@ -243,8 +244,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   command-buffer write-buffer commands, and the transition evidence registry
   includes the two ADR-0162 write-buffer execution bundles. The existing
   recipient non-init evidence bundle now explicitly covers delivered
-  `write-buf-zero` and `write-buf-one` rejection examples while preserving
-  recipient write-buffer command-message execution as blocked.
+  `write-buf-zero` and `write-buf-one` rejection examples while ADR-0168 marks
+  recipient write-buffer command-message execution source-ready for the next
+  runtime implementation slice.
 - `autarkic_systems/transition_chains.py` composes one neighbor delivery step
   with one recipient step, proving the delivered init-family token can be
   consumed without adding a general multi-cell simulator.
@@ -415,9 +417,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   interaction, recipient-surface, and self-target-surface questions, plus the
   resolved full-buffer and post-append clearing boundaries. Its
   execution-readiness gate now marks direct self-mailbox and completed
-  self-target command-buffer append execution implemented while blocking
-  delivered recipient write-buffer command-message changes on the live
-  recipient surface question.
+  self-target command-buffer append execution implemented while marking
+  delivered recipient write-buffer command-message append execution
+  source-ready but not yet implemented.
 - `sources/standard_signal_command_semantics_status.json` makes the
   `standard-signal` command-token semantics source-status decision
   machine-checkable, including the formal-model self-mailbox exception and the

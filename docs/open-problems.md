@@ -104,6 +104,9 @@ write-buffer-specific.
 ADR-0167 turns that write-buffer-specific frontier into a live
 `recipient-command-message-surface` source-status question with evidence and a
 readiness blocker.
+ADR-0168 resolves that question as source-ready recipient append execution,
+leaving runtime implementation and evidence promotion as the next write-buffer
+work.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
 command-message inputs.
 ADR-0060 adds a schematic-linked trace for that multi-command rejection policy.
@@ -288,8 +291,8 @@ now leaves only the self-target-surface question open.
 ADR-0151 resolves that remaining standard-signal self-target-surface question
 through the existing self-mailbox unsupported-preservation and self-target
 command-buffer append-boundary claims. Standard-signal now has no unresolved
-source-status questions; write-buffer remains the command-token semantics
-frontier.
+source-status questions; write-buffer later carried the active command-token
+semantics frontier until ADR-0168 moved it to runtime implementation.
 ADR-0165 records that standard-signal state as `preserved-unsupported`
 execution readiness: the lack of live standard-signal questions is a settled
 preservation decision, not permission to implement command-token execution.
@@ -299,7 +302,9 @@ gate and recipient write-buffer command-message semantics as the active
 recipient frontier.
 ADR-0167 makes that active recipient frontier machine-checkable: write-buffer
 readiness is self-target implemented but recipient blocked until
-`recipient-command-message-surface` is resolved.
+`recipient-command-message-surface` is resolved. ADR-0168 then resolves that
+surface as source-ready recipient append execution, so the active frontier is
+implementation rather than source semantics.
 ADR-0152 resolves the write-buffer recipient surface through the existing
 recipient non-init rejection boundary and narrows the remaining write-buffer
 surface question to self-mailbox / self-target command-buffer behavior.

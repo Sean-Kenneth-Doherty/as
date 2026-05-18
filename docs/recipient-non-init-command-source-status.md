@@ -24,10 +24,11 @@ resolves self-target `standard-signal` as unsupported preservation, and
 ADR-0165 makes execution changes require new source evidence.
 
 Delivered recipient `write-buf-zero` and `write-buf-one` command messages
-remain blocked by the ADR-0054 non-init rejection boundary. ADR-0161 now
+remain rejected by the current ADR-0054 non-init rejection boundary, but
+ADR-0168 resolves their source semantics as append execution. ADR-0161 now
 implements direct self-mailbox and completed self-target command-buffer
-write-buffer append execution, but it does not move delivered recipient
-write-buffer command messages out of this rejection surface.
+write-buffer append execution; the remaining work is to replace this current
+recipient runtime boundary with the source-ready recipient append behavior.
 
 Multiple simultaneous command-message inputs also remain blocked because AS has
 selected reject-and-clear as the conflict policy, not priority or sequencing.
@@ -91,10 +92,11 @@ ADR-0152 reuses the same rejection evidence ladder to resolve the write-buffer
 `write-buf-one` command messages are rejected as non-init command-message
 inputs rather than executed.
 
-The rejection evidence ladder is complete again. The active safe next slice is
-recipient write-buffer command-message source semantics. Standard-signal
-command-token execution should be changed only if later source evidence
-replaces the ADR-0165 preserved unsupported boundary.
+The rejection evidence ladder is complete again. ADR-0168 resolves recipient
+write-buffer command-message source semantics as append execution, so the
+active safe next slice is recipient write-buffer command-message runtime
+implementation. Standard-signal command-token execution should be changed only
+if later source evidence replaces the ADR-0165 preserved unsupported boundary.
 
 ADR-0117 keeps this boundary visible to project-status automation: accepted
 source-status records must now carry non-empty top-level `as_boundary` text.

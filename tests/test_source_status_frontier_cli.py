@@ -22,7 +22,7 @@ STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
     "review-new-standard-signal-command-token-source-evidence-before-execution-change"
 )
 RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
-    "revisit-recipient-write-buffer-command-message-semantics"
+    "implement-recipient-write-buffer-command-message-execution"
 )
 SAFE_NEXT_SLICE = (
     f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
@@ -84,8 +84,14 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         )
         self.assertIn(
             "recipient-surface: "
-            "reject-recipient-write-buffer-command-message-as-non-init "
-            "(sources/recipient_non_init_command_source_status.json)",
+            "execute-recipient-write-buffer-command-message-append "
+            "(sources/write_buffer_command_semantics_status.json)",
+            text,
+        )
+        self.assertIn(
+            "recipient-command-message-surface: "
+            "execute-recipient-write-buffer-command-message-append "
+            "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
         self.assertIn(
@@ -94,21 +100,8 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
             "(sources/write_buffer_command_semantics_status.json)",
             text,
         )
-        self.assertIn(
-            "recipient-command-message-surface: Decide whether delivered "
-            "recipient write-buffer command messages execute append semantics "
-            "or remain rejected by the recipient non-init boundary.",
-            text,
-        )
-        self.assertIn(
-            "recipient-command-message-surface: The formal model and legacy "
-            "RAA/FSMSIM witnesses route input-channel write-buffer special "
-            "messages to append behavior, while the checked AS recipient "
-            "boundary currently rejects delivered write-buffer command "
-            "messages and SEMSIM still diverges on post-append buffer "
-            "clearing.",
-            text,
-        )
+        self.assertIn("Resolution questions: none", text)
+        self.assertIn("Resolution question evidence: none", text)
         self.assertIn("Execution readiness:", text)
         self.assertIn(
             "standard-signal: preserved-unsupported; execution changes "
@@ -124,8 +117,8 @@ class SourceStatusFrontierCliTests(unittest.TestCase):
         )
         self.assertIn(
             "write-buf-zero, write-buf-one: "
-            "self-target-implemented-recipient-blocked; execution changes "
-            "allowed: no; blockers: recipient-command-message-surface",
+            "recipient-command-message-source-ready; execution changes "
+            "allowed: yes; blockers: none",
             text,
         )
         self.assertNotIn("recipient-vs-stem-surface", text)

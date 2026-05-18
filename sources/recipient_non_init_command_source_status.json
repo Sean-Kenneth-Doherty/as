@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "reviewed_at": "2026-05-17",
+  "reviewed_at": "2026-05-18",
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "revisit-recipient-write-buffer-command-message-semantics",
-  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal and write-buffer command tokens; standard-signal recipient input is a resolved rejection boundary and standard-signal self-target command execution is preserved unsupported unless new source evidence replaces that boundary, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161. The accepted recipient behavior is the ADR-0054 rejection boundary, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
+  "safe_next_slice": "implement-recipient-write-buffer-command-message-execution",
+  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal and write-buffer command tokens; standard-signal recipient input is a resolved rejection boundary and standard-signal self-target command execution is preserved unsupported unless new source evidence replaces that boundary, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161 and recipient write-buffer command-message execution is source-ready after ADR-0168. The accepted current runtime behavior is still the ADR-0054 rejection boundary until the implementation ADR replaces it, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -58,7 +58,7 @@
     {
       "adr": "ADR-0057",
       "path": "sources/write_buffer_command_semantics_status.json",
-      "summary": "AS now has a source-status decision and ADR-0161 implementation for direct self-mailbox and completed self-target command-buffer write-buffer execution, while recipient write-buffer command-message inputs remain rejected here."
+      "summary": "AS now has a source-status decision and ADR-0161 implementation for direct self-mailbox and completed self-target command-buffer write-buffer execution, while ADR-0168 marks recipient write-buffer command-message inputs source-ready but still current-runtime rejected here."
     },
     {
       "adr": "ADR-0058",
@@ -110,7 +110,7 @@
     "as_boundary": "Continue rejecting standard-signal command-message input through the resolved recipient non-init boundary and preserve self-target standard-signal command tokens as unsupported unless new source evidence replaces the existing boundary."
   },
   "write_buffer_status": {
-    "decision": "recipient-non-init-rejection-preserved",
+    "decision": "recipient-command-message-source-ready-runtime-rejected",
     "depends_on": "sources/write_buffer_command_semantics_status.json",
     "legacy_divergences": [
       {
@@ -132,7 +132,7 @@
         "summary": "FSMSIM dispatches write-buf-zero and write-buf-one through primitive-eval and appends to the buffer while clearing the self mailbox and input channels."
       }
     ],
-    "as_boundary": "Continue rejecting recipient write-buffer command-message input under the ADR-0054 rejection claim. Direct self-mailbox and completed self-target command-buffer write-buffer execution are outside this recipient non-init surface and are implemented by ADR-0161."
+    "as_boundary": "Recipient write-buffer command-message input is source-ready for append execution after ADR-0168, but the current runtime continues rejecting it under the ADR-0054 rejection claim until the implementation ADR replaces that checked boundary. Direct self-mailbox and completed self-target command-buffer write-buffer execution are outside this recipient non-init surface and are implemented by ADR-0161."
   },
   "multi_command_input_status": {
     "decision": "selected-reject-and-clear",
@@ -142,6 +142,6 @@
   },
   "allowed_next_slices": [
     "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary.",
-    "Revisit recipient write-buffer command-message execution only if new source evidence justifies moving it out of the ADR-0054 non-init rejection boundary."
+    "Implement recipient write-buffer command-message append execution from the ADR-0168 source-ready surface."
   ]
 }

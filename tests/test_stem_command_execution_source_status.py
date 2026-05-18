@@ -35,8 +35,10 @@ class StemCommandExecutionSourceStatusTests(unittest.TestCase):
         self.assertIn("self-target write-buffer command-buffer execution", execution_gap)
         self.assertIn("neighbor-target command-buffer delivery", execution_gap)
         self.assertIn("recipient-side init-family command-message input consumption", execution_gap)
+        self.assertIn("source-ready recipient write-buffer", execution_gap)
         self.assertIn("unsupported self-target standard-signal append boundary", execution_gap)
-        self.assertIn("does not execute non-init command-message inputs", execution_gap)
+        self.assertIn("does not execute recipient write-buffer", execution_gap)
+        self.assertIn("standard-signal command tokens", execution_gap)
 
     def test_formal_model_command_table_matches_adr_0026_map(self):
         formal = self.status["formal_model_command_table"]

@@ -9,6 +9,9 @@ The structured status lives in
 
 Write-buffer command execution is source-resolved and implemented for direct
 stem `self_mailbox` commands plus completed self-target command buffers.
+Delivered recipient command-message append execution is source-ready after
+ADR-0168, but current runtime still rejects those messages until the
+implementation ADR replaces the checked recipient boundary.
 
 The formal model names `write-buf-zero` and `write-buf-one` in the command
 table and routes special messages through generic special-message paths, but
@@ -63,6 +66,13 @@ resolution question. Write-buffer readiness is now
 `self-target-implemented-recipient-blocked`: self-target append behavior is
 implemented, but delivered recipient write-buffer command-message execution
 remains blocked until `recipient-command-message-surface` is resolved.
+ADR-0168 resolves that surface as
+`execute-recipient-write-buffer-command-message-append`. Write-buffer
+readiness is now `recipient-command-message-source-ready`: the recipient
+append rule is source-resolved, direct self-mailbox and completed self-target
+surfaces remain implemented, and current recipient runtime still rejects
+delivered write-buffer command messages until the implementation ADR changes
+the checked transition behavior.
 
 ADR-0159 resolves `buffer-full-boundary` as
 `preserve-existing-full-buffer-boundary-before-write-buffer-append`. The formal
@@ -81,16 +91,18 @@ ADR-0161 implements the source-resolved self-target append behavior for:
 - completed self-target command-buffer dispatch.
 
 Recipient command-message input remains outside the implemented write-buffer
-surface. AS rejects delivered recipient write-buffer command messages through
-`UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`.
+surface. AS currently rejects delivered recipient write-buffer command
+messages through `UC-RECIPIENT-NON-INIT-COMMAND-MESSAGE-REJECTED`, but that
+runtime boundary is now an implementation backlog item rather than a source
+semantics blocker.
 
 The current recipient rejection claim remains the correct executable boundary
-until a later source-backed ADR moves recipient write-buffer command-message
-input out of the non-init rejection surface. ADR-0167 records the live source
-question and the evidence pressure behind it: the formal model plus RAA and
-FSMSIM support input-channel write-buffer append behavior, while the checked AS
-recipient boundary still rejects those messages and SEMSIM diverges on
-post-append clearing. ADR-0061 completes the current multi-command rejection
+until a later implementation ADR moves recipient write-buffer command-message
+input out of the non-init rejection surface. ADR-0168 records the resolved
+source decision: the formal model plus RAA and FSMSIM support input-channel
+write-buffer append behavior, while SEMSIM remains divergent on post-append
+clearing as already recorded by ADR-0160. ADR-0061 completes the current
+multi-command rejection
 render frontier, so future write-buffer work should start from source
 resolution rather than another rejection artifact. ADR-0062 reviews
 `guile-asmsim.scm`, which has binary
@@ -118,7 +130,9 @@ write-buffer execution paths as evidence bundles. ADR-0163 then widens the
 existing recipient rejection coverage to name both delivered write-buffer
 tokens explicitly. ADR-0167 restores a live write-buffer question for the
 recipient command-message surface, with matching evidence and readiness
-blocker metadata.
+blocker metadata. ADR-0168 resolves that question, clears the live
+write-buffer question queue, and moves the safe-next slice to recipient
+write-buffer command-message execution.
 
 ## Verification
 
@@ -130,6 +144,5 @@ python -m unittest tests.test_write_buffer_command_semantics_status
 
 The tests check the decision, formal-model gap, legacy witness divergence,
 resolved recipient, self-target, buffer-full, and post-append surfaces, the
-live recipient command-message question and evidence, the split
-self-target/recipient execution-readiness gate, and source-status frontier
-updates.
+resolved recipient command-message surface, the source-ready recipient
+execution-readiness gate, and source-status frontier updates.
