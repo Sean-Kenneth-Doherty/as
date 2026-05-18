@@ -98,6 +98,9 @@ ADR-0165 makes that settled negative boundary explicit in execution-readiness
 metadata: no live standard-signal source-status questions remain, but
 command-token execution changes are still disallowed without new source
 evidence replacing the unsupported self-target boundaries.
+ADR-0166 updates safe-next wording to match: standard-signal work is now
+evidence-gated, while the active recipient command-message frontier is
+write-buffer-specific.
 ADR-0059 selects reject-and-clear for multiple simultaneous recipient
 command-message inputs.
 ADR-0060 adds a schematic-linked trace for that multi-command rejection policy.
@@ -287,6 +290,10 @@ frontier.
 ADR-0165 records that standard-signal state as `preserved-unsupported`
 execution readiness: the lack of live standard-signal questions is a settled
 preservation decision, not permission to implement command-token execution.
+ADR-0166 removes the stale combined standard-signal/write-buffer safe-next
+wording from the frontier, leaving standard-signal behind a new-source-evidence
+gate and recipient write-buffer command-message semantics as the active
+recipient frontier.
 ADR-0152 resolves the write-buffer recipient surface through the existing
 recipient non-init rejection boundary and narrows the remaining write-buffer
 surface question to self-mailbox / self-target command-buffer behavior.

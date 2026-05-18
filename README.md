@@ -83,14 +83,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   values, and records that recipient write-buffer command messages still use
   the recipient non-init rejection boundary.
 - `docs/standard-signal-command-semantics-status.md` records why
-  `standard-signal` command-token execution remains source-blocked while
+  `standard-signal` command-token execution is preserved as unsupported while
   ordinary standard-signal binary input stays implemented, and records the
   formal-model self-mailbox exception that prevents treating stem
   self-mailbox `standard-signal` as ordinary binary input by default. It also
   records that AS resolves the command-table offset question in favor of the
-  formal PRC map where `standard-signal` is offset `0`, and resolves the
-  recipient command-message surface plus the command-token/binary-input
-  equivalence and self-target surface questions.
+  formal PRC map where `standard-signal` is offset `0`, resolves the recipient
+  command-message surface plus the command-token/binary-input equivalence and
+  self-target surface questions, and gates future execution changes on new
+  source evidence.
 - `docs/guile-asmsim-command-semantics-status.md` records why the
   `guile-asmsim.scm` command witness strengthens the standard-signal and
   write-buffer blocker rather than resolving it.

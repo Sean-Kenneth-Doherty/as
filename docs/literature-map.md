@@ -63,7 +63,7 @@ turning source pressure into ADRs, executable probes, and proof obligations.
 | AS transition-chain claim language CLI | `autarkic_systems/chain_object_language.py` and `tests/test_chain_object_language.py` | Operator-facing command for validating the transition-chain object-language manifest and checked chain claim/proof surface. | Runs current chain language and surface validation through `python -m autarkic_systems.chain_object_language` with text or JSON output. |
 | AS transition-chain claim CLI | `autarkic_systems/chain_claims.py` and `tests/test_transition_chain_claim_cli.py` | Operator-facing command for validating the transition-chain claim surface. | Runs chain language, example, certificate, and surface validation through `python -m autarkic_systems.chain_claims` with text or JSON output. |
 | AS recipient command consumption source status | `docs/recipient-command-consumption-source-status.md` and `sources/recipient_command_consumption_source_status.json` | Source-status decision for recipient-side command-message inputs after neighbor delivery. | Records ADR-0049 as the implemented init-family slice and keeps `standard-signal`, write-buffer, and multi-command conflict policy blocked. |
-| AS recipient non-init command source status | `docs/recipient-non-init-command-source-status.md` and `sources/recipient_non_init_command_source_status.json` | Source-status decision for blocked recipient-side non-init command-message inputs. | Blocks `standard-signal`, write-buffer, and multi-command inputs and selects a rejection-boundary claim as the safe next slice. |
+| AS recipient non-init command source status | `docs/recipient-non-init-command-source-status.md` and `sources/recipient_non_init_command_source_status.json` | Source-status decision for blocked recipient-side non-init command-message inputs. | Preserves the recipient non-init rejection boundary, records standard-signal as evidence-gated after ADR-0165, and points the active safe next slice at recipient write-buffer command-message semantics. |
 | AS recipient non-init command rejection claim | `docs/recipient-non-init-command-rejection-claim.md`, `claims/transition_claims.json`, and `claims/proof_certificates.json` | Named claim and proof-certificate surface for rejected recipient non-init command-message inputs. | Keeps the blocked frontier checkable without executing `standard-signal`, write-buffer, or multi-command inputs; ADR-0163 makes delivered `write-buf-zero` and `write-buf-one` rejection explicit. |
 | AS recipient non-init command rejection trace | `docs/recipient-non-init-command-rejection-trace.md` and `schematics/recipient_non_init_command_rejection_trace.json` | Schematic-linked trace for one fixed recipient rejecting an upstream `standard-signal` command-message token. | Extends P7 evidence to the ADR-0054 rejection boundary without adding non-init command execution. |
 | AS recipient non-init command rejection SVG | `docs/recipient-non-init-command-rejection-svg.md` and `schematics/recipient_non_init_command_rejection_trace.svg` | Visible render of the recipient non-init command-message rejection trace. | Checked against generic renderer output and exposes upstream token rejection plus cleared source state. |
@@ -239,7 +239,10 @@ turning source pressure into ADRs, executable probes, and proof obligations.
   command-token execution as still source-blocked across the same surfaces
   while preserving ordinary binary-input standard-signal behavior. ADR-0165
   makes its final settled state explicit as preserved-unsupported readiness,
-  not implementation readiness. ADR-0059
+  not implementation readiness. ADR-0166 updates the safe-next queue so
+  standard-signal requires new source evidence before execution changes while
+  recipient write-buffer command-message semantics remain the active
+  recipient frontier. ADR-0059
   selects reject-and-clear for multiple recipient command-message inputs and
   moves the next visible slice to a multi-command rejection trace. ADR-0060
   adds that trace, and ADR-0061 adds the generated SVG render. The current

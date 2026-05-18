@@ -227,6 +227,11 @@ evaluates nine examples while preserving project status `schema_version: 15`.
 ADR-0165 adds explicit standard-signal execution-readiness metadata,
 rendering the settled `preserved-unsupported` decision in project-status JSON
 and text while preserving project status `schema_version: 15`.
+ADR-0166 narrows the safe-next queue so project-status no longer advertises a
+generic standard-signal/write-buffer revisit. Recipient/write-buffer records
+point to recipient write-buffer command-message semantics, while
+standard-signal points to new source evidence before any execution change.
+Project status remains `schema_version: 15`.
 
 ## Boundary
 

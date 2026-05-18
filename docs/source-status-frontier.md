@@ -107,6 +107,10 @@ ADR-0165 adds explicit standard-signal execution-readiness metadata, so the
 focused frontier renders the settled `preserved-unsupported` boundary instead
 of making "no live resolution questions" look like implementation readiness.
 The focused frontier schema remains `2`.
+ADR-0166 narrows the safe-next queue: recipient/write-buffer records point to
+recipient write-buffer command-message semantics, while standard-signal points
+to review of new command-token source evidence before any execution change.
+The focused frontier schema remains `2`.
 
 ## Boundary
 

@@ -37,9 +37,10 @@ runtime slice in `docs/recipient-init-command-message-consumption.md`.
 
 ## Remaining Blockers
 
-`standard-signal` remains blocked by ADR-0058 because the formal command table
-includes it as command offset 0, while ordinary standard-signal behavior is
-binary-input behavior and the legacy special-message sets exclude it.
+Delivered recipient `standard-signal` command messages remain rejected by the
+ADR-0054 non-init rejection boundary, and self-target `standard-signal`
+command tokens remain preserved as unsupported. ADR-0165 gates any future
+execution change on new source evidence.
 
 Delivered recipient `write-buf-zero` and `write-buf-one` command messages
 remain blocked by the ADR-0054 non-init rejection boundary. ADR-0161 selects
@@ -96,9 +97,11 @@ surfaces while this recipient-consumption status keeps delivered recipient
 write-buffer command messages blocked.
 
 ADR-0058 records the `standard-signal` command-token semantics source-status
-decision in `sources/standard_signal_command_semantics_status.json` and keeps
-command-token execution blocked while preserving ordinary binary-input
-standard-signal behavior.
+decision in `sources/standard_signal_command_semantics_status.json` while
+preserving ordinary binary-input standard-signal behavior. ADR-0165 and
+ADR-0166 record that command-token execution is not the active safe next
+implementation lane unless new source evidence replaces the unsupported
+boundary.
 
 ADR-0059 records the multi-command recipient input policy in
 `sources/multi_command_recipient_input_policy_status.json`, selecting

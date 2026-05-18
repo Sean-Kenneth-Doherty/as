@@ -69,6 +69,11 @@ self-target boundaries, execution changes are not allowed, and any future
 change requires new source evidence that replaces the existing unsupported
 boundary.
 
+ADR-0166 narrows the safe-next wording to that same evidence gate. The
+standard-signal source-status record no longer advertises a generic
+`standard-signal` / write-buffer revisit as its next slice; it points only to
+new standard-signal command-token source evidence before any execution change.
+
 ## AS Boundary
 
 AS keeps `standard-signal` command-token execution blocked across these runtime
@@ -111,6 +116,7 @@ the existing recipient non-init rejection boundary. ADR-0150 moves
 source-status record with no unresolved questions. ADR-0165 adds explicit
 execution-readiness metadata so "no unresolved questions" cannot be mistaken
 for permission to implement `standard-signal` command-token execution.
+ADR-0166 updates the safe-next wording to match that settled boundary.
 
 ## Verification
 

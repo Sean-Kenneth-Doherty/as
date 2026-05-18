@@ -3574,3 +3574,20 @@
   15 and source-status frontier remains schema 2. JSON parsing, `compileall`,
   `git diff --check`, and `python -m unittest discover` passed; the full
   suite ran 732 tests.
+
+## 2026-05-18 - Standard-Signal Safe-Next Boundary
+
+- Added ADR-0166 to align safe-next wording with the ADR-0165
+  standard-signal preserved-unsupported readiness boundary.
+- Added red standard-signal, recipient non-init, multi-command,
+  write-buffer, project-status, and source-status frontier tests before
+  changing source-status records. The focused red run executed 120 tests and
+  failed because the old combined
+  `revisit-standard-signal-or-write-buffer-command-semantics` string still
+  appeared in checked source-status records and reports.
+- Updated standard-signal safe-next wording to require new source evidence
+  before an execution change, and moved recipient non-init plus multi-command
+  safe-next pointers to recipient write-buffer command-message semantics.
+- Runtime behavior, claims, proof certificates, traces, SVGs, evidence
+  bundles, and schema versions remain unchanged.
+- Focused green verification passed 120 tests.

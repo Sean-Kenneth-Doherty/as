@@ -25,7 +25,7 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "revisit-recipient-write-buffer-command-message-semantics",
         )
         claim = self.status["implemented_claims"][0]
         self.assertEqual(
@@ -114,11 +114,16 @@ class RecipientNonInitCommandSourceStatusTests(unittest.TestCase):
             "standard-signal",
             standard["legacy_special_message_exclusion"]["special_messages"],
         )
-        self.assertEqual(standard["decision"], "blocked-by-source-divergence")
+        self.assertEqual(
+            standard["decision"],
+            "preserved-unsupported-new-evidence-gated",
+        )
         self.assertEqual(
             standard["depends_on"],
             "sources/standard_signal_command_semantics_status.json",
         )
+        self.assertIn("new source evidence", standard["as_boundary"])
+        self.assertNotIn("whether standard-signal", standard["as_boundary"])
 
     def test_write_buffer_divergences_are_recorded(self):
         divergences = {

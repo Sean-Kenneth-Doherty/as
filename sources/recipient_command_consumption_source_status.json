@@ -63,7 +63,7 @@
     {
       "adr": "ADR-0058",
       "path": "sources/standard_signal_command_semantics_status.json",
-      "summary": "AS now has a source-status decision keeping standard-signal command-token execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
+      "summary": "AS now has a source-status decision resolving recipient standard-signal command messages to the non-init rejection boundary and preserving self-target standard-signal command execution as unsupported unless new source evidence replaces that boundary."
     },
     {
       "adr": "ADR-0059",
@@ -158,7 +158,7 @@
     }
   ],
   "allowed_next_slices": [
-    "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
+    "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary.",
     "Revisit recipient write-buffer command-message execution only if new source evidence justifies moving it out of the ADR-0054 non-init rejection boundary."
   ]
 }

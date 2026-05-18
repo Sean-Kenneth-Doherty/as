@@ -39,7 +39,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             self.status["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "revisit-recipient-write-buffer-command-message-semantics",
         )
         self.assertEqual(
             self.status["covered_runtime_surfaces"],
@@ -118,7 +118,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "revisit-recipient-write-buffer-command-message-semantics",
         )
         self.assertEqual(
             write_buffer_status["safe_next_slice"],
@@ -126,7 +126,7 @@ class MultiCommandRecipientInputPolicyStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             standard_signal_status["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         trace = self.status["implemented_traces"][0]
         self.assertEqual(trace["adr"], "ADR-0060")

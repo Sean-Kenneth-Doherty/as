@@ -20,9 +20,15 @@ RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
-SAFE_NEXT_SLICE = (
-    "revisit-standard-signal-or-write-buffer-command-semantics, "
+STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
+    "review-new-standard-signal-command-token-source-evidence-before-execution-change"
+)
+RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "revisit-recipient-write-buffer-command-message-semantics"
+)
+SAFE_NEXT_SLICE = (
+    f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
+    f"{STANDARD_SIGNAL_SAFE_NEXT_SLICE}"
 )
 PROJECT_STATUS_SCHEMA_VERSION = 15
 STANDARD_SIGNAL_BLOCKED_RUNTIME_SURFACES = [
@@ -35,11 +41,12 @@ WRITE_BUFFER_BLOCKED_RUNTIME_SURFACES = [
 RECIPIENT_NON_INIT_AS_BOUNDARY = (
     "Continue rejecting recipient non-init command-message inputs for "
     "standard-signal and write-buffer command tokens; standard-signal "
-    "self-target command execution remains source-blocked, while direct "
-    "self-mailbox and completed self-target write-buffer execution are "
-    "implemented by ADR-0161. The accepted recipient behavior is the "
-    "ADR-0054 rejection boundary, with multi-command conflicts assigned to "
-    "ADR-0059 reject-and-clear."
+    "recipient input is a resolved rejection boundary and standard-signal "
+    "self-target command execution is preserved unsupported unless new source "
+    "evidence replaces that boundary, while direct self-mailbox and completed "
+    "self-target write-buffer execution are implemented by ADR-0161. The "
+    "accepted recipient behavior is the ADR-0054 rejection boundary, with "
+    "multi-command conflicts assigned to ADR-0059 reject-and-clear."
 )
 STANDARD_SIGNAL_AS_BOUNDARY = (
     "Continue rejecting or preserving standard-signal command tokens at the "
@@ -697,14 +704,7 @@ class ProjectStatusReportTests(unittest.TestCase):
             f"write-buf-zero, write-buf-one: {WRITE_BUFFER_AS_BOUNDARY}",
             text,
         )
-        self.assertIn(
-            "Safe next slice: revisit-standard-signal-or-write-buffer-command-semantics",
-            text,
-        )
-        self.assertIn(
-            "revisit-recipient-write-buffer-command-message-semantics",
-            text,
-        )
+        self.assertIn(f"Safe next slice: {SAFE_NEXT_SLICE}", text)
         self.assertNotIn("add-write-buffer-command-execution-evidence-bundle", text)
         self.assertIn("Missing source-status files: none", text)
 

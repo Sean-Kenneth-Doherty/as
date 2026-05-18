@@ -18,9 +18,15 @@ from autarkic_systems.source_status import (
 RECIPIENT_STATUS = Path("sources/recipient_non_init_command_source_status.json")
 STANDARD_SIGNAL_STATUS = Path("sources/standard_signal_command_semantics_status.json")
 WRITE_BUFFER_STATUS = Path("sources/write_buffer_command_semantics_status.json")
-SAFE_NEXT_SLICE = (
-    "revisit-standard-signal-or-write-buffer-command-semantics, "
+STANDARD_SIGNAL_SAFE_NEXT_SLICE = (
+    "review-new-standard-signal-command-token-source-evidence-before-execution-change"
+)
+RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE = (
     "revisit-recipient-write-buffer-command-message-semantics"
+)
+SAFE_NEXT_SLICE = (
+    f"{RECIPIENT_WRITE_BUFFER_SAFE_NEXT_SLICE}, "
+    f"{STANDARD_SIGNAL_SAFE_NEXT_SLICE}"
 )
 BLOCKED_COMMANDS = ["standard-signal", "write-buf-zero", "write-buf-one"]
 

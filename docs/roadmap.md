@@ -3315,3 +3315,24 @@ Status: accepted in
 `docs/adr/0165-standard-signal-execution-readiness.md`. Implemented in the
 standard-signal source-status record and focused source-status/project-status
 tests.
+
+## ADR-0166: Standard-Signal Safe-Next Boundary
+
+Goal: align source-status safe-next wording with the ADR-0165
+preserved-unsupported standard-signal boundary.
+
+Deliverables:
+
+- `sources/standard_signal_command_semantics_status.json` points future
+  standard-signal work at new source evidence before any execution change;
+- recipient non-init and multi-command source-status records point their
+  safe-next fields at recipient write-buffer command-message semantics;
+- project-status and source-status frontier reports render the narrowed
+  safe-next queue; and
+- unchanged Universal Cell runtime behavior, claims, proof certificates,
+  traces, SVGs, evidence bundles, project-status schema `15`, and
+  source-status frontier schema `2`.
+
+Status: accepted in
+`docs/adr/0166-standard-signal-safe-next-boundary.md`. Implemented in the
+source-status records and focused source-status/project-status tests.

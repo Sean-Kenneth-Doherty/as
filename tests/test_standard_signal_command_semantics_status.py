@@ -27,7 +27,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         self.assertEqual(self.status["runtime_change"], "none-source-status-only")
         self.assertEqual(
             self.status["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "review-new-standard-signal-command-token-source-evidence-before-execution-change",
         )
         self.assertEqual(
             self.status["blocked_runtime_surfaces"],
@@ -229,7 +229,7 @@ class StandardSignalCommandSemanticsStatusTests(unittest.TestCase):
         )
         self.assertEqual(
             recipient_non_init["safe_next_slice"],
-            "revisit-standard-signal-or-write-buffer-command-semantics",
+            "revisit-recipient-write-buffer-command-message-semantics",
         )
         self.assertFalse(
             any(

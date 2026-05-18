@@ -4,8 +4,8 @@
   "decision": "do-not-implement-recipient-non-init-command-messages-yet",
   "runtime_change": "none-source-status-only",
   "depends_on": "sources/recipient_command_consumption_source_status.json",
-  "safe_next_slice": "revisit-standard-signal-or-write-buffer-command-semantics",
-  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal and write-buffer command tokens; standard-signal self-target command execution remains source-blocked, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161. The accepted recipient behavior is the ADR-0054 rejection boundary, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
+  "safe_next_slice": "revisit-recipient-write-buffer-command-message-semantics",
+  "as_boundary": "Continue rejecting recipient non-init command-message inputs for standard-signal and write-buffer command tokens; standard-signal recipient input is a resolved rejection boundary and standard-signal self-target command execution is preserved unsupported unless new source evidence replaces that boundary, while direct self-mailbox and completed self-target write-buffer execution are implemented by ADR-0161. The accepted recipient behavior is the ADR-0054 rejection boundary, with multi-command conflicts assigned to ADR-0059 reject-and-clear.",
   "implemented_claims": [
     {
       "adr": "ADR-0054",
@@ -63,7 +63,7 @@
     {
       "adr": "ADR-0058",
       "path": "sources/standard_signal_command_semantics_status.json",
-      "summary": "AS now has a source-status decision keeping standard-signal command-token execution blocked across recipient, self-mailbox, and self-target command-buffer surfaces."
+      "summary": "AS now has a source-status decision resolving recipient standard-signal command messages to the non-init rejection boundary and preserving self-target standard-signal command execution as unsupported unless new source evidence replaces that boundary."
     },
     {
       "adr": "ADR-0059",
@@ -77,7 +77,7 @@
     "write-buf-one"
   ],
   "standard_signal_status": {
-    "decision": "blocked-by-source-divergence",
+    "decision": "preserved-unsupported-new-evidence-gated",
     "depends_on": "sources/standard_signal_command_semantics_status.json",
     "formal_command_table": {
       "witness_id": "PRC-FORMAL-COMMAND-TABLE-STANDARD-SIGNAL",
@@ -107,7 +107,7 @@
       ],
       "summary": "The legacy special-message sets exclude standard-signal and treat standard input as a separate classification."
     },
-    "as_boundary": "Continue rejecting standard-signal command-message input until AS decides whether standard-signal command tokens replay ordinary binary-input routing, remain unsupported, or have a different recipient/self-target surface."
+    "as_boundary": "Continue rejecting standard-signal command-message input through the resolved recipient non-init boundary and preserve self-target standard-signal command tokens as unsupported unless new source evidence replaces the existing boundary."
   },
   "write_buffer_status": {
     "decision": "recipient-non-init-rejection-preserved",
@@ -141,7 +141,7 @@
     "as_boundary": "ADR-0049 consumes exactly one single command-message input token. ADR-0059 selects rejection for two or more simultaneous command-message tokens."
   },
   "allowed_next_slices": [
-    "Revisit standard-signal command execution only if new source evidence resolves command-token, binary-input, recipient-surface, and self-target-surface boundaries.",
+    "Review new standard-signal command-token source evidence before changing the ADR-0165 preserved unsupported boundary.",
     "Revisit recipient write-buffer command-message execution only if new source evidence justifies moving it out of the ADR-0054 non-init rejection boundary."
   ]
 }

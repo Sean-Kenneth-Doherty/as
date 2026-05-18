@@ -17,9 +17,11 @@ boundaries.
 
 Do not implement recipient-side non-init command-message execution yet.
 
-`standard-signal` remains blocked by ADR-0058 because the formal command table
-includes it as a command, while ordinary standard-signal behavior is
-binary-input behavior and the legacy special-message sets exclude it.
+Delivered recipient `standard-signal` command messages remain rejected by the
+ADR-0054 non-init rejection boundary. ADR-0148 resolves the recipient surface,
+ADR-0150 resolves the command-token/binary-input distinction, ADR-0151
+resolves self-target `standard-signal` as unsupported preservation, and
+ADR-0165 makes execution changes require new source evidence.
 
 Delivered recipient `write-buf-zero` and `write-buf-one` command messages
 remain blocked by the ADR-0054 non-init rejection boundary. ADR-0161 now
@@ -53,8 +55,10 @@ write-buffer command-message inputs rejected.
 
 ADR-0058 records the matching `standard-signal` command-token semantics
 source-status decision in
-`sources/standard_signal_command_semantics_status.json` and keeps
-`standard-signal` command-token execution blocked across the same surfaces.
+`sources/standard_signal_command_semantics_status.json`. ADR-0165 and
+ADR-0166 now make the settled boundary explicit: standard-signal command-token
+execution is preserved as unsupported, and future changes require new source
+evidence rather than another generic revisit of old blockers.
 
 ADR-0059 records the multi-command recipient input policy in
 `sources/multi_command_recipient_input_policy_status.json`: reject and clear
@@ -87,10 +91,10 @@ ADR-0152 reuses the same rejection evidence ladder to resolve the write-buffer
 `write-buf-one` command messages are rejected as non-init command-message
 inputs rather than executed.
 
-The rejection evidence ladder is complete again. `standard-signal` command
-execution and recipient write-buffer command-message execution should be
-revisited only if later source evidence resolves those remaining runtime
-surfaces.
+The rejection evidence ladder is complete again. The active safe next slice is
+recipient write-buffer command-message source semantics. Standard-signal
+command-token execution should be changed only if later source evidence
+replaces the ADR-0165 preserved unsupported boundary.
 
 ADR-0117 keeps this boundary visible to project-status automation: accepted
 source-status records must now carry non-empty top-level `as_boundary` text.
@@ -105,5 +109,5 @@ python -m unittest tests.test_recipient_non_init_command_source_status
 
 The tests check the blocking decision, implemented
 claim/trace/SVG/evidence-bundle/source-status surfaces, standard-signal
-divergence, write-buffer source divergences, multi-command policy boundary,
-and the updated source-status frontier.
+preserved-unsupported gating, write-buffer source divergences, multi-command
+policy boundary, and the updated source-status frontier.

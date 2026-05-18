@@ -41,8 +41,9 @@ The boundary is:
 
 ADR-0060 adds that schematic-linked trace, and ADR-0061 adds the generated
 SVG render. The multi-command evidence ladder is now complete; the next
-command-execution work should revisit `standard-signal` or write-buffer only
-if new source evidence resolves their runtime surfaces.
+command-execution work should stay on recipient write-buffer command-message
+source semantics. Standard-signal command-token execution is preserved as
+unsupported unless new source evidence replaces that boundary.
 
 ADR-0069 records the same direct `wire-r-init` plus `proc-l-init` conflict as
 an integrated evidence bundle in

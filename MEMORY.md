@@ -693,3 +693,7 @@
   `preserved-unsupported`: there are no live standard-signal resolution
   questions, but execution changes remain disallowed unless new source
   evidence replaces the existing unsupported self-target boundaries.
+- ADR-0166 narrows the safe-next queue after ADR-0165: standard-signal points
+  to new command-token source evidence before execution changes, while
+  recipient non-init and multi-command status records point to recipient
+  write-buffer command-message semantics.

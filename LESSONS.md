@@ -469,3 +469,6 @@
 - A settled negative command decision still needs explicit readiness metadata.
   Otherwise "no unresolved questions" can be mistaken for implementation
   permission when the actual decision is to preserve an unsupported boundary.
+- After closing a blocker as a preserved boundary, update the safe-next queue
+  too. Otherwise future operators can keep reopening work that is no longer
+  the active frontier.

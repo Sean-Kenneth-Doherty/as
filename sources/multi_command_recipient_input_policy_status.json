@@ -6,7 +6,7 @@
   "accepted_command_message_count": 1,
   "conflict_command_message_count_minimum": 2,
   "policy": "reject-and-clear-active-command-input",
-  "safe_next_slice": "revisit-standard-signal-or-write-buffer-command-semantics",
+  "safe_next_slice": "revisit-recipient-write-buffer-command-message-semantics",
   "covered_runtime_surfaces": [
     "fixed-direct-input",
     "fixed-upstream-input",
