@@ -4495,3 +4495,29 @@
   reported `accepted: true`, `bundle_count: 1`, and
   `bundle_failed_subjects: []`. `compileall`, `git diff --check`, and
   `python -m unittest discover` passed; the full suite ran 895 tests.
+
+## 2026-05-18 - Sequence Registry Bundle Failed Subjects
+
+- Added ADR-0211 to make the source network-sequence evidence registry JSON
+  preserve inner failed subjects for rejected existing bundles.
+- Added red evidence-bundle registry tests before implementation. The focused
+  red run failed because direct and CLI registry JSON lacked
+  `bundle_failed_subjects`, including for a registry pointing at a drifted
+  existing sequence bundle.
+- Updated `autarkic_systems/network_sequence_evidence_bundle.py` so
+  `network_sequence_registry_validation_report_payload` reports
+  `bundle_failed_subjects` from loadable registered bundle validation results,
+  while missing registered bundle paths keep the existing registry-level
+  failure subjects and an empty bundle-failure list.
+- Updated `autarkic_systems/project_status.py` to consume the source registry
+  payload while preserving the flattened project-status
+  `sequence_evidence.bundle_failed_subjects` contract.
+- Updated the sequence evidence-bundle docs, README, and roadmap notes for the
+  registry JSON failure-detail summary.
+- Focused network-sequence evidence-bundle tests passed 16 tests. Adjacent
+  evidence/demo/project-status tests passed 115 tests. Live sequence registry
+  JSON reported `accepted: true`, `bundle_count: 1`, and
+  `bundle_failed_subjects: []`; project-status JSON remained accepted at
+  `schema_version: 20` with accepted-path `bundle_failed_subjects: []`.
+  `compileall`, `git diff --check`, and `python -m unittest discover` passed;
+  the full suite ran 898 tests.

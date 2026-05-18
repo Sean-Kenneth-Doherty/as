@@ -875,3 +875,8 @@
   reports, preserving inner failed subjects for rejected existing bundles and
   rendering `Failed subjects: ...` in registry text while leaving missing
   registered-bundle behavior unchanged.
+- ADR-0211 moves the same inner-failure detail into the source
+  network-sequence evidence registry JSON via
+  `network_sequence_registry_validation_report_payload.bundle_failed_subjects`;
+  project status now consumes that source payload while keeping its flattened
+  `sequence_evidence.bundle_failed_subjects` field.

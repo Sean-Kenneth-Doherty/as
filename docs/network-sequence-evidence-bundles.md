@@ -41,6 +41,13 @@ The validator checks:
 - referenced source-status JSON files; and
 - explicit boundary text.
 
+Registry JSON exposes both registry-level `failed_subjects` and
+`bundle_failed_subjects`. The latter is an ordered list of loadable registered
+bundle IDs with their rejected inner bundle subjects, so automation can see
+whether a registered existing bundle failed at `sequence-witness`,
+`sequence-trace`, `sequence-svg`, or another evidence layer without parsing
+the `registry-bundle-validation` detail string.
+
 ## Boundary
 
 ADR-0199 makes this registry part of aggregate project status through

@@ -37,10 +37,8 @@ from autarkic_systems.evidence_bundle import (
     validate_evidence_bundle_registry,
 )
 from autarkic_systems.network_sequence_evidence_bundle import (
-    load_network_sequence_evidence_bundle,
     load_network_sequence_evidence_bundle_registry,
     network_sequence_registry_validation_report_payload,
-    validate_network_sequence_evidence_bundle,
     validate_network_sequence_evidence_bundle_registry,
 )
 from autarkic_systems.network_sequence_claims import (
@@ -457,25 +455,14 @@ def _sequence_registry_summary(registry_path: Path | str) -> dict[str, Any]:
     results = validate_network_sequence_evidence_bundle_registry(registry)
     payload = network_sequence_registry_validation_report_payload(registry, results)
     summary = _registry_summary(payload, path)
-    summary["bundle_failed_subjects"] = _sequence_bundle_failed_subjects(registry)
+    summary["bundle_failed_subjects"] = _flatten_bundle_failed_subjects(payload)
     return summary
 
 
-def _sequence_bundle_failed_subjects(registry: Any) -> list[str]:
+def _flatten_bundle_failed_subjects(payload: dict[str, Any]) -> list[str]:
     failed_subjects: list[str] = []
-    for entry in registry.bundles:
-        try:
-            bundle = load_network_sequence_evidence_bundle(entry.path)
-            results = validate_network_sequence_evidence_bundle(bundle)
-        except FileNotFoundError:
-            failed_subjects.append("sequence-bundle-file")
-            continue
-        except Exception:
-            failed_subjects.append("sequence-bundle-json")
-            continue
-        failed_subjects.extend(
-            result.subject for result in results if not result.accepted
-        )
+    for item in payload["bundle_failed_subjects"]:
+        failed_subjects.extend(item["failed_subjects"])
     return _unique_texts(failed_subjects)
 
 
