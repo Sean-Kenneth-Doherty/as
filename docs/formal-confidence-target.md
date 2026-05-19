@@ -79,7 +79,8 @@ makes the first case depend on finite graph-domain codebook roundtrip evidence.
 ADR-0258 makes the second case depend on finite graph-domain quotation-term
 closure evidence. ADR-0259 makes the third case depend on finite graph-domain
 meta-substitution semantic evidence. ADR-0260 makes the fourth case depend on
-finite graph-domain formula-schema relation evidence.
+finite graph-domain formula-schema relation evidence. ADR-0261 makes the fifth
+case depend on finite graph-domain diagonal-witness composition evidence.
 
 ## Current Target
 
@@ -117,8 +118,8 @@ correctness proof target is recorded and validated through
 correctness case map is recorded and validated through
 `claims/substitution_graph_correctness_cases.json`, including finite
 codebook-roundtrip, quotation-term-closure, meta-substitution-semantics, and
-formula-schema-relation dependencies for the first four open cases; the naive
-equation candidate is recorded and validated through
+formula-schema-relation, and diagonal-witness-composition dependencies for all
+five open cases; the naive equation candidate is recorded and validated through
 `claims/fixed_point_equation_candidates.json`. The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
 dependency and records why that naive direct embedding route is closed. The
@@ -161,6 +162,8 @@ python -m autarkic_systems.substitution_graph_meta_substitution_semantics
 python -m autarkic_systems.substitution_graph_meta_substitution_semantics --format json
 python -m autarkic_systems.substitution_graph_formula_schema_relation
 python -m autarkic_systems.substitution_graph_formula_schema_relation --format json
+python -m autarkic_systems.substitution_graph_diagonal_witness_composition
+python -m autarkic_systems.substitution_graph_diagonal_witness_composition --format json
 python -m autarkic_systems.substitution_graph_correctness_cases
 python -m autarkic_systems.substitution_graph_correctness_cases --format json
 python -m autarkic_systems.fixed_point_equation
@@ -186,7 +189,8 @@ The validator checks that:
 - the referenced substitution graph correctness target validates;
 - the referenced substitution graph correctness case map validates, including
   accepted finite codebook-roundtrip, quotation-term-closure,
-  meta-substitution-semantics, and formula-schema-relation dependencies;
+  meta-substitution-semantics, formula-schema-relation, and
+  diagonal-witness-composition dependencies;
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and

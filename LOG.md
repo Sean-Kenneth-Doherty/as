@@ -5623,3 +5623,33 @@
   tests, and the full default suite passed 1,222 tests. This is finite
   evidence for the fourth open correctness case, not a general formula
   correctness or substitution representability proof.
+
+## 2026-05-19 - Substitution Graph Diagonal Witness Composition Domain
+
+- Added ADR-0261 to make the fifth substitution graph correctness case depend
+  on finite composition evidence tying the correctness target, formula-schema
+  relation witness, substitution witness, diagonal seed, and fixed-point target
+  to the same self-application route.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_diagonal_witness_composition` and
+  `claims/substitution_graph_diagonal_witness_composition.json` did not exist,
+  the correctness-case manifest had no `diagonal_witness_composition_path`, and
+  the fifth case still depended only on `correctness_target` and
+  `substitution_representability`.
+- Added `claims/substitution_graph_diagonal_witness_composition.json` with an
+  expected 1-point finite domain for the current diagonal witness.
+- Added `autarkic_systems/substitution_graph_diagonal_witness_composition.py`,
+  checking target/candidate/witness/construction/fixed-point alignment,
+  self-application inputs, identical witness-output and diagonal-instance
+  codes, output surfaces, and the accepted formula-schema relation witness
+  point.
+- Updated `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems/substitution_graph_correctness_cases.py` so the
+  `diagonal-witness-composition` case requires the accepted
+  `diagonal_witness_composition` dependency.
+- Focused diagonal-witness-composition/correctness-case tests passed 22 tests.
+  Adjacent substitution graph, representability, diagonal-construction, and
+  fixed-point regression tests passed 69 tests, and the full default suite
+  passed 1,232 tests. This is finite evidence for the fifth open correctness
+  case, not a general diagonal lemma, substitution representability proof, or
+  fixed-point equation proof.

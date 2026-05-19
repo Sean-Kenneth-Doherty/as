@@ -43,6 +43,10 @@ from autarkic_systems.substitution_graph_formula_schema_relation import (
     load_substitution_graph_formula_schema_relation,
     validate_substitution_graph_formula_schema_relation,
 )
+from autarkic_systems.substitution_graph_diagonal_witness_composition import (
+    load_substitution_graph_diagonal_witness_composition,
+    validate_substitution_graph_diagonal_witness_composition,
+)
 from autarkic_systems.substitution_graph_correctness import (
     SubstitutionGraphCorrectnessObservation,
     load_substitution_graph_correctness_targets,
@@ -89,6 +93,7 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
     "diagonal-witness-composition": (
         "correctness_target",
         "substitution_representability",
+        "diagonal_witness_composition",
     ),
 }
 REQUIRED_FUTURE_WORK = (
@@ -151,6 +156,7 @@ class SubstitutionGraphCorrectnessCaseManifest:
     quotation_term_closure_path: str
     meta_substitution_semantics_path: str
     formula_schema_relation_path: str
+    diagonal_witness_composition_path: str
     cases: tuple[SubstitutionGraphCorrectnessCase, ...]
 
 
@@ -191,6 +197,7 @@ class SubstitutionGraphCorrectnessCaseReport:
     quotation_term_closure_path: Path
     meta_substitution_semantics_path: Path
     formula_schema_relation_path: Path
+    diagonal_witness_composition_path: Path
     willard_map_path: Path
     results: tuple[SubstitutionGraphCorrectnessCaseValidation, ...]
     observations: tuple[SubstitutionGraphCorrectnessCaseObservation, ...]
@@ -263,6 +270,10 @@ def load_substitution_graph_correctness_cases(
             data,
             "formula_schema_relation_path",
         ),
+        diagonal_witness_composition_path=_required_text(
+            data,
+            "diagonal_witness_composition_path",
+        ),
         cases=tuple(_parse_case(item) for item in _required_list(data, "cases")),
     )
 
@@ -287,6 +298,9 @@ def validate_substitution_graph_correctness_cases(
     checked_closure_path = Path(manifest.quotation_term_closure_path)
     checked_meta_substitution_path = Path(manifest.meta_substitution_semantics_path)
     checked_schema_relation_path = Path(manifest.formula_schema_relation_path)
+    checked_diagonal_composition_path = Path(
+        manifest.diagonal_witness_composition_path
+    )
 
     codebook = load_formal_codebook(checked_codebook_path)
     codebook_report = validate_formal_codebook(
@@ -358,6 +372,17 @@ def validate_substitution_graph_correctness_cases(
         schema_relation_manifest,
         checked_willard_map_path,
     )
+    diagonal_composition_manifest = (
+        load_substitution_graph_diagonal_witness_composition(
+            checked_diagonal_composition_path,
+        )
+    )
+    diagonal_composition_report = (
+        validate_substitution_graph_diagonal_witness_composition(
+            diagonal_composition_manifest,
+            checked_willard_map_path,
+        )
+    )
 
     results: list[SubstitutionGraphCorrectnessCaseValidation] = [
         _accepted("manifest", f"loaded {len(manifest.cases)} case(s)")
@@ -374,6 +399,7 @@ def validate_substitution_graph_correctness_cases(
         closure_report,
         meta_substitution_report,
         schema_relation_report,
+        diagonal_composition_report,
     )
     results.extend(dependency_results)
     case_results, observations = _validate_cases(
@@ -396,6 +422,7 @@ def validate_substitution_graph_correctness_cases(
         quotation_term_closure_path=checked_closure_path,
         meta_substitution_semantics_path=checked_meta_substitution_path,
         formula_schema_relation_path=checked_schema_relation_path,
+        diagonal_witness_composition_path=checked_diagonal_composition_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
         observations=tuple(observations),
@@ -434,6 +461,9 @@ def substitution_graph_correctness_cases_report_payload(
             report.meta_substitution_semantics_path
         ),
         "formula_schema_relation_path": str(report.formula_schema_relation_path),
+        "diagonal_witness_composition_path": str(
+            report.diagonal_witness_composition_path
+        ),
         "willard_map": str(report.willard_map_path),
         "case_count": report.case_count,
         "failed_subjects": list(report.failed_subjects),
@@ -615,6 +645,11 @@ def _validate_references(
             manifest.formula_schema_relation_path,
             "claims/substitution_graph_formula_schema_relation.json",
         ),
+        (
+            "diagonal_witness_composition_path",
+            manifest.diagonal_witness_composition_path,
+            "claims/substitution_graph_diagonal_witness_composition.json",
+        ),
     )
     results: list[SubstitutionGraphCorrectnessCaseValidation] = []
     for subject, actual, expected_value in expected:
@@ -638,6 +673,7 @@ def _validate_dependency_reports(
     closure_report: Any,
     meta_substitution_report: Any,
     schema_relation_report: Any,
+    diagonal_composition_report: Any,
 ) -> tuple[list[SubstitutionGraphCorrectnessCaseValidation], frozenset[str]]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
@@ -661,6 +697,11 @@ def _validate_dependency_reports(
             "formula_schema_relation",
             schema_relation_report,
             "formula-schema relation",
+        ),
+        (
+            "diagonal_witness_composition",
+            diagonal_composition_report,
+            "diagonal-witness composition",
         ),
     )
     results: list[SubstitutionGraphCorrectnessCaseValidation] = []

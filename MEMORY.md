@@ -237,6 +237,15 @@
   case now requires this accepted dependency, but the case remains open and no
   general formula correctness or substitution representability proof is
   claimed.
+- ADR-0261 adds `claims/substitution_graph_diagonal_witness_composition.json`
+  and `autarkic_systems.substitution_graph_diagonal_witness_composition`,
+  checking the current diagonal witness for target-chain alignment,
+  self-application inputs, identical witness-output and diagonal-instance
+  codes, and an accepted formula-schema relation witness point; the
+  `diagonal-witness-composition` correctness case now requires this accepted
+  dependency, but the case remains open and no diagonal lemma,
+  representability proof, fixed-point equation proof, or self-consistency
+  theorem is claimed.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

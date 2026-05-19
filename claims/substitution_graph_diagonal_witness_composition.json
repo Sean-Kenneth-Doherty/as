@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "composition_set_id": "as-substitution-graph-diagonal-witness-composition-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite diagonal-witness composition domain for the current substitution graph correctness route. This checks that the graph correctness target, formula-schema relation witness point, substitution-representability witness, diagonal seed, and fixed-point target all identify the same self-application route without claiming a diagonal lemma or representability proof.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "correctness_targets_path": "claims/substitution_graph_correctness_targets.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "expected_composition_count": 1,
+  "required_source_kinds": [
+    "diagonal-witness"
+  ],
+  "required_future_work": [
+    "formula-correctness-proof",
+    "substitution-representability-proof",
+    "diagonal-lemma-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite composition domain as evidence for the diagonal-witness-composition proof case, then prove the general diagonal witness composition needed before claiming representability or a fixed-point equation."
+}

@@ -5534,3 +5534,36 @@ Implemented in
 `autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
 `tests/test_substitution_graph_formula_schema_relation.py` and
 `tests/test_substitution_graph_correctness_cases.py`.
+
+## ADR-0261: Substitution Graph Diagonal Witness Composition Domain
+
+Goal: make the fifth substitution graph correctness case depend on executable
+composition evidence that the current correctness target, formula-schema
+relation witness, substitution witness, diagonal seed, and fixed-point target
+identify the same self-application route.
+
+Deliverables:
+
+- `claims/substitution_graph_diagonal_witness_composition.json` with the
+  expected 1-point finite composition domain;
+- `autarkic_systems.substitution_graph_diagonal_witness_composition`
+  validation that checks target/candidate/witness/construction/fixed-point
+  alignment, self-application inputs, identical witness-output and diagonal
+  instance codes, and the accepted formula-schema relation witness point;
+- text/JSON output for composition count, source-kind counts, and composition
+  failures;
+- `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems.substitution_graph_correctness_cases` updated so the
+  `diagonal-witness-composition` case requires the accepted
+  `diagonal_witness_composition` dependency; and
+- no general formula correctness proof, substitution representability proof,
+  diagonal lemma, fixed-point equation proof, self-consistency theorem, GitHub
+  submission logic change, or runtime command-token behavior change.
+
+Status: accepted in
+`docs/adr/0261-substitution-graph-diagonal-witness-composition-domain.md`.
+Implemented in
+`autarkic_systems/substitution_graph_diagonal_witness_composition.py` and
+`autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
+`tests/test_substitution_graph_diagonal_witness_composition.py` and
+`tests/test_substitution_graph_correctness_cases.py`.

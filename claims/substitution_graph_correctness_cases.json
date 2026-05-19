@@ -14,6 +14,7 @@
   "quotation_term_closure_path": "claims/substitution_graph_quotation_term_closure.json",
   "meta_substitution_semantics_path": "claims/substitution_graph_meta_substitution_semantics.json",
   "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
+  "diagonal_witness_composition_path": "claims/substitution_graph_diagonal_witness_composition.json",
   "cases": [
     {
       "case_id": "AS-SUBST-GRAPH-CORRECTNESS-CODEBOOK-ROUNDTRIP",
@@ -127,7 +128,8 @@
       "status": "proof-case-open",
       "required_dependency_subjects": [
         "correctness_target",
-        "substitution_representability"
+        "substitution_representability",
+        "diagonal_witness_composition"
       ],
       "required_future_work": [
         "formula-correctness-proof",

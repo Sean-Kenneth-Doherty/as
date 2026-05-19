@@ -29,6 +29,10 @@ ADR-0260 adds a finite formula-schema-relation verifier over the witness
 instance and finite evaluator examples, then makes the
 `formula-schema-relation` case depend on that accepted relation evidence.
 
+ADR-0261 adds a finite diagonal-witness-composition verifier over the current
+self-application route, then makes the `diagonal-witness-composition` case
+depend on that accepted composition evidence.
+
 ## Purpose
 
 The correctness target is useful because it names the theorem. The case
@@ -57,6 +61,8 @@ python -m autarkic_systems.substitution_graph_meta_substitution_semantics
 python -m autarkic_systems.substitution_graph_meta_substitution_semantics --format json
 python -m autarkic_systems.substitution_graph_formula_schema_relation
 python -m autarkic_systems.substitution_graph_formula_schema_relation --format json
+python -m autarkic_systems.substitution_graph_diagonal_witness_composition
+python -m autarkic_systems.substitution_graph_diagonal_witness_composition --format json
 ```
 
 The validator checks that:
@@ -71,6 +77,8 @@ The validator checks that:
   third case;
 - the formula-schema-relation domain dependency remains accepted for the fourth
   case;
+- the diagonal-witness-composition domain dependency remains accepted for the
+  fifth case;
 - case IDs are unique;
 - each case targets `AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET`;
 - each case preserves `proof-case-open`;
