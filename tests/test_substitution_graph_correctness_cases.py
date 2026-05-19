@@ -36,6 +36,9 @@ QUOTATION_TERM_CLOSURE = Path(
 META_SUBSTITUTION_SEMANTICS = Path(
     "claims/substitution_graph_meta_substitution_semantics.json"
 )
+FORMULA_SCHEMA_RELATION = Path(
+    "claims/substitution_graph_formula_schema_relation.json"
+)
 
 
 class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
@@ -85,6 +88,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
             str(META_SUBSTITUTION_SEMANTICS),
         )
         self.assertEqual(
+            self.cases.formula_schema_relation_path,
+            str(FORMULA_SCHEMA_RELATION),
+        )
+        self.assertEqual(
             REQUIRED_CASE_KINDS,
             (
                 "codebook-roundtrip",
@@ -113,6 +120,14 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
                 "correctness_target",
                 "formal_substitution",
                 "meta_substitution_semantics",
+            ),
+        )
+        self.assertEqual(
+            REQUIRED_DEPENDENCIES_BY_KIND["formula-schema-relation"],
+            (
+                "correctness_target",
+                "formula_candidate",
+                "formula_schema_relation",
             ),
         )
         self.assertEqual(
@@ -169,6 +184,14 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
             ),
         )
         self.assertEqual(fourth.case_kind, "formula-schema-relation")
+        self.assertEqual(
+            fourth.required_dependency_subjects,
+            (
+                "correctness_target",
+                "formula_candidate",
+                "formula_schema_relation",
+            ),
+        )
         self.assertEqual(fifth.case_kind, "diagonal-witness-composition")
 
     def test_checked_in_manifest_validates_correctness_cases(self):
@@ -203,6 +226,13 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result.subject == "formula_schema_relation"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
                 result.subject == "cases"
                 and result.accepted
                 for result in report.results
@@ -224,6 +254,7 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertEqual(payload["cases"][0]["observed_dependency_count"], 3)
         self.assertEqual(payload["cases"][1]["observed_dependency_count"], 4)
         self.assertEqual(payload["cases"][2]["observed_dependency_count"], 3)
+        self.assertEqual(payload["cases"][3]["observed_dependency_count"], 3)
         self.assertIn(
             "formula-correctness-proof",
             payload["cases"][0]["required_future_work"],
@@ -251,6 +282,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         )
         self.assertIn(
             "Dependencies: correctness_target, formal_substitution, meta_substitution_semantics",
+            text,
+        )
+        self.assertIn(
+            "Dependencies: correctness_target, formula_candidate, formula_schema_relation",
             text,
         )
         self.assertIn("Future work:", text)

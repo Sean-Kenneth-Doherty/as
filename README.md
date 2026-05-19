@@ -81,6 +81,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-graph-meta-substitution-semantics.md` records finite
   meta-substitution semantic evidence over the current substitution-graph
   substitutions, while leaving the general proof open.
+- `docs/substitution-graph-formula-schema-relation.md` records finite
+  formula-schema relation evidence over the current witness and finite
+  evaluation examples, while leaving the general proof open.
 - `docs/substitution-graph-correctness-cases.md` records five open proof cases
   for the substitution graph correctness target while leaving every case
   unproved.
@@ -453,6 +456,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/substitution_graph_meta_substitution_semantics.py`
   validates and runs finite semantic evidence for the current graph-domain
   substitutions, while keeping the general proof obligation open.
+- `autarkic_systems/substitution_graph_formula_schema_relation.py` validates
+  and runs finite relation evidence that the current graph target, formula
+  schema, witness instance, and finite examples state the same graph relation,
+  while keeping the general proof obligation open.
 - `autarkic_systems/substitution_graph_correctness_cases.py` validates and
   runs the open case decomposition for that correctness target, tying each
   case to its checked dependency surface without claiming proof.
@@ -477,8 +484,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, including codebook-roundtrip, quotation-term-closure, and
-  meta-substitution-semantics dependencies, and obstruction dependencies.
+  map, including codebook-roundtrip, quotation-term-closure,
+  meta-substitution-semantics, and formula-schema-relation dependencies, and
+  obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -589,11 +597,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_meta_substitution_semantics.json`,
   including 6 finite graph-domain substitution subjects whose closed
   replacements preserve the expected free-variable surface.
+- `python -m autarkic_systems.substitution_graph_formula_schema_relation --format json`
+  validates `claims/substitution_graph_formula_schema_relation.json`,
+  including 4 finite graph-domain relation points whose instantiated schema
+  relation evaluates true against the current expected surfaces.
 - `python -m autarkic_systems.substitution_graph_correctness_cases --format json`
   validates `claims/substitution_graph_correctness_cases.json`, including the
   five open proof cases for the substitution graph correctness target and the
-  codebook-roundtrip, quotation-term-closure, and
-  meta-substitution-semantics dependencies for the first three cases.
+  codebook-roundtrip, quotation-term-closure, meta-substitution-semantics, and
+  formula-schema-relation dependencies for the first four cases.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct
@@ -604,9 +616,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map with the finite codebook-roundtrip, quotation-term-closure, and
-  meta-substitution-semantics dependencies, and obstruction dependencies,
-  explicit blockers, and the next AS action.
+  map with the finite codebook-roundtrip, quotation-term-closure,
+  meta-substitution-semantics, and formula-schema-relation dependencies, and
+  obstruction dependencies, explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

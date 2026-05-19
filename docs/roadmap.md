@@ -5502,3 +5502,35 @@ Implemented in
 `autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
 `tests/test_substitution_graph_meta_substitution_semantics.py` and
 `tests/test_substitution_graph_correctness_cases.py`.
+
+## ADR-0260: Substitution Graph Formula Schema Relation Domain
+
+Goal: make the fourth substitution graph correctness case depend on executable
+relation evidence that the current graph target, formula schema, witness
+instance, and finite examples state the same substitution-code graph relation.
+
+Deliverables:
+
+- `claims/substitution_graph_formula_schema_relation.json` with the expected
+  4-point finite relation domain;
+- `autarkic_systems.substitution_graph_formula_schema_relation` validation
+  that derives the witness relation point and three finite-evaluation relation
+  points, checks schema closure, formula-code roundtrip, relation truth, and
+  expected output surfaces;
+- text/JSON output for relation point count, source-kind counts, and relation
+  failures;
+- `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems.substitution_graph_correctness_cases` updated so the
+  `formula-schema-relation` case requires the accepted
+  `formula_schema_relation` dependency; and
+- no general formula correctness proof, substitution representability proof,
+  diagonal lemma, fixed-point equation proof, self-consistency theorem, GitHub
+  submission logic change, or runtime command-token behavior change.
+
+Status: accepted in
+`docs/adr/0260-substitution-graph-formula-schema-relation-domain.md`.
+Implemented in
+`autarkic_systems/substitution_graph_formula_schema_relation.py` and
+`autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
+`tests/test_substitution_graph_formula_schema_relation.py` and
+`tests/test_substitution_graph_correctness_cases.py`.

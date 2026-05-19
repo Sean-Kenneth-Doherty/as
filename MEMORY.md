@@ -229,6 +229,14 @@
   `meta-substitution-semantics` correctness case now requires this accepted
   dependency, but the case remains open and no general substitution or formula
   correctness proof is claimed.
+- ADR-0260 adds `claims/substitution_graph_formula_schema_relation.json` and
+  `autarkic_systems.substitution_graph_formula_schema_relation`, checking one
+  witness relation point and three finite-evaluation relation points for
+  schema closure, formula-code roundtrip, relation truth, and agreement with
+  the existing expected surfaces; the `formula-schema-relation` correctness
+  case now requires this accepted dependency, but the case remains open and no
+  general formula correctness or substitution representability proof is
+  claimed.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

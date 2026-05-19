@@ -13,6 +13,7 @@
   "codebook_roundtrip_path": "claims/substitution_graph_codebook_roundtrip.json",
   "quotation_term_closure_path": "claims/substitution_graph_quotation_term_closure.json",
   "meta_substitution_semantics_path": "claims/substitution_graph_meta_substitution_semantics.json",
+  "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
   "cases": [
     {
       "case_id": "AS-SUBST-GRAPH-CORRECTNESS-CODEBOOK-ROUNDTRIP",
@@ -100,7 +101,8 @@
       "status": "proof-case-open",
       "required_dependency_subjects": [
         "correctness_target",
-        "formula_candidate"
+        "formula_candidate",
+        "formula_schema_relation"
       ],
       "required_future_work": [
         "formula-correctness-proof",

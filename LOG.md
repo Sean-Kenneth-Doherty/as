@@ -5594,3 +5594,32 @@
 - Focused meta-substitution/correctness-case tests passed 22 tests. This is
   finite evidence for the third open correctness case, not a general
   substitution or formula correctness proof.
+
+## 2026-05-19 - Substitution Graph Formula Schema Relation Domain
+
+- Added ADR-0260 to make the fourth substitution graph correctness case depend
+  on finite relation evidence that the current graph target, formula schema,
+  witness instance, and finite examples state the same substitution-code graph
+  relation.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_formula_schema_relation` and
+  `claims/substitution_graph_formula_schema_relation.json` did not exist, the
+  correctness-case manifest had no `formula_schema_relation_path`, and the
+  fourth case still depended only on `correctness_target` and
+  `formula_candidate`.
+- Added `claims/substitution_graph_formula_schema_relation.json` with an
+  expected 4-point finite domain: one witness relation point and three
+  finite-evaluation relation points.
+- Added `autarkic_systems/substitution_graph_formula_schema_relation.py`,
+  deriving those relation points, checking schema instance closure, checking
+  formula-code roundtrip, evaluating the instantiated schema relation, and
+  checking agreement with the existing witness/example surfaces.
+- Updated `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems/substitution_graph_correctness_cases.py` so the
+  `formula-schema-relation` case requires the accepted
+  `formula_schema_relation` dependency.
+- Focused formula-schema-relation/correctness-case tests passed 22 tests, the
+  adjacent graph/formula/evaluation/correctness target regression passed 61
+  tests, and the full default suite passed 1,222 tests. This is finite
+  evidence for the fourth open correctness case, not a general formula
+  correctness or substitution representability proof.

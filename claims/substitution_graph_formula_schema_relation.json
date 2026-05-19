@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "relation_set_id": "as-substitution-graph-formula-schema-relation-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite formula-schema relation domain for the current substitution graph formula candidate. This checks that the schema, graph target, witness instance, and finite evaluation examples state the same substitution_code graph relation without claiming a general formula correctness proof.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "substitution_graph_targets_path": "claims/substitution_graph_targets.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "evaluation_examples_path": "claims/substitution_graph_evaluation_examples.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "expected_relation_point_count": 4,
+  "required_source_kinds": [
+    "witness-instance",
+    "finite-evaluation"
+  ],
+  "required_future_work": [
+    "formula-correctness-proof",
+    "substitution-representability-proof",
+    "diagonal-lemma-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite schema-relation domain as evidence for the formula-schema-relation proof case, then prove the general formula correctness theorem for the substitution_code graph."
+}

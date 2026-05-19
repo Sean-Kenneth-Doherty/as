@@ -25,6 +25,10 @@ substitutions currently used by the formula candidate and finite evaluator,
 then makes the `meta-substitution-semantics` case depend on that accepted
 semantic evidence.
 
+ADR-0260 adds a finite formula-schema-relation verifier over the witness
+instance and finite evaluator examples, then makes the
+`formula-schema-relation` case depend on that accepted relation evidence.
+
 ## Purpose
 
 The correctness target is useful because it names the theorem. The case
@@ -51,6 +55,8 @@ python -m autarkic_systems.substitution_graph_quotation_term_closure
 python -m autarkic_systems.substitution_graph_quotation_term_closure --format json
 python -m autarkic_systems.substitution_graph_meta_substitution_semantics
 python -m autarkic_systems.substitution_graph_meta_substitution_semantics --format json
+python -m autarkic_systems.substitution_graph_formula_schema_relation
+python -m autarkic_systems.substitution_graph_formula_schema_relation --format json
 ```
 
 The validator checks that:
@@ -63,6 +69,8 @@ The validator checks that:
   case;
 - the meta-substitution-semantics domain dependency remains accepted for the
   third case;
+- the formula-schema-relation domain dependency remains accepted for the fourth
+  case;
 - case IDs are unique;
 - each case targets `AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET`;
 - each case preserves `proof-case-open`;
