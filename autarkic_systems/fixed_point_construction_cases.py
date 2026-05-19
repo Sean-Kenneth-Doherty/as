@@ -90,6 +90,7 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
         "fixed_point",
         "fixed_point_equation_bridge",
         "codebook",
+        "equation_lifting_alignment",
     ),
 }
 REQUIRED_FUTURE_WORK = (
@@ -144,6 +145,7 @@ class FixedPointConstructionCaseManifest:
     substitution_witness_bridge_path: str
     substitution_graph_correctness_bridge_path: str
     bridge_equality_alignment_path: str
+    equation_lifting_alignment_path: str
     cases: tuple[FixedPointConstructionCase, ...]
 
 
@@ -185,6 +187,7 @@ class FixedPointConstructionCaseReport:
     substitution_witness_bridge_path: Path
     substitution_graph_correctness_bridge_path: Path
     bridge_equality_alignment_path: Path
+    equation_lifting_alignment_path: Path
     willard_map_path: Path
     results: tuple[FixedPointConstructionCaseValidation, ...]
     observations: tuple[FixedPointConstructionCaseObservation, ...]
@@ -267,6 +270,10 @@ def load_fixed_point_construction_cases(
             data,
             "bridge_equality_alignment_path",
         ),
+        equation_lifting_alignment_path=_required_text(
+            data,
+            "equation_lifting_alignment_path",
+        ),
         cases=tuple(_parse_case(item) for item in _required_list(data, "cases")),
     )
 
@@ -295,6 +302,9 @@ def validate_fixed_point_construction_cases(
     )
     checked_bridge_equality_alignment_path = Path(
         manifest.bridge_equality_alignment_path
+    )
+    checked_equation_lifting_alignment_path = Path(
+        manifest.equation_lifting_alignment_path
     )
 
     codebook = load_formal_codebook(checked_codebook_path)
@@ -379,6 +389,20 @@ def validate_fixed_point_construction_cases(
         bridge_equality_alignment,
         checked_willard_map_path,
     )
+    from autarkic_systems.fixed_point_equation_lifting_alignment import (
+        load_fixed_point_equation_lifting_alignment,
+        validate_fixed_point_equation_lifting_alignment,
+    )
+
+    equation_lifting_alignment = load_fixed_point_equation_lifting_alignment(
+        checked_equation_lifting_alignment_path
+    )
+    equation_lifting_alignment_report = (
+        validate_fixed_point_equation_lifting_alignment(
+            equation_lifting_alignment,
+            checked_willard_map_path,
+        )
+    )
 
     results: list[FixedPointConstructionCaseValidation] = [
         _accepted("manifest", f"loaded {len(manifest.cases)} case(s)")
@@ -397,6 +421,7 @@ def validate_fixed_point_construction_cases(
         witness_bridge_report,
         graph_correctness_bridge_report,
         bridge_equality_alignment_report,
+        equation_lifting_alignment_report,
     )
     results.extend(dependency_results)
     case_results, observations = _validate_cases(manifest.cases, accepted_dependencies)
@@ -418,6 +443,7 @@ def validate_fixed_point_construction_cases(
             checked_graph_correctness_bridge_path
         ),
         bridge_equality_alignment_path=checked_bridge_equality_alignment_path,
+        equation_lifting_alignment_path=checked_equation_lifting_alignment_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
         observations=tuple(observations),
@@ -461,6 +487,9 @@ def fixed_point_construction_cases_payload(
             report.substitution_graph_correctness_bridge_path
         ),
         "bridge_equality_alignment_path": str(report.bridge_equality_alignment_path),
+        "equation_lifting_alignment_path": str(
+            report.equation_lifting_alignment_path
+        ),
         "willard_map": str(report.willard_map_path),
         "case_count": report.case_count,
         "failed_subjects": list(report.failed_subjects),
@@ -639,6 +668,11 @@ def _validate_references(
             manifest.bridge_equality_alignment_path,
             "claims/fixed_point_bridge_equality_alignment.json",
         ),
+        (
+            "equation_lifting_alignment_path",
+            manifest.equation_lifting_alignment_path,
+            "claims/fixed_point_equation_lifting_alignment.json",
+        ),
     )
     results: list[FixedPointConstructionCaseValidation] = []
     for subject, actual, expected_value in expected:
@@ -663,6 +697,7 @@ def _validate_dependency_reports(
     witness_bridge_report: Any,
     graph_correctness_bridge_report: Any,
     bridge_equality_alignment_report: Any,
+    equation_lifting_alignment_report: Any,
 ) -> tuple[list[FixedPointConstructionCaseValidation], frozenset[str]]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
@@ -703,6 +738,11 @@ def _validate_dependency_reports(
             "bridge_equality_alignment",
             bridge_equality_alignment_report,
             "fixed-point bridge equality alignment",
+        ),
+        (
+            "equation_lifting_alignment",
+            equation_lifting_alignment_report,
+            "fixed-point equation lifting alignment",
         ),
     )
     results: list[FixedPointConstructionCaseValidation] = []
@@ -897,6 +937,8 @@ def _failed_subject_for_result(subject: str) -> str:
         "fixed_point_equation_bridge",
         "diagonal_instance_closure",
         "substitution_witness_bridge",
+        "bridge_equality_alignment",
+        "equation_lifting_alignment",
     }:
         return "fixed-point-construction-case-dependency"
     if subject.endswith("_path"):

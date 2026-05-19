@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "alignment_set_id": "as-fixed-point-equation-lifting-alignment-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite alignment evidence tying the fixed-point-equation-lifting proof case to the selected pi1 fixed-point target context, checked equation bridge, bridge-equality alignment, and formal codebook. This is not a fixed-point equation proof.",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "bridge_equality_alignment_path": "claims/fixed_point_bridge_equality_alignment.json",
+  "codebook_path": "language/formal_codebook.json",
+  "expected_alignment_count": 1,
+  "expected_direct_target_code_length": 4528,
+  "required_source_kinds": [
+    "equation-lifting-alignment"
+  ],
+  "required_future_work": [
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Prove that the accepted bridge equality lifts through the selected pi1 target context before claiming a fixed-point equation."
+}

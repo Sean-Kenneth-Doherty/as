@@ -5765,3 +5765,36 @@ in `autarkic_systems/fixed_point_bridge_equality_alignment.py` and
 `autarkic_systems/fixed_point_construction_cases.py`, with tests in
 `tests/test_fixed_point_bridge_equality_alignment.py` and
 `tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0268: Fixed-Point Equation Lifting Alignment Domain
+
+Goal: make the fifth fixed-point construction case depend on finite evidence
+that the selected `pi1` fixed-point target context, checked equation bridge,
+bridge-equality alignment, and codebook remain aligned before any fixed-point
+equation proof is claimed.
+
+Deliverables:
+
+- `claims/fixed_point_equation_lifting_alignment.json` with the expected
+  one-point equation-lifting alignment domain;
+- `autarkic_systems.fixed_point_equation_lifting_alignment` validation
+  deriving the current alignment from the checked construction-case map,
+  fixed-point target, equation bridge, bridge-equality alignment, and codebook
+  surfaces;
+- text/JSON output for alignment count, source-kind counts, direct target
+  length, target/context booleans, route/context alignment booleans, failed
+  subjects, and validation results;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `fixed-point-equation-lifting` case requires the accepted
+  `equation_lifting_alignment` dependency; and
+- no bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0268-fixed-point-equation-lifting-alignment-domain.md`. Implemented
+in `autarkic_systems/fixed_point_equation_lifting_alignment.py` and
+`autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_equation_lifting_alignment.py` and
+`tests/test_fixed_point_construction_cases.py`.

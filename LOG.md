@@ -5852,3 +5852,39 @@
   passed, and the full default suite passed 1,300 tests. This is not a bridge
   equality proof, fixed-point equation proof, arithmetized proof predicate, or
   self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Equation Lifting Alignment Domain
+
+- Added ADR-0268 to make the fifth fixed-point construction case depend on
+  finite alignment evidence tying the selected `pi1` fixed-point target
+  context, checked equation bridge, bridge-equality alignment, and codebook to
+  the same direct target form.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_equation_lifting_alignment` and
+  `claims/fixed_point_equation_lifting_alignment.json` did not exist, the
+  construction-case manifest had no `equation_lifting_alignment_path`, and the
+  fifth construction case still had only three dependency subjects.
+- Added `claims/fixed_point_equation_lifting_alignment.json` with a one-point
+  finite equation-lifting alignment domain for the current fixed-point
+  construction case.
+- Added `autarkic_systems/fixed_point_equation_lifting_alignment.py`, checking
+  that the construction case remains open, requires the alignment, observes
+  accepted fixed-point target/equation bridge/bridge-equality/codebook
+  dependency surfaces, keeps the selected target as a `pi1` template over free
+  code variable `n`, keeps the 4528-token direct target context matched, and
+  keeps bridge-equality route alignment visible.
+- Updated `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems/fixed_point_construction_cases.py` so the
+  `fixed-point-equation-lifting` case requires the accepted
+  `equation_lifting_alignment` dependency while remaining `proof-case-open`.
+- Focused equation-lifting-alignment/construction-cases tests passed 22 tests.
+  Live equation-lifting-alignment text/JSON output reported one alignment, a
+  4528-token direct target, target/context alignment, route alignment, and no
+  failed subjects; live construction-cases text/JSON output reported
+  `equation_lifting_alignment` as accepted for the fifth case; live
+  formal-confidence text/JSON remained accepted with one blocked target; live
+  project-status summary remained accepted. Adjacent fixed-point regression
+  tests passed 111 tests, compileall/JSON parsing/diff checks passed, and the
+  full default suite passed 1,311 tests. This is not a bridge equality proof,
+  fixed-point equation proof, arithmetized proof predicate, or
+  self-consistency theorem.

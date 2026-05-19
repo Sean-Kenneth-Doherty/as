@@ -38,7 +38,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
   map, fixed-point equation bridge target, fixed-point construction case map,
-  and fixed-point obstruction dependencies.
+  fixed-point bridge-equality alignment, fixed-point equation lifting
+  alignment, and fixed-point obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -122,6 +123,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence tying the fixed-point construction bridge-equality case to the
   checked equation bridge, witness bridge, graph correctness bridge, and
   formula-schema witness relation, while leaving equality proof open.
+- `docs/fixed-point-equation-lifting-alignment.md` records finite alignment
+  evidence tying the fixed-point construction equation-lifting case to the
+  selected `pi1` target context, checked equation bridge, bridge-equality
+  alignment, and codebook, while leaving the fixed-point equation proof open.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.
@@ -522,6 +527,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_bridge_equality_alignment.py` validates finite
   alignment evidence for the bridge-equality case used by the fourth
   construction case.
+- `autarkic_systems/fixed_point_equation_lifting_alignment.py` validates
+  finite alignment evidence for the equation-lifting case used by the fifth
+  construction case.
 - `autarkic_systems/fixed_point_obstruction.py` validates the checked
   length-growth obstruction for that naive candidate, recording that direct
   quotation-term embedding strictly grows the encoded candidate.
@@ -537,8 +545,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies, fixed-point construction case map
   including diagonal-instance closure, substitution-witness bridge, and
-  substitution graph correctness bridge, and bridge-equality alignment
-  dependencies, and obstruction dependencies.
+  substitution graph correctness bridge, bridge-equality alignment, and
+  equation-lifting alignment dependencies, and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -639,6 +647,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.fixed_point_bridge_equality_alignment --format json`
   validates `claims/fixed_point_bridge_equality_alignment.json`, including the
   one finite bridge-equality alignment point for the fourth construction case.
+- `python -m autarkic_systems.fixed_point_equation_lifting_alignment --format json`
+  validates `claims/fixed_point_equation_lifting_alignment.json`, including
+  the one finite equation-lifting alignment point for the fifth construction
+  case.
 - `python -m autarkic_systems.diagonal_construction --format json` validates
   `claims/diagonal_construction_targets.json`, including the checked
   `substitution_code(n,n)` diagonal seed and closed quoted seed instance.
@@ -701,8 +713,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies, fixed-point construction case map
   with the finite diagonal-instance closure, substitution-witness bridge, and
-  substitution graph correctness bridge, and bridge-equality alignment
-  dependencies, and obstruction dependencies,
+  substitution graph correctness bridge, bridge-equality alignment, and
+  equation-lifting alignment dependencies, and obstruction dependencies,
   explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected

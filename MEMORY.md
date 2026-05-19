@@ -281,6 +281,12 @@
   alignment ties the 4815-token equation bridge to the formula-schema witness
   relation, witness bridge, and graph correctness bridge while keeping the
   `bridge-equality-proof` case open.
+- ADR-0268 adds `claims/fixed_point_equation_lifting_alignment.json` and
+  `autarkic_systems.fixed_point_equation_lifting_alignment`, checking one
+  finite alignment point for the fifth fixed-point construction case. The
+  alignment ties the 4528-token direct target form to the selected `pi1`
+  target context, equation bridge, bridge-equality alignment, and codebook
+  while keeping the `fixed-point-equation-lifting` case open.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive
