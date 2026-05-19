@@ -257,6 +257,11 @@
   fixed-point construction blocker into five open proof cases while preserving
   the same blocker and making aggregate formal-confidence fail closed over the
   case map.
+- ADR-0264 adds `claims/fixed_point_diagonal_instance_closure.json` and
+  `autarkic_systems.fixed_point_diagonal_instance_closure`, checking one
+  finite closure point for the current diagonal instance and making the first
+  fixed-point construction case require `diagonal_instance_closure` while
+  staying open.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

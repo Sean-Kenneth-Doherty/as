@@ -56,7 +56,9 @@ ADR-0262 records the finite equality bridge target between the checked
 diagonal instance and the direct fixed-point target form, while still leaving
 that equality and the fixed-point equation unproved. ADR-0263 records the
 open proof-case map for converting those checked finite surfaces into an
-actual fixed-point construction, while keeping every case unproved.
+actual fixed-point construction, while keeping every case unproved. ADR-0264
+adds finite closure evidence for the derived diagonal instance, while leaving
+representability, bridge equality, and equation lifting open.
 
 ## Run
 
@@ -72,6 +74,7 @@ python -m autarkic_systems.substitution_graph_formula
 python -m autarkic_systems.fixed_point_equation
 python -m autarkic_systems.fixed_point_equation_bridge
 python -m autarkic_systems.fixed_point_construction_cases
+python -m autarkic_systems.fixed_point_diagonal_instance_closure
 python -m autarkic_systems.formal_confidence
 python -m autarkic_systems.project_status --format summary
 ```

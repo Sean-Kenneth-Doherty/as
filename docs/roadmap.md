@@ -5629,3 +5629,36 @@ Implemented in `autarkic_systems/fixed_point_construction_cases.py` and
 `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_fixed_point_construction_cases.py` and
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0264: Fixed-Point Diagonal Instance Closure Domain
+
+Goal: make the first fixed-point construction case depend on finite evidence
+that the current diagonal instance is closed, codebook-stable, target-aligned,
+and bridge-aligned.
+
+Deliverables:
+
+- `claims/fixed_point_diagonal_instance_closure.json` with the expected
+  one-point closure domain;
+- `autarkic_systems.fixed_point_diagonal_instance_closure` validation deriving
+  the current diagonal instance from the checked target, construction,
+  codebook, and bridge surfaces;
+- text/JSON output for closure count, source-kind counts, closure booleans,
+  failed subjects, and validation results;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `diagonal-instance-closure` case requires the accepted
+  `diagonal_instance_closure` dependency;
+- rejection for stale closure counts, stale diagonal-instance length facts, and
+  missing non-claims; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0264-fixed-point-diagonal-instance-closure-domain.md`. Implemented
+in `autarkic_systems/fixed_point_diagonal_instance_closure.py` and
+`autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_diagonal_instance_closure.py` and
+`tests/test_fixed_point_construction_cases.py`.

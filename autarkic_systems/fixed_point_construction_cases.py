@@ -26,6 +26,10 @@ from autarkic_systems.fixed_point_equation_bridge import (
     load_fixed_point_equation_bridge_targets,
     validate_fixed_point_equation_bridge_targets,
 )
+from autarkic_systems.fixed_point_diagonal_instance_closure import (
+    load_fixed_point_diagonal_instance_closure,
+    validate_fixed_point_diagonal_instance_closure,
+)
 from autarkic_systems.formal_code import (
     load_formal_codebook,
     validate_formal_codebook,
@@ -59,6 +63,7 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
         "fixed_point",
         "diagonal_construction",
         "fixed_point_equation_bridge",
+        "diagonal_instance_closure",
     ),
     "substitution-representability-proof": (
         "substitution_representability",
@@ -128,6 +133,7 @@ class FixedPointConstructionCaseManifest:
     substitution_graph_correctness_targets_path: str
     substitution_graph_correctness_cases_path: str
     fixed_point_equation_bridge_targets_path: str
+    diagonal_instance_closure_path: str
     cases: tuple[FixedPointConstructionCase, ...]
 
 
@@ -165,6 +171,7 @@ class FixedPointConstructionCaseReport:
     substitution_graph_correctness_targets_path: Path
     substitution_graph_correctness_cases_path: Path
     fixed_point_equation_bridge_targets_path: Path
+    diagonal_instance_closure_path: Path
     willard_map_path: Path
     results: tuple[FixedPointConstructionCaseValidation, ...]
     observations: tuple[FixedPointConstructionCaseObservation, ...]
@@ -231,6 +238,10 @@ def load_fixed_point_construction_cases(
             data,
             "fixed_point_equation_bridge_targets_path",
         ),
+        diagonal_instance_closure_path=_required_text(
+            data,
+            "diagonal_instance_closure_path",
+        ),
         cases=tuple(_parse_case(item) for item in _required_list(data, "cases")),
     )
 
@@ -252,6 +263,7 @@ def validate_fixed_point_construction_cases(
     )
     checked_graph_cases_path = Path(manifest.substitution_graph_correctness_cases_path)
     checked_bridge_path = Path(manifest.fixed_point_equation_bridge_targets_path)
+    checked_diagonal_closure_path = Path(manifest.diagonal_instance_closure_path)
 
     codebook = load_formal_codebook(checked_codebook_path)
     codebook_report = validate_formal_codebook(
@@ -295,6 +307,13 @@ def validate_fixed_point_construction_cases(
         checked_language_path,
         checked_willard_map_path,
     )
+    diagonal_closure = load_fixed_point_diagonal_instance_closure(
+        checked_diagonal_closure_path
+    )
+    diagonal_closure_report = validate_fixed_point_diagonal_instance_closure(
+        diagonal_closure,
+        checked_willard_map_path,
+    )
 
     results: list[FixedPointConstructionCaseValidation] = [
         _accepted("manifest", f"loaded {len(manifest.cases)} case(s)")
@@ -309,6 +328,7 @@ def validate_fixed_point_construction_cases(
         graph_correctness_report,
         graph_case_report,
         bridge_report,
+        diagonal_closure_report,
     )
     results.extend(dependency_results)
     case_results, observations = _validate_cases(manifest.cases, accepted_dependencies)
@@ -324,6 +344,7 @@ def validate_fixed_point_construction_cases(
         substitution_graph_correctness_targets_path=checked_graph_correctness_path,
         substitution_graph_correctness_cases_path=checked_graph_cases_path,
         fixed_point_equation_bridge_targets_path=checked_bridge_path,
+        diagonal_instance_closure_path=checked_diagonal_closure_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
         observations=tuple(observations),
@@ -361,6 +382,7 @@ def fixed_point_construction_cases_payload(
         "fixed_point_equation_bridge_targets_path": str(
             report.fixed_point_equation_bridge_targets_path
         ),
+        "diagonal_instance_closure_path": str(report.diagonal_instance_closure_path),
         "willard_map": str(report.willard_map_path),
         "case_count": report.case_count,
         "failed_subjects": list(report.failed_subjects),
@@ -519,6 +541,11 @@ def _validate_references(
             manifest.fixed_point_equation_bridge_targets_path,
             "claims/fixed_point_equation_bridge_targets.json",
         ),
+        (
+            "diagonal_instance_closure_path",
+            manifest.diagonal_instance_closure_path,
+            "claims/fixed_point_diagonal_instance_closure.json",
+        ),
     )
     results: list[FixedPointConstructionCaseValidation] = []
     for subject, actual, expected_value in expected:
@@ -539,6 +566,7 @@ def _validate_dependency_reports(
     graph_correctness_report: Any,
     graph_case_report: Any,
     bridge_report: Any,
+    diagonal_closure_report: Any,
 ) -> tuple[list[FixedPointConstructionCaseValidation], frozenset[str]]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
@@ -559,6 +587,11 @@ def _validate_dependency_reports(
             "fixed_point_equation_bridge",
             bridge_report,
             "fixed-point equation bridge",
+        ),
+        (
+            "diagonal_instance_closure",
+            diagonal_closure_report,
+            "fixed-point diagonal instance closure",
         ),
     )
     results: list[FixedPointConstructionCaseValidation] = []
@@ -751,6 +784,7 @@ def _failed_subject_for_result(subject: str) -> str:
         "substitution_graph_correctness",
         "substitution_graph_correctness_cases",
         "fixed_point_equation_bridge",
+        "diagonal_instance_closure",
     }:
         return "fixed-point-construction-case-dependency"
     if subject.endswith("_path"):

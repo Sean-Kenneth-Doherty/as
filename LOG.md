@@ -5713,3 +5713,34 @@
   default suite passed 1,256 tests. This is not a substitution
   representability proof, substitution graph correctness proof, bridge equality
   proof, fixed-point equation proof, or self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Diagonal Instance Closure Domain
+
+- Added ADR-0264 to make the first fixed-point construction case depend on
+  finite evidence that the current diagonal instance is closed,
+  codebook-stable, target-skeleton aligned, and bridge-aligned.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.fixed_point_diagonal_instance_closure` and
+  `claims/fixed_point_diagonal_instance_closure.json` did not exist, the
+  construction-case manifest had no `diagonal_instance_closure_path`, and the
+  first construction case still had only three dependency subjects.
+- Added `claims/fixed_point_diagonal_instance_closure.json` with a one-point
+  finite closure domain for the current diagonal instance.
+- Added `autarkic_systems/fixed_point_diagonal_instance_closure.py`, deriving
+  the current diagonal instance and checking closure, codebook roundtrip,
+  target skeleton preservation, diagonal slot shape, and bridge agreement.
+- Updated `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems/fixed_point_construction_cases.py` so the
+  `diagonal-instance-closure` case requires the accepted
+  `diagonal_instance_closure` dependency while remaining `proof-case-open`.
+- Focused diagonal-instance-closure/construction-cases tests passed 22 tests.
+  Live diagonal-instance-closure text/JSON output reported one closed,
+  codebook-stable, bridge-aligned closure point with no failed subjects; live
+  construction-cases JSON reported `diagonal_instance_closure` as accepted for
+  the first case; live formal-confidence JSON remained accepted with one
+  blocked target; live project-status summary remained accepted. Adjacent
+  fixed-point construction regression tests passed 80 tests, compileall/JSON
+  parsing/diff checks passed, and the full default suite passed 1,267 tests.
+  This is not a substitution representability proof, substitution graph
+  correctness proof, bridge equality proof, fixed-point equation proof,
+  arithmetized proof predicate, or self-consistency theorem.

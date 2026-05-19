@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "closure_set_id": "as-fixed-point-diagonal-instance-closure-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite closure evidence for the current fixed-point diagonal instance. This checks that the diagonal instance is closed, codebook-stable, target-skeleton aligned, and bridge-aligned without claiming substitution representability, bridge equality, a fixed-point equation, or self-consistency.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "expected_closure_count": 1,
+  "expected_diagonal_instance_code_length": 296,
+  "expected_diagonal_instance_code_prefix": [41, 1, 22, 11, 1, 18, 17, 13, 13, 13, 13, 13],
+  "required_source_kinds": [
+    "diagonal-instance"
+  ],
+  "required_future_work": [
+    "substitution-representability-proof",
+    "substitution-graph-correctness-proof",
+    "bridge-equality-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Prove the bridge equality and representability obligations before treating this closed diagonal instance as a fixed-point equation proof."
+}
