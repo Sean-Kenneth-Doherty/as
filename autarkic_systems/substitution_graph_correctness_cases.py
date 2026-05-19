@@ -35,6 +35,10 @@ from autarkic_systems.substitution_graph_quotation_term_closure import (
     load_substitution_graph_quotation_term_closure,
     validate_substitution_graph_quotation_term_closure,
 )
+from autarkic_systems.substitution_graph_meta_substitution_semantics import (
+    load_substitution_graph_meta_substitution_semantics,
+    validate_substitution_graph_meta_substitution_semantics,
+)
 from autarkic_systems.substitution_graph_correctness import (
     SubstitutionGraphCorrectnessObservation,
     load_substitution_graph_correctness_targets,
@@ -68,7 +72,11 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
         "quotation_term",
         "quotation_term_closure",
     ),
-    "meta-substitution-semantics": ("correctness_target", "formal_substitution"),
+    "meta-substitution-semantics": (
+        "correctness_target",
+        "formal_substitution",
+        "meta_substitution_semantics",
+    ),
     "formula-schema-relation": ("correctness_target", "formula_candidate"),
     "diagonal-witness-composition": (
         "correctness_target",
@@ -133,6 +141,7 @@ class SubstitutionGraphCorrectnessCaseManifest:
     substitution_representability_targets_path: str
     codebook_roundtrip_path: str
     quotation_term_closure_path: str
+    meta_substitution_semantics_path: str
     cases: tuple[SubstitutionGraphCorrectnessCase, ...]
 
 
@@ -171,6 +180,7 @@ class SubstitutionGraphCorrectnessCaseReport:
     substitution_representability_targets_path: Path
     codebook_roundtrip_path: Path
     quotation_term_closure_path: Path
+    meta_substitution_semantics_path: Path
     willard_map_path: Path
     results: tuple[SubstitutionGraphCorrectnessCaseValidation, ...]
     observations: tuple[SubstitutionGraphCorrectnessCaseObservation, ...]
@@ -235,6 +245,10 @@ def load_substitution_graph_correctness_cases(
             data,
             "quotation_term_closure_path",
         ),
+        meta_substitution_semantics_path=_required_text(
+            data,
+            "meta_substitution_semantics_path",
+        ),
         cases=tuple(_parse_case(item) for item in _required_list(data, "cases")),
     )
 
@@ -257,6 +271,7 @@ def validate_substitution_graph_correctness_cases(
     )
     checked_roundtrip_path = Path(manifest.codebook_roundtrip_path)
     checked_closure_path = Path(manifest.quotation_term_closure_path)
+    checked_meta_substitution_path = Path(manifest.meta_substitution_semantics_path)
 
     codebook = load_formal_codebook(checked_codebook_path)
     codebook_report = validate_formal_codebook(
@@ -314,6 +329,13 @@ def validate_substitution_graph_correctness_cases(
         closure_manifest,
         checked_willard_map_path,
     )
+    meta_substitution_manifest = load_substitution_graph_meta_substitution_semantics(
+        checked_meta_substitution_path,
+    )
+    meta_substitution_report = validate_substitution_graph_meta_substitution_semantics(
+        meta_substitution_manifest,
+        checked_willard_map_path,
+    )
 
     results: list[SubstitutionGraphCorrectnessCaseValidation] = [
         _accepted("manifest", f"loaded {len(manifest.cases)} case(s)")
@@ -328,6 +350,7 @@ def validate_substitution_graph_correctness_cases(
         representability_report,
         roundtrip_report,
         closure_report,
+        meta_substitution_report,
     )
     results.extend(dependency_results)
     case_results, observations = _validate_cases(
@@ -348,6 +371,7 @@ def validate_substitution_graph_correctness_cases(
         substitution_representability_targets_path=checked_representability_path,
         codebook_roundtrip_path=checked_roundtrip_path,
         quotation_term_closure_path=checked_closure_path,
+        meta_substitution_semantics_path=checked_meta_substitution_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
         observations=tuple(observations),
@@ -382,6 +406,9 @@ def substitution_graph_correctness_cases_report_payload(
         ),
         "codebook_roundtrip_path": str(report.codebook_roundtrip_path),
         "quotation_term_closure_path": str(report.quotation_term_closure_path),
+        "meta_substitution_semantics_path": str(
+            report.meta_substitution_semantics_path
+        ),
         "willard_map": str(report.willard_map_path),
         "case_count": report.case_count,
         "failed_subjects": list(report.failed_subjects),
@@ -553,6 +580,11 @@ def _validate_references(
             manifest.quotation_term_closure_path,
             "claims/substitution_graph_quotation_term_closure.json",
         ),
+        (
+            "meta_substitution_semantics_path",
+            manifest.meta_substitution_semantics_path,
+            "claims/substitution_graph_meta_substitution_semantics.json",
+        ),
     )
     results: list[SubstitutionGraphCorrectnessCaseValidation] = []
     for subject, actual, expected_value in expected:
@@ -574,6 +606,7 @@ def _validate_dependency_reports(
     representability_report: Any,
     roundtrip_report: Any,
     closure_report: Any,
+    meta_substitution_report: Any,
 ) -> tuple[list[SubstitutionGraphCorrectnessCaseValidation], frozenset[str]]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
@@ -588,6 +621,11 @@ def _validate_dependency_reports(
         ),
         ("codebook_roundtrip", roundtrip_report, "codebook roundtrip"),
         ("quotation_term_closure", closure_report, "quotation term closure"),
+        (
+            "meta_substitution_semantics",
+            meta_substitution_report,
+            "meta-substitution semantics",
+        ),
     )
     results: list[SubstitutionGraphCorrectnessCaseValidation] = []
     accepted_dependencies: set[str] = set()

@@ -5567,3 +5567,30 @@
   ADR-0257 roundtrip regression passed 10 tests. This is finite evidence for
   the second open correctness case, not a general quotation closure or formula
   correctness proof.
+
+## 2026-05-19 - Substitution Graph Meta-Substitution Semantics Domain
+
+- Added ADR-0259 to make the third substitution graph correctness case depend
+  on finite meta-substitution semantic evidence over the current graph-domain
+  substitutions.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_meta_substitution_semantics` and
+  `claims/substitution_graph_meta_substitution_semantics.json` did not exist,
+  the correctness-case manifest had no `meta_substitution_semantics_path`, and
+  the third case still depended only on `correctness_target` and
+  `formal_substitution`.
+- Added `claims/substitution_graph_meta_substitution_semantics.json` with an
+  expected 6-subject finite domain: three formula-candidate graph-variable
+  substitutions and three finite-evaluation substitutions.
+- Added `autarkic_systems/substitution_graph_meta_substitution_semantics.py`,
+  deriving those substitutions, checking closed replacement quotation terms,
+  checking the closed-replacement free-variable rule, checking no-op behavior
+  when the substituted variable is not free, and checking agreement with the
+  existing expected formula/evaluation surfaces.
+- Updated `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems/substitution_graph_correctness_cases.py` so the
+  `meta-substitution-semantics` case requires the accepted
+  `meta_substitution_semantics` dependency.
+- Focused meta-substitution/correctness-case tests passed 22 tests. This is
+  finite evidence for the third open correctness case, not a general
+  substitution or formula correctness proof.

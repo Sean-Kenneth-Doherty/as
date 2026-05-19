@@ -5468,3 +5468,37 @@ Implemented in
 `tests/test_substitution_graph_quotation_term_closure.py`,
 `tests/test_substitution_graph_codebook_roundtrip.py`, and
 `tests/test_substitution_graph_correctness_cases.py`.
+
+## ADR-0259: Substitution Graph Meta-Substitution Semantics Domain
+
+Goal: make the third substitution graph correctness case depend on executable
+semantic evidence over the concrete meta-level substitutions currently used by
+the formula candidate and finite evaluation examples.
+
+Deliverables:
+
+- `claims/substitution_graph_meta_substitution_semantics.json` with the
+  expected 6-subject finite semantics domain;
+- `autarkic_systems.substitution_graph_meta_substitution_semantics` validation
+  that derives the three formula-candidate graph-variable substitutions and
+  the three finite-evaluation substitutions, checks closed replacements,
+  checks output free-variable preservation, and checks expected output
+  surfaces;
+- text/JSON output for subject count, source-kind counts, and semantic
+  failures;
+- `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems.substitution_graph_correctness_cases` updated so the
+  `meta-substitution-semantics` case requires the accepted
+  `meta_substitution_semantics` dependency; and
+- no general substitution proof, formula correctness proof, substitution
+  representability proof, diagonal lemma, fixed-point equation proof,
+  self-consistency theorem, GitHub submission logic change, or runtime
+  command-token behavior change.
+
+Status: accepted in
+`docs/adr/0259-substitution-graph-meta-substitution-semantics-domain.md`.
+Implemented in
+`autarkic_systems/substitution_graph_meta_substitution_semantics.py` and
+`autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
+`tests/test_substitution_graph_meta_substitution_semantics.py` and
+`tests/test_substitution_graph_correctness_cases.py`.

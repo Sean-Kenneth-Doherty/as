@@ -77,7 +77,8 @@ five open proof cases, and ADR-0255 makes the case map a structured,
 fail-closed dependency of the aggregate formal-confidence validator. ADR-0257
 makes the first case depend on finite graph-domain codebook roundtrip evidence.
 ADR-0258 makes the second case depend on finite graph-domain quotation-term
-closure evidence.
+closure evidence. ADR-0259 makes the third case depend on finite graph-domain
+meta-substitution semantic evidence.
 
 ## Current Target
 
@@ -114,8 +115,9 @@ correctness proof target is recorded and validated through
 `claims/substitution_graph_correctness_targets.json`; the substitution graph
 correctness case map is recorded and validated through
 `claims/substitution_graph_correctness_cases.json`, including finite
-codebook-roundtrip and quotation-term-closure dependencies for the first two
-open cases; the naive equation candidate is recorded and validated through
+codebook-roundtrip, quotation-term-closure, and meta-substitution-semantics
+dependencies for the first three open cases; the naive equation candidate is
+recorded and validated through
 `claims/fixed_point_equation_candidates.json`. The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
 dependency and records why that naive direct embedding route is closed. The
@@ -154,6 +156,8 @@ python -m autarkic_systems.substitution_graph_codebook_roundtrip
 python -m autarkic_systems.substitution_graph_codebook_roundtrip --format json
 python -m autarkic_systems.substitution_graph_quotation_term_closure
 python -m autarkic_systems.substitution_graph_quotation_term_closure --format json
+python -m autarkic_systems.substitution_graph_meta_substitution_semantics
+python -m autarkic_systems.substitution_graph_meta_substitution_semantics --format json
 python -m autarkic_systems.substitution_graph_correctness_cases
 python -m autarkic_systems.substitution_graph_correctness_cases --format json
 python -m autarkic_systems.fixed_point_equation
@@ -178,7 +182,8 @@ The validator checks that:
 - the referenced substitution graph formula candidate validates;
 - the referenced substitution graph correctness target validates;
 - the referenced substitution graph correctness case map validates, including
-  accepted finite codebook-roundtrip and quotation-term-closure dependencies;
+  accepted finite codebook-roundtrip, quotation-term-closure, and
+  meta-substitution-semantics dependencies;
 - the referenced fixed-point equation candidate surface validates;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and

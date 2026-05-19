@@ -78,6 +78,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-graph-quotation-term-closure.md` records finite
   quotation-term closure evidence over the current substitution-graph domain
   codes, while leaving the general proof open.
+- `docs/substitution-graph-meta-substitution-semantics.md` records finite
+  meta-substitution semantic evidence over the current substitution-graph
+  substitutions, while leaving the general proof open.
 - `docs/substitution-graph-correctness-cases.md` records five open proof cases
   for the substitution graph correctness target while leaving every case
   unproved.
@@ -447,6 +450,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/substitution_graph_quotation_term_closure.py` validates
   and runs finite quotation-term closure evidence for those same graph-domain
   codes, while keeping the general proof obligation open.
+- `autarkic_systems/substitution_graph_meta_substitution_semantics.py`
+  validates and runs finite semantic evidence for the current graph-domain
+  substitutions, while keeping the general proof obligation open.
 - `autarkic_systems/substitution_graph_correctness_cases.py` validates and
   runs the open case decomposition for that correctness target, tying each
   case to its checked dependency surface without claiming proof.
@@ -471,8 +477,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, including codebook-roundtrip and quotation-term-closure dependencies,
-  and obstruction dependencies.
+  map, including codebook-roundtrip, quotation-term-closure, and
+  meta-substitution-semantics dependencies, and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -579,11 +585,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_quotation_term_closure.json`, including
   12 finite graph-domain code subjects that quote to closed nested sequence
   terms, recover their tokens, and round-trip through the formal codebook.
+- `python -m autarkic_systems.substitution_graph_meta_substitution_semantics --format json`
+  validates `claims/substitution_graph_meta_substitution_semantics.json`,
+  including 6 finite graph-domain substitution subjects whose closed
+  replacements preserve the expected free-variable surface.
 - `python -m autarkic_systems.substitution_graph_correctness_cases --format json`
   validates `claims/substitution_graph_correctness_cases.json`, including the
   five open proof cases for the substitution graph correctness target and the
-  codebook-roundtrip and quotation-term-closure dependencies for the first two
-  cases.
+  codebook-roundtrip, quotation-term-closure, and
+  meta-substitution-semantics dependencies for the first three cases.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct
@@ -594,9 +604,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map with the finite codebook-roundtrip and quotation-term-closure
-  dependencies, and obstruction dependencies, explicit blockers, and the next
-  AS action.
+  map with the finite codebook-roundtrip, quotation-term-closure, and
+  meta-substitution-semantics dependencies, and obstruction dependencies,
+  explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

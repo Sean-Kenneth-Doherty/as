@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "semantics_set_id": "as-substitution-graph-meta-substitution-semantics-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite meta-substitution semantics domain for the current substitution graph formula candidate and finite evaluation examples. This checks the concrete meta-level substitutions currently exercised by those surfaces without claiming a general substitution correctness proof.",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "formal_substitution_examples_path": "language/formal_substitution_examples.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "evaluation_examples_path": "claims/substitution_graph_evaluation_examples.json",
+  "expected_subject_count": 6,
+  "required_source_kinds": [
+    "formula-candidate",
+    "finite-evaluation"
+  ],
+  "required_future_work": [
+    "formula-correctness-proof",
+    "substitution-representability-proof",
+    "diagonal-lemma-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite semantics domain as evidence for the meta-substitution-semantics proof case, then prove the general capture-avoiding substitution semantics needed by the graph correctness proof."
+}

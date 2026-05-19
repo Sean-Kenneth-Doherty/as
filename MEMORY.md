@@ -221,6 +221,14 @@
   `quotation-term-closure` correctness case now requires this accepted
   dependency, but the case remains open and no general quotation-closure or
   formula correctness proof is claimed.
+- ADR-0259 adds `claims/substitution_graph_meta_substitution_semantics.json`
+  and `autarkic_systems.substitution_graph_meta_substitution_semantics`,
+  checking the 6 current graph-domain substitutions for closed replacement
+  terms, free-variable preservation, no-op behavior for a not-free variable,
+  and agreement with the existing expected surfaces; the
+  `meta-substitution-semantics` correctness case now requires this accepted
+  dependency, but the case remains open and no general substitution or formula
+  correctness proof is claimed.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive
