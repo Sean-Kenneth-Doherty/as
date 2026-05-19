@@ -58,8 +58,54 @@ GIT_OUTPUTS = {
     ): "1779110000",
 }
 
+ORIGIN_SUBMITTED_OUTPUTS = {
+    **GIT_OUTPUTS,
+    ("rev-parse", "origin/main"): GIT_OUTPUTS[("rev-parse", "HEAD")],
+    ("rev-parse", "--short", "origin/main"): GIT_OUTPUTS[
+        ("rev-parse", "--short", "HEAD")
+    ],
+    ("rev-list", "--left-right", "--count", "origin/main...HEAD"): "0\t0",
+}
+
 
 class GitHubSubmissionStatusTests(unittest.TestCase):
+    def test_status_prefers_origin_submission_when_origin_main_matches_head(self):
+        runner = FakeGitRunner(ORIGIN_SUBMITTED_OUTPUTS)
+
+        report = build_github_submission_status(
+            runner=runner,
+            clock=lambda: 1779110300,
+        )
+        payload = github_submission_status_payload(report)
+        text = format_github_submission_status(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["submission_state"], "submitted-to-origin")
+        self.assertTrue(payload["origin_main"]["matches_head"])
+        self.assertTrue(payload["fork_main"]["matches_head"])
+        self.assertEqual(payload["origin_main"]["head_ahead_by"], 0)
+        self.assertEqual(payload["origin_main"]["head_behind_by"], 0)
+        self.assertIn("GitHub submission status: submitted-to-origin", text)
+        self.assertIn("origin/main: matches HEAD (be59d20)", text)
+
+    def test_status_accepts_origin_submission_when_fork_main_is_stale(self):
+        outputs = dict(ORIGIN_SUBMITTED_OUTPUTS)
+        outputs[("rev-parse", "fork/main")] = (
+            "df6de62ca82d88fd2b8aee0a1c25d7dfdaa8a67d"
+        )
+        outputs[("rev-parse", "--short", "fork/main")] = "df6de62"
+
+        report = build_github_submission_status(
+            runner=FakeGitRunner(outputs),
+            clock=lambda: 1779110300,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["submission_state"], "submitted-to-origin")
+        self.assertTrue(payload["origin_main"]["matches_head"])
+        self.assertFalse(payload["fork_main"]["matches_head"])
+
     def test_status_payload_reports_fork_submission_and_origin_divergence(self):
         runner = FakeGitRunner(GIT_OUTPUTS)
 

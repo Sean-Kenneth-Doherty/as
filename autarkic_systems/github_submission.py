@@ -1,8 +1,9 @@
 """Local GitHub submission status for the AS workspace.
 
 This command reports git evidence for the current submission path without
-contacting GitHub APIs. It is a handoff aid: the fork remote is the visible
-submission target when upstream direct pushes are permission-blocked.
+contacting GitHub APIs. It is a handoff aid: the source remote is the preferred
+submission target when origin/main matches HEAD, with fork/main preserved as a
+fallback path when upstream direct pushes are permission-blocked.
 """
 
 from __future__ import annotations
@@ -96,9 +97,11 @@ class GitHubSubmissionStatus:
 
     @property
     def accepted(self) -> bool:
-        """Return whether the current HEAD is visible on fork/main."""
+        """Return whether the current HEAD is visible on an accepted main ref."""
 
-        return self.fork_main_matches_head and bool(self.remote_refresh["accepted"])
+        return (
+            self.origin_main_matches_head or self.fork_main_matches_head
+        ) and bool(self.remote_refresh["accepted"])
 
     @property
     def submission_state(self) -> str:
@@ -106,6 +109,8 @@ class GitHubSubmissionStatus:
 
         if self.remote_refresh["requested"] and not self.remote_refresh["accepted"]:
             return "refresh-failed"
+        if self.origin_main_matches_head:
+            return "submitted-to-origin"
         if self.fork_main_matches_head:
             return "submitted-to-fork"
         return "not-submitted-to-fork"
@@ -200,6 +205,15 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
         if report.fork_main_matches_head
         else f"not submitted to fork HEAD ({report.fork_main_short})"
     )
+    origin_line = (
+        f"origin/main: matches HEAD ({report.origin_main_short})"
+        if report.origin_main_matches_head
+        else (
+            "origin/main: HEAD ahead by "
+            f"{report.head_ahead_origin_main_by} commits, behind by "
+            f"{report.head_behind_origin_main_by} commits"
+        )
+    )
     lines = [
         f"GitHub submission status: {report.submission_state}",
     ]
@@ -214,11 +228,7 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
         f"Fork compare: {report.fork_compare_url}",
         f"fork/main: {fork_line}",
         _format_remote_ref_freshness(report.fork_main_ref_freshness),
-        (
-            "origin/main: HEAD ahead by "
-            f"{report.head_ahead_origin_main_by} commits, behind by "
-            f"{report.head_behind_origin_main_by} commits"
-        ),
+        origin_line,
         f"Origin main: {report.origin_main_url}",
         f"Origin: {report.origin_url}",
         f"Fork: {report.fork_url}",

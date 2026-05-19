@@ -5499,3 +5499,18 @@
   `target-substitution-graph-correctness-cases` on failure.
 - Focused formal-confidence/project-status tests passed 107 tests. The
   formal-confidence target remains blocked on fixed-point construction.
+
+## 2026-05-18 - Origin Main Submission Status
+
+- Added ADR-0256 to make GitHub submission and handoff reports prefer source
+  `origin/main` evidence now that the current account has WRITE access to
+  `jpt4/as`.
+- Added red tests before implementation. The red run failed because a matching
+  `origin/main` was still labeled `submitted-to-fork`, and a source-submitted
+  state with stale `fork/main` did not count as accepted handoff evidence.
+- Updated `autarkic_systems.github_submission` so `origin/main` matching
+  `HEAD` reports `submitted-to-origin`, renders `origin/main: matches HEAD`,
+  and remains accepted even when the fork ref is stale.
+- Preserved the existing `submitted-to-fork` fallback when `origin/main` does
+  not match but `fork/main` does.
+- Focused GitHub submission and handoff tests passed 21 tests.

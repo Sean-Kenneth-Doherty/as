@@ -5384,3 +5384,23 @@ Status: accepted in
 `docs/adr/0255-formal-confidence-correctness-cases-dependency.md`.
 Implemented in `autarkic_systems/formal_confidence.py`, with tests in
 `tests/test_formal_confidence_target.py`.
+
+## ADR-0256: Origin Main Submission Status
+
+Goal: prefer source-repository submission evidence now that `jpt4/as` accepts
+direct pushes from the current GitHub account.
+
+Deliverables:
+
+- `submitted-to-origin` submission state when `origin/main` matches `HEAD`;
+- accepted submission status when `origin/main` matches even if `fork/main` is
+  stale;
+- preserved `submitted-to-fork` fallback when only `fork/main` matches `HEAD`;
+- text output rendering `origin/main: matches HEAD (...)` for source-submitted
+  states; and
+- no GitHub API dependency, remote URL changes, fork deletion, pull requests,
+  source-evidence changes, or command-token behavior changes.
+
+Status: accepted in `docs/adr/0256-origin-main-submission-status.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

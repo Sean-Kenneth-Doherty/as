@@ -231,9 +231,9 @@
 - `AS-FORMAL-CONFIDENCE-TARGET-001` now points at the fixed-point target and no
   longer uses the broad `self-reference-fixed-point` blocker. It remains
   blocked on `fixed-point-construction`.
-- Direct pushes to `jpt4/as` are blocked for `Sean-Kenneth-Doherty`; current AS
-  work is published at `https://github.com/Sean-Kenneth-Doherty/as`, and
-  upstream issue `jpt4/as#1` records the permission blocker and fork handoff.
+- `jpt4/as` now grants WRITE access to `Sean-Kenneth-Doherty`; current AS work
+  should be pushed to source `origin/main` after local fast-forward merge. The
+  fork remote remains preserved as a fallback and historical trace.
 - `sources/proflog_frontier_status.json` and
   `docs/proflog-frontier-status.md` are the P6 source-status record. Public
   `jpt4/proflog` main at `77af848` is background only, not dependency-ready
@@ -839,6 +839,11 @@
 - ADR-0222 adds `fork_main.compare_url` / `Fork compare: ...` to GitHub
   submission and handoff reports, comparing refreshed `origin/main` to
   submitted `HEAD` on the fork.
+- ADR-0256 makes source `origin/main` the preferred GitHub submission target in
+  `autarkic_systems.github_submission` and handoff reports: matching
+  `origin/main` reports `submitted-to-origin` and remains accepted even when
+  `fork/main` is stale; matching fork-only states still report
+  `submitted-to-fork`.
 - ADR-0134 adds `python -m autarkic_systems.proof_certificates` with text/JSON
   validation of the transition proof-certificate surface and failing exit codes
   for rejected certificate manifests.

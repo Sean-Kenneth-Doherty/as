@@ -210,6 +210,28 @@ SUBMISSION_REPORT = GitHubSubmissionStatus(
     tracking_issue_url=DEFAULT_TRACKING_ISSUE_URL,
 )
 
+SOURCE_SUBMISSION_REPORT = GitHubSubmissionStatus(
+    branch="main",
+    head_commit="04158fc29229d091f616734725be3c8f54198200",
+    head_short="04158fc",
+    origin_url="https://github.com/jpt4/as.git",
+    fork_url="https://github.com/Sean-Kenneth-Doherty/as.git",
+    origin_main_commit="04158fc29229d091f616734725be3c8f54198200",
+    origin_main_short="04158fc",
+    fork_main_commit="df6de62ca82d88fd2b8aee0a1c25d7dfdaa8a67d",
+    fork_main_short="df6de62",
+    fork_main_ref_freshness={
+        "state": "fresh",
+        "checked_ref": "refs/remotes/fork/main",
+        "updated_at_unix": 1779110000,
+        "age_seconds": 300,
+        "max_age_seconds": 86400,
+    },
+    head_behind_origin_main_by=0,
+    head_ahead_origin_main_by=0,
+    tracking_issue_url=DEFAULT_TRACKING_ISSUE_URL,
+)
+
 
 def build_project_report():
     return PROJECT_REPORT
@@ -219,11 +241,33 @@ def build_submission_report():
     return SUBMISSION_REPORT
 
 
+def build_source_submission_report():
+    return SOURCE_SUBMISSION_REPORT
+
+
 def build_vertical_demo_digest():
     return VERTICAL_DEMO_DIGEST
 
 
 class HandoffStatusTests(unittest.TestCase):
+    def test_handoff_accepts_source_origin_submission(self):
+        report = build_handoff_status(
+            project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
+            submission_builder=build_source_submission_report,
+        )
+        payload = handoff_status_payload(report)
+        text = format_handoff_status(report)
+
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["handoff_state"], "ready")
+        self.assertEqual(
+            payload["github_submission"]["submission_state"],
+            "submitted-to-origin",
+        )
+        self.assertIn("GitHub submission status: submitted-to-origin", text)
+        self.assertIn("origin/main: matches HEAD (04158fc)", text)
+
     def test_handoff_payload_combines_project_and_submission_status(self):
         report = build_handoff_status(
             project_builder=build_project_report,

@@ -35,9 +35,10 @@ git -C /home/sean/Projects/_upstream/leanTAP rev-parse HEAD
 
 ## Notes
 
-- The AS local repository is ahead of public `origin/main` because pushing to
-  `jpt4/as` returned HTTP 403 for the current GitHub account. Local commits are
-  still preserved in the branch history.
+- The current GitHub account has WRITE access to `jpt4/as`; current AS work is
+  pushed to source `origin/main` when a slice lands. The fork remote remains
+  preserved as a fallback and historical trace for earlier permission-blocked
+  submissions.
 - The AS `reviewed_commit` records the local integration baseline before
   ADR-0003. The commit containing the manifest necessarily advances AS beyond
   that value, so exact HEAD equality is expected only for the upstream reference
