@@ -75,6 +75,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-graph-codebook-roundtrip.md` records finite codebook
   roundtrip evidence over the current substitution-graph domain codes, while
   leaving the general proof open.
+- `docs/substitution-graph-quotation-term-closure.md` records finite
+  quotation-term closure evidence over the current substitution-graph domain
+  codes, while leaving the general proof open.
 - `docs/substitution-graph-correctness-cases.md` records five open proof cases
   for the substitution graph correctness target while leaving every case
   unproved.
@@ -441,6 +444,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   runs finite codebook roundtrip evidence for the graph-domain codes exercised
   by the formula candidate and finite evaluation examples, while keeping the
   general proof obligation open.
+- `autarkic_systems/substitution_graph_quotation_term_closure.py` validates
+  and runs finite quotation-term closure evidence for those same graph-domain
+  codes, while keeping the general proof obligation open.
 - `autarkic_systems/substitution_graph_correctness_cases.py` validates and
   runs the open case decomposition for that correctness target, tying each
   case to its checked dependency surface without claiming proof.
@@ -465,7 +471,8 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, and obstruction dependencies.
+  map, including codebook-roundtrip and quotation-term-closure dependencies,
+  and obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -568,10 +575,15 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_codebook_roundtrip.json`, including 12
   finite graph-domain code subjects that decode and re-encode through the
   formal codebook.
+- `python -m autarkic_systems.substitution_graph_quotation_term_closure --format json`
+  validates `claims/substitution_graph_quotation_term_closure.json`, including
+  12 finite graph-domain code subjects that quote to closed nested sequence
+  terms, recover their tokens, and round-trip through the formal codebook.
 - `python -m autarkic_systems.substitution_graph_correctness_cases --format json`
   validates `claims/substitution_graph_correctness_cases.json`, including the
   five open proof cases for the substitution graph correctness target and the
-  codebook-roundtrip dependency for the first case.
+  codebook-roundtrip and quotation-term-closure dependencies for the first two
+  cases.
 - `python -m autarkic_systems.fixed_point_obstruction --format json` validates
   `claims/fixed_point_obstructions.json`, including the current
   `obstruction-observed` result and minimum length-growth delta for direct
@@ -582,8 +594,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   diagonal-construction, substitution-representability witness, fixed-point
   equation candidate, substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
-  map, and obstruction dependencies, explicit blockers, and the next AS
-  action.
+  map with the finite codebook-roundtrip and quotation-term-closure
+  dependencies, and obstruction dependencies, explicit blockers, and the next
+  AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

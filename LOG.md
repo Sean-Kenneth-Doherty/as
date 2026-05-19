@@ -5537,3 +5537,33 @@
 - Focused roundtrip/correctness-case tests passed 22 tests. This is finite
   evidence for the first open correctness case, not a general formula
   correctness or substitution representability proof.
+
+## 2026-05-19 - Substitution Graph Quotation Term Closure Domain
+
+- Added ADR-0258 to make the second substitution graph correctness case depend
+  on finite quotation-term closure evidence over the current graph-domain
+  codes.
+- Added red tests before implementation. The red run failed because
+  `autarkic_systems.substitution_graph_quotation_term_closure` and
+  `claims/substitution_graph_quotation_term_closure.json` did not exist, the
+  correctness-case manifest had no `quotation_term_closure_path`, and the
+  second case still depended only on `correctness_target`, `codebook`, and
+  `quotation_term`.
+- Added `claims/substitution_graph_quotation_term_closure.json` with an
+  expected 12-subject finite domain reused from the formula candidate and
+  finite evaluation examples.
+- Added `autarkic_systems/substitution_graph_quotation_term_closure.py`,
+  deriving those code subjects, quoting each as a nested sequence term,
+  checking closure, recovering the original tokens, and round-tripping each
+  term through the formal codebook.
+- Updated `autarkic_systems/substitution_graph_codebook_roundtrip.py` so the
+  graph-domain subject derivation can be reused without duplicating the
+  witness/evaluation logic.
+- Updated `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems/substitution_graph_correctness_cases.py` so the
+  `quotation-term-closure` case requires the accepted
+  `quotation_term_closure` dependency.
+- Focused quotation-closure/correctness-case tests passed 22 tests, and the
+  ADR-0257 roundtrip regression passed 10 tests. This is finite evidence for
+  the second open correctness case, not a general quotation closure or formula
+  correctness proof.

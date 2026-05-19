@@ -16,6 +16,10 @@ ADR-0257 adds a finite codebook-roundtrip verifier for the graph-domain codes
 currently exercised by the formula candidate and finite evaluation examples,
 then makes the `codebook-roundtrip` case depend on that verifier.
 
+ADR-0258 adds a finite quotation-term-closure verifier over the same graph
+domain, then makes the `quotation-term-closure` case depend on that accepted
+closure evidence.
+
 ## Purpose
 
 The correctness target is useful because it names the theorem. The case
@@ -38,6 +42,8 @@ python -m autarkic_systems.substitution_graph_correctness_cases
 python -m autarkic_systems.substitution_graph_correctness_cases --format json
 python -m autarkic_systems.substitution_graph_codebook_roundtrip
 python -m autarkic_systems.substitution_graph_codebook_roundtrip --format json
+python -m autarkic_systems.substitution_graph_quotation_term_closure
+python -m autarkic_systems.substitution_graph_quotation_term_closure --format json
 ```
 
 The validator checks that:
@@ -46,6 +52,8 @@ The validator checks that:
   formula-candidate, and substitution-representability dependencies remain
   accepted;
 - the codebook-roundtrip domain dependency remains accepted for the first case;
+- the quotation-term-closure domain dependency remains accepted for the second
+  case;
 - case IDs are unique;
 - each case targets `AS-SUBSTITUTION-GRAPH-CORRECTNESS-TARGET`;
 - each case preserves `proof-case-open`;

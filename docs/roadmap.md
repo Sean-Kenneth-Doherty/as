@@ -5434,3 +5434,37 @@ in `autarkic_systems/substitution_graph_codebook_roundtrip.py` and
 `autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
 `tests/test_substitution_graph_codebook_roundtrip.py` and
 `tests/test_substitution_graph_correctness_cases.py`.
+
+## ADR-0258: Substitution Graph Quotation Term Closure Domain
+
+Goal: make the second substitution graph correctness case depend on executable
+quotation-term closure evidence over the same graph-domain code set exercised
+by the formula candidate and finite evaluation examples.
+
+Deliverables:
+
+- `claims/substitution_graph_quotation_term_closure.json` with the expected
+  12-subject finite closure domain;
+- `autarkic_systems.substitution_graph_quotation_term_closure` validation that
+  derives formula-candidate and finite-evaluation code subjects, quotes each
+  as a nested sequence term, checks closure, recovers the original tokens, and
+  round-trips the term through the formal codebook;
+- text/JSON output for subject count, source-kind counts, and closure
+  failures;
+- `claims/substitution_graph_correctness_cases.json` and
+  `autarkic_systems.substitution_graph_correctness_cases` updated so the
+  `quotation-term-closure` case requires the accepted
+  `quotation_term_closure` dependency; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma, fixed-point equation proof, self-consistency theorem, GitHub
+  submission logic change, or runtime command-token behavior change.
+
+Status: accepted in
+`docs/adr/0258-substitution-graph-quotation-term-closure-domain.md`.
+Implemented in
+`autarkic_systems/substitution_graph_quotation_term_closure.py`,
+`autarkic_systems/substitution_graph_codebook_roundtrip.py`, and
+`autarkic_systems/substitution_graph_correctness_cases.py`, with tests in
+`tests/test_substitution_graph_quotation_term_closure.py`,
+`tests/test_substitution_graph_codebook_roundtrip.py`, and
+`tests/test_substitution_graph_correctness_cases.py`.

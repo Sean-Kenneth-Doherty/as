@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "closure_set_id": "as-substitution-graph-quotation-term-closure-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite quotation-term closure domain for the current substitution graph formula candidate and finite evaluation examples. This checks that every graph-domain code currently exercised by those surfaces quotes to a closed nested sequence term that recovers the original token sequence and round-trips through the formal codebook, without claiming a general formula correctness proof.",
+  "codebook_path": "language/formal_codebook.json",
+  "quotation_term_examples_path": "language/formal_quotation_term_examples.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "evaluation_examples_path": "claims/substitution_graph_evaluation_examples.json",
+  "expected_subject_count": 12,
+  "required_source_kinds": [
+    "formula-candidate",
+    "finite-evaluation"
+  ],
+  "required_future_work": [
+    "formula-correctness-proof",
+    "substitution-representability-proof",
+    "diagonal-lemma-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this finite closure domain as evidence for the quotation-term-closure proof case, then prove the general graph-domain quotation closure property before promoting the correctness case."
+}

@@ -1,18 +1,20 @@
-"""Finite codebook roundtrip domain for substitution graph evidence.
+"""Finite quotation-term closure domain for substitution graph evidence.
 
-This module checks the graph-domain codes currently exercised by the
-substitution graph formula candidate and finite evaluation examples. It is
-finite executable evidence for the first correctness proof case, not a proof
-that every possible substitution graph code round-trips.
+This module checks that the graph-domain code subjects currently exercised by
+the substitution graph formula candidate and finite evaluation examples quote
+to closed nested sequence terms. It is finite executable evidence for the
+second correctness proof case, not a proof of general quotation closure.
 """
 
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import json
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 from autarkic_systems.formal_code import (
     FormalCodebook,
@@ -21,28 +23,27 @@ from autarkic_systems.formal_code import (
     load_formal_codebook,
     validate_formal_codebook,
 )
-from autarkic_systems.formal_quotation_term import quote_tokens_as_term
-from autarkic_systems.formal_substitution import substitute_node
+from autarkic_systems.formal_quotation import numeral_to_natural
+from autarkic_systems.formal_quotation_term import (
+    load_quotation_term_examples,
+    quote_tokens_as_term,
+    validate_quotation_term_examples,
+)
+from autarkic_systems.formal_substitution import free_variables
+from autarkic_systems.substitution_graph_codebook_roundtrip import (
+    derive_substitution_graph_code_subjects,
+)
 from autarkic_systems.substitution_graph_evaluation import (
-    SubstitutionGraphEvaluationExample,
     load_substitution_graph_evaluation_examples,
     validate_substitution_graph_evaluation_examples,
 )
 from autarkic_systems.substitution_graph_formula import (
-    SubstitutionGraphFormulaCandidate,
     load_substitution_graph_formula_candidates,
     validate_substitution_graph_formula_candidates,
 )
-from autarkic_systems.substitution_representability import (
-    SubstitutionRepresentabilityObservation,
-    SubstitutionRepresentabilityWitness,
-    build_substitution_witness_output_code,
-    load_substitution_representability_targets,
-    validate_substitution_representability_targets,
-)
 
 
-DEFAULT_ROUNDTRIP = Path("claims/substitution_graph_codebook_roundtrip.json")
+DEFAULT_CLOSURE = Path("claims/substitution_graph_quotation_term_closure.json")
 DEFAULT_WILLARD_MAP = Path("sources/willard_definition_map.json")
 
 REQUIRED_SOURCE_KINDS = (
@@ -66,15 +67,16 @@ REQUIRED_NON_CLAIMS = (
 
 
 @dataclass(frozen=True)
-class SubstitutionGraphCodebookRoundtripManifest:
-    """Loaded manifest for the current substitution graph roundtrip domain."""
+class SubstitutionGraphQuotationTermClosureManifest:
+    """Loaded manifest for the current graph quotation-term closure domain."""
 
     path: Path
     schema_version: int
-    roundtrip_set_id: str
+    closure_set_id: str
     reviewed_at: str
     purpose: str
     codebook_path: str
+    quotation_term_examples_path: str
     formula_candidates_path: str
     evaluation_examples_path: str
     expected_subject_count: int
@@ -85,8 +87,8 @@ class SubstitutionGraphCodebookRoundtripManifest:
 
 
 @dataclass(frozen=True)
-class SubstitutionGraphCodebookRoundtripValidation:
-    """One validation result for graph-domain codebook roundtrips."""
+class SubstitutionGraphQuotationTermClosureValidation:
+    """One validation result for graph quotation-term closure."""
 
     subject: str
     accepted: bool
@@ -94,40 +96,42 @@ class SubstitutionGraphCodebookRoundtripValidation:
 
 
 @dataclass(frozen=True)
-class SubstitutionGraphCodebookRoundtripSubject:
-    """One observed graph-domain code subject and its roundtrip result."""
+class SubstitutionGraphQuotationTermClosureSubject:
+    """One observed graph-domain quotation-term closure subject."""
 
     subject_id: str
     source_kind: str
     source_id: str
     code_role: str
-    code: tuple[int, ...]
-    code_length: int
-    decoded_kind: str
-    roundtrip_ok: bool
+    token_count: int
+    term_code_length: int
+    closed: bool
+    tokens_recovered: bool
+    code_roundtrip_ok: bool
 
 
 @dataclass(frozen=True)
-class SubstitutionGraphCodebookRoundtripReport:
-    """Validation report over the finite graph-domain roundtrip set."""
+class SubstitutionGraphQuotationTermClosureReport:
+    """Validation report over the finite quotation-term closure domain."""
 
-    manifest: SubstitutionGraphCodebookRoundtripManifest
+    manifest: SubstitutionGraphQuotationTermClosureManifest
     codebook_path: Path
+    quotation_term_examples_path: Path
     formula_candidates_path: Path
     evaluation_examples_path: Path
     willard_map_path: Path
-    results: tuple[SubstitutionGraphCodebookRoundtripValidation, ...]
-    subjects: tuple[SubstitutionGraphCodebookRoundtripSubject, ...]
+    results: tuple[SubstitutionGraphQuotationTermClosureValidation, ...]
+    subjects: tuple[SubstitutionGraphQuotationTermClosureSubject, ...]
 
     @property
     def accepted(self) -> bool:
-        """Return whether every roundtrip validation passed."""
+        """Return whether every closure validation passed."""
 
         return all(result.accepted for result in self.results)
 
     @property
     def subject_count(self) -> int:
-        """Return the number of checked graph-domain code subjects."""
+        """Return the number of checked quotation-term closure subjects."""
 
         return len(self.subjects)
 
@@ -154,20 +158,24 @@ class SubstitutionGraphCodebookRoundtripReport:
         return tuple(subjects)
 
 
-def load_substitution_graph_codebook_roundtrip(
-    path: Path | str = DEFAULT_ROUNDTRIP,
-) -> SubstitutionGraphCodebookRoundtripManifest:
-    """Load the graph-domain codebook roundtrip manifest from JSON."""
+def load_substitution_graph_quotation_term_closure(
+    path: Path | str = DEFAULT_CLOSURE,
+) -> SubstitutionGraphQuotationTermClosureManifest:
+    """Load the graph quotation-term closure manifest from JSON."""
 
     manifest_path = Path(path)
     data = json.loads(manifest_path.read_text(encoding="utf-8"))
-    return SubstitutionGraphCodebookRoundtripManifest(
+    return SubstitutionGraphQuotationTermClosureManifest(
         path=manifest_path,
         schema_version=_required_int(data, "schema_version"),
-        roundtrip_set_id=_required_text(data, "roundtrip_set_id"),
+        closure_set_id=_required_text(data, "closure_set_id"),
         reviewed_at=_required_text(data, "reviewed_at"),
         purpose=_required_text(data, "purpose"),
         codebook_path=_required_text(data, "codebook_path"),
+        quotation_term_examples_path=_required_text(
+            data,
+            "quotation_term_examples_path",
+        ),
         formula_candidates_path=_required_text(data, "formula_candidates_path"),
         evaluation_examples_path=_required_text(data, "evaluation_examples_path"),
         expected_subject_count=_required_int(data, "expected_subject_count"),
@@ -178,20 +186,27 @@ def load_substitution_graph_codebook_roundtrip(
     )
 
 
-def validate_substitution_graph_codebook_roundtrip(
-    manifest: SubstitutionGraphCodebookRoundtripManifest,
+def validate_substitution_graph_quotation_term_closure(
+    manifest: SubstitutionGraphQuotationTermClosureManifest,
     willard_map_path: Path | str = DEFAULT_WILLARD_MAP,
-) -> SubstitutionGraphCodebookRoundtripReport:
-    """Validate graph-domain code roundtrips through the checked codebook."""
+) -> SubstitutionGraphQuotationTermClosureReport:
+    """Validate finite graph-domain quotation-term closure."""
 
     checked_willard_map_path = Path(willard_map_path)
     checked_codebook_path = Path(manifest.codebook_path)
+    checked_quotation_path = Path(manifest.quotation_term_examples_path)
     checked_formula_path = Path(manifest.formula_candidates_path)
     checked_evaluation_path = Path(manifest.evaluation_examples_path)
 
     codebook = load_formal_codebook(checked_codebook_path)
     codebook_report = validate_formal_codebook(
         codebook,
+        willard_map_path=checked_willard_map_path,
+    )
+    quotation_terms = load_quotation_term_examples(checked_quotation_path)
+    quotation_report = validate_quotation_term_examples(
+        quotation_terms,
+        checked_codebook_path,
         willard_map_path=checked_willard_map_path,
     )
     formula_manifest = load_substitution_graph_formula_candidates(checked_formula_path)
@@ -207,34 +222,40 @@ def validate_substitution_graph_codebook_roundtrip(
         checked_willard_map_path,
     )
 
-    results: list[SubstitutionGraphCodebookRoundtripValidation] = [
-        _accepted("manifest", f"loaded {manifest.roundtrip_set_id}")
+    results: list[SubstitutionGraphQuotationTermClosureValidation] = [
+        _accepted("manifest", f"loaded {manifest.closure_set_id}")
     ]
     results.extend(_validate_references(manifest))
     results.extend(
         _validate_dependency_reports(
             codebook_report,
+            quotation_report,
             formula_report,
             evaluation_report,
         )
     )
-    subjects: list[SubstitutionGraphCodebookRoundtripSubject] = []
+    subjects: list[SubstitutionGraphQuotationTermClosureSubject] = []
     try:
-        subjects = _derive_roundtrip_subjects(
+        code_subjects = derive_substitution_graph_code_subjects(
             formula_manifest.candidates,
             evaluation_manifest.examples,
             codebook,
             formula_manifest.substitution_representability_targets_path,
             checked_willard_map_path,
         )
+        subjects = [
+            _closure_subject(code_subject, codebook)
+            for code_subject in code_subjects
+        ]
     except ValueError as exc:
-        results.append(_rejected("roundtrip_subjects", str(exc)))
+        results.append(_rejected("closure_subjects", str(exc)))
 
     results.extend(_validate_subject_set(manifest, tuple(subjects)))
 
-    return SubstitutionGraphCodebookRoundtripReport(
+    return SubstitutionGraphQuotationTermClosureReport(
         manifest=manifest,
         codebook_path=checked_codebook_path,
+        quotation_term_examples_path=checked_quotation_path,
         formula_candidates_path=checked_formula_path,
         evaluation_examples_path=checked_evaluation_path,
         willard_map_path=checked_willard_map_path,
@@ -243,44 +264,20 @@ def validate_substitution_graph_codebook_roundtrip(
     )
 
 
-def derive_substitution_graph_code_subjects(
-    candidates: tuple[SubstitutionGraphFormulaCandidate, ...],
-    examples: tuple[SubstitutionGraphEvaluationExample, ...],
-    codebook: FormalCodebook,
-    representability_targets_path: str,
-    willard_map_path: Path,
-) -> tuple[SubstitutionGraphCodebookRoundtripSubject, ...]:
-    """Derive current finite substitution graph code subjects.
-
-    The subjects are the concrete code sequences used by the formula-candidate
-    and finite-evaluation surfaces. Callers can apply additional checks over
-    the same finite domain without duplicating the subject derivation.
-    """
-
-    return tuple(
-        _derive_roundtrip_subjects(
-            candidates,
-            examples,
-            codebook,
-            representability_targets_path,
-            willard_map_path,
-        )
-    )
-
-
-def substitution_graph_codebook_roundtrip_report_payload(
-    report: SubstitutionGraphCodebookRoundtripReport,
+def substitution_graph_quotation_term_closure_report_payload(
+    report: SubstitutionGraphQuotationTermClosureReport,
 ) -> dict[str, Any]:
-    """Return a JSON-ready graph-domain roundtrip payload."""
+    """Return a JSON-ready quotation-term closure payload."""
 
     return {
         "accepted": report.accepted,
         "schema_version": report.manifest.schema_version,
-        "roundtrip_manifest": str(report.manifest.path),
-        "roundtrip_set_id": report.manifest.roundtrip_set_id,
+        "closure_manifest": str(report.manifest.path),
+        "closure_set_id": report.manifest.closure_set_id,
         "reviewed_at": report.manifest.reviewed_at,
         "purpose": report.manifest.purpose,
         "codebook_path": str(report.codebook_path),
+        "quotation_term_examples_path": str(report.quotation_term_examples_path),
         "formula_candidates_path": str(report.formula_candidates_path),
         "evaluation_examples_path": str(report.evaluation_examples_path),
         "willard_map": str(report.willard_map_path),
@@ -298,9 +295,11 @@ def substitution_graph_codebook_roundtrip_report_payload(
                 "source_kind": subject.source_kind,
                 "source_id": subject.source_id,
                 "code_role": subject.code_role,
-                "observed_code_length": subject.code_length,
-                "observed_decoded_kind": subject.decoded_kind,
-                "observed_roundtrip_ok": subject.roundtrip_ok,
+                "observed_token_count": subject.token_count,
+                "observed_term_code_length": subject.term_code_length,
+                "observed_closed": subject.closed,
+                "observed_tokens_recovered": subject.tokens_recovered,
+                "observed_code_roundtrip_ok": subject.code_roundtrip_ok,
             }
             for subject in report.subjects
         ],
@@ -316,25 +315,31 @@ def substitution_graph_codebook_roundtrip_report_payload(
     }
 
 
-def format_substitution_graph_codebook_roundtrip_report(
-    report: SubstitutionGraphCodebookRoundtripReport,
+def format_substitution_graph_quotation_term_closure_report(
+    report: SubstitutionGraphQuotationTermClosureReport,
 ) -> str:
-    """Format a concise human-readable graph-domain roundtrip report."""
+    """Format a concise human-readable quotation-term closure report."""
 
     status = "accepted" if report.accepted else "rejected"
     failures = [
-        subject.subject_id for subject in report.subjects if not subject.roundtrip_ok
+        subject.subject_id
+        for subject in report.subjects
+        if not (
+            subject.closed
+            and subject.tokens_recovered
+            and subject.code_roundtrip_ok
+        )
     ]
     source_counts = ", ".join(
         f"{source_kind}={count}"
         for source_kind, count in report.source_kind_counts.items()
     )
     lines = [
-        f"Substitution graph codebook roundtrip: {status}",
-        f"Roundtrip set: {report.manifest.roundtrip_set_id}",
+        f"Substitution graph quotation term closure: {status}",
+        f"Closure set: {report.manifest.closure_set_id}",
         f"Subjects: {report.subject_count}",
         f"Source kinds: {source_counts}",
-        f"Roundtrip failures: {_joined_or_none(tuple(failures))}",
+        f"Closure failures: {_joined_or_none(tuple(failures))}",
         f"Failed subjects: {_joined_or_none(report.failed_subjects)}",
     ]
     lines.append("Validation:")
@@ -344,19 +349,19 @@ def format_substitution_graph_codebook_roundtrip_report(
     return "\n".join(lines)
 
 
-def run_substitution_graph_codebook_roundtrip_cli(
+def run_substitution_graph_quotation_term_closure_cli(
     argv: list[str] | None = None,
 ) -> int:
-    """Run finite graph-domain codebook roundtrip validation."""
+    """Run finite graph-domain quotation-term closure validation."""
 
     parser = argparse.ArgumentParser(
-        prog="python -m autarkic_systems.substitution_graph_codebook_roundtrip",
-        description="Validate substitution graph codebook roundtrip subjects.",
+        prog="python -m autarkic_systems.substitution_graph_quotation_term_closure",
+        description="Validate substitution graph quotation-term closure subjects.",
     )
     parser.add_argument(
-        "--roundtrip",
-        default=str(DEFAULT_ROUNDTRIP),
-        help="Path to the graph-domain roundtrip manifest.",
+        "--closure",
+        default=str(DEFAULT_CLOSURE),
+        help="Path to the graph quotation-term closure manifest.",
     )
     parser.add_argument(
         "--willard-map",
@@ -371,23 +376,87 @@ def run_substitution_graph_codebook_roundtrip_cli(
     )
     args = parser.parse_args(argv)
 
-    manifest = load_substitution_graph_codebook_roundtrip(args.roundtrip)
-    report = validate_substitution_graph_codebook_roundtrip(
+    manifest = load_substitution_graph_quotation_term_closure(args.closure)
+    report = validate_substitution_graph_quotation_term_closure(
         manifest,
         args.willard_map,
     )
     if args.format == "json":
-        print(json.dumps(substitution_graph_codebook_roundtrip_report_payload(report), sort_keys=True))
+        print(json.dumps(substitution_graph_quotation_term_closure_report_payload(report), sort_keys=True))
     else:
-        print(format_substitution_graph_codebook_roundtrip_report(report))
+        print(format_substitution_graph_quotation_term_closure_report(report))
     return 0 if report.accepted else 1
 
 
+def _closure_subject(
+    code_subject: Any,
+    codebook: FormalCodebook,
+) -> SubstitutionGraphQuotationTermClosureSubject:
+    term = quote_tokens_as_term(code_subject.code)
+    recursion_limit = _recursion_limit_for_quotation_code(code_subject.code)
+    with _expanded_recursion_limit(recursion_limit):
+        encoded_term = encode_node(term, codebook)
+        decoded_term = decode_code(encoded_term, codebook)
+        closed = not free_variables(term)
+        code_roundtrip_ok = decoded_term == term
+    recovered_tokens = _tokens_from_quotation_term(term)
+    return SubstitutionGraphQuotationTermClosureSubject(
+        subject_id=code_subject.subject_id,
+        source_kind=code_subject.source_kind,
+        source_id=code_subject.source_id,
+        code_role=code_subject.code_role,
+        token_count=len(recovered_tokens),
+        term_code_length=len(encoded_term),
+        closed=closed,
+        tokens_recovered=recovered_tokens == code_subject.code,
+        code_roundtrip_ok=code_roundtrip_ok,
+    )
+
+
+def _tokens_from_quotation_term(term: dict[str, Any]) -> tuple[int, ...]:
+    tokens: list[int] = []
+    current = term
+    while True:
+        kind = _node_kind(current)
+        if kind == "sequence_nil":
+            return tuple(tokens)
+        if kind != "sequence_cons":
+            raise ValueError(f"unexpected quotation term node: {kind}")
+        tokens.append(numeral_to_natural(_required_node(current, "head")))
+        current = _required_node(current, "tail")
+
+
+def _recursion_limit_for_quotation_code(code: tuple[int, ...]) -> int:
+    """Return a local recursion budget for deeply nested quotation terms."""
+
+    max_token_depth = max(code, default=0)
+    return max(sys.getrecursionlimit(), (len(code) * 2) + max_token_depth + 1000)
+
+
+@contextmanager
+def _expanded_recursion_limit(limit: int) -> Iterator[None]:
+    """Temporarily raise recursion depth for one finite deep-term check."""
+
+    previous = sys.getrecursionlimit()
+    if limit > previous:
+        sys.setrecursionlimit(limit)
+    try:
+        yield
+    finally:
+        if limit > previous:
+            sys.setrecursionlimit(previous)
+
+
 def _validate_references(
-    manifest: SubstitutionGraphCodebookRoundtripManifest,
-) -> list[SubstitutionGraphCodebookRoundtripValidation]:
+    manifest: SubstitutionGraphQuotationTermClosureManifest,
+) -> list[SubstitutionGraphQuotationTermClosureValidation]:
     expected = (
         ("codebook_path", manifest.codebook_path, "language/formal_codebook.json"),
+        (
+            "quotation_term_examples_path",
+            manifest.quotation_term_examples_path,
+            "language/formal_quotation_term_examples.json",
+        ),
         (
             "formula_candidates_path",
             manifest.formula_candidates_path,
@@ -399,7 +468,7 @@ def _validate_references(
             "claims/substitution_graph_evaluation_examples.json",
         ),
     )
-    results: list[SubstitutionGraphCodebookRoundtripValidation] = []
+    results: list[SubstitutionGraphQuotationTermClosureValidation] = []
     for subject, actual, expected_value in expected:
         if actual != expected_value:
             results.append(
@@ -412,15 +481,17 @@ def _validate_references(
 
 def _validate_dependency_reports(
     codebook_report: Any,
+    quotation_report: Any,
     formula_report: Any,
     evaluation_report: Any,
-) -> list[SubstitutionGraphCodebookRoundtripValidation]:
+) -> list[SubstitutionGraphQuotationTermClosureValidation]:
     checks = (
         ("codebook", codebook_report, "formal codebook"),
+        ("quotation_term", quotation_report, "formal quotation term"),
         ("formula_candidates", formula_report, "substitution graph formula"),
         ("evaluation_examples", evaluation_report, "substitution graph evaluation"),
     )
-    results: list[SubstitutionGraphCodebookRoundtripValidation] = []
+    results: list[SubstitutionGraphQuotationTermClosureValidation] = []
     for subject, report, label in checks:
         if report.accepted:
             results.append(_accepted(subject, f"{label} accepted"))
@@ -434,178 +505,22 @@ def _validate_dependency_reports(
     return results
 
 
-def _derive_roundtrip_subjects(
-    candidates: tuple[SubstitutionGraphFormulaCandidate, ...],
-    examples: tuple[SubstitutionGraphEvaluationExample, ...],
-    codebook: FormalCodebook,
-    representability_targets_path: str,
-    willard_map_path: Path,
-) -> list[SubstitutionGraphCodebookRoundtripSubject]:
-    subjects: list[SubstitutionGraphCodebookRoundtripSubject] = []
-    witness_manifest = load_substitution_representability_targets(
-        representability_targets_path,
-    )
-    witness_report = validate_substitution_representability_targets(
-        witness_manifest,
-        willard_map_path=willard_map_path,
-    )
-    if not witness_report.accepted:
-        raise ValueError(
-            "substitution representability rejected: "
-            + _joined_or_none(witness_report.failed_subjects)
-        )
-
-    for candidate in candidates:
-        witness = _find_witness(witness_manifest.witnesses, candidate.witness_id)
-        observation = _find_witness_observation(
-            witness_report.observations,
-            candidate.witness_id,
-        )
-        subjects.extend(
-            _candidate_subjects(
-                candidate,
-                witness,
-                observation,
-                codebook,
-                representability_targets_path,
-            )
-        )
-
-    for example in examples:
-        subjects.extend(_evaluation_subjects(example, codebook))
-
-    return subjects
-
-
-def _candidate_subjects(
-    candidate: SubstitutionGraphFormulaCandidate,
-    witness: SubstitutionRepresentabilityWitness,
-    observation: SubstitutionRepresentabilityObservation,
-    codebook: FormalCodebook,
-    representability_targets_path: str,
-) -> list[SubstitutionGraphCodebookRoundtripSubject]:
-    output_code = build_substitution_witness_output_code(
-        witness_id=candidate.witness_id,
-        targets_path=representability_targets_path,
-    )
-    instance = candidate.formula_node
-    substitutions = (
-        (candidate.graph_variables["formula_code"], observation.formula_code),
-        (candidate.graph_variables["argument_code"], observation.argument_code),
-        (candidate.graph_variables["output_code"], output_code),
-    )
-    for variable, code in substitutions:
-        instance = substitute_node(instance, variable, quote_tokens_as_term(code))
-
-    formula_node = decode_code(observation.formula_code, codebook)
-    evaluated_output_node = substitute_node(
-        formula_node,
-        witness.variable,
-        quote_tokens_as_term(observation.argument_code),
-    )
-    return [
-        _roundtrip_subject(
-            f"{candidate.candidate_id}.formula_code",
-            "formula-candidate",
-            candidate.candidate_id,
-            "formula_code",
-            encode_node(candidate.formula_node, codebook),
-            codebook,
-        ),
-        _roundtrip_subject(
-            f"{candidate.candidate_id}.witness_instance_code",
-            "formula-candidate",
-            candidate.candidate_id,
-            "witness_instance_code",
-            encode_node(instance, codebook),
-            codebook,
-        ),
-        _roundtrip_subject(
-            f"{candidate.candidate_id}.evaluated_output_code",
-            "formula-candidate",
-            candidate.candidate_id,
-            "evaluated_output_code",
-            encode_node(evaluated_output_node, codebook),
-            codebook,
-        ),
-    ]
-
-
-def _evaluation_subjects(
-    example: SubstitutionGraphEvaluationExample,
-    codebook: FormalCodebook,
-) -> list[SubstitutionGraphCodebookRoundtripSubject]:
-    output_node = substitute_node(
-        example.formula_node,
-        example.variable,
-        quote_tokens_as_term(example.argument_code),
-    )
-    return [
-        _roundtrip_subject(
-            f"{example.example_id}.formula_code",
-            "finite-evaluation",
-            example.example_id,
-            "formula_code",
-            encode_node(example.formula_node, codebook),
-            codebook,
-        ),
-        _roundtrip_subject(
-            f"{example.example_id}.argument_code",
-            "finite-evaluation",
-            example.example_id,
-            "argument_code",
-            example.argument_code,
-            codebook,
-        ),
-        _roundtrip_subject(
-            f"{example.example_id}.output_code",
-            "finite-evaluation",
-            example.example_id,
-            "output_code",
-            encode_node(output_node, codebook),
-            codebook,
-        ),
-    ]
-
-
-def _roundtrip_subject(
-    subject_id: str,
-    source_kind: str,
-    source_id: str,
-    code_role: str,
-    code: tuple[int, ...],
-    codebook: FormalCodebook,
-) -> SubstitutionGraphCodebookRoundtripSubject:
-    decoded = decode_code(code, codebook)
-    reencoded = encode_node(decoded, codebook)
-    return SubstitutionGraphCodebookRoundtripSubject(
-        subject_id=subject_id,
-        source_kind=source_kind,
-        source_id=source_id,
-        code_role=code_role,
-        code=code,
-        code_length=len(code),
-        decoded_kind=_node_kind(decoded),
-        roundtrip_ok=reencoded == code,
-    )
-
-
 def _validate_subject_set(
-    manifest: SubstitutionGraphCodebookRoundtripManifest,
-    subjects: tuple[SubstitutionGraphCodebookRoundtripSubject, ...],
-) -> list[SubstitutionGraphCodebookRoundtripValidation]:
-    results: list[SubstitutionGraphCodebookRoundtripValidation] = []
+    manifest: SubstitutionGraphQuotationTermClosureManifest,
+    subjects: tuple[SubstitutionGraphQuotationTermClosureSubject, ...],
+) -> list[SubstitutionGraphQuotationTermClosureValidation]:
+    results: list[SubstitutionGraphQuotationTermClosureValidation] = []
     subject_ids = [subject.subject_id for subject in subjects]
     duplicate_ids = _duplicates(subject_ids)
     if duplicate_ids:
         results.append(
             _rejected(
-                "roundtrip_subject_ids",
+                "closure_subject_ids",
                 "duplicate subject ids: " + ", ".join(duplicate_ids),
             )
         )
     else:
-        results.append(_accepted("roundtrip_subject_ids", "subject ids are unique"))
+        results.append(_accepted("closure_subject_ids", "subject ids are unique"))
 
     if len(subjects) != manifest.expected_subject_count:
         results.append(
@@ -642,19 +557,27 @@ def _validate_subject_set(
     else:
         results.append(_accepted("required_source_kinds", "source kinds covered"))
 
-    failures = [subject.subject_id for subject in subjects if not subject.roundtrip_ok]
+    failures = [
+        subject.subject_id
+        for subject in subjects
+        if not (
+            subject.closed
+            and subject.tokens_recovered
+            and subject.code_roundtrip_ok
+        )
+    ]
     if failures:
         results.append(
             _rejected(
-                "roundtrip_subjects",
-                "roundtrip failures: " + ", ".join(failures),
+                "closure_subjects",
+                "closure failures: " + ", ".join(failures),
             )
         )
     else:
         results.append(
             _accepted(
-                "roundtrip_subjects",
-                f"round-tripped {len(subjects)} graph-domain code subject(s)",
+                "closure_subjects",
+                f"closed {len(subjects)} graph-domain quotation term(s)",
             )
         )
 
@@ -687,42 +610,27 @@ def _validate_subject_set(
     return results
 
 
-def _find_witness(
-    witnesses: tuple[SubstitutionRepresentabilityWitness, ...],
-    witness_id: str,
-) -> SubstitutionRepresentabilityWitness:
-    for witness in witnesses:
-        if witness.witness_id == witness_id:
-            return witness
-    raise ValueError(f"unknown substitution witness: {witness_id}")
-
-
-def _find_witness_observation(
-    observations: tuple[SubstitutionRepresentabilityObservation, ...],
-    witness_id: str,
-) -> SubstitutionRepresentabilityObservation:
-    for observation in observations:
-        if observation.witness_id == witness_id:
-            return observation
-    raise ValueError(f"missing substitution witness observation: {witness_id}")
-
-
 def _failed_subject_for_result(subject: str) -> str:
     if subject == "expected_subject_count":
-        return "substitution-graph-codebook-roundtrip-count"
-    if subject in {"roundtrip_subject_ids", "roundtrip_subjects"}:
-        return "substitution-graph-codebook-roundtrip-subject"
+        return "substitution-graph-quotation-term-closure-count"
+    if subject in {"closure_subject_ids", "closure_subjects"}:
+        return "substitution-graph-quotation-term-closure-subject"
     if subject == "required_source_kinds":
-        return "substitution-graph-codebook-roundtrip-source-kind"
+        return "substitution-graph-quotation-term-closure-source-kind"
     if subject == "required_future_work":
-        return "substitution-graph-codebook-roundtrip-future-work"
+        return "substitution-graph-quotation-term-closure-future-work"
     if subject == "non_claims":
-        return "substitution-graph-codebook-roundtrip-non-claim"
-    if subject in {"codebook", "formula_candidates", "evaluation_examples"}:
-        return "substitution-graph-codebook-roundtrip-dependency"
+        return "substitution-graph-quotation-term-closure-non-claim"
+    if subject in {
+        "codebook",
+        "quotation_term",
+        "formula_candidates",
+        "evaluation_examples",
+    }:
+        return "substitution-graph-quotation-term-closure-dependency"
     if subject.endswith("_path"):
-        return "substitution-graph-codebook-roundtrip-reference"
-    return "substitution-graph-codebook-roundtrip"
+        return "substitution-graph-quotation-term-closure-reference"
+    return "substitution-graph-quotation-term-closure"
 
 
 def _node_kind(node: dict[str, Any]) -> str:
@@ -730,6 +638,13 @@ def _node_kind(node: dict[str, Any]) -> str:
     if not isinstance(kind, str) or not kind:
         raise ValueError("node kind missing")
     return kind
+
+
+def _required_node(node: dict[str, Any], key: str) -> dict[str, Any]:
+    value = node.get(key)
+    if not isinstance(value, dict):
+        raise ValueError(f"required node missing: {key}")
+    return value
 
 
 def _required_text(item: dict[str, Any], key: str) -> str:
@@ -771,8 +686,8 @@ def _duplicates(values: list[str]) -> list[str]:
 def _accepted(
     subject: str,
     detail: str,
-) -> SubstitutionGraphCodebookRoundtripValidation:
-    return SubstitutionGraphCodebookRoundtripValidation(
+) -> SubstitutionGraphQuotationTermClosureValidation:
+    return SubstitutionGraphQuotationTermClosureValidation(
         subject=subject,
         accepted=True,
         detail=detail,
@@ -782,8 +697,8 @@ def _accepted(
 def _rejected(
     subject: str,
     detail: str,
-) -> SubstitutionGraphCodebookRoundtripValidation:
-    return SubstitutionGraphCodebookRoundtripValidation(
+) -> SubstitutionGraphQuotationTermClosureValidation:
+    return SubstitutionGraphQuotationTermClosureValidation(
         subject=subject,
         accepted=False,
         detail=detail,
@@ -795,4 +710,4 @@ def _joined_or_none(values: tuple[str, ...]) -> str:
 
 
 if __name__ == "__main__":
-    raise SystemExit(run_substitution_graph_codebook_roundtrip_cli())
+    raise SystemExit(run_substitution_graph_quotation_term_closure_cli())

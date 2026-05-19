@@ -214,6 +214,13 @@
   examples for formal-codebook decode/re-encode roundtrip; the
   `codebook-roundtrip` correctness case now requires this accepted dependency,
   but the case remains open and no formula correctness proof is claimed.
+- ADR-0258 adds `claims/substitution_graph_quotation_term_closure.json` and
+  `autarkic_systems.substitution_graph_quotation_term_closure`, checking the
+  same 12 graph-domain code subjects for closed nested-sequence quotation-term
+  construction, token recovery, and formal-codebook term roundtrip; the
+  `quotation-term-closure` correctness case now requires this accepted
+  dependency, but the case remains open and no general quotation-closure or
+  formula correctness proof is claimed.
 - ADR-0235 adds `claims/fixed_point_equation_candidates.json` and
   `autarkic_systems/fixed_point_equation.py` as the first checked
   fixed-point-equation candidate surface. It constructs the naive

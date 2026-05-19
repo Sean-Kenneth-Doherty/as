@@ -30,6 +30,9 @@ SUBSTITUTION_REPRESENTABILITY_TARGETS = Path(
     "claims/substitution_representability_targets.json"
 )
 CODEBOOK_ROUNDTRIP = Path("claims/substitution_graph_codebook_roundtrip.json")
+QUOTATION_TERM_CLOSURE = Path(
+    "claims/substitution_graph_quotation_term_closure.json"
+)
 
 
 class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
@@ -71,6 +74,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
             str(CODEBOOK_ROUNDTRIP),
         )
         self.assertEqual(
+            self.cases.quotation_term_closure_path,
+            str(QUOTATION_TERM_CLOSURE),
+        )
+        self.assertEqual(
             REQUIRED_CASE_KINDS,
             (
                 "codebook-roundtrip",
@@ -83,6 +90,15 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertEqual(
             REQUIRED_DEPENDENCIES_BY_KIND["codebook-roundtrip"],
             ("correctness_target", "codebook", "codebook_roundtrip"),
+        )
+        self.assertEqual(
+            REQUIRED_DEPENDENCIES_BY_KIND["quotation-term-closure"],
+            (
+                "correctness_target",
+                "codebook",
+                "quotation_term",
+                "quotation_term_closure",
+            ),
         )
         self.assertEqual(
             REQUIRED_FUTURE_WORK,
@@ -119,6 +135,15 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
             ("correctness_target", "codebook", "codebook_roundtrip"),
         )
         self.assertEqual(second.case_kind, "quotation-term-closure")
+        self.assertEqual(
+            second.required_dependency_subjects,
+            (
+                "correctness_target",
+                "codebook",
+                "quotation_term",
+                "quotation_term_closure",
+            ),
+        )
         self.assertEqual(third.case_kind, "meta-substitution-semantics")
         self.assertEqual(fourth.case_kind, "formula-schema-relation")
         self.assertEqual(fifth.case_kind, "diagonal-witness-composition")
@@ -135,6 +160,13 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertTrue(
             any(
                 result.subject == "codebook_roundtrip"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
+                result.subject == "quotation_term_closure"
                 and result.accepted
                 for result in report.results
             )
@@ -160,6 +192,7 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertEqual(payload["failed_subjects"], [])
         self.assertTrue(payload["cases"][0]["observed_all_required_dependencies_present"])
         self.assertEqual(payload["cases"][0]["observed_dependency_count"], 3)
+        self.assertEqual(payload["cases"][1]["observed_dependency_count"], 4)
         self.assertIn(
             "formula-correctness-proof",
             payload["cases"][0]["required_future_work"],
@@ -179,6 +212,10 @@ class SubstitutionGraphCorrectnessCaseTests(unittest.TestCase):
         self.assertIn("Case kind: codebook-roundtrip", text)
         self.assertIn(
             "Dependencies: correctness_target, codebook, codebook_roundtrip",
+            text,
+        )
+        self.assertIn(
+            "Dependencies: correctness_target, codebook, quotation_term, quotation_term_closure",
             text,
         )
         self.assertIn("Future work:", text)
