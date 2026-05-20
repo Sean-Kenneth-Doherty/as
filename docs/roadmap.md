@@ -6062,3 +6062,30 @@ Status: accepted in
 `docs/adr/0278-fixed-point-equation-lifting-frontier-status.md`. Implemented
 in `autarkic_systems/fixed_point_equation_lifting_frontier_status.py`, with
 tests in `tests/test_fixed_point_equation_lifting_frontier_status.py`.
+
+## ADR-0279: Substitution Graph Codebook Roundtrip Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the substitution
+graph correctness `codebook-roundtrip` case without promoting it.
+
+Deliverables:
+
+- `claims/substitution_graph_codebook_roundtrip_frontier_status.json`,
+  preserving `codebook-roundtrip` as the blocker;
+- `autarkic_systems.substitution_graph_codebook_roundtrip_frontier_status`,
+  validating the compact manifest shape, correctness-case openness, required
+  dependency/support paths, accepted roundtrip support, 12 finite subjects, and
+  explicit non-claims;
+- text/JSON output for blocked status, proof case id/kind/status,
+  support-surface count, roundtrip facts, and failed subjects; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, aggregate
+  correctness frontier changes, or fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0279-substitution-graph-codebook-roundtrip-frontier-status.md`.
+Implemented in
+`autarkic_systems/substitution_graph_codebook_roundtrip_frontier_status.py`,
+with tests in
+`tests/test_substitution_graph_codebook_roundtrip_frontier_status.py`.

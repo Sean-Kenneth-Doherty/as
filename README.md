@@ -97,6 +97,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution graph correctness frontier status: all five correctness cases
   remain open, eleven support surfaces are present, and the blocker remains
   `substitution-graph-correctness`.
+- `docs/substitution-graph-codebook-roundtrip-frontier-status.md` records the
+  compact codebook-roundtrip proof-case frontier status: the correctness case
+  remains open, the finite roundtrip support surface has 12 accepted subjects,
+  and the blocker remains `codebook-roundtrip`.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local

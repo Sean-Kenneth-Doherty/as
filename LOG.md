@@ -6099,3 +6099,30 @@
 - This is a compact frontier handoff only. It does not prove substitution
   representability, substitution graph correctness, bridge equality, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Substitution Graph Codebook Roundtrip Frontier Status
+
+- Added ADR-0279 to provide a compact substitution graph codebook-roundtrip
+  frontier status over the existing substitution graph correctness proof case
+  with kind `codebook-roundtrip`.
+- Added
+  `claims/substitution_graph_codebook_roundtrip_frontier_status.json` and
+  `autarkic_systems/substitution_graph_codebook_roundtrip_frontier_status.py`,
+  checking the expected frontier manifest shape, the existing correctness-case
+  map, the matching `proof-case-open` case, required support paths, accepted
+  codebook-roundtrip support, 12 finite roundtrip subjects, the `blocked`
+  frontier status, and explicit non-claims.
+- Added
+  `tests/test_substitution_graph_codebook_roundtrip_frontier_status.py` before
+  the implementation. The red run failed because
+  `autarkic_systems.substitution_graph_codebook_roundtrip_frontier_status` did
+  not exist.
+- Focused frontier-status tests passed 14 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `codebook-roundtrip` as the blocker,
+  the correctness case still `proof-case-open`, two support surfaces, 12
+  roundtrip subjects, and no failed subjects.
+- A suite-selector check kept this non-fixed-point status test on the fast
+  discovered path; `tests/suite_manifest.json` did not need an edit.
+- This is a compact frontier handoff only. It does not prove formula
+  correctness, substitution representability, the diagonal lemma, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

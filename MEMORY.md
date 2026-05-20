@@ -229,6 +229,14 @@
   present support surfaces, direct target length 4528, bridge equation length
   4815, and the preserved `fixed-point-equation-lifting` blocker without
   proving or promoting a fixed-point equation.
+- ADR-0279 adds
+  `claims/substitution_graph_codebook_roundtrip_frontier_status.json` and
+  `autarkic_systems.substitution_graph_codebook_roundtrip_frontier_status`, a
+  compact status surface for the substitution graph correctness
+  `codebook-roundtrip` case. It reports the case still open, two compact
+  support surfaces, 12 finite roundtrip subjects, and the preserved
+  `codebook-roundtrip` blocker without proving or promoting formula
+  correctness.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

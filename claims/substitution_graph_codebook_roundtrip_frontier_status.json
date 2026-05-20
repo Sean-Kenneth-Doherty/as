@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-substitution-graph-codebook-roundtrip-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness codebook-roundtrip proof case. It records that the existing finite codebook-roundtrip support surface accepts while the matching correctness proof case remains open.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "codebook-roundtrip",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "codebook_roundtrip_path": "claims/substitution_graph_codebook_roundtrip.json",
+  "codebook_path": "language/formal_codebook.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "evaluation_examples_path": "claims/substitution_graph_evaluation_examples.json",
+  "required_case_kind": "codebook-roundtrip",
+  "required_case_status": "proof-case-open",
+  "expected_roundtrip_subject_count": 12,
+  "expected_support_surface_count": 2,
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status as the codebook-roundtrip handoff for substitution graph correctness: the finite support surface is accepted, the proof case is still open, and no proof-promotion claim has been made."
+}
