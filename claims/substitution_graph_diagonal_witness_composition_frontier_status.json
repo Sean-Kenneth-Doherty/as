@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-substitution-graph-diagonal-witness-composition-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness diagonal-witness-composition frontier. It checks the matching open proof case and the existing finite diagonal-witness-composition support surface while preserving the blocker.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "diagonal-witness-composition",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "diagonal_witness_composition_path": "claims/substitution_graph_diagonal_witness_composition.json",
+  "formal_language_path": "language/formal_arithmetic_language.json",
+  "codebook_path": "language/formal_codebook.json",
+  "correctness_targets_path": "claims/substitution_graph_correctness_targets.json",
+  "formula_candidates_path": "claims/substitution_graph_formula_candidates.json",
+  "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "diagonal_construction_targets_path": "claims/diagonal_construction_targets.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "required_case_kind": "diagonal-witness-composition",
+  "required_case_status": "proof-case-open",
+  "expected_support_surface_count": 2,
+  "expected_composition_count": 1,
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status as the current diagonal-witness-composition handoff: the finite composition support validates, the correctness case remains open, and the general composition proof is still required before representability or fixed-point promotion."
+}

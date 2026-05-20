@@ -109,6 +109,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   the compact formula-schema-relation proof-case frontier status: the
   correctness case remains open, the finite relation support surface has four
   accepted points, and the blocker remains `formula-schema-relation`.
+- `docs/substitution-graph-diagonal-witness-composition-frontier-status.md`
+  records the compact diagonal-witness-composition proof-case frontier status:
+  the correctness case remains open, the finite composition support surface
+  has one accepted subject, and the blocker remains
+  `diagonal-witness-composition`.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -546,6 +551,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   target, formula-schema relation witness, substitution witness, diagonal seed,
   and fixed-point target identify the same self-application route, while
   keeping the general proof obligation open.
+- `autarkic_systems/substitution_graph_diagonal_witness_composition_frontier_status.py`
+  validates and runs the compact diagonal-witness-composition frontier
+  handoff, checking the existing open correctness case and finite composition
+  support surface without promoting the case to proved.
 - `autarkic_systems/substitution_graph_correctness_cases.py` validates and
   runs the open case decomposition for that correctness target, tying each
   case to its checked dependency surface without claiming proof.
@@ -760,6 +769,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   validates `claims/substitution_graph_diagonal_witness_composition.json`,
   including 1 finite diagonal-witness composition whose witness output code
   and diagonal instance code match.
+- `python -m autarkic_systems.substitution_graph_diagonal_witness_composition_frontier_status --format json`
+  validates
+  `claims/substitution_graph_diagonal_witness_composition_frontier_status.json`,
+  including the matching open `diagonal-witness-composition` correctness case
+  and the accepted finite composition support surface with no failed subjects.
 - `python -m autarkic_systems.substitution_graph_correctness_cases --format json`
   validates `claims/substitution_graph_correctness_cases.json`, including the
   five open proof cases for the substitution graph correctness target and the

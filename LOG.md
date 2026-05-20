@@ -6208,3 +6208,31 @@
 - This is a compact frontier handoff only. It does not prove formula
   correctness, substitution representability, the diagonal lemma, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Substitution Graph Diagonal Witness Composition Frontier Status
+
+- Added ADR-0283 to provide a compact substitution graph
+  diagonal-witness-composition frontier status over the existing substitution
+  graph correctness proof case with kind `diagonal-witness-composition`.
+- Added
+  `claims/substitution_graph_diagonal_witness_composition_frontier_status.json`
+  and
+  `autarkic_systems/substitution_graph_diagonal_witness_composition_frontier_status.py`,
+  checking the expected frontier manifest shape, the existing correctness-case
+  map, the matching `proof-case-open` case, required support paths, accepted
+  diagonal-witness-composition support, one finite composition subject, the
+  `blocked` frontier status, and explicit non-claims.
+- Added
+  `tests/test_substitution_graph_diagonal_witness_composition_frontier_status.py`
+  before the implementation. The red run failed because
+  `autarkic_systems.substitution_graph_diagonal_witness_composition_frontier_status`
+  did not exist.
+- Focused frontier-status tests passed 15 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `diagonal-witness-composition` as the
+  blocker, the correctness case still `proof-case-open`, two support surfaces,
+  one composition subject, and no failed subjects.
+- A suite-selector check kept this non-fixed-point status test on the fast
+  discovered path; `tests/suite_manifest.json` did not need an edit.
+- This is a compact frontier handoff only. It does not prove formula
+  correctness, substitution representability, the diagonal lemma, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

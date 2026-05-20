@@ -262,6 +262,15 @@
   finite formula-schema-relation support surface with four relation points and
   no failed subjects, and the preserved `formula-schema-relation` blocker
   without proving or promoting the case.
+- ADR-0283 adds
+  `claims/substitution_graph_diagonal_witness_composition_frontier_status.json`
+  and
+  `autarkic_systems.substitution_graph_diagonal_witness_composition_frontier_status`,
+  a compact status surface for the substitution graph correctness
+  `diagonal-witness-composition` case. It reports the case still open, two
+  compact support surfaces, one finite composition subject, no failed
+  subjects, and the preserved `diagonal-witness-composition` blocker without
+  proving or promoting the case.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

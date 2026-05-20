@@ -6171,3 +6171,31 @@ Implemented in
 `autarkic_systems/substitution_graph_formula_schema_relation_frontier_status.py`,
 with tests in
 `tests/test_substitution_graph_formula_schema_relation_frontier_status.py`.
+
+## ADR-0283: Substitution Graph Diagonal Witness Composition Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the substitution
+graph correctness `diagonal-witness-composition` case without promoting it.
+
+Deliverables:
+
+- `claims/substitution_graph_diagonal_witness_composition_frontier_status.json`,
+  preserving `diagonal-witness-composition` as the blocker;
+- `autarkic_systems.substitution_graph_diagonal_witness_composition_frontier_status`,
+  validating the compact manifest shape, matching correctness-case openness,
+  required support paths, the accepted diagonal-witness-composition support
+  surface, one finite composition subject, explicit non-claims, and no failed
+  subjects;
+- text/JSON output for blocked status, case id/kind/status, support-surface
+  count, composition support facts, and failed subjects; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, aggregate
+  correctness frontier, or fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0283-substitution-graph-diagonal-witness-composition-frontier-status.md`.
+Implemented in
+`autarkic_systems/substitution_graph_diagonal_witness_composition_frontier_status.py`,
+with tests in
+`tests/test_substitution_graph_diagonal_witness_composition_frontier_status.py`.
