@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-substitution-graph-correctness-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness frontier. It summarizes the current open correctness proof cases and their referenced support surfaces while preserving the aggregate substitution-graph-correctness blocker.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "substitution-graph-correctness",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status surface as the current substitution graph correctness handoff: support surfaces are present, all correctness cases remain open, and the correctness blocker is not discharged."
+}

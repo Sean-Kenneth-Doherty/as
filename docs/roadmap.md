@@ -5930,3 +5930,30 @@ Status: accepted in
 `docs/adr/0273-fixed-point-construction-frontier-status.md`. Implemented in
 `autarkic_systems/fixed_point_construction_frontier_status.py`, with tests in
 `tests/test_fixed_point_construction_frontier_status.py`.
+
+## ADR-0274: Substitution Graph Correctness Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the current
+substitution graph correctness proof-case stack without promoting any open
+case.
+
+Deliverables:
+
+- `claims/substitution_graph_correctness_frontier_status.json`, preserving
+  `substitution-graph-correctness` as the blocker;
+- `autarkic_systems.substitution_graph_correctness_frontier_status`,
+  validating the compact manifest shape, correctness-case openness, per-case
+  support mapping, support-surface presence, and explicit non-claims;
+- text/JSON output for blocked status, open-case count, support-surface count,
+  per-case support, and failed subjects; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, evidence
+  bundle, or fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0274-substitution-graph-correctness-frontier-status.md`.
+Implemented in
+`autarkic_systems/substitution_graph_correctness_frontier_status.py`, with
+tests in
+`tests/test_substitution_graph_correctness_frontier_status.py`.

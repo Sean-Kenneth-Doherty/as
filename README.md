@@ -93,6 +93,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/substitution-graph-correctness-cases.md` records five open proof cases
   for the substitution graph correctness target while leaving every case
   unproved.
+- `docs/substitution-graph-correctness-frontier-status.md` records the compact
+  substitution graph correctness frontier status: all five correctness cases
+  remain open, eleven support surfaces are present, and the blocker remains
+  `substitution-graph-correctness`.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
