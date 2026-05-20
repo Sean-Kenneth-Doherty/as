@@ -131,6 +131,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence tying the fixed-point construction equation-lifting case to the
   selected `pi1` target context, checked equation bridge, bridge-equality
   alignment, and codebook, while leaving the fixed-point equation proof open.
+- `docs/fixed-point-construction-frontier-status.md` records the compact
+  post-ADR-0270 fixed-point construction frontier status: all five
+  construction cases remain open, seven support surfaces are present, and the
+  blocker remains `fixed-point-construction`.
 - `docs/fixed-point-obstruction.md` records the checked length-growth
   obstruction showing why the naive direct quotation-substitution route cannot
   be the fixed point.

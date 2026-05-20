@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-fixed-point-construction-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the current fixed-point construction frontier. It summarizes accepted finite support surfaces while preserving that the aggregate frontier remains blocked by fixed-point-construction.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "fixed-point-construction",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "diagonal_instance_candidate_surface_path": "claims/fixed_point_diagonal_instance_candidate_surface.json",
+  "substitution_witness_bridge_path": "claims/fixed_point_substitution_witness_bridge.json",
+  "substitution_graph_correctness_bridge_path": "claims/fixed_point_substitution_graph_correctness_bridge.json",
+  "bridge_equality_alignment_path": "claims/fixed_point_bridge_equality_alignment.json",
+  "bridge_equality_evaluation_path": "claims/fixed_point_bridge_equality_evaluation.json",
+  "equation_lifting_alignment_path": "claims/fixed_point_equation_lifting_alignment.json",
+  "non_claims": [
+    "no substitution representability proof",
+    "no substitution graph correctness proof",
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status surface as the current frontier handoff: finite support surfaces are accepted, all construction cases remain open, and the fixed-point construction blocker is not discharged."
+}

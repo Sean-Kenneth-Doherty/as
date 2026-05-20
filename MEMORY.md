@@ -186,6 +186,11 @@
   fixed-point/status regression suite, which covers all current
   `tests.test_fixed_point_*` modules plus formal-confidence, project-status,
   handoff, and vertical-demo aggregate checks.
+- ADR-0273 adds `claims/fixed_point_construction_frontier_status.json` and
+  `autarkic_systems.fixed_point_construction_frontier_status`, a compact
+  status surface over the fixed-point construction stack. It reports five open
+  construction cases, seven present support surfaces, and the preserved
+  `fixed-point-construction` blocker without proving or promoting any case.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

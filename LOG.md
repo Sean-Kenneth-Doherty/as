@@ -5935,3 +5935,29 @@
   classified exactly once into one leaf suite, fails closed over stale explicit
   module names, lists suites without running tests, and runs selected modules
   through `unittest` when not listing.
+
+## 2026-05-20 - Fixed-Point Construction Frontier Status
+
+- Added ADR-0273 to provide a compact fixed-point construction frontier status
+  over the post-ADR-0270 stack without running the deep construction-case
+  validators from the status layer.
+- Added `claims/fixed_point_construction_frontier_status.json` and
+  `autarkic_systems/fixed_point_construction_frontier_status.py`, checking the
+  expected frontier manifest shape, seven support-surface paths, five
+  `proof-case-open` construction cases, per-case finite-support mappings, the
+  `blocked` frontier status, and explicit non-claims.
+- Added `tests/test_fixed_point_construction_frontier_status.py` before the
+  implementation. The red run failed because
+  `autarkic_systems.fixed_point_construction_frontier_status` did not exist.
+- Focused frontier-status tests passed 12 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `fixed-point-construction` as the
+  blocker, five of five construction cases open, seven support surfaces, and
+  no failed subjects. Compileall, JSON parsing, and diff whitespace checks
+  passed.
+- Updated the ADR-0272 suite manifest so the new
+  `tests.test_fixed_point_construction_frontier_status` module is classified
+  into `extended-fixed-point`; the selector's fail-closed invariant caught that
+  this new fixed-point test cannot remain implicit.
+- This is a compact frontier handoff only. It does not prove substitution
+  representability, substitution graph correctness, bridge equality, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

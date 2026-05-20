@@ -5831,3 +5831,102 @@ in `autarkic_systems/fixed_point_bridge_equality_evaluation.py` and
 `autarkic_systems/fixed_point_construction_cases.py`, with tests in
 `tests/test_fixed_point_bridge_equality_evaluation.py` and
 `tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0270: Fixed-Point Diagonal Instance Candidate Surface
+
+Goal: name the checked closed diagonal instance as the finite candidate surface
+carried by the first fixed-point construction case.
+
+Deliverables:
+
+- `claims/fixed_point_diagonal_instance_candidate_surface.json` with one
+  candidate surface derived from the current construction case, fixed-point
+  target, diagonal construction, bridge, closure, and codebook surfaces;
+- `autarkic_systems.fixed_point_diagonal_instance_candidate_surface`
+  validation for candidate source, code length/prefix, codebook roundtrip,
+  target skeleton, bridge agreement, and construction-case openness;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `diagonal-instance-closure` case requires the accepted
+  `diagonal_instance_candidate_surface` dependency; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0270-fixed-point-diagonal-instance-candidate-surface.md`.
+Implemented in
+`autarkic_systems/fixed_point_diagonal_instance_candidate_surface.py` and
+`autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_diagonal_instance_candidate_surface.py` and
+`tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0271: Validation Cache Regression Guard
+
+Goal: keep the fixed-point validation cache behavior explicit so repeated
+checked-in manifest validation does not make the default test path behave like
+an accidental extended suite.
+
+Deliverables:
+
+- `tests/test_fixed_point_validation_cache.py`, covering repeated validation
+  cache hits for checked-in fixed-point construction-case and bridge-equality
+  evaluation manifests;
+- fail-closed checks showing distinct temp/modified manifests remain separate
+  cache misses and still reject stale facts; and
+- documentation explaining that the cache is a process-local validation
+  performance guard, not a proof shortcut.
+
+Status: accepted in `docs/adr/0271-validation-cache-regression-guard.md`.
+Implemented in `tests/test_fixed_point_validation_cache.py`, with supporting
+documentation in `docs/validation-cache-regression-guard.md`.
+
+## ADR-0272: Test Suite Selection Manifest
+
+Goal: separate the default fast unittest path from explicit extended
+fixed-point/status regressions while preserving stdlib `unittest` and
+fail-closed coverage of discovered test modules.
+
+Deliverables:
+
+- `tests/suite_manifest.json` with `fast`, `extended-fixed-point`, and `all`
+  suite definitions;
+- `autarkic_systems.test_suite_selection`, which validates live
+  `tests/test_*.py` discovery against the manifest, rejects stale explicit
+  module names, rejects leaf-suite overlap or omission, lists suites, and runs
+  selected modules through `unittest`;
+- `extended-fixed-point` covering all current `tests.test_fixed_point_*`
+  modules plus formal-confidence, project-status, handoff, and vertical-demo
+  aggregate/status modules; and
+- no proof validators, claim manifests, mathematical semantics, or existing
+  skip decorators changed.
+
+Status: accepted in `docs/adr/0272-test-suite-selection-manifest.md`.
+Implemented in `autarkic_systems/test_suite_selection.py`, with tests in
+`tests/test_suite_selection.py`.
+
+## ADR-0273: Fixed-Point Construction Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the current
+fixed-point construction stack without promoting any open proof case.
+
+Deliverables:
+
+- `claims/fixed_point_construction_frontier_status.json`, naming the seven
+  current construction/frontier dependencies and preserving
+  `fixed-point-construction` as the blocker;
+- `autarkic_systems.fixed_point_construction_frontier_status`, validating the
+  compact manifest shape, construction-case openness, per-case finite-support
+  mapping, support-surface presence, and explicit non-claims;
+- text/JSON output for blocked status, open-case count, support-surface count,
+  per-case finite support, and failed subjects; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or aggregate project-status changes.
+
+Status: accepted in
+`docs/adr/0273-fixed-point-construction-frontier-status.md`. Implemented in
+`autarkic_systems/fixed_point_construction_frontier_status.py`, with tests in
+`tests/test_fixed_point_construction_frontier_status.py`.
