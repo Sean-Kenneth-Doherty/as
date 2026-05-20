@@ -9,6 +9,7 @@ correctness, bridge equality, a fixed-point equation, or self-consistency.
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
 import json
 from dataclasses import dataclass
 from pathlib import Path
@@ -85,6 +86,7 @@ REQUIRED_DEPENDENCIES_BY_KIND = {
         "substitution_representability",
         "substitution_graph_correctness_cases",
         "bridge_equality_alignment",
+        "bridge_equality_evaluation",
     ),
     "fixed-point-equation-lifting": (
         "fixed_point",
@@ -145,6 +147,7 @@ class FixedPointConstructionCaseManifest:
     substitution_witness_bridge_path: str
     substitution_graph_correctness_bridge_path: str
     bridge_equality_alignment_path: str
+    bridge_equality_evaluation_path: str
     equation_lifting_alignment_path: str
     cases: tuple[FixedPointConstructionCase, ...]
 
@@ -187,6 +190,7 @@ class FixedPointConstructionCaseReport:
     substitution_witness_bridge_path: Path
     substitution_graph_correctness_bridge_path: Path
     bridge_equality_alignment_path: Path
+    bridge_equality_evaluation_path: Path
     equation_lifting_alignment_path: Path
     willard_map_path: Path
     results: tuple[FixedPointConstructionCaseValidation, ...]
@@ -216,6 +220,14 @@ class FixedPointConstructionCaseReport:
             if subject not in subjects:
                 subjects.append(subject)
         return tuple(subjects)
+
+
+@dataclass(frozen=True)
+class _DependencyFailure:
+    """Small report shim for dependencies that cannot be loaded."""
+
+    accepted: bool
+    failed_subjects: tuple[str, ...]
 
 
 def load_fixed_point_construction_cases(
@@ -270,6 +282,10 @@ def load_fixed_point_construction_cases(
             data,
             "bridge_equality_alignment_path",
         ),
+        bridge_equality_evaluation_path=_required_text(
+            data,
+            "bridge_equality_evaluation_path",
+        ),
         equation_lifting_alignment_path=_required_text(
             data,
             "equation_lifting_alignment_path",
@@ -278,11 +294,18 @@ def load_fixed_point_construction_cases(
     )
 
 
+@lru_cache(maxsize=32)
 def validate_fixed_point_construction_cases(
     manifest: FixedPointConstructionCaseManifest,
     willard_map_path: Path | str = DEFAULT_WILLARD_MAP,
 ) -> FixedPointConstructionCaseReport:
-    """Validate fixed-point construction proof cases and dependencies."""
+    """Validate fixed-point construction proof cases and dependencies.
+
+    Construction-case validation fans out over the whole fixed-point evidence
+    stack. A process-local cache keeps repeated default-manifest checks from
+    turning the default test path into an accidental extended suite while still
+    validating changed/temp manifests as separate immutable inputs.
+    """
 
     checked_willard_map_path = Path(willard_map_path)
     checked_language_path = Path(manifest.formal_language_path)
@@ -302,6 +325,9 @@ def validate_fixed_point_construction_cases(
     )
     checked_bridge_equality_alignment_path = Path(
         manifest.bridge_equality_alignment_path
+    )
+    checked_bridge_equality_evaluation_path = Path(
+        manifest.bridge_equality_evaluation_path
     )
     checked_equation_lifting_alignment_path = Path(
         manifest.equation_lifting_alignment_path
@@ -389,6 +415,26 @@ def validate_fixed_point_construction_cases(
         bridge_equality_alignment,
         checked_willard_map_path,
     )
+    from autarkic_systems.fixed_point_bridge_equality_evaluation import (
+        load_fixed_point_bridge_equality_evaluation,
+        validate_fixed_point_bridge_equality_evaluation,
+    )
+
+    try:
+        bridge_equality_evaluation = load_fixed_point_bridge_equality_evaluation(
+            checked_bridge_equality_evaluation_path
+        )
+        bridge_equality_evaluation_report: Any = (
+            validate_fixed_point_bridge_equality_evaluation(
+                bridge_equality_evaluation,
+                checked_willard_map_path,
+            )
+        )
+    except (OSError, ValueError, json.JSONDecodeError):
+        bridge_equality_evaluation_report = _DependencyFailure(
+            False,
+            ("fixed-point-bridge-equality-evaluation-load",),
+        )
     from autarkic_systems.fixed_point_equation_lifting_alignment import (
         load_fixed_point_equation_lifting_alignment,
         validate_fixed_point_equation_lifting_alignment,
@@ -421,6 +467,7 @@ def validate_fixed_point_construction_cases(
         witness_bridge_report,
         graph_correctness_bridge_report,
         bridge_equality_alignment_report,
+        bridge_equality_evaluation_report,
         equation_lifting_alignment_report,
     )
     results.extend(dependency_results)
@@ -443,6 +490,7 @@ def validate_fixed_point_construction_cases(
             checked_graph_correctness_bridge_path
         ),
         bridge_equality_alignment_path=checked_bridge_equality_alignment_path,
+        bridge_equality_evaluation_path=checked_bridge_equality_evaluation_path,
         equation_lifting_alignment_path=checked_equation_lifting_alignment_path,
         willard_map_path=checked_willard_map_path,
         results=tuple(results),
@@ -487,6 +535,9 @@ def fixed_point_construction_cases_payload(
             report.substitution_graph_correctness_bridge_path
         ),
         "bridge_equality_alignment_path": str(report.bridge_equality_alignment_path),
+        "bridge_equality_evaluation_path": str(
+            report.bridge_equality_evaluation_path
+        ),
         "equation_lifting_alignment_path": str(
             report.equation_lifting_alignment_path
         ),
@@ -669,6 +720,11 @@ def _validate_references(
             "claims/fixed_point_bridge_equality_alignment.json",
         ),
         (
+            "bridge_equality_evaluation_path",
+            manifest.bridge_equality_evaluation_path,
+            "claims/fixed_point_bridge_equality_evaluation.json",
+        ),
+        (
             "equation_lifting_alignment_path",
             manifest.equation_lifting_alignment_path,
             "claims/fixed_point_equation_lifting_alignment.json",
@@ -697,6 +753,7 @@ def _validate_dependency_reports(
     witness_bridge_report: Any,
     graph_correctness_bridge_report: Any,
     bridge_equality_alignment_report: Any,
+    bridge_equality_evaluation_report: Any,
     equation_lifting_alignment_report: Any,
 ) -> tuple[list[FixedPointConstructionCaseValidation], frozenset[str]]:
     checks = (
@@ -738,6 +795,11 @@ def _validate_dependency_reports(
             "bridge_equality_alignment",
             bridge_equality_alignment_report,
             "fixed-point bridge equality alignment",
+        ),
+        (
+            "bridge_equality_evaluation",
+            bridge_equality_evaluation_report,
+            "fixed-point bridge equality evaluation",
         ),
         (
             "equation_lifting_alignment",
@@ -938,6 +1000,7 @@ def _failed_subject_for_result(subject: str) -> str:
         "diagonal_instance_closure",
         "substitution_witness_bridge",
         "bridge_equality_alignment",
+        "bridge_equality_evaluation",
         "equation_lifting_alignment",
     }:
         return "fixed-point-construction-case-dependency"

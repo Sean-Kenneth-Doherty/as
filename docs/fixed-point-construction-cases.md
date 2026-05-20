@@ -20,6 +20,8 @@ ADR-0266 adds finite graph-correctness bridge evidence for the third case,
 `substitution-graph-correctness-proof`, without claiming correctness.
 ADR-0267 adds finite bridge-equality alignment evidence for the fourth case,
 `bridge-equality-proof`, without claiming equality.
+ADR-0269 adds finite bridge-equality evaluation evidence for that same fourth
+case, without claiming equality.
 ADR-0268 adds finite equation-lifting alignment evidence for the fifth case,
 `fixed-point-equation-lifting`, without claiming a fixed-point equation.
 
@@ -46,6 +48,8 @@ python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge
 python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge --format json
 python -m autarkic_systems.fixed_point_bridge_equality_alignment
 python -m autarkic_systems.fixed_point_bridge_equality_alignment --format json
+python -m autarkic_systems.fixed_point_bridge_equality_evaluation
+python -m autarkic_systems.fixed_point_bridge_equality_evaluation --format json
 python -m autarkic_systems.fixed_point_equation_lifting_alignment
 python -m autarkic_systems.fixed_point_equation_lifting_alignment --format json
 python -m autarkic_systems.formal_confidence
@@ -60,8 +64,8 @@ The validator checks that:
   fixed-point equation bridge, fixed-point diagonal-instance closure,
   fixed-point substitution witness bridge, fixed-point substitution graph
   correctness bridge, fixed-point bridge equality alignment,
-  fixed-point equation lifting alignment, and formal codebook dependencies
-  remain accepted;
+  fixed-point bridge equality evaluation, fixed-point equation lifting
+  alignment, and formal codebook dependencies remain accepted;
 - all five expected construction proof cases are present in order;
 - each case keeps `proof-case-open`;
 - each case names the expected checked dependency subjects;

@@ -33,6 +33,9 @@ SUBSTITUTION_GRAPH_CORRECTNESS_BRIDGE = Path(
     "claims/fixed_point_substitution_graph_correctness_bridge.json"
 )
 BRIDGE_EQUALITY_ALIGNMENT = Path("claims/fixed_point_bridge_equality_alignment.json")
+BRIDGE_EQUALITY_EVALUATION = Path(
+    "claims/fixed_point_bridge_equality_evaluation.json"
+)
 EQUATION_LIFTING_ALIGNMENT = Path(
     "claims/fixed_point_equation_lifting_alignment.json"
 )
@@ -89,6 +92,10 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
             str(BRIDGE_EQUALITY_ALIGNMENT),
         )
         self.assertEqual(
+            self.manifest.bridge_equality_evaluation_path,
+            str(BRIDGE_EQUALITY_EVALUATION),
+        )
+        self.assertEqual(
             self.manifest.equation_lifting_alignment_path,
             str(EQUATION_LIFTING_ALIGNMENT),
         )
@@ -127,6 +134,7 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
                 "substitution_representability",
                 "substitution_graph_correctness_cases",
                 "bridge_equality_alignment",
+                "bridge_equality_evaluation",
             ),
         )
         self.assertEqual(
@@ -225,6 +233,13 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         )
         self.assertTrue(
             any(
+                result.subject == "bridge_equality_evaluation"
+                and result.accepted
+                for result in report.results
+            )
+        )
+        self.assertTrue(
+            any(
                 result.subject == "equation_lifting_alignment"
                 and result.accepted
                 for result in report.results
@@ -247,8 +262,12 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertEqual(payload["cases"][0]["observed_dependency_count"], 4)
         self.assertEqual(payload["cases"][1]["observed_dependency_count"], 4)
         self.assertEqual(payload["cases"][2]["observed_dependency_count"], 3)
-        self.assertEqual(payload["cases"][3]["observed_dependency_count"], 4)
+        self.assertEqual(payload["cases"][3]["observed_dependency_count"], 5)
         self.assertEqual(payload["cases"][4]["observed_dependency_count"], 4)
+        self.assertIn(
+            "bridge_equality_evaluation",
+            payload["cases"][3]["required_dependency_subjects"],
+        )
         self.assertIn(
             "equation_lifting_alignment",
             payload["cases"][4]["required_dependency_subjects"],
@@ -267,6 +286,10 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertIn("Fixed-point construction cases: accepted", text)
         self.assertIn("Cases: 5", text)
         self.assertIn("bridge-equality-proof", text)
+        self.assertIn(
+            "Dependencies: fixed_point_equation_bridge, substitution_representability, substitution_graph_correctness_cases, bridge_equality_alignment, bridge_equality_evaluation",
+            text,
+        )
         self.assertIn(
             "Dependencies: fixed_point, fixed_point_equation_bridge, codebook, equation_lifting_alignment",
             text,
@@ -292,6 +315,30 @@ class FixedPointConstructionCaseTests(unittest.TestCase):
         self.assertIn("fixed-point-construction-case-dependency", report.failed_subjects)
         self.assertTrue(
             any("dependency list mismatch" in result.detail for result in report.results)
+        )
+
+    def test_missing_bridge_equality_evaluation_dependency_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "cases.json"
+            data = json.loads(CASES.read_text(encoding="utf-8"))
+            data["bridge_equality_evaluation_path"] = str(Path(tmp) / "missing.json")
+            path.write_text(json.dumps(data), encoding="utf-8")
+            manifest = load_fixed_point_construction_cases(path)
+
+            report = validate_fixed_point_construction_cases(
+                manifest,
+                WILLARD_MAP,
+            )
+
+        self.assertFalse(report.accepted)
+        self.assertIn("fixed-point-construction-case-dependency", report.failed_subjects)
+        self.assertTrue(
+            any(
+                result.subject == "bridge_equality_evaluation"
+                and not result.accepted
+                and "fixed-point-bridge-equality-evaluation-load" in result.detail
+                for result in report.results
+            )
         )
 
     def test_overclaiming_status_is_rejected(self):

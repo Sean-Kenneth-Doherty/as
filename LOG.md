@@ -5888,3 +5888,28 @@
   full default suite passed 1,311 tests. This is not a bridge equality proof,
   fixed-point equation proof, arithmetized proof predicate, or
   self-consistency theorem.
+
+## 2026-05-19 - Fixed-Point Bridge Equality Evaluation Domain
+
+- Added ADR-0269 to make the fourth fixed-point construction case depend on
+  finite evaluation evidence for the checked left bridge term,
+  `substitution_code(quote(seed), quote(seed))`.
+- Added `claims/fixed_point_bridge_equality_evaluation.json` with a one-point
+  finite bridge-equality evaluation domain for the current fixed-point
+  construction case.
+- Added `autarkic_systems/fixed_point_bridge_equality_evaluation.py`,
+  deriving the evaluation from the construction-case map, fixed-point target,
+  equation bridge, substitution representability surface, bridge-equality
+  alignment, and codebook. The validator checks that the left bridge term
+  decodes and evaluates to the 296-token diagonal instance code, matches the
+  substitution witness output, matches the right quoted bridge term, and keeps
+  the 4815-token bridge equation surface stable.
+- Updated `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems/fixed_point_construction_cases.py` so the
+  `bridge-equality-proof` case requires the accepted
+  `bridge_equality_evaluation` dependency while remaining `proof-case-open`.
+- Updated README, roadmap, AFS requirements, fixed-point construction docs,
+  bridge-equality alignment docs, formal-confidence docs, and project memory
+  so the new finite evaluation dependency is visible without overclaiming it.
+  This is not a bridge equality proof, fixed-point equation proof,
+  arithmetized proof predicate, or self-consistency theorem.

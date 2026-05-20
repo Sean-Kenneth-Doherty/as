@@ -5798,3 +5798,36 @@ in `autarkic_systems/fixed_point_equation_lifting_alignment.py` and
 `autarkic_systems/fixed_point_construction_cases.py`, with tests in
 `tests/test_fixed_point_equation_lifting_alignment.py` and
 `tests/test_fixed_point_construction_cases.py`.
+
+## ADR-0269: Fixed-Point Bridge Equality Evaluation Domain
+
+Goal: make the bridge-equality construction case depend on finite evaluation
+evidence that the current left bridge term,
+`substitution_code(quote(seed), quote(seed))`, evaluates to the right quoted
+diagonal-instance term before any bridge equality proof is claimed.
+
+Deliverables:
+
+- `claims/fixed_point_bridge_equality_evaluation.json` with the expected
+  one-point bridge-equality evaluation domain;
+- `autarkic_systems.fixed_point_bridge_equality_evaluation` validation
+  deriving the current evaluation from the checked construction-case map,
+  fixed-point target, equation bridge, substitution representability surface,
+  bridge-equality alignment, and codebook surfaces;
+- text/JSON output for evaluation count, source-kind counts, formula and
+  argument code lengths, output length, bridge equation length, evaluation
+  booleans, route booleans, failed subjects, and validation results;
+- `claims/fixed_point_construction_cases.json` and
+  `autarkic_systems.fixed_point_construction_cases` updated so the
+  `bridge-equality-proof` case requires the accepted
+  `bridge_equality_evaluation` dependency; and
+- no bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics,
+  evidence bundle, or GitHub submission logic changes.
+
+Status: accepted in
+`docs/adr/0269-fixed-point-bridge-equality-evaluation-domain.md`. Implemented
+in `autarkic_systems/fixed_point_bridge_equality_evaluation.py` and
+`autarkic_systems/fixed_point_construction_cases.py`, with tests in
+`tests/test_fixed_point_bridge_equality_evaluation.py` and
+`tests/test_fixed_point_construction_cases.py`.

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evaluation_set_id": "as-fixed-point-bridge-equality-evaluation-v1",
+  "reviewed_at": "2026-05-19",
+  "purpose": "Finite meta-level evaluation evidence for the fixed-point bridge-equality proof case. This checks that the current substitution_code(quote(seed), quote(seed)) bridge term evaluates to the checked quoted diagonal instance without claiming a bridge equality proof.",
+  "fixed_point_construction_cases_path": "claims/fixed_point_construction_cases.json",
+  "fixed_point_targets_path": "claims/fixed_point_targets.json",
+  "fixed_point_equation_bridge_targets_path": "claims/fixed_point_equation_bridge_targets.json",
+  "substitution_representability_targets_path": "claims/substitution_representability_targets.json",
+  "bridge_equality_alignment_path": "claims/fixed_point_bridge_equality_alignment.json",
+  "codebook_path": "language/formal_codebook.json",
+  "expected_evaluation_count": 1,
+  "expected_formula_code_length": 10,
+  "expected_argument_code_length": 10,
+  "expected_output_code_length": 296,
+  "expected_bridge_equation_code_length": 4815,
+  "required_source_kinds": [
+    "bridge-equality-evaluation"
+  ],
+  "required_future_work": [
+    "bridge-equality-proof",
+    "fixed-point-equation-proof",
+    "self-consistency-theorem"
+  ],
+  "non_claims": [
+    "no bridge equality proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use the finite bridge-equality evaluation as the concrete witness for the later general bridge equality proof, without treating it as that proof."
+}

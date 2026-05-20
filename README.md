@@ -38,8 +38,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   substitution graph target, substitution graph formula,
   substitution graph correctness target, substitution graph correctness case
   map, fixed-point equation bridge target, fixed-point construction case map,
-  fixed-point bridge-equality alignment, fixed-point equation lifting
-  alignment, and fixed-point obstruction dependencies.
+  fixed-point bridge-equality alignment, fixed-point bridge-equality
+  evaluation, fixed-point equation lifting alignment, and fixed-point
+  obstruction dependencies.
 - `docs/formal-arithmetic-language.md` records the first checked syntax-only
   Type-NS arithmetic language surface for the formal-confidence path.
 - `docs/formal-codebook.md` records the first checked proof-code encoding
@@ -123,6 +124,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   evidence tying the fixed-point construction bridge-equality case to the
   checked equation bridge, witness bridge, graph correctness bridge, and
   formula-schema witness relation, while leaving equality proof open.
+- `docs/fixed-point-bridge-equality-evaluation.md` records finite evaluation
+  evidence that the current left bridge term evaluates to the right quoted
+  diagonal-instance term, while leaving equality proof open.
 - `docs/fixed-point-equation-lifting-alignment.md` records finite alignment
   evidence tying the fixed-point construction equation-lifting case to the
   selected `pi1` target context, checked equation bridge, bridge-equality
@@ -527,6 +531,9 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `autarkic_systems/fixed_point_bridge_equality_alignment.py` validates finite
   alignment evidence for the bridge-equality case used by the fourth
   construction case.
+- `autarkic_systems/fixed_point_bridge_equality_evaluation.py` validates
+  finite evaluation evidence for the bridge-equality case used by the fourth
+  construction case.
 - `autarkic_systems/fixed_point_equation_lifting_alignment.py` validates
   finite alignment evidence for the equation-lifting case used by the fifth
   construction case.
@@ -538,15 +545,16 @@ proof certificates, object languages, evidence bundles, and status reports:
   the current AS self-consistency claim explicitly blocked until fixed-point
   construction exists and fail-closed over the current consistency-level,
   diagonal-construction, substitution-representability witness, fixed-point
-  equation candidate, fixed-point equation bridge target, fixed-point
-  construction case map, substitution graph target, substitution graph formula,
-  substitution graph correctness target, substitution graph correctness case
-  map, including codebook-roundtrip, quotation-term-closure,
+  equation candidate, fixed-point equation bridge target, substitution graph
+  target, substitution graph formula, substitution graph correctness target,
+  substitution graph correctness case map, including codebook-roundtrip,
+  quotation-term-closure,
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies, fixed-point construction case map
   including diagonal-instance closure, substitution-witness bridge, and
   substitution graph correctness bridge, bridge-equality alignment, and
-  equation-lifting alignment dependencies, and obstruction dependencies.
+  bridge-equality evaluation, and equation-lifting alignment dependencies, and
+  obstruction dependencies.
 - `claims/transition_claims.json` names the current executable transition
   claims and examples, including the self-mailbox init-command execution
   subset, unsupported-command preservation boundary, self-target command-buffer
@@ -647,6 +655,10 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `python -m autarkic_systems.fixed_point_bridge_equality_alignment --format json`
   validates `claims/fixed_point_bridge_equality_alignment.json`, including the
   one finite bridge-equality alignment point for the fourth construction case.
+- `python -m autarkic_systems.fixed_point_bridge_equality_evaluation --format json`
+  validates `claims/fixed_point_bridge_equality_evaluation.json`, including
+  the one finite bridge-equality evaluation point for the fourth construction
+  case.
 - `python -m autarkic_systems.fixed_point_equation_lifting_alignment --format json`
   validates `claims/fixed_point_equation_lifting_alignment.json`, including
   the one finite equation-lifting alignment point for the fifth construction
@@ -706,16 +718,16 @@ proof certificates, object languages, evidence bundles, and status reports:
   target against `sources/willard_definition_map.json`, including required
   Willard anchors, required configuration fields, the consistency-level target,
   diagonal-construction, substitution-representability witness, fixed-point
-  equation candidate, fixed-point equation bridge target, fixed-point
-  construction case map, substitution graph target, substitution graph formula,
-  substitution graph correctness target, substitution graph correctness case
-  map with the finite codebook-roundtrip, quotation-term-closure,
+  equation candidate, fixed-point equation bridge target, substitution graph
+  target, substitution graph formula, substitution graph correctness target,
+  substitution graph correctness case map with the finite codebook-roundtrip,
+  quotation-term-closure,
   meta-substitution-semantics, formula-schema-relation, and
   diagonal-witness-composition dependencies, fixed-point construction case map
   with the finite diagonal-instance closure, substitution-witness bridge, and
   substitution graph correctness bridge, bridge-equality alignment, and
-  equation-lifting alignment dependencies, and obstruction dependencies,
-  explicit blockers, and the next AS action.
+  bridge-equality evaluation, and equation-lifting alignment dependencies, and
+  obstruction dependencies, explicit blockers, and the next AS action.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

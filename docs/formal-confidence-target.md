@@ -8,8 +8,8 @@ equation candidate, substitution graph target, substitution graph formula,
 substitution graph correctness target, substitution graph correctness case
 map, fixed-point construction case map with finite diagonal-instance closure,
 substitution-witness bridge, substitution graph correctness bridge, and
-bridge-equality alignment and equation-lifting alignment dependencies, and
-obstruction dependencies, 2026-05-19.
+bridge-equality alignment, bridge-equality evaluation, and equation-lifting
+alignment dependencies, and obstruction dependencies, 2026-05-19.
 
 ADR-0224 adds `claims/formal_confidence_targets.json` and
 `autarkic_systems/formal_confidence.py`. The target records what AS would need
@@ -95,6 +95,8 @@ ADR-0266 makes the third construction case depend on finite substitution graph
 correctness bridge evidence. ADR-0267 makes the fourth construction case
 depend on finite bridge-equality alignment evidence. ADR-0268 makes the fifth
 construction case depend on finite equation-lifting alignment evidence.
+ADR-0269 then adds finite bridge-equality evaluation evidence for the fourth
+case.
 
 ## Current Target
 
@@ -144,6 +146,8 @@ and `claims/fixed_point_substitution_witness_bridge.json` for the second open
 case, and `claims/fixed_point_substitution_graph_correctness_bridge.json` for
 the third open case, and `claims/fixed_point_bridge_equality_alignment.json`
 for the fourth open case, and
+`claims/fixed_point_bridge_equality_evaluation.json` for that same fourth open
+case, and
 `claims/fixed_point_equation_lifting_alignment.json` for the fifth open case.
 The checked obstruction in
 `claims/fixed_point_obstructions.json` is also validated as an aggregate
@@ -205,6 +209,8 @@ python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge
 python -m autarkic_systems.fixed_point_substitution_graph_correctness_bridge --format json
 python -m autarkic_systems.fixed_point_bridge_equality_alignment
 python -m autarkic_systems.fixed_point_bridge_equality_alignment --format json
+python -m autarkic_systems.fixed_point_bridge_equality_evaluation
+python -m autarkic_systems.fixed_point_bridge_equality_evaluation --format json
 python -m autarkic_systems.fixed_point_equation_lifting_alignment
 python -m autarkic_systems.fixed_point_equation_lifting_alignment --format json
 python -m autarkic_systems.fixed_point_obstruction
@@ -237,7 +243,8 @@ The validator checks that:
   finite substitution-witness bridge dependency for the second case and the
   finite substitution graph correctness bridge dependency for the third case
   and the finite bridge-equality alignment dependency for the fourth case and
-  the finite equation-lifting alignment dependency for the fifth case;
+  the finite bridge-equality evaluation dependency for the fourth case and the
+  finite equation-lifting alignment dependency for the fifth case;
 - the referenced fixed-point obstruction surface validates;
 - blocked targets name blockers; and
 - each target names a next AS action.

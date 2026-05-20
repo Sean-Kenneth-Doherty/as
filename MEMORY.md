@@ -281,6 +281,13 @@
   alignment ties the 4815-token equation bridge to the formula-schema witness
   relation, witness bridge, and graph correctness bridge while keeping the
   `bridge-equality-proof` case open.
+- ADR-0269 adds `claims/fixed_point_bridge_equality_evaluation.json` and
+  `autarkic_systems.fixed_point_bridge_equality_evaluation`, checking one
+  finite evaluation point for the fourth fixed-point construction case. The
+  evaluation confirms the current left `substitution_code(quote(seed),
+  quote(seed))` bridge term produces the 296-token diagonal instance code and
+  matches the right quoted bridge term while keeping the `bridge-equality-proof`
+  case open.
 - ADR-0268 adds `claims/fixed_point_equation_lifting_alignment.json` and
   `autarkic_systems.fixed_point_equation_lifting_alignment`, checking one
   finite alignment point for the fifth fixed-point construction case. The

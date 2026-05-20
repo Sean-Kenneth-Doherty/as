@@ -13,7 +13,9 @@ bridge, and formula-schema witness relation.
 
 ADR-0263 made `bridge-equality-proof` the fourth open construction case.
 ADR-0267 narrows that case from broad dependency names to a finite checked
-alignment point.
+alignment point. ADR-0269 adds a separate finite evaluation point for the same
+case, checking that the current left bridge term evaluates to the right quoted
+diagonal instance without proving equality in general.
 
 The verifier derives the current bridge-equality alignment and checks that:
 
