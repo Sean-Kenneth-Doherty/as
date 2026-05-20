@@ -6017,3 +6017,30 @@
 - This is a compact frontier handoff only. It does not prove substitution
   representability, substitution graph correctness, bridge equality, a
   fixed-point equation, an arithmetized proof predicate, or self-consistency.
+
+## 2026-05-20 - Fixed-Point Bridge Equality Frontier Status
+
+- Added ADR-0276 to provide a compact fixed-point bridge equality frontier
+  status over the construction case with kind `bridge-equality-proof`.
+- Added `claims/fixed_point_bridge_equality_frontier_status.json` and
+  `autarkic_systems/fixed_point_bridge_equality_frontier_status.py`, checking
+  the expected frontier manifest shape, construction-case openness, fixed-point
+  equation bridge support, substitution representability support,
+  substitution graph correctness case support, bridge equality alignment,
+  bridge equality evaluation, the `blocked` frontier status, and explicit
+  non-claims.
+- Added `tests/test_fixed_point_bridge_equality_frontier_status.py` before the
+  implementation. The red run failed because
+  `autarkic_systems.fixed_point_bridge_equality_frontier_status` did not
+  exist.
+- Focused frontier-status tests passed 13 tests. Live text and JSON CLI checks
+  accepted the status surface, reporting `bridge-equality-proof` as the
+  blocker, the construction case still `proof-case-open`, five support
+  surfaces, bridge equation length 4815, evaluation output length 296, and no
+  failed subjects.
+- Updated the ADR-0272 suite manifest so the new
+  `tests.test_fixed_point_bridge_equality_frontier_status` module is
+  classified into `extended-fixed-point`.
+- This is a compact frontier handoff only. It does not prove substitution
+  representability, substitution graph correctness, bridge equality, a
+  fixed-point equation, an arithmetized proof predicate, or self-consistency.

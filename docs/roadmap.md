@@ -5984,3 +5984,28 @@ Implemented in
 `autarkic_systems/fixed_point_substitution_representability_frontier_status.py`,
 with tests in
 `tests/test_fixed_point_substitution_representability_frontier_status.py`.
+
+## ADR-0276: Fixed-Point Bridge Equality Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the fixed-point
+construction `bridge-equality-proof` case without promoting it.
+
+Deliverables:
+
+- `claims/fixed_point_bridge_equality_frontier_status.json`, preserving
+  `bridge-equality-proof` as the blocker;
+- `autarkic_systems.fixed_point_bridge_equality_frontier_status`, validating
+  the compact manifest shape, construction-case openness, dependency/support
+  surface presence, bridge equation length, evaluation output length, and
+  explicit non-claims;
+- text/JSON output for blocked status, construction case id/kind/status,
+  support-surface count, bridge/evaluation facts, and failed subjects; and
+- no substitution representability proof, substitution graph correctness
+  proof, bridge equality proof, fixed-point equation proof, arithmetized proof
+  predicate, self-consistency theorem, runtime behavior, command semantics, or
+  fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0276-fixed-point-bridge-equality-frontier-status.md`. Implemented in
+`autarkic_systems/fixed_point_bridge_equality_frontier_status.py`, with tests
+in `tests/test_fixed_point_bridge_equality_frontier_status.py`.

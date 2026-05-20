@@ -135,6 +135,11 @@ proof certificates, object languages, evidence bundles, and status reports:
 - `docs/fixed-point-bridge-equality-evaluation.md` records finite evaluation
   evidence that the current left bridge term evaluates to the right quoted
   diagonal-instance term, while leaving equality proof open.
+- `docs/fixed-point-bridge-equality-frontier-status.md` records the compact
+  bridge-equality proof frontier for fixed-point construction: the case
+  remains open, five support surfaces are present, the bridge equation length
+  is 4815, the evaluation output length is 296, and the blocker remains
+  `bridge-equality-proof`.
 - `docs/fixed-point-equation-lifting-alignment.md` records finite alignment
   evidence tying the fixed-point construction equation-lifting case to the
   selected `pi1` target context, checked equation bridge, bridge-equality

@@ -206,6 +206,13 @@
   five present support surfaces, the one-point witness bridge, and the
   preserved `substitution-representability-proof` blocker without proving or
   promoting representability.
+- ADR-0276 adds `claims/fixed_point_bridge_equality_frontier_status.json` and
+  `autarkic_systems.fixed_point_bridge_equality_frontier_status`, a compact
+  status surface for the fixed-point construction `bridge-equality-proof`
+  case. It reports the case still open, five present support surfaces, bridge
+  equation length 4815, evaluation output length 296, and the preserved
+  `bridge-equality-proof` blocker without proving or promoting bridge
+  equality.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length
