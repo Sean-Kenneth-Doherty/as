@@ -6132,6 +6132,7 @@ Deliverables:
   surface, six semantic subjects, explicit non-claims, and no failed subjects;
 - text/JSON output for blocked status, case id/kind/status, support-surface
   count, semantics support facts, and failed subjects; and
+
 - no formula correctness proof, substitution representability proof, diagonal
   lemma proof, fixed-point equation proof, arithmetized proof predicate,
   self-consistency theorem, runtime behavior, command semantics, aggregate
@@ -6143,3 +6144,30 @@ Implemented in
 `autarkic_systems/substitution_graph_meta_substitution_semantics_frontier_status.py`,
 with tests in
 `tests/test_substitution_graph_meta_substitution_semantics_frontier_status.py`.
+
+## ADR-0282: Substitution Graph Formula Schema Relation Frontier Status
+
+Goal: add a compact, fail-closed frontier/status handoff over the substitution
+graph correctness `formula-schema-relation` case without promoting it.
+
+Deliverables:
+
+- `claims/substitution_graph_formula_schema_relation_frontier_status.json`,
+  preserving `formula-schema-relation` as the blocker;
+- `autarkic_systems.substitution_graph_formula_schema_relation_frontier_status`,
+  validating the compact manifest shape, matching correctness-case openness,
+  required support paths, the accepted formula-schema-relation support
+  surface, four relation points, explicit non-claims, and no failed subjects;
+- text/JSON output for blocked status, case id/kind/status, support-surface
+  count, relation support facts, and failed subjects; and
+- no formula correctness proof, substitution representability proof, diagonal
+  lemma proof, fixed-point equation proof, arithmetized proof predicate,
+  self-consistency theorem, runtime behavior, command semantics, aggregate
+  correctness frontier, or fixed-point construction frontier changes.
+
+Status: accepted in
+`docs/adr/0282-substitution-graph-formula-schema-relation-frontier-status.md`.
+Implemented in
+`autarkic_systems/substitution_graph_formula_schema_relation_frontier_status.py`,
+with tests in
+`tests/test_substitution_graph_formula_schema_relation_frontier_status.py`.

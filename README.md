@@ -105,6 +105,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   records the compact meta-substitution-semantics proof-case frontier status:
   the correctness case remains open, the finite semantics support surface has
   6 accepted subjects, and the blocker remains `meta-substitution-semantics`.
+- `docs/substitution-graph-formula-schema-relation-frontier-status.md` records
+  the compact formula-schema-relation proof-case frontier status: the
+  correctness case remains open, the finite relation support surface has four
+  accepted points, and the blocker remains `formula-schema-relation`.
 - `docs/consistency-level-target.md` records Level-1 consistency as the first
   selected AS formal-confidence target notion.
 - `docs/deduction-apparatus-target.md` records the AS-local
@@ -533,6 +537,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   and runs finite relation evidence that the current graph target, formula
   schema, witness instance, and finite examples state the same graph relation,
   while keeping the general proof obligation open.
+- `autarkic_systems/substitution_graph_formula_schema_relation_frontier_status.py`
+  validates and runs the compact formula-schema-relation frontier handoff,
+  checking the existing open correctness case and finite relation support
+  surface without promoting the case to proved.
 - `autarkic_systems/substitution_graph_diagonal_witness_composition.py`
   validates and runs finite composition evidence that the current correctness
   target, formula-schema relation witness, substitution witness, diagonal seed,

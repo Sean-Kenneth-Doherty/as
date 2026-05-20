@@ -254,6 +254,14 @@
   accepted finite meta-substitution-semantics support surface with 6 semantic
   subjects and no failed subjects, and the preserved
   `meta-substitution-semantics` blocker without proving or promoting the case.
+- ADR-0282 adds
+  `claims/substitution_graph_formula_schema_relation_frontier_status.json` and
+  `autarkic_systems.substitution_graph_formula_schema_relation_frontier_status`,
+  a compact status surface for the substitution graph correctness
+  `formula-schema-relation` case. It reports the case still open, the accepted
+  finite formula-schema-relation support surface with four relation points and
+  no failed subjects, and the preserved `formula-schema-relation` blocker
+  without proving or promoting the case.
 - ADR-0250 extends `autarkic_systems.substitution_graph_formula` with a
   concrete witness evaluator for `AS-SUBSTITUTION-GRAPH-DELTA0-SCHEMA`: the
   checked witness relation evaluates true, with evaluated output code length

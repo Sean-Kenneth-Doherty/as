@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status_set_id": "as-substitution-graph-formula-schema-relation-frontier-status-v1",
+  "reviewed_at": "2026-05-20",
+  "purpose": "Compact fail-closed status surface for the substitution graph correctness formula-schema-relation frontier. It checks the matching open proof case and the existing finite formula-schema-relation support surface while preserving the blocker.",
+  "frontier_status": "blocked",
+  "frontier_blocked_by": "formula-schema-relation",
+  "substitution_graph_correctness_cases_path": "claims/substitution_graph_correctness_cases.json",
+  "formula_schema_relation_path": "claims/substitution_graph_formula_schema_relation.json",
+  "expected_support_surface_count": 1,
+  "expected_relation_point_count": 4,
+  "non_claims": [
+    "no formula correctness proof",
+    "no substitution representability proof",
+    "no diagonal lemma proof",
+    "no fixed-point equation proof",
+    "no arithmetized proof predicate",
+    "no self-consistency theorem"
+  ],
+  "next_as_action": "Use this compact status as the current formula-schema-relation handoff: the finite relation support validates, the correctness case remains open, and the general formula-correctness proof is still required before promotion."
+}
