@@ -812,7 +812,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   with the finite diagonal-instance closure, substitution-witness bridge, and
   substitution graph correctness bridge, bridge-equality alignment, and
   bridge-equality evaluation, and equation-lifting alignment dependencies, and
-  obstruction dependencies, explicit blockers, and the next AS action.
+  obstruction dependencies, explicit blockers, and the next AS action. Its
+  JSON payload now includes a derived `validation_summary` with accepted/failed
+  validation counts and the compact
+  `fixed_point_construction_frontier_status` accepted label, so automation can
+  read the source-owned summary without rescanning raw results.
 - `claims/transition_chain_claims.json` names the executable two-step
   transition-chain claims for consumed init/write-buffer delivery and rejected
   standard-signal delivery.

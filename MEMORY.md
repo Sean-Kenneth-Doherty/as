@@ -1379,6 +1379,15 @@
   ADR-0293 payloads with counts, modules, and `python -m unittest` command
   metadata, while preserving suite membership, text list mode, run mode, and
   ADR-0295 source-status closure behavior.
+- ADR-0297 adds a source-level formal-confidence `validation_summary` to
+  `python -m autarkic_systems.formal_confidence --format json` and a matching
+  text `Validation summary:` line. The summary is derived from
+  `report.results` and exposes 19 accepted validations, 0 failed validations,
+  the accepted
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`
+  subject, and compact label `fixed_point_construction_frontier_status`
+  without changing formal-confidence semantics, blockers, proof status,
+  project-status schema, or vertical-demo schema.
 - ADR-0298 makes `autarkic_systems.handoff` include top-level
   `suite_selection` built from the ADR-0296 validated suite index without
   running tests. Handoff text now includes `Suite selection:` with the

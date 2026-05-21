@@ -6712,3 +6712,25 @@
   semantics, GitHub-submission semantics, formal-confidence files,
   source-status records, claim manifests, mathematical semantics, or skip
   decorators.
+
+## 2026-05-21 - Formal Confidence Source Validation Summary
+
+- Added ADR-0297 to make the source formal-confidence report expose the same
+  compact validation summary that project status and the vertical demo already
+  derive from `formal_confidence.results`.
+- Extended `tests/test_formal_confidence_target.py` before implementation.
+  The focused red run failed as intended: JSON raised `KeyError:
+  'validation_summary'`, and text output lacked the concise `Validation
+  summary:` line.
+- Updated `autarkic_systems/formal_confidence.py` so
+  `formal_confidence_report_payload(report)` includes `validation_summary`
+  derived only from `report.results`, with accepted/failed validation counts,
+  accepted frontier subjects, and compact accepted frontier labels.
+- Updated text formatting to render
+  `Validation summary: 19 accepted, 0 failed; fixed_point_construction_frontier_status accepted`
+  before the raw validation list.
+- The exact red pair passed after implementation: 2 tests in 199.085s.
+- This is a source-reporting change only. It does not change
+  formal-confidence validation semantics, target blockers, proof status,
+  project-status schema, vertical-demo schema, handoff behavior, fixed-point
+  validators, or source-status behavior.

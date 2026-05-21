@@ -45,6 +45,20 @@ FIXED_POINT_CONSTRUCTION_FRONTIER_STATUS = Path(
     "claims/fixed_point_construction_frontier_status.json"
 )
 FIXED_POINT_OBSTRUCTIONS = Path("claims/fixed_point_obstructions.json")
+FORMAL_CONFIDENCE_FRONTIER_SUBJECT = (
+    "AS-FORMAL-CONFIDENCE-TARGET-001."
+    "fixed_point_construction_frontier_status"
+)
+FORMAL_CONFIDENCE_VALIDATION_SUMMARY = {
+    "accepted_validation_count": 19,
+    "failed_validation_count": 0,
+    "accepted_frontier_subjects": [
+        FORMAL_CONFIDENCE_FRONTIER_SUBJECT,
+    ],
+    "accepted_frontier_labels": [
+        "fixed_point_construction_frontier_status",
+    ],
+}
 
 
 class FormalConfidenceTargetTests(unittest.TestCase):
@@ -469,6 +483,28 @@ class FormalConfidenceTargetTests(unittest.TestCase):
             )
         )
 
+    def test_json_payload_exposes_validation_summary(self):
+        report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
+
+        payload = formal_confidence.formal_confidence_report_payload(report)
+
+        self.assertEqual(
+            payload["validation_summary"],
+            FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
+        )
+        self.assertEqual(payload["validation_summary"]["accepted_validation_count"], 19)
+        self.assertEqual(payload["validation_summary"]["failed_validation_count"], 0)
+        self.assertEqual(
+            payload["validation_summary"]["accepted_frontier_subjects"],
+            [FORMAL_CONFIDENCE_FRONTIER_SUBJECT],
+        )
+        self.assertEqual(
+            payload["validation_summary"]["accepted_frontier_labels"],
+            ["fixed_point_construction_frontier_status"],
+        )
+        self.assertEqual(len(payload["results"]), 19)
+        self.assertTrue(all(result["accepted"] for result in payload["results"]))
+
     def test_text_report_exposes_blocked_target(self):
         report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
 
@@ -497,6 +533,19 @@ class FormalConfidenceTargetTests(unittest.TestCase):
         self.assertIn("fixed-point construction frontier status accepted", text)
         self.assertIn("fixed-point obstruction accepted", text)
         self.assertNotIn("FAIL", text)
+
+    def test_text_report_exposes_validation_summary(self):
+        report = validate_formal_confidence_targets(self.manifest, WILLARD_MAP)
+
+        text = formal_confidence.format_formal_confidence_report(report)
+
+        self.assertIn(
+            (
+                "Validation summary: 19 accepted, 0 failed; "
+                "fixed_point_construction_frontier_status accepted"
+            ),
+            text,
+        )
 
     def test_unknown_willard_anchor_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

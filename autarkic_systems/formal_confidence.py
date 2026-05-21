@@ -70,6 +70,7 @@ from autarkic_systems.willard_map import load_willard_definition_map
 
 DEFAULT_TARGETS = Path("claims/formal_confidence_targets.json")
 DEFAULT_WILLARD_MAP = Path("sources/willard_definition_map.json")
+FORMAL_CONFIDENCE_FRONTIER_LABEL = "fixed_point_construction_frontier_status"
 
 REQUIRED_CONFIGURATION_FIELDS = (
     "language",
@@ -286,6 +287,7 @@ def formal_confidence_report_payload(report: FormalConfidenceReport) -> dict[str
         "willard_map": str(report.willard_map_path),
         "target_count": report.target_count,
         "failed_subjects": list(report.failed_subjects),
+        "validation_summary": formal_confidence_validation_summary(report),
         "targets": [
             {
                 "target_id": target.target_id,
@@ -310,14 +312,47 @@ def formal_confidence_report_payload(report: FormalConfidenceReport) -> dict[str
     }
 
 
+def formal_confidence_validation_summary(
+    report: FormalConfidenceReport,
+) -> dict[str, Any]:
+    """Derive compact validation counts and frontier labels from results.
+
+    The raw result list remains the validation authority. This helper only
+    summarizes already-computed results so JSON/text consumers can avoid
+    rescanning the payload to find the accepted formal-confidence frontier.
+    """
+
+    accepted_results = [result for result in report.results if result.accepted]
+    frontier_subjects = [
+        result.subject
+        for result in accepted_results
+        if _compact_formal_confidence_subject(result.subject)
+        == FORMAL_CONFIDENCE_FRONTIER_LABEL
+    ]
+    return {
+        "accepted_validation_count": len(accepted_results),
+        "failed_validation_count": len(report.results) - len(accepted_results),
+        "accepted_frontier_subjects": frontier_subjects,
+        "accepted_frontier_labels": [
+            _compact_formal_confidence_subject(subject)
+            for subject in frontier_subjects
+        ],
+    }
+
+
 def format_formal_confidence_report(report: FormalConfidenceReport) -> str:
     """Format a concise human-readable formal-confidence target report."""
 
     status = "accepted" if report.accepted else "rejected"
+    validation_summary = formal_confidence_validation_summary(report)
     lines = [
         f"Formal confidence targets: {status}",
         f"Targets: {report.target_count}",
         f"Failed subjects: {_joined_or_none(report.failed_subjects)}",
+        (
+            "Validation summary: "
+            + _formal_confidence_validation_summary_text(validation_summary)
+        ),
     ]
     for target in report.target_manifest.targets:
         lines.extend([
@@ -956,6 +991,22 @@ def _duplicates(values: list[str]) -> list[str]:
 
 def _joined_or_none(values: tuple[str, ...]) -> str:
     return ", ".join(values) if values else "none"
+
+
+def _formal_confidence_validation_summary_text(summary: dict[str, Any]) -> str:
+    labels = summary.get("accepted_frontier_labels", [])
+    if labels:
+        frontier_text = ", ".join(f"{label} accepted" for label in labels)
+    else:
+        frontier_text = "frontier subject none"
+    return (
+        f"{summary['accepted_validation_count']} accepted, "
+        f"{summary['failed_validation_count']} failed; {frontier_text}"
+    )
+
+
+def _compact_formal_confidence_subject(subject: str) -> str:
+    return subject.rsplit(".", 1)[-1]
 
 
 def _accepted(subject: str, detail: str) -> FormalConfidenceValidation:

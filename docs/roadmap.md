@@ -6518,6 +6518,31 @@ Status: accepted in
 Implemented in `autarkic_systems/test_suite_selection.py`, with tests in
 `tests/test_suite_selection.py`.
 
+## ADR-0297: Formal Confidence Source Validation Summary
+
+Goal: make the formal-confidence source command expose the compact validation
+summary that project status and the vertical demo already derive from raw
+formal-confidence results.
+
+Deliverables:
+
+- source JSON `validation_summary` in
+  `formal_confidence_report_payload(report)`;
+- accepted and failed validation counts derived from `report.results`;
+- accepted frontier subject list containing
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`;
+- compact accepted frontier label
+  `fixed_point_construction_frontier_status`;
+- source text output with the concise `Validation summary:` line; and
+- no changes to validation semantics, target blockers, proof status,
+  project-status schema, vertical-demo schema, handoff behavior, fixed-point
+  validators, or source-status behavior.
+
+Status: accepted in
+`docs/adr/0297-formal-confidence-source-validation-summary.md`.
+Implemented in `autarkic_systems/formal_confidence.py`, with tests in
+`tests/test_formal_confidence_target.py`.
+
 ## ADR-0298: Handoff Suite Evidence
 
 Goal: carry the validated suite-selection boundary into the end-of-month

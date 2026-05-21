@@ -275,6 +275,11 @@ ADR-0287 keeps that fail-closed behavior while exposing
 `validate_formal_confidence_targets.cache_clear()` and
 `validate_formal_confidence_targets.cache_info()` for regression tests and
 operator diagnostics.
+ADR-0297 adds a source-level `validation_summary` to the formal-confidence
+JSON payload and text report. The summary is derived from the existing raw
+validation results and reports accepted/failed validation counts plus the
+compact accepted `fixed_point_construction_frontier_status` label without
+changing validation semantics, target blockers, or proof status.
 
 ## Boundary
 
