@@ -1333,3 +1333,8 @@
 - ADR-0225 folds that formal-confidence target validation into aggregate
   project status and inherited handoff readiness, bumping project status to
   schema version `22` and making missing/drifted target manifests fail closed.
+- ADR-0289 makes `build_handoff_status` reuse its already-built project-status
+  payload when constructing the vertical-demo digest. `build_vertical_demo_digest`
+  now accepts optional `project_status=...`; direct CLI/default use still builds
+  project status internally, and no handoff or vertical-demo output schema
+  changes.

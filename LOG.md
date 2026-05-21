@@ -6394,3 +6394,33 @@
   promote substitution representability, substitution graph correctness,
   bridge equality, a fixed-point equation, an arithmetized proof predicate, or
   self-consistency.
+
+## 2026-05-20 - Handoff Reuses Project Status For Vertical Demo
+
+- Added ADR-0289 to keep handoff from building aggregate project status once
+  for the project summary and a second time inside the vertical-demo digest.
+- Extended `tests/test_vertical_demo_digest.py` and
+  `tests/test_handoff_status.py` before implementation. The focused red run
+  failed because `build_vertical_demo_digest` did not accept
+  `project_status=...` and `build_handoff_status` still called the vertical
+  demo builder with no project-status payload.
+- Updated `build_vertical_demo_digest` with an optional `project_status`
+  parameter. Direct vertical-demo callers still build project status
+  internally; handoff can now supply the already-built payload.
+- Updated `build_handoff_status` to build project status once, pass that same
+  object into the vertical-demo builder, and format the project summary from
+  the same payload.
+- The exact red pair passed after implementation: 2 tests in 0.002s. The
+  requested focused suite passed 19 tests in 512.978s.
+- Live handoff JSON smoke passed in 2m48.145s and asserted that
+  `python -m autarkic_systems.handoff --format json` returned a ready/not-ready
+  state with `project_status`, `vertical_demo`, and `github_submission`
+  sections. The observed state was `ready`.
+- `compileall` passed in 2.400s, `git diff --check` passed, and no JSON files
+  changed in this slice.
+- The fast suite passed 1170 tests in 217.588s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a runtime reuse optimization only. It does not change
+  formal-confidence semantics, project-status schema or acceptance, GitHub
+  submission semantics, vertical-demo validation rules, or handoff output
+  shape.

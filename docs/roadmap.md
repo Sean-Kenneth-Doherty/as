@@ -6325,3 +6325,28 @@ Status: accepted in
 `docs/adr/0288-project-status-formal-confidence-validation-summary.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py` and `tests/test_handoff_status.py`.
+
+## ADR-0289: Handoff Reuses Project Status For Vertical Demo
+
+Goal: keep `python -m autarkic_systems.handoff` from traversing the aggregate
+project-status/formal-confidence stack once for the project summary and again
+inside the vertical-demo digest.
+
+Deliverables:
+
+- `build_vertical_demo_digest(project_status=...)` can derive the existing
+  digest payload from an already-built project-status payload without calling
+  `build_project_status_report` again;
+- `build_handoff_status` builds project status once, passes that same payload
+  into vertical-demo digest construction, and formats the project summary from
+  the same payload;
+- existing vertical-demo direct CLI behavior, handoff JSON/text shape, and
+  readiness semantics stay unchanged; and
+- no changes to formal-confidence, project-status, GitHub submission, or
+  vertical-demo validation semantics.
+
+Status: accepted in
+`docs/adr/0289-handoff-reuses-project-status-for-vertical-demo.md`.
+Implemented in `autarkic_systems/handoff.py` and
+`autarkic_systems/vertical_demo.py`, with tests in
+`tests/test_handoff_status.py` and `tests/test_vertical_demo_digest.py`.

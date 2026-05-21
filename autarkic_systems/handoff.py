@@ -34,7 +34,7 @@ from autarkic_systems.vertical_demo import (
 
 
 ProjectBuilder = Callable[[], dict[str, Any]]
-VerticalDemoBuilder = Callable[[], dict[str, Any]]
+VerticalDemoBuilder = Callable[..., dict[str, Any]]
 SubmissionBuilder = Callable[[], GitHubSubmissionStatus]
 
 
@@ -75,7 +75,7 @@ def build_handoff_status(
     """Build a handoff report from project and submission status builders."""
 
     project_status = project_builder()
-    vertical_demo = vertical_demo_builder()
+    vertical_demo = vertical_demo_builder(project_status=project_status)
     return HandoffStatus(
         project_status=project_status,
         vertical_demo=vertical_demo,

@@ -4,6 +4,7 @@ import json
 import subprocess
 import sys
 import unittest
+from unittest import mock
 
 from autarkic_systems.vertical_demo import (
     build_vertical_demo_digest,
@@ -62,9 +63,132 @@ REPRODUCTION_COMMANDS = [
         "command": "python -m autarkic_systems.handoff --refresh-remotes",
     },
 ]
+PROJECT_STATUS_FOR_DIGEST = {
+    "accepted": True,
+    "transition_evidence": {
+        "bundle_count": 11,
+        "path": TRANSITION_REGISTRY,
+    },
+    "chain_evidence": {
+        "bundle_count": 2,
+        "path": CHAIN_REGISTRY,
+    },
+    "sequence_evidence": {
+        "bundle_count": 1,
+        "path": SEQUENCE_REGISTRY,
+        "bundles": [
+            {
+                "bundle_id": "post-handoff-signal-sequence-evidence-bundle",
+                "path": SEQUENCE_BUNDLE,
+                "sequence_claim_id": "UC-SEQUENCE-POST-HANDOFF-SIGNAL-ROUTED",
+                "expected_status": "post-handoff-signal-routed",
+            }
+        ],
+    },
+    "transition_claims": {
+        "claim_count": 16,
+        "matched_count": 40,
+    },
+    "chain_claims": {
+        "claim_count": 2,
+    },
+    "sequence_claims": {
+        "claim_count": 1,
+    },
+    "proof_rule_audit": {
+        "combined": {
+            "rule_counts": {
+                "predicate-result": 52,
+                "manifest-example": 0,
+            }
+        }
+    },
+    "frontier": {
+        "blocked_commands": ["standard-signal"],
+        "safe_next_slice": "",
+    },
+}
+SEQUENCE_DEMO_FOR_DIGEST = {
+    "accepted": True,
+    "evidence_layers": [
+        {
+            "role": "sequence-claim-manifest",
+            "path": "claims/network_sequence_claims.json",
+            "exists": True,
+        },
+        {
+            "role": "sequence-proof-certificates",
+            "path": "claims/network_sequence_proof_certificates.json",
+            "exists": True,
+        },
+    ],
+    "missing_evidence_paths": [],
+    "validation": {
+        "results": [
+            {"subject": "schema"},
+            {"subject": "boundary"},
+        ],
+    },
+}
 
 
 class VerticalDemoDigestTests(unittest.TestCase):
+    def test_digest_accepts_prebuilt_project_status_without_rebuilding(self):
+        with (
+            mock.patch(
+                "autarkic_systems.vertical_demo.build_project_status_report",
+                side_effect=AssertionError("project status should be reused"),
+            ) as project_status_builder,
+            mock.patch(
+                "autarkic_systems.vertical_demo.build_network_sequence_demo_report",
+                return_value=SEQUENCE_DEMO_FOR_DIGEST,
+            ),
+        ):
+            digest = build_vertical_demo_digest(
+                project_status=PROJECT_STATUS_FOR_DIGEST,
+            )
+
+        project_status_builder.assert_not_called()
+        self.assertTrue(digest["accepted"])
+        self.assertEqual(
+            digest["evidence_counts"],
+            {
+                "transition_bundles": 11,
+                "chain_bundles": 2,
+                "sequence_bundles": 1,
+            },
+        )
+        self.assertEqual(
+            digest["claim_counts"],
+            {
+                "transition_claims": 16,
+                "transition_matched_examples": 40,
+                "chain_claims": 2,
+                "sequence_claims": 1,
+            },
+        )
+        self.assertEqual(
+            digest["sequence_evidence_bundle"],
+            PROJECT_STATUS_FOR_DIGEST["sequence_evidence"]["bundles"][0],
+        )
+        self.assertEqual(
+            digest["registries"],
+            {
+                "transition": TRANSITION_REGISTRY,
+                "chain": CHAIN_REGISTRY,
+                "sequence": SEQUENCE_REGISTRY,
+            },
+        )
+        self.assertEqual(
+            digest["evidence_trail"],
+            SEQUENCE_DEMO_FOR_DIGEST["evidence_layers"],
+        )
+        self.assertEqual(digest["validation_subjects"], ["schema", "boundary"])
+        self.assertIn(
+            "Autarkic Systems vertical demo: accepted",
+            format_vertical_demo_digest(digest),
+        )
+
     def test_digest_summarizes_current_accepted_demonstration(self):
         digest = build_vertical_demo_digest()
 

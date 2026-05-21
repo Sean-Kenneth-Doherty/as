@@ -263,11 +263,40 @@ def build_source_submission_report():
     return SOURCE_SUBMISSION_REPORT
 
 
-def build_vertical_demo_digest():
+def build_vertical_demo_digest(project_status=None):
     return VERTICAL_DEMO_DIGEST
 
 
 class HandoffStatusTests(unittest.TestCase):
+    def test_handoff_reuses_project_status_for_vertical_demo(self):
+        calls = {"project_status": 0, "vertical_demo_project_status": None}
+
+        def counted_project_report():
+            calls["project_status"] += 1
+            return PROJECT_REPORT
+
+        def vertical_demo_from_handoff_project_status(*, project_status):
+            calls["vertical_demo_project_status"] = project_status
+            return VERTICAL_DEMO_DIGEST
+
+        report = build_handoff_status(
+            project_builder=counted_project_report,
+            vertical_demo_builder=vertical_demo_from_handoff_project_status,
+            submission_builder=build_submission_report,
+        )
+        payload = handoff_status_payload(report)
+
+        self.assertEqual(calls["project_status"], 1)
+        self.assertIs(calls["vertical_demo_project_status"], PROJECT_REPORT)
+        self.assertTrue(payload["accepted"])
+        self.assertEqual(payload["project_status"], PROJECT_REPORT)
+        self.assertEqual(payload["vertical_demo"], VERTICAL_DEMO_DIGEST)
+        self.assertIn("Autarkic Systems summary: accepted", report.project_summary)
+        self.assertIn(
+            "Autarkic Systems vertical demo: accepted",
+            report.vertical_demo_summary,
+        )
+
     def test_handoff_accepts_source_origin_submission(self):
         report = build_handoff_status(
             project_builder=build_project_report,
@@ -434,7 +463,7 @@ class HandoffStatusTests(unittest.TestCase):
 
         report = build_handoff_status(
             project_builder=build_project_report,
-            vertical_demo_builder=lambda: rejected_demo,
+            vertical_demo_builder=lambda project_status=None: rejected_demo,
             submission_builder=build_submission_report,
         )
 

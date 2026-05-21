@@ -34,10 +34,21 @@ REPRODUCTION_COMMANDS = [
 ]
 
 
-def build_vertical_demo_digest() -> dict[str, Any]:
-    """Build a first-run digest from the accepted project-status surface."""
+def build_vertical_demo_digest(
+    project_status: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a first-run digest from the accepted project-status surface.
 
-    status = build_project_status_report()
+    When handoff has already built project status for its own summary, callers
+    may pass that payload here so the digest reads the same evidence snapshot
+    without traversing the aggregate project-status stack a second time.
+    """
+
+    status = (
+        project_status
+        if project_status is not None
+        else build_project_status_report()
+    )
     sequence_demo = build_network_sequence_demo_report()
     transition = status["transition_evidence"]
     chain = status["chain_evidence"]
