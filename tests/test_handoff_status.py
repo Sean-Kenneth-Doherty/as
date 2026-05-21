@@ -44,6 +44,16 @@ FORMAL_CONFIDENCE_RESULTS = [
         for index in range(18)
     ],
 ]
+FORMAL_CONFIDENCE_VALIDATION_SUMMARY = {
+    "accepted_validation_count": 19,
+    "failed_validation_count": 0,
+    "accepted_frontier_subjects": [
+        "AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status",
+    ],
+    "accepted_frontier_labels": [
+        "fixed_point_construction_frontier_status",
+    ],
+}
 
 
 PROJECT_REPORT = {
@@ -92,6 +102,7 @@ VERTICAL_DEMO_DIGEST = {
         "predicate-result": 52,
         "manifest-example": 0,
     },
+    "formal_confidence_validation": FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
     "blocked_commands": ["standard-signal"],
     "safe_next_slice": "",
     "registries": {
@@ -289,6 +300,18 @@ def build_vertical_demo_digest(project_status=None):
     return VERTICAL_DEMO_DIGEST
 
 
+def rejected_suite_selection():
+    return {
+        "accepted": False,
+        "command": (
+            "python -m autarkic_systems.test_suite_selection "
+            "--list-suites --format json"
+        ),
+        "selected_suite_commands": {},
+        "error": "suite manifest not found",
+    }
+
+
 class HandoffStatusTests(unittest.TestCase):
     def test_handoff_reuses_project_status_for_vertical_demo(self):
         calls = {"project_status": 0, "vertical_demo_project_status": None}
@@ -410,6 +433,54 @@ class HandoffStatusTests(unittest.TestCase):
             "fresh",
         )
 
+    def test_handoff_payload_includes_suite_selection_evidence(self):
+        report = build_handoff_status(
+            project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
+            submission_builder=build_submission_report,
+        )
+
+        payload = handoff_status_payload(report)
+        suite_selection = payload["suite_selection"]
+        suites = suite_selection["suites"]
+
+        self.assertTrue(payload["accepted"])
+        self.assertTrue(suite_selection["accepted"])
+        self.assertEqual(
+            suite_selection["command"],
+            "python -m autarkic_systems.test_suite_selection "
+            "--list-suites --format json",
+        )
+        self.assertEqual(
+            suite_selection["selectable_suites"],
+            ["fast", "extended-fixed-point", "all"],
+        )
+        self.assertEqual(
+            set(suites),
+            {"fast", "extended-fixed-point", "all"},
+        )
+        self.assertGreater(suites["fast"]["module_count"], 0)
+        self.assertGreater(suites["extended-fixed-point"]["module_count"], 0)
+        self.assertEqual(
+            suites["all"]["module_count"],
+            suites["fast"]["module_count"]
+            + suites["extended-fixed-point"]["module_count"],
+        )
+        for suite_name in suite_selection["selectable_suites"]:
+            self.assertEqual(suites[suite_name]["suite"], suite_name)
+            self.assertEqual(
+                suite_selection["selected_suite_commands"][suite_name],
+                f"python -m autarkic_systems.test_suite_selection --suite {suite_name}",
+            )
+            self.assertEqual(
+                suites[suite_name]["command"]["argv"][:3],
+                ["python", "-m", "unittest"],
+            )
+            self.assertEqual(
+                suites[suite_name]["command"]["module_count"],
+                suites[suite_name]["module_count"],
+            )
+
     def test_handoff_text_renders_project_and_submission_sections(self):
         report = build_handoff_status(
             project_builder=build_project_report,
@@ -455,6 +526,46 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn("origin/main: HEAD ahead by 191 commits", text)
         self.assertIn("origin/main freshness: fresh (180s old, max 86400s)", text)
         self.assertIn("Origin main: https://github.com/jpt4/as/tree/main", text)
+
+    def test_handoff_text_renders_suite_selection_section(self):
+        report = build_handoff_status(
+            project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
+            submission_builder=build_submission_report,
+        )
+
+        text = format_handoff_status(report)
+
+        self.assertIn("Suite selection:", text)
+        self.assertIn(
+            "Suite index: python -m autarkic_systems.test_suite_selection "
+            "--list-suites --format json",
+            text,
+        )
+        self.assertRegex(
+            text,
+            r"- fast: \d+ modules; "
+            r"python -m autarkic_systems\.test_suite_selection --suite fast",
+        )
+        self.assertRegex(
+            text,
+            r"- extended-fixed-point: \d+ modules; "
+            r"python -m autarkic_systems\.test_suite_selection "
+            r"--suite extended-fixed-point",
+        )
+        self.assertRegex(
+            text,
+            r"- all: \d+ modules; "
+            r"python -m autarkic_systems\.test_suite_selection --suite all",
+        )
+        self.assertLess(
+            text.index("Vertical demo:"),
+            text.index("Suite selection:"),
+        )
+        self.assertLess(
+            text.index("Suite selection:"),
+            text.index("GitHub submission:"),
+        )
 
     def test_handoff_rejects_when_submission_is_not_on_fork_main(self):
         not_submitted = GitHubSubmissionStatus(
@@ -503,6 +614,25 @@ class HandoffStatusTests(unittest.TestCase):
             format_handoff_status(report),
         )
 
+    def test_handoff_rejects_when_suite_selection_rejects(self):
+        report = build_handoff_status(
+            project_builder=build_project_report,
+            vertical_demo_builder=build_vertical_demo_digest,
+            submission_builder=build_submission_report,
+            suite_selection_builder=rejected_suite_selection,
+        )
+
+        payload = handoff_status_payload(report)
+        text = format_handoff_status(report)
+
+        self.assertFalse(payload["accepted"])
+        self.assertEqual(payload["handoff_state"], "not-ready")
+        self.assertFalse(payload["suite_selection"]["accepted"])
+        self.assertEqual(payload["suite_selection"]["error"], "suite manifest not found")
+        self.assertIn("Autarkic Systems handoff: not-ready", text)
+        self.assertIn("Suite selection:", text)
+        self.assertIn("Status: rejected (suite manifest not found)", text)
+
     def test_json_cli_reports_handoff_status(self):
         stdout = io.StringIO()
 
@@ -520,6 +650,7 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertEqual(payload["handoff_state"], "ready")
         self.assertEqual(payload["github_submission"]["head"]["short"], "04158fc")
         self.assertEqual(payload["vertical_demo"], VERTICAL_DEMO_DIGEST)
+        self.assertTrue(payload["suite_selection"]["accepted"])
 
     def test_refresh_remotes_cli_passes_refresh_to_submission_status(self):
         stdout = io.StringIO()
@@ -559,6 +690,7 @@ class HandoffStatusTests(unittest.TestCase):
         self.assertIn(completed.returncode, {0, 1}, completed.stderr)
         self.assertIn("Autarkic Systems handoff:", completed.stdout)
         self.assertIn("Project status:", completed.stdout)
+        self.assertIn("Suite selection:", completed.stdout)
         self.assertIn("GitHub submission:", completed.stdout)
 
 

@@ -1379,3 +1379,11 @@
   ADR-0293 payloads with counts, modules, and `python -m unittest` command
   metadata, while preserving suite membership, text list mode, run mode, and
   ADR-0295 source-status closure behavior.
+- ADR-0298 makes `autarkic_systems.handoff` include top-level
+  `suite_selection` built from the ADR-0296 validated suite index without
+  running tests. Handoff text now includes `Suite selection:` with the
+  suite-index command plus `fast`, `extended-fixed-point`, and `all` module
+  counts and selector commands; invalid suite-selection validation makes
+  handoff not-ready. The live ADR-0298 assertion observed counts `fast=129`,
+  `extended-fixed-point=22`, and `all=151`, and the fast suite passed 1181
+  tests in 284.768s.

@@ -873,9 +873,12 @@ proof certificates, object languages, evidence bundles, and status reports:
   `--refresh-remotes` fetches fork `main` and origin `main` into the inspected
   remote-tracking refs before reporting.
 - `python -m autarkic_systems.handoff` emits a local text/JSON handoff report
-  that combines accepted project status, the vertical demo digest, and GitHub
-  submission evidence; it also accepts `--refresh-remotes` for a refreshed
-  pre-handoff check.
+  that combines accepted project status, the vertical demo digest,
+  suite-selection evidence, and GitHub submission evidence; it also accepts
+  `--refresh-remotes` for a refreshed pre-handoff check. The handoff
+  suite-selection section reuses the validated all-suite index and names the
+  exact `fast`, `extended-fixed-point`, and `all` module counts and selector
+  commands without running tests.
 - `python -m autarkic_systems.vertical_demo` emits a compact first-run digest
   for the current accepted demonstration, including the evidence trail and
   reproduction commands; `--format json` emits the same digest for automation.
@@ -1166,6 +1169,9 @@ python -m autarkic_systems.test_suite_selection --suite all
 
 `python -m unittest discover` remains the plain unittest discovery command, but
 it does not separate the extended fixed-point regressions from the fast path.
+`python -m autarkic_systems.handoff --format json` also carries the validated
+suite index under `suite_selection` so handoff recipients can inspect the same
+verification boundaries alongside project, demo, and submission readiness.
 
 The current executable probes live in `autarkic_systems/universal_cell.py` and
 `autarkic_systems/transition_predicates.py`, with claim-manifest,

@@ -6675,3 +6675,40 @@
   membership, run-mode loading, proof validators, claim manifests,
   mathematical semantics, ADR-0295 source-status closure behavior,
   source-status records, or skip decorators.
+
+## 2026-05-21 - Handoff Suite Evidence
+
+- Added ADR-0298 to carry validated suite-selection boundaries into the
+  end-of-month handoff report without running tests.
+- Extended `tests/test_handoff_status.py` before implementation. The first red
+  attempt hit a stale handoff fixture missing ADR-0294
+  `formal_confidence_validation`; the fixture was repaired in the owned test
+  file. The focused ADR-0298 red run then failed as intended with
+  `KeyError: 'suite_selection'`, missing `Suite selection:` text, and an
+  unexpected `suite_selection_builder` argument.
+- Updated `autarkic_systems/handoff.py` to build `suite_selection` from the
+  ADR-0296 validated suite index. Handoff now reports the suite-index command,
+  selector commands for `fast`, `extended-fixed-point`, and `all`, per-suite
+  module counts, and the underlying `python -m unittest` command metadata in
+  JSON. Suite-selection validation failures make handoff not-ready with an
+  error payload.
+- Documented the handoff suite-selection surface in `README.md` and added the
+  ADR-0298 roadmap entry.
+- Focused verification passed:
+  `python -m unittest tests.test_handoff_status tests.test_suite_selection`
+  ran 22 tests in 195.722s.
+- Live handoff JSON assertions passed for suite-selection evidence. Before
+  commit, local `HEAD` still matched `main` at `99319ae` and the command
+  returned code 0 with ready state. After commit and push, current `HEAD`
+  correctly returned code 1, `not-ready`,
+  `submission=not-submitted-to-fork`, and `suite_selection=True` with counts
+  `fast=129`, `extended-fixed-point=22`, `all=151`.
+- `python -m compileall autarkic_systems tests` passed and
+  `git diff --check` passed.
+- The fast suite passed 1181 tests in 284.768s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a handoff reporting change only. It does not change suite
+  membership, selector run mode, project-status semantics, vertical-demo
+  semantics, GitHub-submission semantics, formal-confidence files,
+  source-status records, claim manifests, mathematical semantics, or skip
+  decorators.

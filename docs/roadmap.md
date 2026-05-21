@@ -6517,3 +6517,24 @@ Status: accepted in
 `docs/adr/0296-test-suite-selection-suite-index.md`.
 Implemented in `autarkic_systems/test_suite_selection.py`, with tests in
 `tests/test_suite_selection.py`.
+
+## ADR-0298: Handoff Suite Evidence
+
+Goal: carry the validated suite-selection boundary into the end-of-month
+handoff report without running tests.
+
+Deliverables:
+
+- handoff JSON `suite_selection` derived from the ADR-0296 validated suite
+  index;
+- handoff text `Suite selection:` section with the suite-index command and
+  module counts plus selector commands for `fast`, `extended-fixed-point`, and
+  `all`;
+- fail-closed handoff readiness when suite-selection validation rejects; and
+- no changes to suite membership, selector run mode, project-status,
+  vertical-demo, GitHub-submission, formal-confidence, source-status, claim,
+  or mathematical semantics.
+
+Status: accepted in `docs/adr/0298-handoff-suite-evidence.md`.
+Implemented in `autarkic_systems/handoff.py`, with tests in
+`tests/test_handoff_status.py`.
