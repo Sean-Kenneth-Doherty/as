@@ -6442,3 +6442,25 @@ Deliverables:
 Status: accepted in `docs/adr/0293-test-suite-selection-json-list.md`.
 Implemented in `autarkic_systems/test_suite_selection.py`, with tests in
 `tests/test_suite_selection.py`.
+
+## ADR-0294: Vertical Demo Formal Confidence Summary
+
+Goal: make the first-run vertical demo digest expose the formal-confidence
+validation frontier that project status already reports.
+
+Deliverables:
+
+- `formal_confidence_validation` in vertical-demo JSON, reusing the top-level
+  project-status summary when present;
+- fallback derivation from existing nested `formal_confidence.results` when a
+  narrowed status payload lacks the top-level summary;
+- text output naming accepted/failed formal-confidence validation counts and
+  the compact `fixed_point_construction_frontier_status accepted` label; and
+- no changes to project-status schema or acceptance semantics,
+  formal-confidence validation semantics, proof status, blockers,
+  transition/chain/sequence evidence, reproduction commands, or boundary text.
+
+Status: accepted in
+`docs/adr/0294-vertical-demo-formal-confidence-summary.md`.
+Implemented in `autarkic_systems/vertical_demo.py`, with tests in
+`tests/test_vertical_demo_digest.py`.

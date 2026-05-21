@@ -14,6 +14,7 @@ DEMONSTRATION = "post-handoff signal routing through checked evidence"
 STANDARD_SIGNAL_BOUNDARY = (
     "no standard-signal command-token execution change without new source evidence"
 )
+FORMAL_CONFIDENCE_FRONTIER_LABEL = "fixed_point_construction_frontier_status"
 REPRODUCTION_COMMANDS = [
     {
         "label": "vertical-demo",
@@ -77,6 +78,9 @@ def build_vertical_demo_digest(
             "predicate-result": proof_rules.get("predicate-result", 0),
             "manifest-example": proof_rules.get("manifest-example", 0),
         },
+        "formal_confidence_validation": (
+            _formal_confidence_validation_summary(status)
+        ),
         "blocked_commands": frontier["blocked_commands"],
         "safe_next_slice": frontier["safe_next_slice"],
         "registries": {
@@ -103,6 +107,7 @@ def format_vertical_demo_digest(digest: dict[str, Any]) -> str:
     evidence = digest["evidence_counts"]
     claims = digest["claim_counts"]
     proof_rules = digest["proof_rules"]
+    formal_confidence_validation = digest["formal_confidence_validation"]
     blocked = digest["blocked_commands"] or []
     registries = digest["registries"]
     sequence_bundle = digest["sequence_evidence_bundle"]
@@ -129,6 +134,10 @@ def format_vertical_demo_digest(digest: dict[str, Any]) -> str:
             "Proof rules: "
             f"predicate-result={proof_rules['predicate-result']}, "
             f"manifest-example={proof_rules['manifest-example']}"
+        ),
+        (
+            "Formal confidence validation: "
+            f"{_formal_confidence_validation_text(formal_confidence_validation)}"
         ),
         "Blocked command frontier: " + (", ".join(blocked) if blocked else "none"),
         f"Safe next slice: {digest['safe_next_slice'] or 'none'}",
@@ -180,6 +189,85 @@ def run_vertical_demo_cli(argv: list[str] | None = None) -> int:
 
 def _count_noun(count: int, singular: str, plural: str) -> str:
     return singular if count == 1 else plural
+
+
+def _formal_confidence_validation_summary(
+    project_status: dict[str, Any],
+) -> dict[str, Any]:
+    """Read formal-confidence validation highlights from project status."""
+
+    validation = project_status.get("formal_confidence_validation")
+    if isinstance(validation, dict):
+        return {
+            "accepted_validation_count": validation.get(
+                "accepted_validation_count",
+                0,
+            ),
+            "failed_validation_count": validation.get(
+                "failed_validation_count",
+                0,
+            ),
+            "accepted_frontier_subjects": list(
+                validation.get("accepted_frontier_subjects", [])
+            ),
+            "accepted_frontier_labels": list(
+                validation.get("accepted_frontier_labels", [])
+            ),
+        }
+    return _derive_formal_confidence_validation_summary(
+        project_status.get("formal_confidence", {})
+    )
+
+
+def _derive_formal_confidence_validation_summary(
+    formal_confidence: Any,
+) -> dict[str, Any]:
+    """Derive a compact summary from already-built project-status results."""
+
+    results = []
+    if isinstance(formal_confidence, dict):
+        results = [
+            result
+            for result in formal_confidence.get("results", [])
+            if isinstance(result, dict)
+        ]
+    accepted_results = [
+        result for result in results if result.get("accepted")
+    ]
+    frontier_subjects = [
+        result["subject"]
+        for result in accepted_results
+        if (
+            isinstance(result.get("subject"), str)
+            and _compact_formal_confidence_subject(result["subject"])
+            == FORMAL_CONFIDENCE_FRONTIER_LABEL
+        )
+    ]
+    return {
+        "accepted_validation_count": len(accepted_results),
+        "failed_validation_count": len(results) - len(accepted_results),
+        "accepted_frontier_subjects": frontier_subjects,
+        "accepted_frontier_labels": [
+            _compact_formal_confidence_subject(subject)
+            for subject in frontier_subjects
+        ],
+    }
+
+
+def _formal_confidence_validation_text(validation: dict[str, Any]) -> str:
+    labels = validation.get("accepted_frontier_labels", [])
+    if labels:
+        frontier_text = ", ".join(f"{label} accepted" for label in labels)
+    else:
+        frontier_text = "frontier subject none"
+    return (
+        f"{validation['accepted_validation_count']} accepted, "
+        f"{validation['failed_validation_count']} failed; {frontier_text}"
+    )
+
+
+def _compact_formal_confidence_subject(subject: str) -> str:
+    return subject.rsplit(".", 1)[-1]
 
 
 if __name__ == "__main__":  # pragma: no cover - exercised by subprocess test.

@@ -1359,3 +1359,8 @@
   --format json` and the same command for `extended-fixed-point` emit manifest
   id/version, suite, counts, modules, and selected `unittest` command metadata
   without changing text list mode or run mode.
+- ADR-0294 makes `autarkic_systems.vertical_demo` include the project-status
+  `formal_confidence_validation` summary, including accepted/failed
+  validation counts and `fixed_point_construction_frontier_status accepted`,
+  while preserving project-status/formal-confidence semantics, evidence
+  counts, reproduction commands, and boundary text.

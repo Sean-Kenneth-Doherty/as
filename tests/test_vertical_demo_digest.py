@@ -45,6 +45,20 @@ VALIDATION_SUBJECTS = [
     "source-statuses",
     "boundary",
 ]
+FORMAL_CONFIDENCE_FRONTIER_SUBJECT = (
+    "AS-FORMAL-CONFIDENCE-TARGET-001."
+    "fixed_point_construction_frontier_status"
+)
+FORMAL_CONFIDENCE_VALIDATION_SUMMARY = {
+    "accepted_validation_count": 19,
+    "failed_validation_count": 0,
+    "accepted_frontier_subjects": [
+        FORMAL_CONFIDENCE_FRONTIER_SUBJECT,
+    ],
+    "accepted_frontier_labels": [
+        "fixed_point_construction_frontier_status",
+    ],
+}
 REPRODUCTION_COMMANDS = [
     {
         "label": "vertical-demo",
@@ -107,6 +121,7 @@ PROJECT_STATUS_FOR_DIGEST = {
         "blocked_commands": ["standard-signal"],
         "safe_next_slice": "",
     },
+    "formal_confidence_validation": FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
 }
 SEQUENCE_DEMO_FOR_DIGEST = {
     "accepted": True,
@@ -189,6 +204,86 @@ class VerticalDemoDigestTests(unittest.TestCase):
             format_vertical_demo_digest(digest),
         )
 
+    def test_digest_reuses_project_status_formal_confidence_validation_summary(self):
+        with mock.patch(
+            "autarkic_systems.vertical_demo.build_network_sequence_demo_report",
+            return_value=SEQUENCE_DEMO_FOR_DIGEST,
+        ):
+            digest = build_vertical_demo_digest(
+                project_status=PROJECT_STATUS_FOR_DIGEST,
+            )
+
+        self.assertEqual(
+            digest["formal_confidence_validation"],
+            FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
+        )
+
+    def test_text_output_names_formal_confidence_validation_frontier(self):
+        with mock.patch(
+            "autarkic_systems.vertical_demo.build_network_sequence_demo_report",
+            return_value=SEQUENCE_DEMO_FOR_DIGEST,
+        ):
+            digest = build_vertical_demo_digest(
+                project_status=PROJECT_STATUS_FOR_DIGEST,
+            )
+
+        text = format_vertical_demo_digest(digest)
+        self.assertIn(
+            (
+                "Formal confidence validation: 19 accepted, 0 failed; "
+                "fixed_point_construction_frontier_status accepted"
+            ),
+            text,
+        )
+
+    def test_digest_derives_formal_confidence_validation_from_status_results(self):
+        project_status = {
+            **PROJECT_STATUS_FOR_DIGEST,
+            "formal_confidence": {
+                "results": [
+                    {
+                        "subject": FORMAL_CONFIDENCE_FRONTIER_SUBJECT,
+                        "accepted": True,
+                    },
+                    {
+                        "subject": (
+                            "AS-FORMAL-CONFIDENCE-TARGET-001."
+                            "substitution_graph_correctness_frontier_status"
+                        ),
+                        "accepted": True,
+                    },
+                    {
+                        "subject": (
+                            "AS-FORMAL-CONFIDENCE-TARGET-001."
+                            "fixed_point_equation_lifting_frontier_status"
+                        ),
+                        "accepted": False,
+                    },
+                ],
+            },
+        }
+        project_status.pop("formal_confidence_validation")
+
+        with mock.patch(
+            "autarkic_systems.vertical_demo.build_network_sequence_demo_report",
+            return_value=SEQUENCE_DEMO_FOR_DIGEST,
+        ):
+            digest = build_vertical_demo_digest(project_status=project_status)
+
+        self.assertEqual(
+            digest["formal_confidence_validation"],
+            {
+                "accepted_validation_count": 2,
+                "failed_validation_count": 1,
+                "accepted_frontier_subjects": [
+                    FORMAL_CONFIDENCE_FRONTIER_SUBJECT,
+                ],
+                "accepted_frontier_labels": [
+                    "fixed_point_construction_frontier_status",
+                ],
+            },
+        )
+
     def test_digest_summarizes_current_accepted_demonstration(self):
         digest = build_vertical_demo_digest()
 
@@ -239,6 +334,10 @@ class VerticalDemoDigestTests(unittest.TestCase):
         )
         self.assertEqual(digest["missing_evidence_paths"], [])
         self.assertEqual(digest["validation_subjects"], VALIDATION_SUBJECTS)
+        self.assertEqual(
+            digest["formal_confidence_validation"],
+            FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
+        )
         self.assertEqual(digest["reproduction_commands"], REPRODUCTION_COMMANDS)
         self.assertEqual(
             [layer["role"] for layer in digest["evidence_trail"]],
@@ -273,6 +372,13 @@ class VerticalDemoDigestTests(unittest.TestCase):
         )
         self.assertIn("Proof rules: predicate-result=52, manifest-example=0", text)
         self.assertIn("Blocked command frontier: standard-signal", text)
+        self.assertIn(
+            (
+                "Formal confidence validation: 19 accepted, 0 failed; "
+                "fixed_point_construction_frontier_status accepted"
+            ),
+            text,
+        )
         self.assertIn(f"Sequence evidence bundle: {SEQUENCE_BUNDLE}", text)
         self.assertIn(f"Transition registry: {TRANSITION_REGISTRY}", text)
         self.assertIn(f"Chain registry: {CHAIN_REGISTRY}", text)
@@ -320,6 +426,10 @@ class VerticalDemoDigestTests(unittest.TestCase):
         self.assertEqual(payload["sequence_evidence_bundle"]["path"], SEQUENCE_BUNDLE)
         self.assertEqual(payload["missing_evidence_paths"], [])
         self.assertEqual(payload["validation_subjects"], VALIDATION_SUBJECTS)
+        self.assertEqual(
+            payload["formal_confidence_validation"],
+            FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
+        )
         self.assertEqual(payload["reproduction_commands"], REPRODUCTION_COMMANDS)
         self.assertEqual(
             payload["evidence_trail"][0]["path"],
@@ -344,6 +454,10 @@ class VerticalDemoDigestTests(unittest.TestCase):
         payload = json.loads(completed.stdout)
         self.assertTrue(payload["accepted"])
         self.assertEqual(payload["demonstration"], DEMONSTRATION)
+        self.assertEqual(
+            payload["formal_confidence_validation"],
+            FORMAL_CONFIDENCE_VALIDATION_SUMMARY,
+        )
 
 
 if __name__ == "__main__":

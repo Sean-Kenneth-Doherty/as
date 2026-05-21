@@ -6558,3 +6558,42 @@
   membership, run-mode loading, proof validators, claim manifests,
   mathematical semantics, GitHub submission/handoff freshness semantics, or
   skip decorators.
+
+## 2026-05-21 - Vertical Demo Formal Confidence Summary
+
+- Added ADR-0294 to make the first-run vertical demo digest expose the
+  formal-confidence validation frontier that project status already reports.
+- Extended `tests/test_vertical_demo_digest.py` before implementation. The
+  focused red run failed as intended: the digest lacked
+  `formal_confidence_validation`, and formatted text lacked
+  `fixed_point_construction_frontier_status accepted`.
+- Updated `autarkic_systems/vertical_demo.py` to reuse the top-level
+  project-status `formal_confidence_validation` summary when present and to
+  derive the same compact counts/accepted frontier lists from existing nested
+  `formal_confidence.results` when needed. It does not load or revalidate
+  formal-confidence targets.
+- Text output now renders:
+  `Formal confidence validation: 19 accepted, 0 failed; fixed_point_construction_frontier_status accepted`.
+- After `main`, `origin/main`, and `fork/main` advanced to `5fc025b` with
+  ADR-0293, rebased this branch onto `5fc025b`. Append-style conflicts in
+  `docs/roadmap.md` and `MEMORY.md` were resolved by preserving both ADR-0293
+  and ADR-0294 entries; no ADR-0293 test-suite-selection source files were
+  edited in this lane.
+- The exact red run passed after implementation: 2 tests in 0.002s.
+- Post-refresh focused verification passed:
+  `python -m unittest tests.test_vertical_demo_digest tests.test_suite_selection`
+  ran 16 tests in 398.122s.
+- Live vertical-demo JSON assertion ran
+  `python -m autarkic_systems.vertical_demo --format json` and accepted in
+  179.771s with 19 accepted formal-confidence validations, 0 failed
+  validations, the accepted
+  `AS-FORMAL-CONFIDENCE-TARGET-001.fixed_point_construction_frontier_status`
+  subject, and compact label `fixed_point_construction_frontier_status`.
+- `compileall` passed, `git diff --check` passed, and no JSON files changed in
+  this slice.
+- The fast suite passed 1176 tests in 230.513s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a digest/readability change only. It does not change
+  project-status schema or acceptance semantics, formal-confidence validation
+  semantics, proof status, blockers, transition/chain/sequence evidence,
+  reproduction commands, boundary text, or command-token/runtime behavior.
