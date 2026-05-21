@@ -1371,3 +1371,11 @@
   and preserved unsupported pending new source evidence, and reports
   `write-buf-zero` / `write-buf-one` as implemented without changing
   source-status records or runtime behavior.
+- ADR-0296 adds
+  `python -m autarkic_systems.test_suite_selection --list-suites --format json`,
+  a fail-closed suite-index JSON object for `fast`, `extended-fixed-point`,
+  and `all`. The index reports manifest/schema data, 151 discovered modules in
+  the current post-ADR-0295 tree, selectable suite names, and per-suite
+  ADR-0293 payloads with counts, modules, and `python -m unittest` command
+  metadata, while preserving suite membership, text list mode, run mode, and
+  ADR-0295 source-status closure behavior.

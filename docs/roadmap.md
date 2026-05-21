@@ -6492,3 +6492,28 @@ Status: accepted in
 `docs/adr/0295-source-status-frontier-closure-summary.md`. Implemented in
 `autarkic_systems/source_status.py`, with tests in
 `tests/test_source_status_frontier_cli.py`.
+
+## ADR-0296: Test Suite Selection Suite Index JSON
+
+Goal: let automation capture all validated unittest suite boundaries in one
+fail-closed machine-readable artifact.
+
+Deliverables:
+
+- explicit `--list-suites --format json` support in
+  `autarkic_systems.test_suite_selection`;
+- a top-level suite-index JSON object containing manifest id/version,
+  index schema version, discovered-module count, selectable suite names, and
+  entries for `fast`, `extended-fixed-point`, and `all`;
+- per-suite entries that reuse the ADR-0293 JSON list payload shape, including
+  module counts, module names, and selected `unittest` command metadata;
+- focused coverage for the suite index and for rejecting text
+  `--list-suites` output; and
+- no changes to suite membership, text list mode, run-mode loading, proof
+  validators, claim manifests, mathematical semantics, or source-status
+  closure files.
+
+Status: accepted in
+`docs/adr/0296-test-suite-selection-suite-index.md`.
+Implemented in `autarkic_systems/test_suite_selection.py`, with tests in
+`tests/test_suite_selection.py`.

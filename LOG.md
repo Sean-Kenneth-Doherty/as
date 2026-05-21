@@ -6636,3 +6636,42 @@
 - This is a focused reporting change only. It does not change project-status
   schema or acceptance semantics, runtime behavior, command-token semantics,
   GitHub submission, vertical demo, or suite-selection source.
+
+## 2026-05-21 - Test Suite Selection Suite Index JSON
+
+- Added ADR-0296 to expose one fail-closed machine-readable suite index for
+  `fast`, `extended-fixed-point`, and `all` without changing suite
+  membership.
+- Extended `tests/test_suite_selection.py` before implementation. The focused
+  red run failed as intended with `SystemExit: 2` because argparse did not
+  recognize `--list-suites`.
+- Updated `autarkic_systems/test_suite_selection.py` to build a suite-index
+  JSON payload from the already validated `SuitePlan`, embedding the existing
+  ADR-0293 per-suite JSON payload for each selectable suite. Text
+  `--list-suites` output is rejected with exit code 2, and existing
+  `--suite ... --list` and run-mode paths remain unchanged.
+- Documented the new command in `README.md` and added the ADR-0296 roadmap
+  entry after preserving the landed ADR-0295 roadmap entry.
+- After `main`, `origin/main`, and `fork/main` advanced to `c3780f1` with
+  ADR-0295, rebased this branch onto `c3780f1`. The only conflict was
+  `docs/roadmap.md`; it was resolved by keeping ADR-0295 and then ADR-0296.
+  No source-status closure files were edited.
+- Post-rebase focused verification passed:
+  `python -m unittest tests.test_suite_selection` ran 10 tests in 0.058s.
+- Live suite-index JSON smoke passed:
+  `python -m autarkic_systems.test_suite_selection --list-suites --format json`
+  parsed as manifest `as-test-suite-selection-v1`, schema 1, index schema 1,
+  151 discovered modules, and suite counts `fast=129`,
+  `extended-fixed-point=22`, `all=151`, with command metadata matching each
+  suite's module list.
+- Compatibility smokes preserved `--suite fast --list` text output and
+  `--suite fast --list --format json`; fast per-suite JSON still reported
+  129 modules and 151 discovered modules.
+- `compileall` passed, `git diff --check` passed, and no JSON files changed in
+  this slice.
+- The post-rebase fast suite passed 1181 tests in 226.566s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is a suite-index serialization change only. It does not change suite
+  membership, run-mode loading, proof validators, claim manifests,
+  mathematical semantics, ADR-0295 source-status closure behavior,
+  source-status records, or skip decorators.

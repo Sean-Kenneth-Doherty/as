@@ -24,6 +24,7 @@ EXPECTED_LEAF_SUITES = frozenset({"fast", "extended-fixed-point"})
 EXPECTED_AGGREGATE_SUITES = frozenset({"all"})
 SELECTABLE_SUITES = ("fast", "extended-fixed-point", "all")
 LIST_FORMATS = ("text", "json")
+SUITE_INDEX_SCHEMA_VERSION = 1
 
 
 class SuiteManifestError(ValueError):
@@ -332,6 +333,28 @@ def build_suite_list_payload(plan: SuitePlan, suite_name: str) -> Mapping[str, A
     }
 
 
+def build_suite_index_payload(plan: SuitePlan) -> Mapping[str, Any]:
+    """Return one machine-readable index for every selectable suite.
+
+    The index deliberately embeds the same per-suite payload used by ADR-0293
+    JSON list mode. That keeps automation from reconciling two subtly
+    different suite descriptions, while the top-level fields expose the
+    manifest and discovery facts shared by the whole checked plan.
+    """
+
+    return {
+        "manifest_id": plan.manifest_id,
+        "manifest_schema_version": plan.manifest_schema_version,
+        "index_schema_version": SUITE_INDEX_SCHEMA_VERSION,
+        "discovered_module_count": len(plan.discovered_modules),
+        "selectable_suites": list(SELECTABLE_SUITES),
+        "suites": {
+            suite_name: build_suite_list_payload(plan, suite_name)
+            for suite_name in SELECTABLE_SUITES
+        },
+    }
+
+
 def format_suite_list(
     plan: SuitePlan,
     suite_name: str,
@@ -356,6 +379,14 @@ def format_suite_list_json(
     """Print a stable JSON module list for one validated suite."""
 
     payload = build_suite_list_payload(plan, suite_name)
+    json.dump(payload, stream, indent=2)
+    print(file=stream)
+
+
+def format_suite_index_json(plan: SuitePlan, stream: IO[str]) -> None:
+    """Print the validated all-suite index as stable JSON."""
+
+    payload = build_suite_index_payload(plan)
     json.dump(payload, stream, indent=2)
     print(file=stream)
 
@@ -391,10 +422,15 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         help="list selected modules without running unittest",
     )
     parser.add_argument(
+        "--list-suites",
+        action="store_true",
+        help="emit the machine-readable index of all selectable suites",
+    )
+    parser.add_argument(
         "--format",
         choices=LIST_FORMATS,
         default="text",
-        help="output format for --list",
+        help="output format for --list or --list-suites",
     )
     return parser
 
@@ -418,10 +454,18 @@ def run_cli(
         manifest = load_suite_manifest(manifest_path)
         discovered = discover_test_modules(tests_root)
         plan = build_suite_plan(manifest, discovered)
-        module_names = plan.selected_modules(args.suite)
     except SuiteManifestError as error:
         print(f"error: {error}", file=stderr)
         return 2
+
+    if args.list_suites:
+        if args.format != "json":
+            print("error: --list-suites requires --format json", file=stderr)
+            return 2
+        format_suite_index_json(plan, stdout)
+        return 0
+
+    module_names = plan.selected_modules(args.suite)
 
     if args.list:
         if args.format == "json":

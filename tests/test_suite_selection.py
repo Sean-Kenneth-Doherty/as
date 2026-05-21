@@ -230,6 +230,52 @@ class TestSuiteSelectionTests(unittest.TestCase):
         self.assertEqual(payload["command"]["module_count"], len(expected_modules))
         self.assertEqual(payload["command"]["argv"][3:], list(expected_modules))
 
+    def test_json_suite_index_lists_all_selectable_suites(self):
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        manifest, plan = self._current_plan()
+
+        exit_code = selector.run_cli(
+            ["--list-suites", "--format", "json"],
+            stdout=stdout,
+            stderr=stderr,
+        )
+
+        self.assertEqual(exit_code, 0, stderr.getvalue())
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(payload["manifest_id"], manifest.manifest_id)
+        self.assertEqual(payload["manifest_schema_version"], manifest.schema_version)
+        self.assertEqual(payload["index_schema_version"], 1)
+        self.assertEqual(
+            payload["discovered_module_count"],
+            len(plan.discovered_modules),
+        )
+        self.assertEqual(
+            payload["selectable_suites"],
+            ["fast", "extended-fixed-point", "all"],
+        )
+        self.assertEqual(
+            set(payload["suites"]),
+            {"fast", "extended-fixed-point", "all"},
+        )
+        for suite_name in payload["selectable_suites"]:
+            expected = selector.build_suite_list_payload(plan, suite_name)
+            self.assertEqual(payload["suites"][suite_name], expected)
+
+    def test_suite_index_requires_json_format(self):
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+
+        exit_code = selector.run_cli(
+            ["--list-suites"],
+            stdout=stdout,
+            stderr=stderr,
+        )
+
+        self.assertEqual(exit_code, 2)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertIn("--list-suites requires --format json", stderr.getvalue())
+
     def test_run_mode_loads_selected_modules_through_unittest(self):
         stdout = io.StringIO()
         stderr = io.StringIO()
