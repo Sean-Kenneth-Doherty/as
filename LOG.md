@@ -6734,3 +6734,35 @@
   formal-confidence validation semantics, target blockers, proof status,
   project-status schema, vertical-demo schema, handoff behavior, fixed-point
   validators, or source-status behavior.
+
+## 2026-05-21 - Command Runtime Frontier Summary
+
+- Added ADR-0299 to cross-check the accepted source-status closure against
+  live Universal Cell command-token runtime witnesses.
+- Added `tests/test_command_runtime_frontier.py` before implementation. The
+  red run failed as intended with `ModuleNotFoundError` because
+  `autarkic_systems.command_runtime_frontier` did not exist.
+- Added `autarkic_systems.command_runtime_frontier`, which fails closed when
+  source-status validation rejects and otherwise runs seven runtime cases:
+  recipient write-buffer zero/one, self-mailbox write-buffer, self command
+  buffer write-buffer, recipient standard-signal rejection, self-mailbox
+  standard-signal unsupported preservation, and self command-buffer
+  standard-signal append-boundary preservation.
+- The focused command-runtime frontier suite passed 7 tests in 1.114s.
+- The focused command/source-status/evidence seam passed 74 tests in 2.708s.
+- Live JSON passed:
+  `python -m autarkic_systems.command_runtime_frontier --format json`
+  returned `accepted=true`, seven accepted runtime cases, source-status schema
+  4, implemented commands `write-buf-zero` and `write-buf-one`, and preserved
+  unsupported command `standard-signal`.
+- Live suite index reflected the new test module: 152 discovered modules with
+  `fast=130`, `extended-fixed-point=22`, and `all=152`.
+- `python -m compileall autarkic_systems tests` passed and
+  `git diff --check` passed.
+- The fast suite passed 1188 tests in 300.178s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 130 selected modules.
+- This is an additive runtime witness/reporting command only. It does not
+  change Universal Cell runtime behavior, source-status JSON records,
+  transition predicates, evidence bundles, formal-confidence files,
+  project-status, vertical-demo, handoff behavior, suite selection, claim
+  manifests, or mathematical semantics.

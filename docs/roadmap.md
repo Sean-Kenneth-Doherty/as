@@ -6563,3 +6563,26 @@ Deliverables:
 Status: accepted in `docs/adr/0298-handoff-suite-evidence.md`.
 Implemented in `autarkic_systems/handoff.py`, with tests in
 `tests/test_handoff_status.py`.
+
+## ADR-0299: Command Runtime Frontier Summary
+
+Goal: check the accepted source-status command-token closure against live
+Universal Cell runtime witnesses.
+
+Deliverables:
+
+- `python -m autarkic_systems.command_runtime_frontier` text/JSON CLI;
+- source-status-gated acceptance that fails closed when the focused frontier
+  rejects;
+- runtime cases for recipient write-buffer zero/one, self-mailbox
+  write-buffer, self command-buffer write-buffer, recipient standard-signal
+  rejection, self-mailbox standard-signal unsupported preservation, and self
+  command-buffer standard-signal append-boundary preservation;
+- existing evidence bundle paths linked for checked runtime surfaces; and
+- no Universal Cell runtime, source-status JSON, transition predicate,
+  evidence-bundle, formal-confidence, project-status, vertical-demo, handoff,
+  suite-selection, claim-manifest, or mathematical semantics changes.
+
+Status: accepted in `docs/adr/0299-command-runtime-frontier-summary.md`.
+Implemented in `autarkic_systems/command_runtime_frontier.py`, with tests in
+`tests/test_command_runtime_frontier.py`.

@@ -1396,3 +1396,13 @@
   handoff not-ready. The live ADR-0298 assertion observed counts `fast=129`,
   `extended-fixed-point=22`, and `all=151`, and the fast suite passed 1181
   tests in 284.768s.
+- ADR-0299 adds `python -m autarkic_systems.command_runtime_frontier`, a
+  source-status-gated runtime witness over command-token frontier cases. It
+  runs live Universal Cell transitions for implemented `write-buf-zero` /
+  `write-buf-one` recipient, self-mailbox, and self command-buffer surfaces,
+  plus the non-executing `standard-signal` recipient rejection,
+  self-mailbox unsupported, and self command-buffer append-boundary surfaces.
+  Rejected source-status input fails closed without runtime implemented
+  claims. Adding `tests.test_command_runtime_frontier` moves the live suite
+  index to 152 discovered modules: `fast=130`, `extended-fixed-point=22`,
+  and `all=152`; the fast suite passed 1188 tests in 300.178s.

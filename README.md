@@ -883,6 +883,11 @@ proof certificates, object languages, evidence bundles, and status reports:
   suite-selection section reuses the validated all-suite index and names the
   exact `fast`, `extended-fixed-point`, and `all` module counts and selector
   commands without running tests.
+- `python -m autarkic_systems.command_runtime_frontier` emits a focused
+  text/JSON runtime witness for the command-token frontier. It gates runtime
+  claims on the accepted source-status closure, then runs live Universal Cell
+  cases showing `write-buf-zero` / `write-buf-one` implemented surfaces and
+  the non-executing `standard-signal` command-token boundaries.
 - `python -m autarkic_systems.vertical_demo` emits a compact first-run digest
   for the current accepted demonstration, including the evidence trail and
   reproduction commands; `--format json` emits the same digest for automation.
