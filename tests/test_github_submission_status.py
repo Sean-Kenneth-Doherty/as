@@ -56,6 +56,14 @@ GIT_OUTPUTS = {
         "--format=%cd",
         "refs/remotes/fork/main",
     ): "1779110000",
+    (
+        "reflog",
+        "show",
+        "--date=unix",
+        "-1",
+        "--format=%cd",
+        "refs/remotes/origin/main",
+    ): "1779110120",
 }
 
 ORIGIN_SUBMITTED_OUTPUTS = {
@@ -170,6 +178,16 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
                 "max_age_seconds": 86400,
             },
         )
+        self.assertEqual(
+            payload["origin_main"]["remote_ref_freshness"],
+            {
+                "state": "fresh",
+                "checked_ref": "refs/remotes/origin/main",
+                "updated_at_unix": 1779110120,
+                "age_seconds": 180,
+                "max_age_seconds": 86400,
+            },
+        )
         self.assertEqual(payload["tracking_issue"]["url"], DEFAULT_TRACKING_ISSUE_URL)
         self.assertIn(("rev-parse", "fork/main"), runner.commands)
         self.assertIn(
@@ -180,6 +198,17 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
                 "-1",
                 "--format=%cd",
                 "refs/remotes/fork/main",
+            ),
+            runner.commands,
+        )
+        self.assertIn(
+            (
+                "reflog",
+                "show",
+                "--date=unix",
+                "-1",
+                "--format=%cd",
+                "refs/remotes/origin/main",
             ),
             runner.commands,
         )
@@ -213,6 +242,7 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         self.assertIn("fork/main: matches HEAD (be59d20)", text)
         self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 190 commits, behind by 0 commits", text)
+        self.assertIn("origin/main freshness: fresh (180s old, max 86400s)", text)
         self.assertIn("Origin main: https://github.com/jpt4/as/tree/main", text)
         self.assertIn("Origin: https://github.com/jpt4/as.git", text)
         self.assertIn("Fork: https://github.com/Sean-Kenneth-Doherty/as.git", text)
@@ -375,6 +405,61 @@ class GitHubSubmissionStatusTests(unittest.TestCase):
         )
         self.assertIn(
             "fork/main freshness: stale (90001s old, max 86400s)",
+            format_github_submission_status(report),
+        )
+
+    def test_status_reports_stale_origin_main_ref_freshness(self):
+        report = build_github_submission_status(
+            runner=FakeGitRunner(GIT_OUTPUTS),
+            clock=lambda: 1779200121,
+        )
+
+        payload = github_submission_status_payload(report)
+
+        self.assertEqual(
+            payload["origin_main"]["remote_ref_freshness"]["state"],
+            "stale",
+        )
+        self.assertEqual(
+            payload["origin_main"]["remote_ref_freshness"]["age_seconds"],
+            90001,
+        )
+        self.assertIn(
+            "origin/main freshness: stale (90001s old, max 86400s)",
+            format_github_submission_status(report),
+        )
+
+    def test_status_reports_unknown_origin_main_ref_freshness(self):
+        outputs = dict(GIT_OUTPUTS)
+        del outputs[
+            (
+                "reflog",
+                "show",
+                "--date=unix",
+                "-1",
+                "--format=%cd",
+                "refs/remotes/origin/main",
+            )
+        ]
+
+        report = build_github_submission_status(
+            runner=FakeGitRunner(outputs),
+            clock=lambda: 1779110300,
+        )
+        payload = github_submission_status_payload(report)
+
+        self.assertEqual(
+            payload["origin_main"]["remote_ref_freshness"],
+            {
+                "state": "unknown",
+                "checked_ref": "refs/remotes/origin/main",
+                "updated_at_unix": None,
+                "age_seconds": None,
+                "max_age_seconds": 86400,
+            },
+        )
+        self.assertIn(
+            "origin/main freshness: unknown (max 86400s)",
             format_github_submission_status(report),
         )
 

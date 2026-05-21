@@ -6398,3 +6398,25 @@ Status: accepted in
 `docs/adr/0291-project-status-formal-confidence-validation-json-summary.md`.
 Implemented in `autarkic_systems/project_status.py`, with tests in
 `tests/test_project_status_report.py`.
+
+## ADR-0292: Origin Main Ref Freshness
+
+Goal: expose remote-tracking freshness for the preferred source `origin/main`
+submission target with the same evidence shape already used for fallback
+`fork/main`.
+
+Deliverables:
+
+- `GitHubSubmissionStatus.origin_main_ref_freshness` computed from
+  `refs/remotes/origin/main`;
+- JSON `origin_main.remote_ref_freshness` preserving the existing
+  `fork_main.remote_ref_freshness` shape;
+- text output rendering `origin/main freshness: ...`;
+- fresh, stale, and unknown origin-main freshness coverage; and
+- no changes to accepted/submission-state semantics, refresh behavior,
+  handoff readiness, project-status behavior, or formal-confidence/source
+  evidence.
+
+Status: accepted in `docs/adr/0292-origin-main-ref-freshness.md`.
+Implemented in `autarkic_systems/github_submission.py`, with tests in
+`tests/test_github_submission_status.py` and `tests/test_handoff_status.py`.

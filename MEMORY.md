@@ -1348,3 +1348,9 @@
   `formal_confidence.results`, exposing accepted/failed validation counts plus
   accepted frontier subjects and compact labels without changing the nested
   formal-confidence payload, text output, or validation semantics.
+- ADR-0292 adds symmetric local remote-tracking freshness for source
+  `origin/main` in GitHub submission and handoff reports:
+  `origin_main.remote_ref_freshness` now mirrors the existing
+  `fork_main.remote_ref_freshness` shape, text renders
+  `origin/main freshness: ...`, and accepted/submission-state semantics remain
+  unchanged.

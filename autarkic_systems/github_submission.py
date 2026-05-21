@@ -21,6 +21,7 @@ from urllib.parse import urlparse
 DEFAULT_TRACKING_ISSUE_URL = "https://github.com/jpt4/as/issues/1"
 DEFAULT_REMOTE_REF_MAX_AGE_SECONDS = 86_400
 FORK_MAIN_REMOTE_REF = "refs/remotes/fork/main"
+ORIGIN_MAIN_REMOTE_REF = "refs/remotes/origin/main"
 REMOTE_REFRESH_TARGETS = (
     ("fork", "main:refs/remotes/fork/main", "fork/main"),
     ("origin", "main:refs/remotes/origin/main", "origin/main"),
@@ -45,6 +46,7 @@ class GitHubSubmissionStatus:
     fork_main_commit: str
     fork_main_short: str
     fork_main_ref_freshness: dict[str, Any]
+    origin_main_ref_freshness: dict[str, Any]
     head_behind_origin_main_by: int
     head_ahead_origin_main_by: int
     tracking_issue_url: str
@@ -138,6 +140,12 @@ def build_github_submission_status(
         clock=clock,
         max_age_seconds=remote_ref_max_age_seconds,
     )
+    origin_main_freshness = _remote_ref_freshness(
+        git,
+        ref=ORIGIN_MAIN_REMOTE_REF,
+        clock=clock,
+        max_age_seconds=remote_ref_max_age_seconds,
+    )
     return GitHubSubmissionStatus(
         branch=git(["branch", "--show-current"]),
         head_commit=git(["rev-parse", "HEAD"]),
@@ -149,6 +157,7 @@ def build_github_submission_status(
         fork_main_commit=git(["rev-parse", "fork/main"]),
         fork_main_short=git(["rev-parse", "--short", "fork/main"]),
         fork_main_ref_freshness=fork_main_freshness,
+        origin_main_ref_freshness=origin_main_freshness,
         head_behind_origin_main_by=origin_divergence[0],
         head_ahead_origin_main_by=origin_divergence[1],
         tracking_issue_url=tracking_issue_url,
@@ -190,6 +199,7 @@ def github_submission_status_payload(
             "web_url": report.origin_main_url,
             "head_behind_by": report.head_behind_origin_main_by,
             "head_ahead_by": report.head_ahead_origin_main_by,
+            "remote_ref_freshness": report.origin_main_ref_freshness,
         },
         "tracking_issue": {
             "url": report.tracking_issue_url,
@@ -227,8 +237,15 @@ def format_github_submission_status(report: GitHubSubmissionStatus) -> str:
         f"Fork main: {report.fork_main_url}",
         f"Fork compare: {report.fork_compare_url}",
         f"fork/main: {fork_line}",
-        _format_remote_ref_freshness(report.fork_main_ref_freshness),
+        _format_remote_ref_freshness(
+            "fork/main",
+            report.fork_main_ref_freshness,
+        ),
         origin_line,
+        _format_remote_ref_freshness(
+            "origin/main",
+            report.origin_main_ref_freshness,
+        ),
         f"Origin main: {report.origin_main_url}",
         f"Origin: {report.origin_url}",
         f"Fork: {report.fork_url}",
@@ -352,14 +369,14 @@ def _remote_ref_freshness(
     }
 
 
-def _format_remote_ref_freshness(freshness: dict[str, Any]) -> str:
+def _format_remote_ref_freshness(label: str, freshness: dict[str, Any]) -> str:
     if freshness["state"] == "unknown":
         return (
-            "fork/main freshness: unknown "
+            f"{label} freshness: unknown "
             f"(max {freshness['max_age_seconds']}s)"
         )
     return (
-        f"fork/main freshness: {freshness['state']} "
+        f"{label} freshness: {freshness['state']} "
         f"({freshness['age_seconds']}s old, "
         f"max {freshness['max_age_seconds']}s)"
     )

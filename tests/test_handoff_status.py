@@ -203,6 +203,14 @@ GIT_OUTPUTS = {
         "--format=%cd",
         "refs/remotes/fork/main",
     ): "1779110000",
+    (
+        "reflog",
+        "show",
+        "--date=unix",
+        "-1",
+        "--format=%cd",
+        "refs/remotes/origin/main",
+    ): "1779110120",
 }
 
 
@@ -221,6 +229,13 @@ SUBMISSION_REPORT = GitHubSubmissionStatus(
         "checked_ref": "refs/remotes/fork/main",
         "updated_at_unix": 1779110000,
         "age_seconds": 300,
+        "max_age_seconds": 86400,
+    },
+    origin_main_ref_freshness={
+        "state": "fresh",
+        "checked_ref": "refs/remotes/origin/main",
+        "updated_at_unix": 1779110120,
+        "age_seconds": 180,
         "max_age_seconds": 86400,
     },
     head_behind_origin_main_by=0,
@@ -243,6 +258,13 @@ SOURCE_SUBMISSION_REPORT = GitHubSubmissionStatus(
         "checked_ref": "refs/remotes/fork/main",
         "updated_at_unix": 1779110000,
         "age_seconds": 300,
+        "max_age_seconds": 86400,
+    },
+    origin_main_ref_freshness={
+        "state": "fresh",
+        "checked_ref": "refs/remotes/origin/main",
+        "updated_at_unix": 1779110120,
+        "age_seconds": 180,
         "max_age_seconds": 86400,
     },
     head_behind_origin_main_by=0,
@@ -383,6 +405,10 @@ class HandoffStatusTests(unittest.TestCase):
             payload["github_submission"]["fork_main"]["remote_ref_freshness"]["state"],
             "fresh",
         )
+        self.assertEqual(
+            payload["github_submission"]["origin_main"]["remote_ref_freshness"]["state"],
+            "fresh",
+        )
 
     def test_handoff_text_renders_project_and_submission_sections(self):
         report = build_handoff_status(
@@ -425,7 +451,9 @@ class HandoffStatusTests(unittest.TestCase):
             text,
         )
         self.assertIn("fork/main: matches HEAD (04158fc)", text)
+        self.assertIn("fork/main freshness: fresh (300s old, max 86400s)", text)
         self.assertIn("origin/main: HEAD ahead by 191 commits", text)
+        self.assertIn("origin/main freshness: fresh (180s old, max 86400s)", text)
         self.assertIn("Origin main: https://github.com/jpt4/as/tree/main", text)
 
     def test_handoff_rejects_when_submission_is_not_on_fork_main(self):
@@ -440,6 +468,7 @@ class HandoffStatusTests(unittest.TestCase):
             fork_main_commit=SUBMISSION_REPORT.fork_main_commit,
             fork_main_short=SUBMISSION_REPORT.fork_main_short,
             fork_main_ref_freshness=SUBMISSION_REPORT.fork_main_ref_freshness,
+            origin_main_ref_freshness=SUBMISSION_REPORT.origin_main_ref_freshness,
             head_behind_origin_main_by=0,
             head_ahead_origin_main_by=192,
             tracking_issue_url=DEFAULT_TRACKING_ISSUE_URL,

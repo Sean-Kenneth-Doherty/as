@@ -478,8 +478,9 @@ proof certificates, object languages, evidence bundles, and status reports:
   `origin/main` matches `HEAD`, while preserving `submitted-to-fork` as a
   fallback. It also renders a direct fork commit URL for the submitted `HEAD`,
   a fork `main` browser URL, a fork-hosted compare URL from `origin/main` to
-  `HEAD`, and an origin `main` browser URL, normalizing common HTTPS and SSH
-  GitHub remotes to web URLs.
+  `HEAD`, an origin `main` browser URL, and remote-tracking ref freshness for
+  both inspected `fork/main` and `origin/main` refs, normalizing common HTTPS
+  and SSH GitHub remotes to web URLs.
 - `autarkic_systems/handoff.py` composes the compact project status, vertical
   demo digest, and local GitHub submission status into one end-of-month
   handoff report.
@@ -865,10 +866,10 @@ proof certificates, object languages, evidence bundles, and status reports:
   local `HEAD` is ahead of upstream `origin/main`, and where upstream
   submission notes are tracked. The browser URLs are normalized from common
   GitHub HTTPS and SSH remote forms. It also reports local
-  `fork/main` remote-tracking ref freshness from the git reflog so operators
-  can see how recent the submission evidence is. `--refresh-remotes` fetches
-  fork `main` and origin `main` into the inspected remote-tracking refs before
-  reporting.
+  `fork/main` and `origin/main` remote-tracking ref freshness from the git
+  reflog so operators can see how recent the submission evidence is.
+  `--refresh-remotes` fetches fork `main` and origin `main` into the inspected
+  remote-tracking refs before reporting.
 - `python -m autarkic_systems.handoff` emits a local text/JSON handoff report
   that combines accepted project status, the vertical demo digest, and GitHub
   submission evidence; it also accepts `--refresh-remotes` for a refreshed

@@ -6491,3 +6491,34 @@
   changed in this slice.
 - The fast suite passed 1171 tests in 233.412s with manifest
   `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+
+## 2026-05-21 - Origin Main Ref Freshness
+
+- Added ADR-0292 to make source `origin/main` remote-tracking freshness
+  visible beside the existing fallback `fork/main` freshness evidence.
+- Extended `tests/test_github_submission_status.py` before implementation.
+  The focused red run failed as intended: three checks errored because
+  `origin_main.remote_ref_freshness` was absent, and one text check failed
+  because freshness formatting only rendered `fork/main freshness: ...`.
+- Updated `autarkic_systems/github_submission.py` to compute
+  `origin_main_ref_freshness` from `refs/remotes/origin/main` through the
+  existing reflog freshness helper and to include it in
+  `origin_main.remote_ref_freshness`.
+- Generalized freshness text formatting to take an explicit ref label, so
+  `fork/main freshness: ...` and `origin/main freshness: ...` share the same
+  fresh/stale/unknown rendering path.
+- Updated handoff fixtures and assertions so handoff JSON/text inherits the
+  new source freshness field while remaining accepted under the existing
+  project, vertical-demo, and submission rules.
+- The exact red run passed after implementation: 4 tests in 0.001s.
+- Focused verification passed:
+  `python -m unittest tests.test_github_submission_status tests.test_handoff_status tests.test_suite_selection`
+  ran 29 tests in 248.472s.
+- `compileall` passed, `git diff --check` passed, and no JSON files changed in
+  this slice.
+- The fast suite passed 1173 tests in 360.837s with manifest
+  `as-test-suite-selection-v1`, suite `fast`, and 129 selected modules.
+- This is an evidence-symmetry/status-output change only. It does not change
+  accepted/submission-state semantics, refresh behavior, handoff readiness,
+  project-status behavior, formal-confidence semantics, source-status records,
+  or command-token/runtime behavior.
